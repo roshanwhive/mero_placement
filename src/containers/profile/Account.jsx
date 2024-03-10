@@ -1,18 +1,12 @@
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
-import {Modal} from 'react-native-paper';
 
-const Account = () => {
-  const [visible, setVisible] = useState(false);
-
-  const showModal = () => setVisible(true);
-  const hideModal = () => setVisible(false);
-  const containerStyle = {backgroundColor: 'white', padding: 20};
+const Account = ({navigation}) => {
   return (
     <View style={styles.account}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>Account</Text>
-        <TouchableOpacity onPress={showModal}>
+        <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
           <Text style={styles.edit}>Edit</Text>
         </TouchableOpacity>
       </View>
@@ -31,12 +25,6 @@ const Account = () => {
         </View>
       </View>
       {/* Modal */}
-      <Modal
-        visible={visible}
-        onDismiss={hideModal}
-        contentContainerStyle={containerStyle}>
-        <Text>Example Modal. Click outside this area to dismiss.</Text>
-      </Modal>
     </View>
   );
 };

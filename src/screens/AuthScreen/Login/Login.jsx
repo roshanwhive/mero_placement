@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   StatusBar,
@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {TextInput} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {loginUser} from '../../../features/auth/AuthSlice';
 import AuthHeader from '../../../components/AuthHeader';
 import AuthLogo from '../../../components/AuthLogo';
@@ -25,9 +25,12 @@ const Login = ({navigation}) => {
     setPasswordVisible(!passwordVisible);
   };
   const dispatch = useDispatch();
-
+  const {message} = useSelector(state => state.auth);
+  useEffect(() => {
+    console.log(message);
+  }, [message]);
   const handleSubmit = () => {
-    // dispatch(loginUser({email, password}));
+    dispatch(loginUser({email, password}));
     navigation.navigate('HomeScreen');
   };
 
@@ -50,6 +53,8 @@ const Login = ({navigation}) => {
               style={styles.input}
               label="Emaill"
               mode="outlined"
+              value={email}
+              onChangeText={value => setEmail(value)}
               outlineColor="#11401E"
               activeOutlineColor="#11401E"
               selectionColor="#11401E"
@@ -63,7 +68,7 @@ const Login = ({navigation}) => {
               mode="outlined"
               secureTextEntry={!passwordVisible}
               value={password}
-              onChangeText={setPassword}
+              onChangeText={value => setPassword(value)}
               outlineColor="#11401E"
               activeOutlineColor="#11401E"
               selectionColor="#11401E"
@@ -89,7 +94,7 @@ const Login = ({navigation}) => {
             </TouchableOpacity>
           </View>
           <View style={styles.signupTextContainer}>
-            <Text>Don't have an account?</Text>
+            <Text style={{color: 'black'}}>Don't have an account?</Text>
             <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
               <Text style={styles.signupText}>Signup</Text>
             </TouchableOpacity>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StatusBar,
   Text,
@@ -7,21 +7,22 @@ import {
   StyleSheet,
 } from 'react-native';
 import {TextInput} from 'react-native-paper';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {loginUser} from '../../../features/auth/AuthSlice';
 import AuthHeader from '../../../components/AuthHeader';
 import AuthTitle from '../../../components/AuthTitle';
 import SelectDropdown from 'react-native-select-dropdown';
-import {Icon} from 'react-native-vector-icons/Feather';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {getAllGender} from '../../../features/formData/FormSlice';
 
 const genders = ['Male', 'Female', 'Others'];
 
 const Signup = ({navigation}) => {
   const [email, setEmail] = useState('');
-  const [passwordVisible, setPasswordVisible] = useState(false);
-  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -30,6 +31,10 @@ const Signup = ({navigation}) => {
     setConfirmPasswordVisible(!confirmPasswordVisible);
   };
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllGender());
+  }, [dispatch, getAllGender]);
 
   const handleSubmit = () => {
     // dispatch(loginUser({email, password}));

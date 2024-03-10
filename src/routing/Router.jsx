@@ -11,8 +11,7 @@ import WelcomeScreen from '../screens/StartScreens/WelcomeScreen';
 import BottomTab from '../containers/BottomTab';
 import SeeAllJobs from '../screens/SeeAllJobs/SeeAllJobs';
 import TotalJobs from '../containers/TotalJobs';
-import SidebarDrawer from '../components/SidebarDrawer';
-import EditProfileModal from '../containers/modal/EditProfileModal';
+import EditProfile from '../screens/ProfileScreen/EditProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -49,7 +48,7 @@ const Router = () => {
       {/* Home screen */}
       <Stack.Screen name="HomeScreen" component={BottomTab} />
       <Stack.Screen name="SeeAllJobs" component={SeeAllJobs} />
-      <Stack.Screen name="Test" component={EditProfileModal} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
     </Stack.Navigator>
   );
 };
