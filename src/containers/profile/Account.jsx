@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
   account: {
     width: '110%',
     borderRadius: 20,
-    // backgroundColor: '#f6f7fb',
     backgroundColor: '#f7f7f7',
     position: 'relative',
     paddingHorizontal: 20,

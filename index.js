@@ -9,6 +9,7 @@ import App from './App';
 import {name as appName} from './app.json';
 import {Provider} from 'react-redux';
 import {store} from './src/app/Store';
+import FlashMessage from 'react-native-flash-message';
 
 const theme = {
   ...DefaultTheme,
@@ -24,6 +25,7 @@ export default function Main() {
     <Provider store={store}>
       <PaperProvider theme={theme}>
         <App />
+        <FlashMessage position="top" />
       </PaperProvider>
     </Provider>
   );

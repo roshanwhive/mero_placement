@@ -9,9 +9,11 @@ import ForgotPassword_ChoosePassword from '../screens/AuthScreen/ForgotPassword/
 import ForgotPassword_EnterEmail from '../screens/AuthScreen/ForgotPassword/ForgotPassword_EnterEmail';
 import WelcomeScreen from '../screens/StartScreens/WelcomeScreen';
 import BottomTab from '../containers/BottomTab';
-import SeeAllJobs from '../screens/SeeAllJobs/SeeAllJobs';
+import SeeAllJobs from '../screens/JobScreens/SeeAllJobs';
 import TotalJobs from '../containers/TotalJobs';
 import EditProfile from '../screens/ProfileScreen/EditProfile';
+import EmailVerification from '../screens/AuthScreen/Signup/EmailVerification';
+import JobDetail from '../screens/JobScreens/JobDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +29,7 @@ const Router = () => {
 
       {/* Auth Screen */}
       <Stack.Screen name="Signup" component={Signup} />
+      <Stack.Screen name="EmailVerification" component={EmailVerification} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen
         name="ForgotPasswordEnterEmail"
@@ -47,6 +50,7 @@ const Router = () => {
 
       {/* Home screen */}
       <Stack.Screen name="HomeScreen" component={BottomTab} />
+      <Stack.Screen name="JobDetail" component={JobDetail} />
       <Stack.Screen name="SeeAllJobs" component={SeeAllJobs} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
     </Stack.Navigator>
