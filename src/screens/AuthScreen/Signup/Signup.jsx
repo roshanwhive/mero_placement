@@ -7,18 +7,30 @@ import {
   StyleSheet,
 } from 'react-native';
 import {TextInput} from 'react-native-paper';
+import {Dropdown} from 'react-native-element-dropdown';
 import {useDispatch, useSelector} from 'react-redux';
 import {loginUser} from '../../../features/auth/AuthSlice';
 import AuthHeader from '../../../components/AuthHeader';
 import AuthTitle from '../../../components/AuthTitle';
-import SelectDropdown from 'react-native-select-dropdown';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import {getAllGender} from '../../../features/formData/FormSlice';
 
-const genders = ['Male', 'Female', 'Others'];
+const gender = [
+  {name: 'Item 1', value: '1'},
+  {label: 'Item 2', value: '2'},
+  {label: 'Item 3', value: '3'},
+  {label: 'Item 4', value: '4'},
+  {label: 'Item 5', value: '5'},
+];
 
 const Signup = ({navigation}) => {
+  const [value, setValue] = useState(null);
+  const [genders, setGenders] = useState([]);
+
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [contact, setContact] = useState('');
+  const [genderId, setGenderID] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -34,10 +46,28 @@ const Signup = ({navigation}) => {
 
   useEffect(() => {
     dispatch(getAllGender());
+
+    if (allGenderData.genders && Array.isArray(allGenderData.genders)) {
+      const mappedGenderData = allGenderData.genders.map(item => ({
+        label: item.name,
+        value: item.gender_id,
+      }));
+      setGenders(mappedGenderData);
+    }
   }, [dispatch, getAllGender]);
 
+  const {allGenderData} = useSelector(state => state.formOptions);
+
   const handleSubmit = () => {
-    // dispatch(loginUser({email, password}));
+    const formData = {
+      name: name,
+      email: email,
+      contact: contact,
+      gender_id: genderId,
+      password: password,
+      password_confirmation: confirmPassword,
+    };
+    dispatch(loginUser({email, password}));
     // navigation.navigate('Test');
   };
 
@@ -58,6 +88,8 @@ const Signup = ({navigation}) => {
             <TextInput
               style={styles.input}
               label="Name"
+              value={name}
+              onChangeText={value => setName(value)}
               mode="outlined"
               outlineColor="#11401E"
               activeOutlineColor="#11401E"
@@ -88,32 +120,32 @@ const Signup = ({navigation}) => {
             />
           </View>
           <View style={styles.inputWrapper}>
-            <SelectDropdown
-              data={genders}
-              defaultButtonText="Select Gender"
-              dropdownIconPosition="right"
-              buttonStyle={{
+            <Dropdown
+              data={gender}
+              placeholder="Select Gender"
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              searchPlaceholder="Search..."
+              value={value}
+              style={{
+                borderWidth: 1,
                 borderColor: '#11401E',
-                borderWidth: 0.9,
-                borderRadius: 4,
-                backgroundColor: 'white',
-                width: '100%',
+                borderRadius: 5,
+                paddingHorizontal: 16,
+                paddingVertical: 5,
               }}
-              buttonTextStyle={{
-                color: '#464a48',
-                fontSize: 16,
-                fontWeight: '400',
-                textAlign: 'left',
+              onChange={item => {
+                setValue(item.value);
               }}
-              onSelect={(selectedItem, index) => {
-                console.log(selectedItem, index);
-              }}
-              buttonTextAfterSelection={(selectedItem, index) => {
-                return selectedItem;
-              }}
-              rowTextForSelection={(item, index) => {
-                return item;
-              }}
+              renderLeftIcon={() => (
+                <Icon
+                  color="#11401E"
+                  name="user-edit"
+                  size={20}
+                  style={{marginRight: 13}}
+                />
+              )}
             />
           </View>
           <View style={styles.inputWrapper}>

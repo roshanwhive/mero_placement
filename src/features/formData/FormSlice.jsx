@@ -46,6 +46,7 @@ export const formSlice = createSlice({
       .addCase(getAllGender.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
+        state.allGenderData = action.payload.data;
         state.isSuccess = true;
       })
       .addCase(getAllGender.rejected, (state, action) => {

@@ -17,8 +17,7 @@ const getAllCategories = async () => {
 const getGender = async () => {
   try {
     const response = await axios.get(`${base_url}formOptions/getFormOptions`);
-    // return response.data;
-    console.log(response.data);
+    return response.data;
   } catch (error) {
     console.error('Error during fetching gender', error);
     throw error;
