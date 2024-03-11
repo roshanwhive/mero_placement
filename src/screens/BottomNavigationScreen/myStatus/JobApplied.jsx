@@ -3,10 +3,11 @@ import React from 'react'
 import { color } from 'react-native-reanimated'
 import Featured from '../../../containers/Featured';
 import TotalJobs from '../../../containers/TotalJobs';
+import JobAppliedList from '../../../containers/JobAppliedList';
 
 export default function JobApplied({navigation}) {
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex:1, backgroundColor:'white'}}>
       <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollViewContent}>
@@ -14,11 +15,9 @@ export default function JobApplied({navigation}) {
 
           {/* Featured */}
           <View style={styles.featuredContainer}>
-            <Featured navigation={navigation} />
+            <JobAppliedList/>
           </View>
-          <View style={styles.totalJobs}>
-            <TotalJobs navigation={navigation} />
-          </View>
+         
         </ScrollView>
       </SafeAreaView>
   )
