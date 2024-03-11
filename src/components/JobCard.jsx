@@ -2,12 +2,15 @@ import React from 'react';
 import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 
-const JobCard = ({onPressApply}) => {
+const JobCard = ({navigation}) => {
   const companyLogo = require('../assets/companyLogo.png');
   const jobTitle = 'Frontend Developer';
   const location = 'Raatopul, Kathmandu';
   const date = '2 days ago';
 
+  const onPressApply = () => {
+    navigation.navigate('JobDetail');
+  };
   return (
     <View style={styles.cardContainer}>
       <View style={styles.logoContainer}>

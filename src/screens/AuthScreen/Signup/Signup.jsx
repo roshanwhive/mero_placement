@@ -9,19 +9,12 @@ import {
 import {TextInput} from 'react-native-paper';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useDispatch, useSelector} from 'react-redux';
-import {loginUser} from '../../../features/auth/AuthSlice';
 import AuthHeader from '../../../components/AuthHeader';
 import AuthTitle from '../../../components/AuthTitle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {getAllGender} from '../../../features/formData/FormSlice';
-
-const gender = [
-  {name: 'Item 1', value: '1'},
-  {label: 'Item 2', value: '2'},
-  {label: 'Item 3', value: '3'},
-  {label: 'Item 4', value: '4'},
-  {label: 'Item 5', value: '5'},
-];
+import {showMessage, hideMessage} from 'react-native-flash-message';
+import {customTextColor, customThemeColor} from '../../../constants/Color';
 
 const Signup = ({navigation}) => {
   const [value, setValue] = useState(null);
@@ -33,6 +26,7 @@ const Signup = ({navigation}) => {
   const [genderId, setGenderID] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
@@ -43,10 +37,13 @@ const Signup = ({navigation}) => {
     setConfirmPasswordVisible(!confirmPasswordVisible);
   };
   const dispatch = useDispatch();
+  const {allGenderData} = useSelector(state => state.formOptions);
 
   useEffect(() => {
     dispatch(getAllGender());
+  }, [dispatch]);
 
+  useEffect(() => {
     if (allGenderData.genders && Array.isArray(allGenderData.genders)) {
       const mappedGenderData = allGenderData.genders.map(item => ({
         label: item.name,
@@ -54,9 +51,7 @@ const Signup = ({navigation}) => {
       }));
       setGenders(mappedGenderData);
     }
-  }, [dispatch, getAllGender]);
-
-  const {allGenderData} = useSelector(state => state.formOptions);
+  }, [allGenderData]);
 
   const handleSubmit = () => {
     const formData = {
@@ -67,16 +62,28 @@ const Signup = ({navigation}) => {
       password: password,
       password_confirmation: confirmPassword,
     };
-    dispatch(loginUser({email, password}));
-    // navigation.navigate('Test');
+    // console.log(formData);
+    navigation.navigate('EmailVerification');
+    showMessage({
+      message: 'Simple message',
+      type: 'info',
+    });
   };
 
+  //Common input properties
+  const commonTextInputProps = {
+    style: styles.input,
+    mode: 'outlined',
+    outlineColor: customTextColor.darkGreen,
+    activeOutlineColor: customTextColor.darkGreen,
+    selectionColor: customTextColor.darkGreen,
+  };
   return (
     <View style={styles.container}>
       <StatusBar
         barStyle="dark-content"
         hidden={false}
-        backgroundColor="#FCFCFC"
+        backgroundColor={customThemeColor.primary}
       />
 
       {/* Title and form */}
@@ -86,61 +93,74 @@ const Signup = ({navigation}) => {
           <AuthTitle title="Create an Account" />
           <View style={styles.inputWrapper}>
             <TextInput
-              style={styles.input}
+              {...commonTextInputProps}
               label="Name"
               value={name}
               onChangeText={value => setName(value)}
-              mode="outlined"
-              outlineColor="#11401E"
-              activeOutlineColor="#11401E"
-              selectionColor="#11401E"
-              left={<TextInput.Icon icon="account" size={25} color="#11401E" />}
+              left={
+                <TextInput.Icon
+                  icon="account"
+                  size={25}
+                  color={customTextColor.darkGreen}
+                />
+              }
             />
           </View>
           <View style={styles.inputWrapper}>
             <TextInput
-              style={styles.input}
+              {...commonTextInputProps}
               label="Emaill"
-              mode="outlined"
-              outlineColor="#11401E"
-              activeOutlineColor="#11401E"
-              selectionColor="#11401E"
-              left={<TextInput.Icon icon="email" size={25} color="#11401E" />}
+              value={email}
+              onChangeText={value => setEmail(value)}
+              left={
+                <TextInput.Icon
+                  icon="email"
+                  size={25}
+                  color={customTextColor.darkGreen}
+                />
+              }
             />
           </View>
           <View style={styles.inputWrapper}>
             <TextInput
-              style={styles.input}
+              {...commonTextInputProps}
               label="Contact"
-              mode="outlined"
-              outlineColor="#11401E"
-              activeOutlineColor="#11401E"
-              selectionColor="#11401E"
-              left={<TextInput.Icon icon="phone" size={25} color="#11401E" />}
+              value={contact}
+              onChangeText={value => setContact(value)}
+              left={
+                <TextInput.Icon
+                  icon="phone"
+                  size={25}
+                  color={customTextColor.darkGreen}
+                />
+              }
             />
           </View>
           <View style={styles.inputWrapper}>
             <Dropdown
-              data={gender}
+              data={genders}
               placeholder="Select Gender"
               maxHeight={300}
               labelField="label"
               valueField="value"
               searchPlaceholder="Search..."
               value={value}
-              style={{
-                borderWidth: 1,
-                borderColor: '#11401E',
-                borderRadius: 5,
-                paddingHorizontal: 16,
-                paddingVertical: 5,
-              }}
+              style={[
+                {
+                  borderWidth: 1,
+                  borderColor: customTextColor.darkGreen,
+                  borderRadius: 5,
+                  paddingHorizontal: 16,
+                  paddingVertical: 5,
+                },
+                styles.input,
+              ]}
               onChange={item => {
-                setValue(item.value);
+                setGenderID(item.value);
               }}
               renderLeftIcon={() => (
                 <Icon
-                  color="#11401E"
+                  color={customTextColor.darkGreen}
                   name="user-edit"
                   size={20}
                   style={{marginRight: 13}}
@@ -150,46 +170,50 @@ const Signup = ({navigation}) => {
           </View>
           <View style={styles.inputWrapper}>
             <TextInput
-              style={styles.input}
+              {...commonTextInputProps}
               label="Password"
-              mode="outlined"
               secureTextEntry={!passwordVisible}
               value={password}
-              onChangeText={setPassword}
-              outlineColor="#11401E"
-              activeOutlineColor="#11401E"
-              selectionColor="#11401E"
+              onChangeText={value => setPassword(value)}
               right={
                 <TextInput.Icon
                   icon={passwordVisible ? 'eye' : 'eye-off'}
                   onPress={togglePasswordVisibility}
                   size={20}
-                  color={'#11401E'}
+                  color={customTextColor.darkGreen}
                 />
               }
-              left={<TextInput.Icon icon="lock" size={25} color="#11401E" />}
+              left={
+                <TextInput.Icon
+                  icon="lock"
+                  size={25}
+                  color={customTextColor.darkGreen}
+                />
+              }
             />
           </View>
           <View style={styles.inputWrapper}>
             <TextInput
-              style={styles.input}
+              {...commonTextInputProps}
               label="Confirm Password"
-              mode="outlined"
               secureTextEntry={!confirmPasswordVisible}
               value={confirmPassword}
-              onChangeText={setConfirmPassword}
-              outlineColor="#11401E"
-              activeOutlineColor="#11401E"
-              selectionColor="#11401E"
+              onChangeText={value => setConfirmPassword(value)}
               right={
                 <TextInput.Icon
                   icon={confirmPasswordVisible ? 'eye' : 'eye-off'}
                   onPress={toggleConfirmPasswordVisibility}
                   size={20}
-                  color={'#11401E'}
+                  color={customTextColor.darkGreen}
                 />
               }
-              left={<TextInput.Icon icon="lock" size={25} color="#11401E" />}
+              left={
+                <TextInput.Icon
+                  icon="lock"
+                  size={25}
+                  color={customTextColor.darkGreen}
+                />
+              }
             />
           </View>
           <View style={styles.buttonWrapper}>
@@ -198,7 +222,9 @@ const Signup = ({navigation}) => {
             </TouchableOpacity>
           </View>
           <View style={styles.signupTextContainer}>
-            <Text>Already have an account?</Text>
+            <Text style={{color: customTextColor.primary}}>
+              Already have an account?
+            </Text>
             <TouchableOpacity onPress={() => navigation.navigate('Login')}>
               <Text style={styles.signupText}>Login</Text>
             </TouchableOpacity>
@@ -211,11 +237,9 @@ const Signup = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
     flex: 1,
-    backgroundColor: '#FCFCFC',
+    backgroundColor: customThemeColor.primary,
   },
-
   formContainer: {
     flex: 1,
     width: '100%',
@@ -238,13 +262,13 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   button: {
-    backgroundColor: '#9D050A',
+    backgroundColor: customThemeColor.darkRed,
     borderRadius: 15,
   },
   buttonText: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: 'white',
+    color: customTextColor.white,
     textAlign: 'center',
     padding: 10,
   },
@@ -253,8 +277,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
+  textSecondary: {
+    color: customTextColor.secondary,
+  },
   signupText: {
-    color: '#2b8256',
+    color: customTextColor.lightGreen,
     marginLeft: 5,
   },
 });

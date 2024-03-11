@@ -28,7 +28,7 @@ const Featured = ({navigation}) => {
         <JobCard />
       </ScrollView> */}
       <View style={styles.scrollViewContent}>
-        <JobCard />
+        <JobCard navigation={navigation} />
         <JobCard />
       </View>
     </View>

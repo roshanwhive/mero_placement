@@ -11,6 +11,7 @@ import OtpInputs from 'react-native-otp-inputs';
 import AuthHeader from '../../../components/AuthHeader';
 import AuthLogo from '../../../components/AuthLogo';
 import AuthTitle from '../../../components/AuthTitle';
+import {customTextColor, customThemeColor} from '../../../constants/Color';
 
 const EmailVerification = ({navigation}) => {
   const loginLogo = require('../../../assets/password-change.png');
@@ -20,7 +21,7 @@ const EmailVerification = ({navigation}) => {
       <StatusBar
         barStyle="dark-content"
         hidden={false}
-        backgroundColor="#FCFCFC"
+        backgroundColor={customThemeColor.primary}
       />
 
       {/* Title and form */}
@@ -28,17 +29,25 @@ const EmailVerification = ({navigation}) => {
         <AuthHeader />
         <AuthLogo imgSrc={loginLogo} />
         <View style={styles.inputContainer}>
-          <AuthTitle title="Enter OTP" />
-          <Text>OTP has been sent to your email.</Text>
+          <View
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+            }}>
+            <AuthTitle title="Enter OTP" />
+
+            <Text style={styles.text}>OTP has been sent to your email.</Text>
+          </View>
 
           <View style={styles.container1}>
             <OtpInputs
-              numberOfInputs={5}
+              numberOfInputs={6}
               selectTextOnFocus={true}
               inputStyles={{
-                backgroundColor: '#f2f4f5',
+                backgroundColor: customThemeColor.otpBg,
                 borderRadius: 10,
-                width: 50,
+                width: 45,
+                fontSize: 20,
                 textAlign: 'center',
               }}
             />
@@ -54,9 +63,11 @@ const EmailVerification = ({navigation}) => {
             </TouchableOpacity>
           </View>
           <View style={styles.signupTextContainer}>
-            <Text>Didn't get a code?</Text>
+            <Text style={{color: customTextColor.primary}}>
+              Didn't get a code?
+            </Text>
             <TouchableOpacity>
-              <Text style={styles.signupText}>Resend Code</Text>
+              <Text style={styles.resendCodeText}>Resend Code</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -69,7 +80,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flex: 1,
-    backgroundColor: '#FCFCFC',
+    backgroundColor: customThemeColor.primary,
   },
 
   formContainer: {
@@ -79,7 +90,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     alignItems: 'center',
     marginHorizontal: 20,
-    bottom: '-8%',
+    bottom: '-5%',
   },
   container1: {
     flexDirection: 'row',
@@ -88,33 +99,22 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginVertical: 40,
   },
-  inputWrapper: {
-    padding: 4,
-    width: '100%',
-    marginBottom: 8,
-  },
-  input: {
-    backgroundColor: 'transparent',
-  },
-  forgotPasswordContainer: {
-    marginTop: 3,
-    marginLeft: 'auto',
-  },
-  forgotPasswordText: {
-    color: '#2b8256',
+  text: {
+    color: customTextColor.primary,
+    fontSize: 14,
   },
   buttonWrapper: {
     width: '100%',
     marginTop: 20,
   },
   button: {
-    backgroundColor: '#9D050A',
+    backgroundColor: customThemeColor.darkRed,
     borderRadius: 15,
   },
   buttonText: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: 'white',
+    color: customTextColor.white,
     textAlign: 'center',
     padding: 10,
   },
@@ -123,8 +123,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  signupText: {
-    color: '#2b8256',
+  resendCodeText: {
+    color: customTextColor.lightGreen,
     marginLeft: 5,
   },
 });
