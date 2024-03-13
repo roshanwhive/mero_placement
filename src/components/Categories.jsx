@@ -82,11 +82,9 @@ const styles = StyleSheet.create({
   },
   activeButton: {
     backgroundColor: '#f2d8d8',
-    // borderColor: '#9D050A',
-    // borderWidth: 2,
   },
   inactiveButton: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
+    backgroundColor: '#f7f7f7',
   },
   image: {
     width: 45,

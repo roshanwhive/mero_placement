@@ -7,13 +7,14 @@ import {
   View,
   StyleSheet,
 } from 'react-native';
-
+import OtpInputs from 'react-native-otp-inputs';
 import AuthHeader from '../../../components/AuthHeader';
 import AuthLogo from '../../../components/AuthLogo';
+import AuthTitle from '../../../components/AuthTitle';
 import {customTextColor, customThemeColor} from '../../../constants/Color';
 
-const ForgotPasword_EnterOtp = ({navigation}) => {
-  const verifiedLogo = require('../../../assets/verified-logo1.png');
+const EmailVerification = ({navigation}) => {
+  const loginLogo = require('../../../assets/password-change.png');
 
   return (
     <View style={styles.container}>
@@ -26,17 +27,47 @@ const ForgotPasword_EnterOtp = ({navigation}) => {
       {/* Title and form */}
       <View style={styles.formContainer}>
         <AuthHeader />
-        <AuthLogo imgSrc={verifiedLogo} />
+        <AuthLogo imgSrc={loginLogo} />
         <View style={styles.inputContainer}>
-          <View style={styles.titleTextContainer}>
-            <Text style={styles.titleText}>Password Chnaged Successfully</Text>
+          <View
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+            }}>
+            <AuthTitle title="Enter OTP" />
+
+            <Text style={styles.text}>OTP has been sent to your email.</Text>
+          </View>
+
+          <View style={styles.container1}>
+            <OtpInputs
+              numberOfInputs={6}
+              selectTextOnFocus={true}
+              inputStyles={{
+                backgroundColor: customThemeColor.otpBg,
+                borderRadius: 10,
+                width: 45,
+                fontSize: 20,
+                textAlign: 'center',
+              }}
+            />
           </View>
 
           <View style={styles.buttonWrapper}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Login')}
+              onPress={() =>
+                navigation.navigate('ForgotPassword_ChoosePassword')
+              }
               style={styles.button}>
-              <Text style={styles.buttonText}>Login</Text>
+              <Text style={styles.buttonText}>Verify</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.signupTextContainer}>
+            <Text style={{color: customTextColor.primary}}>
+              Didn't get a code?
+            </Text>
+            <TouchableOpacity>
+              <Text style={styles.resendCodeText}>Resend Code</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -47,6 +78,7 @@ const ForgotPasword_EnterOtp = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: 'white',
     flex: 1,
     backgroundColor: customThemeColor.primary,
   },
@@ -55,20 +87,10 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
   },
-  titleTextContainer: {
-    width: '100%',
-    padding: 6,
-  },
-  titleText: {
-    color: customTextColor.darkGreen,
-    fontSize: 30,
-    fontWeight: '600',
-    textAlign: 'center',
-  },
   inputContainer: {
     alignItems: 'center',
     marginHorizontal: 20,
-    bottom: '-8%',
+    bottom: '-5%',
   },
   container1: {
     flexDirection: 'row',
@@ -77,20 +99,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginVertical: 40,
   },
-  inputWrapper: {
-    padding: 4,
-    width: '100%',
-    marginBottom: 8,
-  },
-  input: {
-    backgroundColor: 'transparent',
-  },
-  forgotPasswordContainer: {
-    marginTop: 3,
-    marginLeft: 'auto',
-  },
-  forgotPasswordText: {
-    color: customTextColor.lightGreen,
+  text: {
+    color: customTextColor.primary,
+    fontSize: 14,
   },
   buttonWrapper: {
     width: '100%',
@@ -112,10 +123,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  signupText: {
+  resendCodeText: {
     color: customTextColor.lightGreen,
     marginLeft: 5,
   },
 });
 
-export default ForgotPasword_EnterOtp;
+export default EmailVerification;

@@ -30,55 +30,26 @@ export const getAllGender = createAsyncThunk('form/gender', async thunkAPI => {
   }
 });
 
+export const resetState = createAction('Reset_all');
+
 export const formSlice = createSlice({
   name: 'form',
   initialState: initialState,
   reducers: {},
   extraReducers: builder => {
     builder
-      // Register User
-      .addCase(registerUser.pending, state => {
-        state.isLoading = true;
-      })
-      .addCase(registerUser.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isError = false;
-        state.isSuccess = true;
-      })
-      .addCase(registerUser.rejected, (state, action) => {
-        state.isError = true;
-        state.isLoading = false;
-        state.isSuccess = false;
-      })
 
       //Login User
-      .addCase(loginUser.pending, state => {
+      .addCase(getAllGender.pending, state => {
         state.isLoading = true;
       })
-      .addCase(loginUser.fulfilled, (state, action) => {
+      .addCase(getAllGender.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
+        state.allGenderData = action.payload.data;
         state.isSuccess = true;
-        state.isAuthenticated = true;
-        state.user = action.payload.data;
       })
-      .addCase(loginUser.rejected, (state, action) => {
-        state.isError = true;
-        state.isLoading = false;
-        state.isSuccess = false;
-      })
-
-      //Logout User
-      .addCase(logoutUser.pending, state => {
-        state.isLoading = true;
-      })
-      .addCase(logoutUser.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isError = false;
-        state.isSuccess = true;
-        state.isAuthenticated = false;
-      })
-      .addCase(logoutUser.rejected, (state, action) => {
+      .addCase(getAllGender.rejected, (state, action) => {
         state.isError = true;
         state.isLoading = false;
         state.isSuccess = false;
@@ -93,4 +64,4 @@ export const formSlice = createSlice({
   },
 });
 
-export default authSlice.reducer;
+export default formSlice.reducer;

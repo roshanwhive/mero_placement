@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   StatusBar,
@@ -9,11 +9,12 @@ import {
 } from 'react-native';
 import {TextInput} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {loginUser} from '../../../features/auth/AuthSlice';
 import AuthHeader from '../../../components/AuthHeader';
 import AuthLogo from '../../../components/AuthLogo';
 import AuthTitle from '../../../components/AuthTitle';
+import {customTextColor, customThemeColor} from '../../../constants/Color';
 
 const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -25,18 +26,28 @@ const Login = ({navigation}) => {
     setPasswordVisible(!passwordVisible);
   };
   const dispatch = useDispatch();
-
+  const {message} = useSelector(state => state.auth);
+  useEffect(() => {
+    console.log(message);
+  }, [message]);
   const handleSubmit = () => {
     // dispatch(loginUser({email, password}));
     navigation.navigate('HomeScreen');
   };
 
+  const commonTextInputProps = {
+    style: styles.input,
+    mode: 'outlined',
+    outlineColor: customTextColor.darkGreen,
+    activeOutlineColor: customTextColor.darkGreen,
+    selectionColor: customTextColor.darkGreen,
+  };
   return (
     <View style={styles.container}>
       <StatusBar
         barStyle="dark-content"
         hidden={false}
-        backgroundColor="#FCFCFC"
+        backgroundColor={customThemeColor.primary}
       />
 
       {/* Title and form */}
@@ -47,35 +58,41 @@ const Login = ({navigation}) => {
           <AuthTitle title="Login" />
           <View style={styles.inputWrapper}>
             <TextInput
-              style={styles.input}
+              {...commonTextInputProps}
               label="Emaill"
-              mode="outlined"
-              outlineColor="#11401E"
-              activeOutlineColor="#11401E"
-              selectionColor="#11401E"
-              left={<TextInput.Icon icon="email" size={25} color="#11401E" />}
+              value={email}
+              onChangeText={value => setEmail(value)}
+              left={
+                <TextInput.Icon
+                  icon="email"
+                  size={25}
+                  color={customTextColor.darkGreen}
+                />
+              }
             />
           </View>
           <View style={styles.inputWrapper}>
             <TextInput
-              style={styles.input}
+              {...commonTextInputProps}
               label="Password"
-              mode="outlined"
               secureTextEntry={!passwordVisible}
               value={password}
-              onChangeText={setPassword}
-              outlineColor="#11401E"
-              activeOutlineColor="#11401E"
-              selectionColor="#11401E"
+              onChangeText={value => setPassword(value)}
               right={
                 <TextInput.Icon
                   icon={passwordVisible ? 'eye' : 'eye-off'}
                   onPress={togglePasswordVisibility}
                   size={20}
-                  color={'#11401E'}
+                  color={customTextColor.darkGreen}
                 />
               }
-              left={<TextInput.Icon icon="lock" size={25} color="#11401E" />}
+              left={
+                <TextInput.Icon
+                  icon="lock"
+                  size={25}
+                  color={customTextColor.darkGreen}
+                />
+              }
             />
           </View>
           <TouchableOpacity
@@ -89,7 +106,9 @@ const Login = ({navigation}) => {
             </TouchableOpacity>
           </View>
           <View style={styles.signupTextContainer}>
-            <Text>Don't have an account?</Text>
+            <Text style={{color: customTextColor.primary}}>
+              Don't have an account?
+            </Text>
             <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
               <Text style={styles.signupText}>Signup</Text>
             </TouchableOpacity>
@@ -103,9 +122,8 @@ const Login = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FCFCFC',
+    backgroundColor: customThemeColor.primary,
   },
-
   formContainer: {
     flex: 1,
     width: '100%',
@@ -128,20 +146,20 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
   },
   forgotPasswordText: {
-    color: '#2b8256',
+    color: customTextColor.lightGreen,
   },
   buttonWrapper: {
     width: '100%',
     marginTop: 20,
   },
   button: {
-    backgroundColor: '#9D050A',
+    backgroundColor: customThemeColor.darkRed,
     borderRadius: 15,
   },
   buttonText: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: 'white',
+    color: customTextColor.white,
     textAlign: 'center',
     padding: 10,
   },
@@ -151,7 +169,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   signupText: {
-    color: '#2b8256',
+    color: customTextColor.lightGreen,
     marginLeft: 5,
   },
 });
