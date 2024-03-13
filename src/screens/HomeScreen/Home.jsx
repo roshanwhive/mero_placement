@@ -5,6 +5,7 @@ import Categories from '../../components/Categories';
 import Featured from '../../containers/Featured';
 import SearchBar from '../../containers/SearchBar';
 import TotalJobs from '../../containers/TotalJobs';
+import Training from '../../containers/Training';
 
 const Home = ({navigation}) => {
   return (
@@ -30,6 +31,7 @@ const Home = ({navigation}) => {
           <View style={styles.featuredContainer}>
             <Featured navigation={navigation} />
           </View>
+          <Training />
           <View style={styles.totalJobs}>
             <TotalJobs navigation={navigation} />
           </View>

@@ -10,6 +10,7 @@ import {
 
 import AuthHeader from '../../../components/AuthHeader';
 import AuthLogo from '../../../components/AuthLogo';
+import {customTextColor, customThemeColor} from '../../../constants/Color';
 
 const ForgotPasword_EnterOtp = ({navigation}) => {
   const verifiedLogo = require('../../../assets/verified-logo1.png');
@@ -19,7 +20,7 @@ const ForgotPasword_EnterOtp = ({navigation}) => {
       <StatusBar
         barStyle="dark-content"
         hidden={false}
-        backgroundColor="#FCFCFC"
+        backgroundColor={customThemeColor.primary}
       />
 
       {/* Title and form */}
@@ -46,9 +47,8 @@ const ForgotPasword_EnterOtp = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
     flex: 1,
-    backgroundColor: '#FCFCFC',
+    backgroundColor: customThemeColor.primary,
   },
 
   formContainer: {
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     padding: 6,
   },
   titleText: {
-    color: '#11401E',
+    color: customTextColor.darkGreen,
     fontSize: 30,
     fontWeight: '600',
     textAlign: 'center',
@@ -90,20 +90,20 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
   },
   forgotPasswordText: {
-    color: '#2b8256',
+    color: customTextColor.lightGreen,
   },
   buttonWrapper: {
     width: '100%',
     marginTop: 20,
   },
   button: {
-    backgroundColor: '#9D050A',
+    backgroundColor: customThemeColor.darkRed,
     borderRadius: 15,
   },
   buttonText: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: 'white',
+    color: customTextColor.white,
     textAlign: 'center',
     padding: 10,
   },
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   signupText: {
-    color: '#2b8256',
+    color: customTextColor.lightGreen,
     marginLeft: 5,
   },
 });

@@ -11,6 +11,7 @@ import {TextInput} from 'react-native-paper';
 import AuthHeader from '../../../components/AuthHeader';
 import AuthLogo from '../../../components/AuthLogo';
 import AuthTitle from '../../../components/AuthTitle';
+import {customTextColor, customThemeColor} from '../../../constants/Color';
 
 const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -21,7 +22,7 @@ const Login = ({navigation}) => {
       <StatusBar
         barStyle="dark-content"
         hidden={false}
-        backgroundColor="#FCFCFC"
+        backgroundColor={customThemeColor.primary}
       />
 
       {/* Title and form */}
@@ -35,10 +36,16 @@ const Login = ({navigation}) => {
               style={styles.input}
               label="Email"
               mode="outlined"
-              outlineColor="#11401E"
-              activeOutlineColor="#11401E"
-              selectionColor="#11401E"
-              left={<TextInput.Icon icon="email" size={25} color="#11401E" />}
+              outlineColor={customTextColor.darkGreen}
+              activeOutlineColor={customTextColor.darkGreen}
+              selectionColor={customTextColor.darkGreen}
+              left={
+                <TextInput.Icon
+                  icon="email"
+                  size={25}
+                  color={customTextColor.darkGreen}
+                />
+              }
             />
           </View>
 
@@ -50,7 +57,9 @@ const Login = ({navigation}) => {
             </TouchableOpacity>
           </View>
           <View style={styles.signupTextContainer}>
-            <Text>Remembered Password?</Text>
+            <Text style={{color: customTextColor.primary}}>
+              Remembered Password?
+            </Text>
             <TouchableOpacity onPress={() => navigation.navigate('Login')}>
               <Text style={styles.signupText}>Login</Text>
             </TouchableOpacity>

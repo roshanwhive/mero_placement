@@ -14,7 +14,9 @@ const JobCard = ({navigation}) => {
   return (
     <View style={styles.cardContainer}>
       <View style={styles.logoContainer}>
-        <Image source={companyLogo} style={styles.logo} />
+        <TouchableOpacity onPress={() => navigation.navigate('CompanyProfile')}>
+          <Image source={companyLogo} style={styles.logo} />
+        </TouchableOpacity>
       </View>
       <View style={styles.jobDetailsContainer}>
         <Text style={styles.jobTitle}>{jobTitle}</Text>
