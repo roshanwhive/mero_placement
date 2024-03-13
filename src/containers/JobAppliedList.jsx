@@ -1,6 +1,7 @@
-import { View, Text, StyleSheet, FlatList, Image } from 'react-native'
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import Icon from 'react-native-vector-icons/Feather';
+import { black } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 
 export default function JobAppliedList() {
 
@@ -53,7 +54,7 @@ export default function JobAppliedList() {
 
     return (
         <View>
-            <Text>JobAppliedList</Text>
+            <View></View>
 
             {/* use of flat list
             data={job}
@@ -84,8 +85,15 @@ export default function JobAppliedList() {
                             <Text style={styles.location}>{item.posted_date}</Text>
                         </View>
 
-                        <View style={styles.buttonContainer}>
-                        <Text style={styles.applyButtonText}>Apply</Text>
+                        <View style={styles.buttonContainer} >
+                            <View>
+                                <Text></Text>
+                            </View>
+                            <View>
+                                <TouchableOpacity style={styles.applyButton}>
+                            <Text style={styles.applyButtonText}>Apply</Text>
+                            </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
                 </View>
@@ -161,7 +169,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
     },
     applyButtonText: {
-        color: '#fff',
+        color: 'white',
         fontSize: 16,
         fontWeight: 'bold',
         textAlign: 'center',
