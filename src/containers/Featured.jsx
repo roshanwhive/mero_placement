@@ -7,6 +7,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import JobCard from '../components/JobCard';
+import {customTextColor, customThemeColor} from '../constants/Color';
 
 const Featured = ({navigation}) => {
   return (
@@ -29,8 +30,14 @@ const Featured = ({navigation}) => {
       </ScrollView> */}
       <View style={styles.scrollViewContent}>
         <JobCard navigation={navigation} />
-        <JobCard />
+        <JobCard navigation={navigation} />
+        <JobCard navigation={navigation} />
       </View>
+      <TouchableOpacity onPress={() => console.log('View All pressed')}>
+        {/* <View style={styles.buttonContainer}>
+          <Text style={styles.buttonText}>View All</Text>
+        </View> */}
+      </TouchableOpacity>
     </View>
   );
 };
@@ -58,6 +65,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 5,
     overflow: 'visible',
+  },
+  buttonContainer: {
+    backgroundColor: customThemeColor.lightBG,
+    marginHorizontal: 20,
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: customTextColor.primary,
+    fontWeight: '600',
+    fontSize: 20,
+    textAlign: 'center',
   },
 });
 

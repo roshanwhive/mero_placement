@@ -11,6 +11,7 @@ import OtpInputs from 'react-native-otp-inputs';
 import AuthHeader from '../../../components/AuthHeader';
 import AuthLogo from '../../../components/AuthLogo';
 import AuthTitle from '../../../components/AuthTitle';
+import {customTextColor, customThemeColor} from '../../../constants/Color';
 
 const ForgotPasword_EnterOtp = ({navigation}) => {
   const loginLogo = require('../../../assets/password-change.png');
@@ -20,7 +21,7 @@ const ForgotPasword_EnterOtp = ({navigation}) => {
       <StatusBar
         barStyle="dark-content"
         hidden={false}
-        backgroundColor="#FCFCFC"
+        backgroundColor={customThemeColor.primary}
       />
 
       {/* Title and form */}
@@ -53,7 +54,9 @@ const ForgotPasword_EnterOtp = ({navigation}) => {
             </TouchableOpacity>
           </View>
           <View style={styles.signupTextContainer}>
-            <Text>Didn't get a code?</Text>
+            <Text style={{color: customTextColor.primary}}>
+              Didn't get a code?
+            </Text>
             <TouchableOpacity>
               <Text style={styles.signupText}>Resend Code</Text>
             </TouchableOpacity>
@@ -66,9 +69,8 @@ const ForgotPasword_EnterOtp = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
     flex: 1,
-    backgroundColor: '#FCFCFC',
+    backgroundColor: customThemeColor.primary,
   },
 
   formContainer: {
@@ -100,20 +102,20 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
   },
   forgotPasswordText: {
-    color: '#2b8256',
+    color: customTextColor.lightGreen,
   },
   buttonWrapper: {
     width: '100%',
     marginTop: 20,
   },
   button: {
-    backgroundColor: '#9D050A',
+    backgroundColor: customThemeColor.darkRed,
     borderRadius: 15,
   },
   buttonText: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: 'white',
+    color: customTextColor.white,
     textAlign: 'center',
     padding: 10,
   },
@@ -123,7 +125,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   signupText: {
-    color: '#2b8256',
+    color: customTextColor.lightGreen,
     marginLeft: 5,
   },
 });
