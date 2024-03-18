@@ -93,6 +93,9 @@ const Signup = ({navigation}) => {
   // };
 
   //Common input properties
+  const onPressSend = formData => {
+    // Perform actions with the validated form data
+  };
   const commonTextInputProps = {
     style: styles.input,
     mode: 'outlined',
@@ -239,7 +242,9 @@ const Signup = ({navigation}) => {
             />
           </View>
           <View style={styles.buttonWrapper}>
-            <TouchableOpacity onPress={handleSubmit} style={styles.button}>
+            <TouchableOpacity
+              onPress={handleSubmit(onPressSend)}
+              style={styles.button}>
               <Text style={styles.buttonText}>Signup</Text>
             </TouchableOpacity>
           </View>
