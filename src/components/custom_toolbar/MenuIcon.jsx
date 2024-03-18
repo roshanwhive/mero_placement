@@ -3,9 +3,9 @@ import React from 'react'
 import Icon from 'react-native-vector-icons/Entypo';
 
 
-export default function MenuIcon({onpressMenu}) {
+export default function MenuIcon({onPressBtn}) {
     return (
-        <TouchableOpacity  onPress={() => onpressMenu}>
+        <TouchableOpacity  onPress={() => onPressBtn()}>
             <View style={{
                 flex: 1,
                 flexDirection: 'row',

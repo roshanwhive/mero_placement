@@ -2,9 +2,10 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import AuthHeader from '../AuthHeader';
 import MenuIcon from '../custom_toolbar/MenuIcon'
-import BottomSheet_comp from '../BottomSheet_comp';
 
-export default function AppBar({title}) {
+
+const {message} = "this is bottom";
+export default function AppBar({ title }) {
   return (
     <View style={styles.navBar}>
       <View style={styles.leftContainer}>
@@ -13,16 +14,20 @@ export default function AppBar({title}) {
       <Text style={styles.middleContainer}>
         {title}
       </Text>
-      
+
       <View style={styles.rightContainer}>
-        <MenuIcon onpressMenu={bottom}/></View>      
+        <MenuIcon onPressBtn={bottom}/></View>
 
     </View>
   )
 }
 
-const bottom = () =>{
-<BottomSheet_comp></BottomSheet_comp>
+//const Drawer = createDrawerNavigator();
+
+const bottom = () => {
+  // <Drawer.Navigator>
+  //   <Drawer.Screen name='Training' component={Training}></Drawer.Screen>
+  // </Drawer.Navigator>
 }
 
 const styles = StyleSheet.create({
@@ -66,5 +71,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     resizeMode: 'contain',
     backgroundColor: 'white',
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#111',
+    alignItems:'center',
+    justifyContent:'center',
   }
 })

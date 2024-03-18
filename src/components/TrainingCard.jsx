@@ -3,7 +3,7 @@ import React from 'react';
 import {customTextColor, customThemeColor} from '../constants/Color';
 import reactTraining from '../assets/training/react-training.png';
 
-const TrainingCard = () => {
+const TrainingCard = ({navigation}) => {
   return (
     <View style={styles.card}>
       <Image source={reactTraining} style={styles.image} />
@@ -11,7 +11,7 @@ const TrainingCard = () => {
         <Text style={styles.title}>React For Beginner</Text>
         <View style={styles.flexCard}>
           <Text style={styles.price}>NPR. 12000</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Training')}>
             <Text style={styles.button}>Enroll</Text>
           </TouchableOpacity>
         </View>

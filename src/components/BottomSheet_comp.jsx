@@ -1,40 +1,42 @@
-import React, { useCallback, useMemo, useRef } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import { Dimensions, StyleSheet, Text, View } from 'react-native'
+import React from 'react'
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import Animated, { event } from 'react-native-reanimated';
 
+const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const BottomSheet_comp = () => {
-    const bottomSheetRef = useRef(null);
-    const snapPoints = useMemo(() => ['25%', '50%'], []);
+    const gesture = Gesture.Pan().onUpdate((event) => {
 
-    //callbacks
-    const handleSheetChanges = useCallback(index => {
-        console.log('handleSheetChanges', index);
-    }, []);
-
+    console.log(event.translationY);
+    });
     return (
-        <View style={styles.container}>
-            <BottomSheet
-                ref={bottomSheetRef}
-                onChange={handleSheetChanges}
-                index={1}
-                snapPoints={snapPoints}
-                style={styles.contentContainer}>
-                <Text>Awesome 🎉</Text>
-            </BottomSheet>
-        </View>
+        <GestureDetector>
+        <Animated.View style={styles.bottomSheetContainer}>
+           <View style={styles.line} >
+
+           </View>
+        </Animated.View>
+        </GestureDetector>
     )
 }
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 24,
-        backgroundColor: 'grey',
-    },
-    contentContainer: {
-        flex: 1,
-        alignItems: 'center',
-    },
-});
 
-export default BottomSheet_comp;
+const styles = StyleSheet.create({
+    bottomSheetContainer: {
+        height: SCREEN_HEIGHT,
+        width: '100%',
+        backgroundColor: 'white',
+        position: 'absolute',
+        top: SCREEN_HEIGHT / 1.5,
+        borderRadius: 25,
+    },
+    line:{
+        width: 75,
+        height: 4,
+        backgroundColor: 'grey',
+        alignSelf: 'center',
+        marginVertical: 15,
+        borderRadius: 2,
+    }
+
+})
