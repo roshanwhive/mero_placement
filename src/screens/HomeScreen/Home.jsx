@@ -32,7 +32,7 @@ const Home = ({navigation}) => {
           <View style={styles.featuredContainer}>
             <Featured navigation={navigation} />
           </View>
-          <Training />
+          <Training navigation={navigation}  />
           <View style={styles.totalJobs}>
             <TotalJobs navigation={navigation} />
           </View>

@@ -2,7 +2,7 @@ import {View, Text, ScrollView, StyleSheet, Image} from 'react-native';
 import React from 'react';
 import {customTextColor, customThemeColor} from '../constants/Color';
 import TrainingCard from '../components/TrainingCard';
-const Training = () => {
+const Training = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Available Courses</Text>
@@ -11,7 +11,7 @@ const Training = () => {
         indicatorStyle="white"
         showsHorizontalScrollIndicator={false}
         style={styles.scrollView}>
-        <TrainingCard />
+        <TrainingCard navigation={navigation} />
         <TrainingCard />
         <TrainingCard />
         <TrainingCard />
