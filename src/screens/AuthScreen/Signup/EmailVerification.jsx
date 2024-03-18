@@ -44,7 +44,7 @@ const EmailVerification = ({navigation}) => {
               numberOfInputs={6}
               selectTextOnFocus={true}
               inputStyles={{
-                backgroundColor: customThemeColor.otpBg,
+                backgroundColor: customThemeColor.lighterBg,
                 borderRadius: 10,
                 width: 45,
                 fontSize: 20,
