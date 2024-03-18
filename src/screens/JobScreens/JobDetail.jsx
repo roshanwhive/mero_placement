@@ -18,7 +18,7 @@ const JobDetail = ({navigation}) => {
   };
 
   const handleApply = () => {
-    // Handle job application
+    navigation.navigate('CompareJobAndProfile');
   };
 
   const handleShare = () => {

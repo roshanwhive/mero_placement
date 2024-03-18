@@ -28,8 +28,8 @@ const MatchedJobTab = () => {
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    { key: 'first', title: 'Job Applied' },
-    { key: 'second', title: 'Profile Visit' },
+    { key: 'first', title: 'Matched Job' },
+    { key: 'second', title: 'Saved Job' },
   ]);
 
   const renderTabBar = props => {

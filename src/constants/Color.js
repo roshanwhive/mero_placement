@@ -16,5 +16,6 @@ export const customThemeColor = {
   darkGreen: '#11401E',
   darkRed: '#9D050A',
   lightBG: '#f7f7f7',
+  lighterBg: '#e0e0e0',
   lightestGreen: '#edfff7',
 };

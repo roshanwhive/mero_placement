@@ -1,33 +1,29 @@
-import { View, Text, SafeAreaView,ScrollView, StyleSheet} from 'react-native'
+import { View, Text, SafeAreaView, ScrollView, StyleSheet } from 'react-native'
 import React from 'react'
 import { color } from 'react-native-reanimated'
 import Featured from '../../../containers/Featured';
 import TotalJobs from '../../../containers/TotalJobs';
 import JobAppliedList from '../../../containers/JobAppliedList';
 
-export default function JobApplied({navigation}) {
+export default function JobApplied({ navigation }) {
   return (
-    <SafeAreaView style={{flex:1, backgroundColor:'white'}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
       <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.scrollViewContent}>
-        
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollViewContent}>
 
-          {/* Featured */}
-          <View style={styles.featuredContainer}>
-            <JobAppliedList/>
-          </View>
-         
-        </ScrollView>
-      </SafeAreaView>
+        <View style={styles.featuredContainer}>
+          <JobAppliedList />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
- 
+
   scrollViewContent: {
     paddingBottom: 0,
-  
     zIndex: 0,
     backgroundColor: '#FCFCFC',
     borderTopLeftRadius: 25,

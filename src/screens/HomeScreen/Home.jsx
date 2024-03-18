@@ -6,6 +6,7 @@ import Featured from '../../containers/Featured';
 import SearchBar from '../../containers/SearchBar';
 import TotalJobs from '../../containers/TotalJobs';
 import Training from '../../containers/Training';
+import ActivelySeekingForJobCard from '../../containers/ActivelySeekingForJobCard';
 
 const Home = ({navigation}) => {
   return (
@@ -26,12 +27,12 @@ const Home = ({navigation}) => {
           contentContainerStyle={styles.scrollViewContent}>
           {/* Categories */}
           <Categories />
-
+          <ActivelySeekingForJobCard />
           {/* Featured */}
           <View style={styles.featuredContainer}>
             <Featured navigation={navigation} />
           </View>
-          <Training />
+          <Training navigation={navigation}  />
           <View style={styles.totalJobs}>
             <TotalJobs navigation={navigation} />
           </View>

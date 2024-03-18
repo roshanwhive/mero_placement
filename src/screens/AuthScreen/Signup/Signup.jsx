@@ -6,6 +6,9 @@ import {
   View,
   StyleSheet,
 } from 'react-native';
+import * as yup from 'yup';
+import {useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
 import {TextInput} from 'react-native-paper';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useDispatch, useSelector} from 'react-redux';
@@ -15,6 +18,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import {getAllGender} from '../../../features/formData/FormSlice';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import {customTextColor, customThemeColor} from '../../../constants/Color';
+import {registerUser} from '../../../features/auth/AuthSlice';
 
 const Signup = ({navigation}) => {
   const [value, setValue] = useState(null);
@@ -51,26 +55,47 @@ const Signup = ({navigation}) => {
       }));
       setGenders(mappedGenderData);
     }
-  }, [allGenderData]);
+  }, [0]);
+  const schema = yup.object().shape({
+    email: yup.string().required('Email is required').email('Invalid email'),
+    password: yup
+      .string()
+      .required('Password is required')
+      .min(8, 'Password must contain at least 8 characters'),
+  });
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
 
-  const handleSubmit = () => {
-    const formData = {
-      name: name,
-      email: email,
-      contact: contact,
-      gender_id: genderId,
-      password: password,
-      password_confirmation: confirmPassword,
-    };
-    // console.log(formData);
-    navigation.navigate('EmailVerification');
-    showMessage({
-      message: 'Simple message',
-      type: 'info',
-    });
-  };
+  // const handleSubmit = () => {
+  //   const formData = {
+  //     name: name,
+  //     email: email,
+  //     contact: contact,
+  //     gender_id: genderId,
+  //     password: password,
+  //     password_confirmation: confirmPassword,
+  //   };
+  //   dispatch(registerUser(formData));
+  //   navigation.navigate('EmailVerification');
+  //   showMessage({
+  //     message: 'Simple message',
+  //     type: 'info',
+  //   });
+  // };
 
   //Common input properties
+  const onPressSend = formData => {
+    // Perform actions with the validated form data
+  };
   const commonTextInputProps = {
     style: styles.input,
     mode: 'outlined',
@@ -217,7 +242,9 @@ const Signup = ({navigation}) => {
             />
           </View>
           <View style={styles.buttonWrapper}>
-            <TouchableOpacity onPress={handleSubmit} style={styles.button}>
+            <TouchableOpacity
+              onPress={handleSubmit(onPressSend)}
+              style={styles.button}>
               <Text style={styles.buttonText}>Signup</Text>
             </TouchableOpacity>
           </View>

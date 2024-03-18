@@ -16,7 +16,7 @@ const EditProfile = ({navigation}) => {
           name="x"
           size={25}
           color="black"
-          onPress={() => navigation.navigate('Profile')}
+          onPress={() => navigation.goBack()}
         />
       </View>
       <View style={styles.bodyContent}>
