@@ -29,7 +29,7 @@ const ForgotPasword_EnterOtp = ({navigation}) => {
         <AuthLogo imgSrc={verifiedLogo} />
         <View style={styles.inputContainer}>
           <View style={styles.titleTextContainer}>
-            <Text style={styles.titleText}>Password Chnaged Successfully</Text>
+            <Text style={styles.titleText}>Password Changed Successfully</Text>
           </View>
 
           <View style={styles.buttonWrapper}>
