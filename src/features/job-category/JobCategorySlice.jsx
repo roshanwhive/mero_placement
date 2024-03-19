@@ -23,7 +23,7 @@ export const getALlJobs = createAsyncThunk(
 );
 
 export const getJobCategories = createAsyncThunk(
-  'job/categories',
+  'job/get-categories',
   async thunkAPI => {
     try {
       return await jobCategoryService.getJobCategories();
@@ -49,57 +49,55 @@ export const getJobByCategory = createAsyncThunk(
 export const resetJobCategoryState = createAction('Reset_all_Job_Category');
 
 export const authSlice = createSlice({
-  name: 'auth',
+  name: 'job',
   initialState: initialState,
   reducers: {},
   extraReducers: builder => {
     builder
-      // Register User
-      .addCase(registerUser.pending, state => {
+      .addCase(getALlJobs.pending, state => {
         state.isLoading = true;
       })
-      .addCase(registerUser.fulfilled, (state, action) => {
+      .addCase(getALlJobs.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = !action.payload.success;
         state.isSuccess = action.payload.success;
         state.message = action.payload.message;
         state.statusCode = action.payload.status_code;
+        state.allJobs = action.payload.data;
       })
-      .addCase(registerUser.rejected, (state, action) => {
+      .addCase(getALlJobs.rejected, (state, action) => {
         state.isError = true;
         state.isLoading = false;
         state.isSuccess = false;
       })
 
-      //Login User
-      .addCase(loginUser.pending, state => {
+      .addCase(getJobCategories.pending, state => {
         state.isLoading = true;
       })
-      .addCase(loginUser.fulfilled, (state, action) => {
+      .addCase(getJobCategories.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = !action.payload.success;
         state.isSuccess = action.payload.success;
         state.message = action.payload.message;
-        state.isAuthenticated = action.payload.success;
-        state.user = action.payload.data;
+        state.jobCategories = action.payload.data;
       })
-      .addCase(loginUser.rejected, (state, action) => {
+      .addCase(getJobCategories.rejected, (state, action) => {
         state.isError = true;
         state.isLoading = false;
         state.isSuccess = false;
       })
 
-      //Logout User
-      .addCase(logoutUser.pending, state => {
+      .addCase(getJobByCategory.pending, state => {
         state.isLoading = true;
       })
-      .addCase(logoutUser.fulfilled, (state, action) => {
+      .addCase(getJobByCategory.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.isError = false;
-        state.isSuccess = true;
-        state.isAuthenticated = false;
+        state.isError = !action.payload.success;
+        state.isSuccess = action.payload.success;
+        state.message = action.payload.message;
+        state.allJobs = action.payload.data;
       })
-      .addCase(logoutUser.rejected, (state, action) => {
+      .addCase(getJobByCategory.rejected, (state, action) => {
         state.isError = true;
         state.isLoading = false;
         state.isSuccess = false;
