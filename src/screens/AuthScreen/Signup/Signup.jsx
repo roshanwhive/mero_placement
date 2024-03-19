@@ -38,7 +38,7 @@ const Signup = ({navigation}) => {
   const {message, isSuccess, isError, statusCode} = useSelector(
     state => state.auth,
   );
-
+  
   useEffect(() => {
     dispatch(getAllGender());
     setTimeout(() => {

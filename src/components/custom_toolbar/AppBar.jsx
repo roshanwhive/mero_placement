@@ -2,22 +2,25 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import MenuIcon from '../custom_toolbar/MenuIcon'
 import BackButton from './BackButton'
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 
 
-
-export default function AppBar({ title }) {
+export default function AppBar({ title, handleBack }) {
   return (
     <View style={styles.navBar}>
       <View style={styles.leftContainer}>
-        <BackButton/>
+        {/* <BackButton/> */}
+        <TouchableOpacity onPress={handleBack}>
+          <Icon name="arrow-left" size={20} color="black" />
+        </TouchableOpacity>
       </View>
       <Text style={styles.middleContainer}>
         {title}
       </Text>
 
       <View style={styles.rightContainer}>
-        <MenuIcon onPressBtn={bottom}/></View>
+        <MenuIcon onPressBtn={bottom} /></View>
 
     </View>
   )
@@ -76,7 +79,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#111',
-    alignItems:'center',
-    justifyContent:'center',
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 })

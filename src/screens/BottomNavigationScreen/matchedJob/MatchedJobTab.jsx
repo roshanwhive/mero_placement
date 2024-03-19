@@ -8,38 +8,41 @@ import MatchedJob from './MatchedJob';
 
 
 const FirstRoute = () => (
-    // <View style={{ flex: 1, backgroundColor: '#ff4081' }} />
+  // <View style={{ flex: 1, backgroundColor: '#ff4081' }} />
   <MatchedJob></MatchedJob>
-  );
-  
-  const SecondRoute = () => (
-    // <View style={{ flex: 1, backgroundColor: '#673ab7' }} />
-   <SavedJob></SavedJob>
-  );
+);
 
-  const renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute,
-  });
+const SecondRoute = () => (
+  // <View style={{ flex: 1, backgroundColor: '#673ab7' }} />
+  <SavedJob></SavedJob>
+);
+
+const renderScene = SceneMap({
+  first: FirstRoute,
+  second: SecondRoute,
+});
 
 
-const MatchedJobTab = () => {
+const MatchedJobTab = ({navigation}) => {
   const layout = useWindowDimensions();
-
+  const handleBackClick = () =>{
+    navigation.goBack();
+  }
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     { key: 'first', title: 'Matched Job' },
     { key: 'second', title: 'Saved Job' },
   ]);
-
+console.log("hello");
   const renderTabBar = props => {
     return (
       <TabBar
         {...props}
         renderLabel={({ focused, route }) => {
           return (
-            <Text style={{ 
-            color: focused ? 'white': 'gray'}}>
+            <Text style={{
+              color: focused ? 'white' : 'gray'
+            }}>
               {route.title}
             </Text>
           );
@@ -51,12 +54,12 @@ const MatchedJobTab = () => {
   };
 
   return (
-    <><AppBar title={"Matched Job"} /><TabView
-          navigationState={{ index, routes }}
-          renderScene={renderScene}
-          onIndexChange={setIndex}
-          initialLayout={{ width: layout.width }}
-          renderTabBar={renderTabBar} /></>
+    <><AppBar title={"Matched Job"} handleBack={handleBackClick} /><TabView
+      navigationState={{ index, routes }}
+      renderScene={renderScene}
+      onIndexChange={setIndex}
+      initialLayout={{ width: layout.width }}
+      renderTabBar={renderTabBar} /></>
   );
 
 }
@@ -73,7 +76,7 @@ const styles = StyleSheet.create({
     padding: 1.5,
     marginBottom: -2,
   },
-  
+
 });
 
 export default MatchedJobTab
