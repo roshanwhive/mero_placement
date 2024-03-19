@@ -1,15 +1,16 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
-import AuthHeader from '../AuthHeader';
 import MenuIcon from '../custom_toolbar/MenuIcon'
+import BackButton from './BackButton'
 
 
-const {message} = "this is bottom";
+
+
 export default function AppBar({ title }) {
   return (
     <View style={styles.navBar}>
       <View style={styles.leftContainer}>
-        <AuthHeader />
+        <BackButton/>
       </View>
       <Text style={styles.middleContainer}>
         {title}
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginRight: 10,
     color: 'black',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   rightContainer: {
     flex: 1,
