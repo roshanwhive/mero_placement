@@ -1,49 +1,52 @@
 import {createSlice, createAsyncThunk, createAction} from '@reduxjs/toolkit';
-import {authService} from './AuthService';
+import {jobCategoryService} from './JobCategoryService';
 
 const initialState = {
-  user: [],
+  allJobs: [],
+  jobCategories: [],
   isError: false,
-  isAuthenticated: false,
   isSuccess: false,
   isLoading: false,
   statusCode: 0,
   message: '',
-  token: '',
 };
 
-export const registerUser = createAsyncThunk(
-  'auth/register',
-  async (registerData, thunkAPI) => {
+export const getALlJobs = createAsyncThunk(
+  'job/get-all-job',
+  async thunkAPI => {
     try {
-      return await authService.register(registerData);
+      return await jobCategoryService.getAllJobs();
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   },
 );
 
-export const loginUser = createAsyncThunk(
-  'auth/login',
-  async (loginData, thunkAPI) => {
+export const getJobCategories = createAsyncThunk(
+  'job/categories',
+  async thunkAPI => {
     try {
-      return await authService.login(loginData);
+      return await jobCategoryService.getJobCategories();
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   },
 );
 
-export const logoutUser = createAsyncThunk('auth/logout', async thunkAPI => {
-  try {
-    return await authService.logout();
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error);
-  }
-});
+// Get job
+export const getJobByCategory = createAsyncThunk(
+  'job/job-by-category',
+  async (id, thunkAPI) => {
+    try {
+      return await jobCategoryService.getJobByCategory(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
 
 //Reset State
-export const resetState = createAction('Reset_all');
+export const resetJobCategoryState = createAction('Reset_all_Job_Category');
 
 export const authSlice = createSlice({
   name: 'auth',
