@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -8,10 +8,19 @@ import {
   StyleSheet,
 } from 'react-native';
 import {categories} from '../constants';
+import {useDispatch, useSelector} from 'react-redux';
+import {getJobCategories} from '../features/job-category/JobSlice';
 
 const Categories = () => {
   const [activeCategory, setActiveCategory] = useState(null);
 
+  const dispatch = useDispatch();
+
+  const {jobCategories} = useSelector(state => state.jobCategory);
+
+  useEffect(() => {
+    dispatch(getJobCategories());
+  }, [dispatch]);
   return (
     <View style={styles.container}>
       <Text style={styles.titleText}>Jobs By Category</Text>
