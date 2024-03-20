@@ -4,6 +4,7 @@ import {jobService} from './JobService';
 const initialState = {
   allJobs: [],
   jobCategories: [],
+  mainCategories: [],
   companyTypes: [],
   employmentTypes: [],
   jobTypes: [],
@@ -31,6 +32,16 @@ export const getJobCategories = createAsyncThunk(
   async thunkAPI => {
     try {
       return await jobService.getJobCategories();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+export const getMainCategories = createAsyncThunk(
+  'job/get-main-categories',
+  async thunkAPI => {
+    try {
+      return await jobService.getMainCategories();
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -152,6 +163,22 @@ export const jobCategorySlice = createSlice({
         state.jobCategories = action.payload.data;
       })
       .addCase(getJobCategories.rejected, (state, action) => {
+        state.isError = true;
+        state.isLoading = false;
+        state.isSuccess = false;
+      })
+
+      .addCase(getMainCategories.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(getMainCategories.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = !action.payload.success;
+        state.isSuccess = action.payload.success;
+        state.message = action.payload.message;
+        state.mainCategories = action.payload.data;
+      })
+      .addCase(getMainCategories.rejected, (state, action) => {
         state.isError = true;
         state.isLoading = false;
         state.isSuccess = false;

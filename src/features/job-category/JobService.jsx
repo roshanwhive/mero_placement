@@ -26,6 +26,17 @@ const getJobCategories = async () => {
   }
 };
 
+//Get main Categories
+const getMainCategories = async () => {
+  try {
+    const response = await axios.get(`${base_url}home/main-categories`);
+    return response.data;
+  } catch (error) {
+    console.error('Error during fetching main categories:', error);
+    throw error;
+  }
+};
+
 //   get job by category
 const getJobByCategory = async id => {
   try {
@@ -111,6 +122,7 @@ const getJobByJobTypes = async id => {
 
 export const jobService = {
   getJobCategories,
+  getMainCategories,
   getJobByCategory,
   getAllJobs,
   getCompanyTypes,
