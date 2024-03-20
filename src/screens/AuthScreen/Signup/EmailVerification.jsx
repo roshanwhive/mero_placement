@@ -12,6 +12,7 @@ import AuthHeader from '../../../components/AuthHeader';
 import AuthLogo from '../../../components/AuthLogo';
 import AuthTitle from '../../../components/AuthTitle';
 import {customTextColor, customThemeColor} from '../../../constants/Color';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const EmailVerification = ({navigation}) => {
   const loginLogo = require('../../../assets/password-change.png');
@@ -27,6 +28,7 @@ const EmailVerification = ({navigation}) => {
       {/* Title and form */}
       <View style={styles.formContainer}>
         <AuthHeader />
+        <Icon name="arrow-alt-circle-left" size={25} color="#000000" />
         <AuthLogo imgSrc={loginLogo} />
         <View style={styles.inputContainer}>
           <View
@@ -34,7 +36,7 @@ const EmailVerification = ({navigation}) => {
               display: 'flex',
               alignItems: 'center',
             }}>
-            <AuthTitle title="Enter OTP" />
+            <AuthTitle title="Email Verification" />
 
             <Text style={styles.text}>OTP has been sent to your email.</Text>
           </View>
@@ -56,7 +58,7 @@ const EmailVerification = ({navigation}) => {
           <View style={styles.buttonWrapper}>
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('ForgotPassword_ChoosePassword')
+                navigation.navigate('ForgotPaasword_AcountRecover')
               }
               style={styles.button}>
               <Text style={styles.buttonText}>Verify</Text>

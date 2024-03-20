@@ -7,7 +7,7 @@ const initialState = {
   isAuthenticated: false,
   isSuccess: false,
   isLoading: false,
-  statusCode: '',
+  statusCode: 0,
   message: '',
   token: '',
 };
@@ -57,8 +57,10 @@ export const authSlice = createSlice({
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.isError = false;
-        state.isSuccess = true;
+        state.isError = !action.payload.success;
+        state.isSuccess = action.payload.success;
+        state.message = action.payload.message;
+        state.statusCode = action.payload.status_code;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isError = true;
@@ -72,8 +74,8 @@ export const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.isError = false;
-        state.isSuccess = true;
+        state.isError = !action.payload.success;
+        state.isSuccess = action.payload.success;
         state.message = action.payload.message;
         state.isAuthenticated = action.payload.success;
         state.user = action.payload.data;
@@ -103,8 +105,9 @@ export const authSlice = createSlice({
       //Reset State
       .addCase(resetState, state => {
         state.message = '';
-        state.isAuthenticated = false;
         state.isSuccess = false;
+        state.statusCode = 0;
+        state.isError = false;
       });
   },
 });
