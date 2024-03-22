@@ -6,6 +6,7 @@ import {
 } from '@reduxjs/toolkit';
 import authReducer from '../features/auth/AuthSlice';
 import formReducer from '../features/formData/FormSlice';
+import jobCategoryReducer from '../features/job-category/JobSlice';
 import {
   persistStore,
   persistReducer,
@@ -25,6 +26,7 @@ const authPersistConfig = {
 const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
   formOptions: formReducer,
+  jobCategory: jobCategoryReducer,
 });
 
 export const store = configureStore({
