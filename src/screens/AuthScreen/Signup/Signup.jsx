@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   View,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
 import * as yup from 'yup';
 import { Controller, useForm } from 'react-hook-form';
@@ -142,6 +143,8 @@ const Signup = ({ navigation }) => {
       {/* Title and form */}
       <View style={styles.formContainer}>
         <AuthHeader />
+        <View style={{ flex: 1 }}>
+          <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.inputContainer}>
           <AuthTitle title="Create an Account" />
           <View style={styles.inputWrapper}>
@@ -208,6 +211,7 @@ const Signup = ({ navigation }) => {
                 <TextInput
                   {...commonTextInputProps}
                   label="Contact"
+                  keyboardType="numeric"
                   value={value}
                   onChangeText={onChange}
                   left={
@@ -360,6 +364,8 @@ const Signup = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </View>
+        </ScrollView>
+        </View>
       </View>
     </View>
   );
@@ -369,6 +375,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: customThemeColor.primary,
+  },
+  scrollViewContent: {
+    paddingBottom: 0,
+    zIndex: 0,
+    borderTopLeftRadius: 25,
+    position: 'relative',
+    borderTopRightRadius: 25,
+    flexGrow: 1
   },
   formContainer: {
     flex: 1,
