@@ -79,7 +79,6 @@ const Signup = ({ navigation }) => {
     setTimeout(() => {
       dispatch(resetState());
     }, 15000);
-    console.log(isError, isSuccess, statusCode, message);
   }, [isError, isSuccess, statusCode, message]);
 
   // useEffect(() => {
@@ -131,6 +130,7 @@ const Signup = ({ navigation }) => {
     outlineColor: customTextColor.darkGreen,
     activeOutlineColor: customTextColor.darkGreen,
     selectionColor: customTextColor.darkGreen,
+    placeholderTextColor: customTextColor.darkRed,
   };
   return (
     <View style={styles.container}>
@@ -244,6 +244,7 @@ const Signup = ({ navigation }) => {
                   valueField="value"
                   searchPlaceholder="Search..."
                   value={value}
+                  itemTextStyle={{color: customTextColor.darkGreen}}
                   style={[
                     {
                       borderWidth: 1,
@@ -358,8 +359,7 @@ const Signup = ({ navigation }) => {
             <Text style={{ color: customTextColor.primary }}>
               Already have an account?
             </Text>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('EmailVerification')}>
+            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
               <Text style={styles.signupText}>Login</Text>
             </TouchableOpacity>
           </View>
@@ -400,6 +400,7 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: 'transparent',
+    color: customTextColor.darkGreen,
   },
   errorText: {
     color: 'red',

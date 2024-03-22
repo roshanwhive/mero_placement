@@ -57,9 +57,7 @@ const EmailVerification = ({navigation}) => {
 
           <View style={styles.buttonWrapper}>
             <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('ForgotPaasword_AcountRecover')
-              }
+              onPress={() => navigation.navigate('EmailVerified')}
               style={styles.button}>
               <Text style={styles.buttonText}>Verify</Text>
             </TouchableOpacity>

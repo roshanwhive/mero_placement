@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   StatusBar,
@@ -9,14 +9,14 @@ import {
   ActivityIndicator,
   ScrollView,
 } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import {TextInput} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useDispatch, useSelector } from 'react-redux';
-import { loginUser, resetState } from '../../../features/auth/AuthSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {loginUser, resetState} from '../../../features/auth/AuthSlice';
 import AuthHeader from '../../../components/AuthHeader';
 import AuthLogo from '../../../components/AuthLogo';
 import AuthTitle from '../../../components/AuthTitle';
-import { customTextColor, customThemeColor } from '../../../constants/Color';
+import {customTextColor, customThemeColor} from '../../../constants/Color';
 import * as yup from 'yup';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -26,7 +26,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
-const Login = ({ navigation }) => {
+const Login = ({navigation}) => {
   const [value, setValue] = useState(null);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -39,7 +39,7 @@ const Login = ({ navigation }) => {
   };
   const dispatch = useDispatch();
 
-  const { message, isSuccess, isError, statusCode } = useSelector(
+  const {message, isSuccess, isError, statusCode} = useSelector(
     state => state.auth,
   );
 
@@ -69,7 +69,6 @@ const Login = ({ navigation }) => {
     console.log("api" + isError, isSuccess, statusCode, message);
   }, [isError, isSuccess, statusCode, message]);
 
-
   const schema = yup.object().shape({
     email: yup.string().required('Email is Required').email('Invalid Email'),
     password: yup
@@ -82,7 +81,7 @@ const Login = ({ navigation }) => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: {errors},
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -93,9 +92,8 @@ const Login = ({ navigation }) => {
 
   const onPressSend = formData => {
     dispatch(loginUser(formData));
+    dispatch(loginUser(formData));
   };
-
-
 
   // const pressbtn = () => {
   //   showMessage({
@@ -296,6 +294,5 @@ const styles = StyleSheet.create({
     padding: 0,
   },
 });
-
 
 export default Login;

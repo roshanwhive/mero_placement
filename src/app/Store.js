@@ -26,7 +26,7 @@ const authPersistConfig = {
 const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
   formOptions: formReducer,
-  jobCategory: jobCategoryReducer,
+  job: jobCategoryReducer,
 });
 
 export const store = configureStore({

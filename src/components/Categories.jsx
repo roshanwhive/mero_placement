@@ -9,17 +9,17 @@ import {
 } from 'react-native';
 import {categories} from '../constants';
 import {useDispatch, useSelector} from 'react-redux';
-import {getJobCategories} from '../features/job-category/JobSlice';
+import {getMainCategories} from '../features/job-category/JobSlice';
 
 const Categories = () => {
   const [activeCategory, setActiveCategory] = useState(null);
 
   const dispatch = useDispatch();
 
-  const {jobCategories} = useSelector(state => state.jobCategory);
+  const {mainCategories} = useSelector(state => state.job);
 
   useEffect(() => {
-    dispatch(getJobCategories());
+    dispatch(getMainCategories());
   }, [dispatch]);
   return (
     <View style={styles.container}>
