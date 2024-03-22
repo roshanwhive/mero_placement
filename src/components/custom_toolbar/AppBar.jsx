@@ -1,22 +1,26 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
-import AuthHeader from '../AuthHeader';
 import MenuIcon from '../custom_toolbar/MenuIcon'
+import BackButton from './BackButton'
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 
-const {message} = "this is bottom";
-export default function AppBar({ title }) {
+
+export default function AppBar({ title, handleBack }) {
   return (
     <View style={styles.navBar}>
       <View style={styles.leftContainer}>
-        <AuthHeader />
+        {/* <BackButton/> */}
+        <TouchableOpacity onPress={handleBack}>
+          <Icon name="arrow-left" size={20} color="black" />
+        </TouchableOpacity>
       </View>
       <Text style={styles.middleContainer}>
         {title}
       </Text>
 
       <View style={styles.rightContainer}>
-        <MenuIcon onPressBtn={bottom}/></View>
+        <MenuIcon onPressBtn={bottom} /></View>
 
     </View>
   )
@@ -56,7 +60,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginRight: 10,
     color: 'black',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   rightContainer: {
     flex: 1,
@@ -75,7 +79,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#111',
-    alignItems:'center',
-    justifyContent:'center',
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 })

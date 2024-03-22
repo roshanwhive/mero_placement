@@ -10,7 +10,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
 
-function MyTabs() {
+function MyTabs({navigation}) {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -52,7 +52,7 @@ function MyTabs() {
         },
       })}>
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Matched Job" component={MatchedJob} />
+      <Tab.Screen name="Matched Job" component={MatchedJob} navigation={navigation}/>
       <Tab.Screen name="Search" component={Search} />
       <Tab.Screen name="My Status" component={MyStatus} />
       <Tab.Screen name="Profile" component={Profile} />
@@ -60,8 +60,8 @@ function MyTabs() {
   );
 }
 
-export default function BottomTab() {
-  return <MyTabs />;
+export default function BottomTab({navigation}) {
+  return <MyTabs navigation={navigation} />;
 }
 
 const styles = StyleSheet.create({

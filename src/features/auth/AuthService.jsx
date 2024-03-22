@@ -20,7 +20,7 @@ const register = async registerData => {
 const login = async loginData => {
   try {
     const response = await axios.post(`${base_url}login`, loginData);
-    await AsyncStorage.setItem('jwtToken', response.data.token);
+    //await AsyncStorage.setItem('jwtToken', response.data.token);
     return response.data;
   } catch (error) {
     console.error('Error during login:', error);

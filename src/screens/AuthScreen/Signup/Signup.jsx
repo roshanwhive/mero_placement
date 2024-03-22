@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StatusBar,
   Text,
@@ -7,20 +7,20 @@ import {
   StyleSheet,
 } from 'react-native';
 import * as yup from 'yup';
-import {Controller, useForm} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup';
-import {TextInput} from 'react-native-paper';
-import {Dropdown} from 'react-native-element-dropdown';
-import {useDispatch, useSelector} from 'react-redux';
+import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { TextInput } from 'react-native-paper';
+import { Dropdown } from 'react-native-element-dropdown';
+import { useDispatch, useSelector } from 'react-redux';
 import AuthHeader from '../../../components/AuthHeader';
 import AuthTitle from '../../../components/AuthTitle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {getAllGender} from '../../../features/formData/FormSlice';
-import {showMessage, hideMessage} from 'react-native-flash-message';
-import {customTextColor, customThemeColor} from '../../../constants/Color';
-import {registerUser, resetState} from '../../../features/auth/AuthSlice';
+import { getAllGender } from '../../../features/formData/FormSlice';
+import { showMessage, hideMessage } from 'react-native-flash-message';
+import { customTextColor, customThemeColor } from '../../../constants/Color';
+import { registerUser, resetState } from '../../../features/auth/AuthSlice';
 
-const Signup = ({navigation}) => {
+const Signup = ({ navigation }) => {
   const [value, setValue] = useState(null);
   const [genders, setGenders] = useState([]);
   const [genderID, setGenderID] = useState('');
@@ -34,8 +34,8 @@ const Signup = ({navigation}) => {
     setConfirmPasswordVisible(!confirmPasswordVisible);
   };
   const dispatch = useDispatch();
-  const {allGenderData} = useSelector(state => state.formOptions);
-  const {message, isSuccess, isError, statusCode} = useSelector(
+  const { allGenderData } = useSelector(state => state.formOptions);
+  const { message, isSuccess, isError, statusCode } = useSelector(
     state => state.auth,
   );
 
@@ -105,7 +105,7 @@ const Signup = ({navigation}) => {
   const {
     control,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -150,7 +150,7 @@ const Signup = ({navigation}) => {
               rules={{
                 required: true,
               }}
-              render={({field: {onChange, value}}) => (
+              render={({ field: { onChange, value } }) => (
                 <TextInput
                   {...commonTextInputProps}
                   label="Name"
@@ -177,7 +177,7 @@ const Signup = ({navigation}) => {
               rules={{
                 required: true,
               }}
-              render={({field: {onChange, value}}) => (
+              render={({ field: { onChange, value } }) => (
                 <TextInput
                   {...commonTextInputProps}
                   label="Emaill"
@@ -204,7 +204,7 @@ const Signup = ({navigation}) => {
               rules={{
                 required: true,
               }}
-              render={({field: {onChange, value}}) => (
+              render={({ field: { onChange, value } }) => (
                 <TextInput
                   {...commonTextInputProps}
                   label="Contact"
@@ -231,7 +231,7 @@ const Signup = ({navigation}) => {
               rules={{
                 required: false,
               }}
-              render={({field: {onChange, value}}) => (
+              render={({ field: { onChange, value } }) => (
                 <Dropdown
                   data={genders}
                   placeholder="Select Gender"
@@ -259,7 +259,7 @@ const Signup = ({navigation}) => {
                       color={customTextColor.darkGreen}
                       name="user-edit"
                       size={20}
-                      style={{marginRight: 13}}
+                      style={{ marginRight: 13 }}
                     />
                   )}
                 />
@@ -276,7 +276,7 @@ const Signup = ({navigation}) => {
               rules={{
                 required: true,
               }}
-              render={({field: {onChange, value}}) => (
+              render={({ field: { onChange, value } }) => (
                 <TextInput
                   {...commonTextInputProps}
                   label="Password"
@@ -312,7 +312,7 @@ const Signup = ({navigation}) => {
               rules={{
                 required: true,
               }}
-              render={({field: {onChange, value}}) => (
+              render={({ field: { onChange, value } }) => (
                 <TextInput
                   {...commonTextInputProps}
                   label="Confirm Password"
@@ -352,7 +352,7 @@ const Signup = ({navigation}) => {
             </TouchableOpacity>
           </View>
           <View style={styles.signupTextContainer}>
-            <Text style={{color: customTextColor.primary}}>
+            <Text style={{ color: customTextColor.primary }}>
               Already have an account?
             </Text>
             <TouchableOpacity onPress={() => navigation.navigate('Login')}>
