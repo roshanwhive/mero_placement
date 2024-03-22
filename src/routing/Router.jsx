@@ -17,6 +17,7 @@ import JobDetail from '../screens/JobScreens/JobDetail';
 import CompanyProfile from '../screens/ProfileScreen/CompanyProfile';
 import Training from '../screens/Training/Training';
 import CompareJobAndProfile from '../screens/JobScreens/CompareJobAndProfile';
+import EmailVerified from '../screens/AuthScreen/Signup/EmailVerified';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +34,7 @@ const Router = () => {
       {/* Auth Screen */}
       <Stack.Screen name="Signup" component={Signup} />
       <Stack.Screen name="EmailVerification" component={EmailVerification} />
+      <Stack.Screen name="EmailVerified" component={EmailVerified} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen
         name="ForgotPasswordEnterEmail"

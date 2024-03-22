@@ -12,7 +12,7 @@ import AuthHeader from '../../../components/AuthHeader';
 import AuthLogo from '../../../components/AuthLogo';
 import {customTextColor, customThemeColor} from '../../../constants/Color';
 
-const ForgotPasword_AccountRecover = ({navigation}) => {
+const EmailVerified = ({navigation}) => {
   const verifiedLogo = require('../../../assets/verified-logo1.png');
 
   return (
@@ -29,7 +29,7 @@ const ForgotPasword_AccountRecover = ({navigation}) => {
         <AuthLogo imgSrc={verifiedLogo} />
         <View style={styles.inputContainer}>
           <View style={styles.titleTextContainer}>
-            <Text style={styles.titleText}>Password Changed Successfully</Text>
+            <Text style={styles.titleText}>Email Verified Successfully</Text>
           </View>
 
           <View style={styles.buttonWrapper}>
@@ -118,4 +118,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ForgotPasword_AccountRecover;
+export default EmailVerified;

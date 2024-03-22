@@ -1,32 +1,76 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
+import {customTextColor} from '../constants/Color';
+import {format, formatDistance, differenceInMilliseconds} from 'date-fns';
 
-const JobCard = ({navigation}) => {
+const JobCard = ({items, navigation}) => {
   const companyLogo = require('../assets/companyLogo.png');
   const jobTitle = 'Frontend Developer';
   const location = 'Raatopul, Kathmandu';
   const date = '2 days ago';
 
+  const [formattedDate, setFormattedDate] = useState('');
+  const [formattedDistance, setFormattedDistance] = useState('');
+  useEffect(() => {
+    if (items) {
+      const date = new Date(items.created_date);
+      const formattedDate = format(date, 'd MMMM yyyy');
+      const distance = formatDistance(new Date(), date, {addSuffix: true});
+      let formattedDistance = distance.replace('about ', '').replace('in ', '');
+
+      if (!formattedDistance.endsWith('ago')) {
+        formattedDistance += ' ago';
+      }
+      setFormattedDate(formattedDate);
+      setFormattedDistance(formattedDistance);
+    }
+  }, [items]);
+
   const onPressApply = () => {
     navigation.navigate('JobDetail');
   };
+
   return (
     <View style={styles.cardContainer}>
       <View style={styles.logoContainer}>
         <TouchableOpacity onPress={() => navigation.navigate('CompanyProfile')}>
-          <Image source={companyLogo} style={styles.logo} />
+          {items && (
+            <Image
+              source={{
+                uri: items.get_company.logo
+                  ? items.get_company.logo
+                  : companyLogo,
+              }}
+              alt={items.get_company.logo}
+              style={styles.logo}
+            />
+          )}
         </TouchableOpacity>
       </View>
+
       <View style={styles.jobDetailsContainer}>
-        <Text style={styles.jobTitle}>{jobTitle}</Text>
+        <Text style={styles.jobTitle}>{items ? items.position_name : ''}</Text>
         <View style={styles.contentContainer}>
-          <Icon name="map-pin" size={14} color="#706f6f" style={styles.icon} />
-          <Text style={styles.location}>{location}</Text>
+          <Icon
+            name="map-pin"
+            size={14}
+            color={customTextColor.secondary}
+            style={styles.icon}
+          />
+          <Text style={styles.location}>
+            {/* {items ? items.address : 'Kathmandu'} */}
+            {items ? items.get_company.logo : 'hello image'}
+          </Text>
         </View>
         <View style={styles.contentContainer}>
-          <Icon name="clock" size={14} color="#706f6f" style={styles.icon} />
-          <Text style={styles.location}>{date}</Text>
+          <Icon
+            name="clock"
+            size={14}
+            color={customTextColor.secondary}
+            style={styles.icon}
+          />
+          <Text style={styles.location}>{formattedDistance}</Text>
         </View>
 
         <View style={styles.buttonContainer}>
