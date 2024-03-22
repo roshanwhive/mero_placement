@@ -24,6 +24,8 @@ const JobCard = ({items, navigation}) => {
       }
       setFormattedDate(formattedDate);
       setFormattedDistance(formattedDistance);
+      console.log('items:', items);
+      console.log('items.get_company.logo:', items.get_company.logo);
     }
   }, [items]);
 
@@ -35,16 +37,15 @@ const JobCard = ({items, navigation}) => {
     <View style={styles.cardContainer}>
       <View style={styles.logoContainer}>
         <TouchableOpacity onPress={() => navigation.navigate('CompanyProfile')}>
-          {items && (
+          {items && items.get_company && items.get_company.logo == null ? (
             <Image
               source={{
-                uri: items.get_company.logo
-                  ? items.get_company.logo
-                  : companyLogo,
+                uri: 'https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
               }}
-              alt={items.get_company.logo}
               style={styles.logo}
             />
+          ) : (
+            <Image source={companyLogo} style={styles.logo} />
           )}
         </TouchableOpacity>
       </View>
@@ -60,7 +61,7 @@ const JobCard = ({items, navigation}) => {
           />
           <Text style={styles.location}>
             {/* {items ? items.address : 'Kathmandu'} */}
-            {items ? items.get_company.logo : 'hello image'}
+            Chabhil Kathmandu
           </Text>
         </View>
         <View style={styles.contentContainer}>
@@ -74,9 +75,7 @@ const JobCard = ({items, navigation}) => {
         </View>
 
         <View style={styles.buttonContainer}>
-          <View>
-            <Text></Text>
-          </View>
+          <View></View>
           <View>
             <TouchableOpacity onPress={onPressApply} style={styles.applyButton}>
               <Text style={styles.applyButtonText}>Apply</Text>
@@ -102,15 +101,17 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 30,
     elevation: 10,
+    height: 100,
   },
   logoContainer: {
     marginRight: 16,
   },
   logo: {
-    width: 80,
-    height: 80,
+    width: 60,
+    height: 60,
     resizeMode: 'contain',
-    borderRadius: 5,
+    borderRadius: 10,
+    objectFit: 'cover',
   },
   jobDetailsContainer: {
     flex: 1,
@@ -137,21 +138,21 @@ const styles = StyleSheet.create({
   },
 
   buttonContainer: {
-    top: '-3%',
-    width: '100%',
+    top: '-20%',
+    width: 'auto',
     display: 'flex',
     justifyContent: 'space-between',
     flexDirection: 'row',
   },
   applyButton: {
     backgroundColor: '#9D050A',
-    width: 100,
+    width: 'auto',
     textAlign: 'right',
     alignItems: 'right',
     display: 'flex',
     borderRadius: 4,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
+    paddingVertical: 7,
+    paddingHorizontal: 15,
   },
   applyButtonText: {
     color: '#fff',

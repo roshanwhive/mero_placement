@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   StatusBar,
@@ -7,26 +7,23 @@ import {
   View,
   StyleSheet,
 } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import {TextInput} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useDispatch, useSelector } from 'react-redux';
-import { loginUser, resetState } from '../../../features/auth/AuthSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {loginUser, resetState} from '../../../features/auth/AuthSlice';
 import AuthHeader from '../../../components/AuthHeader';
 import AuthLogo from '../../../components/AuthLogo';
 import AuthTitle from '../../../components/AuthTitle';
-import { customTextColor, customThemeColor } from '../../../constants/Color';
+import {customTextColor, customThemeColor} from '../../../constants/Color';
 import * as yup from 'yup';
-import { Controller, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { showMessage } from 'react-native-flash-message';
+import {Controller, useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
+import {showMessage} from 'react-native-flash-message';
 
-
-
-
-const Login = ({ navigation }) => {
+const Login = ({navigation}) => {
   const [value, setValue] = useState(null);
   const [passwordVisible, setPasswordVisible] = useState(false);
- // const [password, setPassword] = useState('');
+  // const [password, setPassword] = useState('');
   const loginLogo = require('../../../assets/loginLogo.png');
 
   const togglePasswordVisibility = () => {
@@ -34,14 +31,12 @@ const Login = ({ navigation }) => {
   };
   const dispatch = useDispatch();
 
-  const { message, isSuccess, isError, statusCode } = useSelector(
+  const {message, isSuccess, isError, statusCode} = useSelector(
     state => state.auth,
   );
 
- // const { message } = useSelector(state => state.auth);
-  useEffect(() => {
-  }, [message]);
-
+  // const { message } = useSelector(state => state.auth);
+  useEffect(() => {}, [message]);
 
   useEffect(() => {
     if (isError && statusCode !== 200 && statusCode !== 0) {
@@ -59,9 +54,8 @@ const Login = ({ navigation }) => {
     setTimeout(() => {
       dispatch(resetState());
     }, 15000);
-    console.log( "api"+ isError, isSuccess, statusCode, message);
+    console.log('api' + isError, isSuccess, statusCode, message);
   }, [isError, isSuccess, statusCode, message]);
-
 
   const schema = yup.object().shape({
     email: yup.string().required('Email is Required').email('Invalid Email'),
@@ -69,13 +63,12 @@ const Login = ({ navigation }) => {
       .string()
       .required('Password is required')
       .min(8, 'Password must contain at least 8 characters'),
-      
   });
 
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: {errors},
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -85,10 +78,8 @@ const Login = ({ navigation }) => {
   });
 
   const onPressSend = formData => {
-     dispatch(loginUser(formData));
+    dispatch(loginUser(formData));
   };
-
-
 
   // const pressbtn = () => {
   //   showMessage({
@@ -123,9 +114,9 @@ const Login = ({ navigation }) => {
             <Controller
               control={control}
               rules={{
-                required: true
+                required: true,
               }}
-              render={({ field: { onChange, value } }) => (
+              render={({field: {onChange, value}}) => (
                 <TextInput
                   {...commonTextInputProps}
                   label="Emaill"
@@ -139,16 +130,12 @@ const Login = ({ navigation }) => {
                     />
                   }
                 />
-              )
-              }
+              )}
               name="email"
             />
-            {
-              errors.email && (
-                <Text style={styles.errorText}>{errors.email.message}</Text>
-              )
-            }
-
+            {errors.email && (
+              <Text style={styles.errorText}>{errors.email.message}</Text>
+            )}
           </View>
           <View style={styles.inputWrapper}>
             <Controller
@@ -156,7 +143,7 @@ const Login = ({ navigation }) => {
               rules={{
                 required: true,
               }}
-              render={({ field: { onChange, value } }) => (
+              render={({field: {onChange, value}}) => (
                 <TextInput
                   {...commonTextInputProps}
                   label="Password"
@@ -181,7 +168,7 @@ const Login = ({ navigation }) => {
                 />
               )}
               name="password"
-           />
+            />
             {errors.password && (
               <Text style={styles.errorText}>{errors.password.message}</Text>
             )}
@@ -192,12 +179,14 @@ const Login = ({ navigation }) => {
             <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
           </TouchableOpacity>
           <View style={styles.buttonWrapper}>
-            <TouchableOpacity onPress={handleSubmit(onPressSend)} style={styles.button}>
+            <TouchableOpacity
+              onPress={handleSubmit(onPressSend)}
+              style={styles.button}>
               <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.signupTextContainer}>
-            <Text style={{ color: customTextColor.primary }}>
+            <Text style={{color: customTextColor.primary}}>
               Don't have an account?
             </Text>
             <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
@@ -269,6 +258,5 @@ const styles = StyleSheet.create({
     padding: 0,
   },
 });
-
 
 export default Login;
