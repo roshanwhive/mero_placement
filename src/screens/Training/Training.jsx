@@ -2,10 +2,8 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'rea
 import React from 'react';
 import AppBar from '../../components/custom_toolbar/AppBar';
 import { customTextColor, customThemeColor } from '../../constants/Color';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import RoundButtonComp from '../../components/RoundBtn';
-
-
+import { Divider } from 'react-native-paper';
 
 
 const Training = () => {
@@ -46,7 +44,7 @@ const Training = () => {
                 <Text style={styles.jobTitle}>React Native</Text>
                 <Text style={styles.jobTitle}>Redux Training</Text>
                 <View style={styles.flexCard}>
-                  <Text style={[styles.label, styles.link]}>react native</Text>
+                  <Text style={[styles.label, styles.link]}>React native</Text>
                   <Text style={[styles.label, styles.link]}>Redux</Text>
                 </View>
               </View>
@@ -67,9 +65,38 @@ const Training = () => {
                 euismod mattis velit, ac fringilla nunc tincidunt in. Mauris in
                 augue vel sapien hendrerit tincidunt.
               </Text>
+            </View>
 
+            <View style={styles.card2}>
               <Text style={styles.sectionTitle}>Course Syllabus</Text>
               <View style={{ marginBottom: 4, paddingLeft: 5 }}>
+                <Text style={styles.listText}>
+                  {`\u25CF`} Introduction{' '}
+                </Text>
+                <Text style={styles.listText}>
+                  {`\u25CF`} Environment Setup{' '}
+                </Text>
+                <Text style={styles.listText}>
+                  {`\u25CF`} Overview of react native{' '}
+                </Text>
+                <Text style={styles.listText}>
+                  {`\u25CF`} React components{' '}
+                </Text>
+                <Text style={styles.listText}>
+                  {`\u25CF`} State Management{' '}
+                </Text>
+                <Text style={styles.listText}>
+                  {`\u25CF`} Async Programming{' '}
+                </Text>
+                <Text style={styles.listText}>
+                  {`\u25CF`} Networking{' '}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.card}>
+              <Text style={styles.sectionTitle}>Course Benifit</Text>
+              <Text style={styles.sectionText}>This course offers a multitude of benefits to anyone aspiring to excel in apps development career. </Text>
+              <View style={{ paddingLeft: 5 }}>
                 <Text style={styles.listText}>
                   {`\u25CF`} Introduction{' '}
                 </Text>
@@ -96,16 +123,21 @@ const Training = () => {
           </View>
         </ScrollView>
 
+        <Divider />
+
         {/* Job Actions */}
         <View style={{
-          flexDirection: 'row', justifyContent: 'center', marginTop: 20
+          flexDirection: 'row',
+          justifyContent: 'center',
+          marginTop: 5,
+          bottom: 0,
+          left: 0
         }}>
-
-          <RoundButtonComp label="Send Enquiry" widthBtn={150} marginleftBtn={10} />
+          <RoundButtonComp label="Send Enquiry" widthBtn={150} />
           <RoundButtonComp label={"Get Admission"}
             border={true}
             widthBtn={150}
-            marginleftBtn={10} />
+          />
         </View>
       </View></>
   );
@@ -121,19 +153,30 @@ const styles = StyleSheet.create({
   },
   jobDetails: {
     flex: 1,
-    marginTop: 5,
     paddingHorizontal: 15,
   },
   cardHeader: {
-    backgroundColor: customThemeColor.white,
-    borderRadius: 15,
-    padding: 5,
-    marginBottom: 20,
+    shadowColor: '#00000021',
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.37,
+    shadowRadius: 7.49,
+    marginVertical: 10,
+    backgroundColor: 'white',
+    flexBasis: '46%',
+    padding: 10,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    borderLeftWidth: 6,
+    borderColor: '#4B0082',
+    borderRadius: 15
   },
   companyInfo: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 20,
+    marginBottom: 5,
     padding: 5,
   },
   companyName: {
@@ -165,9 +208,9 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   companyLogo: {
-    width: 80,
-    height: 80,
-    borderRadius: 10,
+    width: 400,
+    height: 40,
+    borderRadius: 400/2,
     resizeMode: 'contain',
     padding: 5
   },
@@ -198,7 +241,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 20,
-    marginBottom: 20,
+    marginBottom: 10,
+    borderLeftWidth: 6,
+    borderColor: '#FF4500',
+    borderRadius: 15
+  },
+  card2: {
+    backgroundColor: customThemeColor.white,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 20,
+    marginBottom: 10,
+    borderLeftWidth: 6,
+    borderColor: '#4B0082',
+    borderRadius: 15
   },
   additionalSections: {},
   sectionTitle: {
