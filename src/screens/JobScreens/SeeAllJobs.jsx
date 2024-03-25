@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -8,8 +8,21 @@ import {
 } from 'react-native';
 import JobCard from '../../components/JobCard';
 import Icon from 'react-native-vector-icons/Feather';
+import {useDispatch, useSelector} from 'react-redux';
+import {getALlJobs} from '../../features/job-category/JobSlice';
+import {ActivityIndicator} from 'react-native-paper';
+import {customTextColor, customThemeColor} from '../../constants/Color';
 
 const SeeAllJobs = ({navigation}) => {
+  const dispatch = useDispatch();
+  const {allJobs} = useSelector(state => state.job);
+
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch(getALlJobs());
+    }, 200);
+  }, [dispatch]);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -50,14 +63,23 @@ const SeeAllJobs = ({navigation}) => {
         horizontal={false}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.scrollViewContent}>
-        <JobCard />
-        <JobCard />
-        <JobCard />
-        <JobCard />
-        <JobCard />
-        <JobCard />
-        <JobCard />
-        <JobCard />
+        {allJobs.data ? (
+          allJobs.data.map((item, index) => {
+            return (
+              <View key={index}>
+                <JobCard navigation={navigation} items={item} />
+              </View>
+            );
+          })
+        ) : (
+          <View style={{marginTop: 100}}>
+            <ActivityIndicator
+              animating={true}
+              style={{marginTop: 40}}
+              color={customTextColor.lightGreen}
+            />
+          </View>
+        )}
       </ScrollView>
     </View>
   );
@@ -103,6 +125,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 50,
+    shadowColor: 'rgba(150,170,180,0.5)',
+    shadowOffset: {width: 0, height: 7},
+    shadowOpacity: 1,
+    shadowRadius: 30,
+    elevation: 10,
   },
   categoryTitle: {
     color: '#11401E',

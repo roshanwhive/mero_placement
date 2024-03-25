@@ -8,6 +8,7 @@ const initialState = {
   companyTypes: [],
   employmentTypes: [],
   jobTypes: [],
+  jobByTpes: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -15,7 +16,7 @@ const initialState = {
   message: '',
 };
 
-export const getALlJobs = createAsyncThunk(
+export const getAllJobs = createAsyncThunk(
   'job/get-all-job',
   async thunkAPI => {
     try {
@@ -107,7 +108,7 @@ export const getJobTypes = createAsyncThunk(
   'job/get-job-types',
   async thunkAPI => {
     try {
-      return await jobCategoryService.getJobTypes();
+      return await jobService.getJobTypes();
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -117,7 +118,7 @@ export const getJobByJobTypes = createAsyncThunk(
   'job/get-job-by-job-types',
   async (id, thunkAPI) => {
     try {
-      return await jobCategoryService.getJobByJobTypes(id);
+      return await jobService.getJobByJobTypes(id);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -134,10 +135,10 @@ export const jobCategorySlice = createSlice({
   extraReducers: builder => {
     builder
       // ------------------------------------Get ALl Jobs -------------------------------
-      .addCase(getALlJobs.pending, state => {
+      .addCase(getAllJobs.pending, state => {
         state.isLoading = true;
       })
-      .addCase(getALlJobs.fulfilled, (state, action) => {
+      .addCase(getAllJobs.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = !action.payload.success;
         state.isSuccess = action.payload.success;
@@ -145,7 +146,7 @@ export const jobCategorySlice = createSlice({
         state.statusCode = action.payload.status_code;
         state.allJobs = action.payload.data;
       })
-      .addCase(getALlJobs.rejected, (state, action) => {
+      .addCase(getAllJobs.rejected, (state, action) => {
         state.isError = true;
         state.isLoading = false;
         state.isSuccess = false;
@@ -291,7 +292,7 @@ export const jobCategorySlice = createSlice({
         state.isError = !action.payload.success;
         state.isSuccess = action.payload.success;
         state.message = action.payload.message;
-        state.allJobs = action.payload.data;
+        state.jobByTpes = action.payload.data;
       })
       .addCase(getJobByJobTypes.rejected, (state, action) => {
         state.isError = true;
