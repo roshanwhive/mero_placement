@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -13,6 +13,11 @@ import companyLogo from '../../assets/companyLogo.png';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import CompanyBackground from '../../containers/profile/CompanyBackground';
 import CompanyPostedJob from '../../containers/profile/CompanyPostedJob';
+import {useRoute} from '@react-navigation/native';
+import {getCompanyProfile} from '../../features/company/CompanySlice';
+import {useDispatch, useSelector} from 'react-redux';
+import RenderHtml from 'react-native-render-html';
+import {ActivityIndicator} from 'react-native-paper';
 
 const renderTabBar = props => (
   <TabBar
@@ -25,11 +30,37 @@ const renderTabBar = props => (
 );
 
 const CompanyProfile = ({navigation}) => {
+  const route = useRoute();
+  const {slug} = route.params;
+  const dispatch = useDispatch();
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     {key: 'first', title: 'Background'},
     {key: 'second', title: 'Posted Job'},
   ]);
+
+  const {companyProfile} = useSelector(state => state.company);
+  const descriptionHtml = companyProfile ? companyProfile.description : '';
+
+  useEffect(() => {
+    dispatch(getCompanyProfile(slug));
+  }, [dispatch, slug]);
+
+  const [showFullDescription, setShowFullDescription] = useState(false);
+  const description = companyProfile ? companyProfile.description : '';
+
+  const toggleDescription = () => {
+    setShowFullDescription(!showFullDescription);
+  };
+
+  const truncatedDescription = description.slice(0, 300);
+  const readMoreText = showFullDescription ? 'Read less' : 'Read more';
+
+  const tagsStyles = {
+    p: {
+      color: customTextColor.secondary,
+    },
+  };
   return (
     <ScrollView
       horizontal={false}
@@ -37,50 +68,90 @@ const CompanyProfile = ({navigation}) => {
       contentContainerStyle={styles.container}>
       <View style={styles.header}></View>
 
-      <View style={styles.body}>
-        <Image style={styles.avatar} source={companyLogo} />
-        <View style={styles.bodyContent}>
-          <View style={styles.card}>
-            <Text style={styles.title}>Company Name</Text>
-            <Text style={styles.subtitle}>
-              Description about the company lorem50{' '}
-            </Text>
-          </View>
-          <View style={styles.status}>
-            <View style={styles.cardStatus}>
-              <Text style={styles.headingStatus}>Following</Text>
-              <Text style={styles.subheadingStatus}>549</Text>
+      {companyProfile ? (
+        <View style={styles.body}>
+          <Image style={styles.avatar} source={companyLogo} />
+          <View style={styles.bodyContent}>
+            <View style={styles.card}>
+              <Text style={styles.title}>
+                {companyProfile ? companyProfile.employer_name : ''}
+              </Text>
+              <View>
+                <RenderHtml
+                  contentWidth={100}
+                  ignoredDomTags={false}
+                  tagsStyles={tagsStyles}
+                  source={{
+                    html: showFullDescription
+                      ? description
+                      : truncatedDescription,
+                  }}
+                />
+                {description.length > 300 && (
+                  <TouchableOpacity onPress={toggleDescription}>
+                    <Text
+                      style={{
+                        color: customTextColor.darkGreen,
+                        textDecorationLine: 'underline',
+                      }}>
+                      {readMoreText}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              </View>
             </View>
-            <View style={[styles.cardStatus, styles.borderHorizontal]}>
-              <Text style={styles.headingStatus}>Followers</Text>
-              <Text style={styles.subheadingStatus}>324k</Text>
+            <View style={styles.status}>
+              <View style={styles.cardStatus}>
+                <Text style={styles.headingStatus}>Following</Text>
+                <Text style={styles.subheadingStatus}>0</Text>
+              </View>
+              <View style={[styles.cardStatus, styles.borderHorizontal]}>
+                <Text style={styles.headingStatus}>Followers</Text>
+                <Text style={styles.subheadingStatus}>
+                  {companyProfile ? companyProfile.total_followers : ''}
+                </Text>
+              </View>
+              <View style={styles.cardStatus}>
+                <Text style={styles.headingStatus}>Posted Job</Text>
+                <Text style={styles.subheadingStatus}>
+                  {companyProfile ? companyProfile.jobs.length : 0}
+                </Text>
+              </View>
             </View>
-            <View style={styles.cardStatus}>
-              <Text style={styles.headingStatus}>Posted Job</Text>
-              <Text style={styles.subheadingStatus}>20</Text>
+            <View style={styles.containerFollow}>
+              <TouchableOpacity style={styles.buttonFollow}>
+                <Text style={styles.followText}>Follow</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.shareButton}>
+                <Icon
+                  name="share-square"
+                  size={20}
+                  color={customTextColor.darkGreen}
+                />
+              </TouchableOpacity>
             </View>
-          </View>
-          <View style={styles.containerFollow}>
-            <TouchableOpacity style={styles.buttonFollow}>
-              <Text style={styles.followText}>Follow</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.shareButton}>
-              <Icon
-                name="share-square"
-                size={20}
-                color={customTextColor.darkGreen}
-              />
-            </TouchableOpacity>
           </View>
         </View>
-      </View>
+      ) : (
+        <ActivityIndicator
+          animating={true}
+          style={{marginVertical: 20}}
+          color={customTextColor.lightGreen}
+        />
+      )}
       <TabView
         renderTabBar={renderTabBar}
         navigationState={{index, routes}}
-        renderScene={SceneMap({
-          first: CompanyBackground,
-          second: CompanyPostedJob,
-        })}
+        renderScene={({route}) => {
+          switch (route.key) {
+            case 'first':
+              return <CompanyBackground backgroundInfo={companyProfile} />;
+            case 'second':
+              return <CompanyPostedJob postedJob={companyProfile} />;
+            default:
+              return null;
+          }
+        }}
         onIndexChange={setIndex}
         style={styles.containerTab}
       />
@@ -95,7 +166,7 @@ const styles = StyleSheet.create({
     height: 200,
   },
   header: {
-    height: 80,
+    height: 100,
   },
   avatar: {
     width: 130,
@@ -104,7 +175,7 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderColor: 'white',
     alignSelf: 'center',
-    top: '-20%',
+    top: '-10%',
   },
   body: {
     backgroundColor: customThemeColor.white,
@@ -112,16 +183,17 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 20,
   },
   bodyContent: {
-    top: '-15%',
+    top: '-10%',
   },
   card: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 10,
   },
   title: {
-    fontSize: 30,
+    fontSize: 25,
     fontWeight: '600',
     color: customTextColor.primary,
   },

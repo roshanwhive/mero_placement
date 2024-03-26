@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {categories} from '../constants';
 import {useDispatch, useSelector} from 'react-redux';
-import {getMainCategories} from '../features/job-category/JobSlice';
+import {getMainCategories} from '../features/job/JobSlice';
 
 const Categories = () => {
   const [activeCategory, setActiveCategory] = useState(null);

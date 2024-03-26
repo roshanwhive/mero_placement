@@ -14,6 +14,21 @@ const getAllJobs = async () => {
   }
 };
 
+//get single job
+const getSingleJob = async slug => {
+  try {
+    const response = await axios.get(
+      `${base_url}profile/vacancy-profile/${slug}`,
+    );
+    if (response) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Error during fetching single job:', error);
+    throw error;
+  }
+};
+
 // ------------------------------Category--------------------------
 // get all job category
 const getJobCategories = async () => {
@@ -125,6 +140,7 @@ export const jobService = {
   getMainCategories,
   getJobByCategory,
   getAllJobs,
+  getSingleJob,
   getCompanyTypes,
   getJobByCompanyTypes,
   getEmploymentTypes,

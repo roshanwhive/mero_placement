@@ -10,17 +10,14 @@ import JobCard from '../components/JobCard';
 import {customTextColor, customThemeColor} from '../constants/Color';
 import {ActivityIndicator} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
-import {getJobByJobTypes} from '../features/job-category/JobSlice';
+import {getJobByJobTypes} from '../features/job/JobSlice';
 
 const Featured = ({navigation}) => {
   const dispatch = useDispatch();
   const {jobByTpes} = useSelector(state => state.job);
 
   useEffect(() => {
-    setTimeout(() => {
-      //Geting Top job
-      dispatch(getJobByJobTypes(2));
-    }, 200);
+    dispatch(getJobByJobTypes(1));
   }, [dispatch]);
 
   return (
@@ -43,7 +40,7 @@ const Featured = ({navigation}) => {
           <View style={{marginTop: 100}}>
             <ActivityIndicator
               animating={true}
-              style={{marginVertical: 40}}
+              style={{marginVertical: 20}}
               color={customTextColor.lightGreen}
             />
           </View>

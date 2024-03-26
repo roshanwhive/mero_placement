@@ -6,9 +6,6 @@ import {format, formatDistance, differenceInMilliseconds} from 'date-fns';
 
 const JobCard = ({items, navigation}) => {
   const companyLogo = require('../assets/companyLogo.png');
-  const jobTitle = 'Frontend Developer';
-  const location = 'Raatopul, Kathmandu';
-  const date = '2 days ago';
 
   const [formattedDate, setFormattedDate] = useState('');
   const [formattedDistance, setFormattedDistance] = useState('');
@@ -34,14 +31,14 @@ const JobCard = ({items, navigation}) => {
   return (
     <View style={styles.cardContainer}>
       <View style={styles.logoContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('CompanyProfile')}>
-          {items && items.get_company && items.get_company.logo == null ? (
-            <Image
-              source={{
-                uri: 'https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-              }}
-              style={styles.logo}
-            />
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('CompanyProfile', {
+              slug: items ? items.get_company.slug : '',
+            })
+          }>
+          {items && items.get_company && items.get_company.logo !== null ? (
+            <Image source={{uri: items.get_company.logo}} style={styles.logo} />
           ) : (
             <Image source={companyLogo} style={styles.logo} />
           )}

@@ -3,6 +3,7 @@ import {jobService} from './JobService';
 
 const initialState = {
   allJobs: [],
+  singleJob: {},
   jobCategories: [],
   mainCategories: [],
   companyTypes: [],
@@ -21,6 +22,17 @@ export const getAllJobs = createAsyncThunk(
   async thunkAPI => {
     try {
       return await jobService.getAllJobs();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
+export const getSingleJob = createAsyncThunk(
+  'job/get-single-job',
+  async (slug, thunkAPI) => {
+    try {
+      return await jobService.getSingleJob(slug);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -147,6 +159,24 @@ export const jobCategorySlice = createSlice({
         state.allJobs = action.payload.data;
       })
       .addCase(getAllJobs.rejected, (state, action) => {
+        state.isError = true;
+        state.isLoading = false;
+        state.isSuccess = false;
+      })
+
+      // ------------------------------------Get single Jobs -------------------------------
+      .addCase(getSingleJob.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(getSingleJob.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = !action.payload.success;
+        state.isSuccess = action.payload.success;
+        state.message = action.payload.message;
+        state.statusCode = action.payload.status_code;
+        state.singleJob = action.payload.data;
+      })
+      .addCase(getSingleJob.rejected, (state, action) => {
         state.isError = true;
         state.isLoading = false;
         state.isSuccess = false;

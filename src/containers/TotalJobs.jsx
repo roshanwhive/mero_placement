@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import JobCard from '../components/JobCard';
 import {useDispatch, useSelector} from 'react-redux';
-import {getAllJobs} from '../features/job-category/JobSlice';
+import {getAllJobs} from '../features/job/JobSlice';
 import {ActivityIndicator} from 'react-native-paper';
 import {customTextColor} from '../constants/Color';
 
@@ -25,7 +25,7 @@ const TotalJobs = ({navigation}) => {
     <View>
       <View style={styles.header}>
         <View>
-          <Text style={styles.title}>Total Jobs</Text>
+          <Text style={styles.title}>Hot Jobs</Text>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate('SeeAllJobs')}>
           <Text style={styles.seeAll}>See All</Text>

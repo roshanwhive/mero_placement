@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import {customTextColor, customThemeColor} from '../../constants/Color';
 import JobCard from '../../components/JobCard';
 import {useNavigation} from '@react-navigation/native';
+import {ActivityIndicator} from 'react-native-paper';
 
 const Row = ({icon, title, value}) => {
   return (
@@ -20,7 +21,7 @@ const Row = ({icon, title, value}) => {
   );
 };
 
-const CompanyPostedJob = () => {
+const CompanyPostedJob = ({postedJob}) => {
   const navigation = useNavigation();
 
   return (
@@ -29,10 +30,17 @@ const CompanyPostedJob = () => {
       horizontal={false}
       showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
-        <JobCard navigation={navigation} />
-        <JobCard />
-        <JobCard />
-        <JobCard />
+        {postedJob.jobs ? (
+          postedJob.jobs.map((jobs, index) => {
+            return <JobCard key={index} items={jobs} navigation={navigation} />;
+          })
+        ) : (
+          <ActivityIndicator
+            animating={true}
+            style={{marginVertical: 20}}
+            color={customTextColor.lightGreen}
+          />
+        )}
       </View>
     </ScrollView>
   );
