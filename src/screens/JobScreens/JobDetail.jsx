@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -8,11 +8,18 @@ import {
   FlatList,
   ScrollView,
 } from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {customTextColor, customThemeColor} from '../../constants/Color';
 import {Card} from 'react-native-paper';
+import {getSingleJob} from '../../features/job/JobSlice';
 
 const JobDetail = ({navigation}) => {
+  const dispatch = useDispatch();
+  // useEffect(() => {
+  //   dispatch(getSingleJob(slug));
+  // });
+
   const handleBack = () => {
     navigation.goBack();
   };

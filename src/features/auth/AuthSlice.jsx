@@ -80,7 +80,6 @@ export const authSlice = createSlice({
         state.isAuthenticated = action.payload.success;
         state.user = action.payload.data;
         state.statusCode = action.payload.status_code;
-
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isError = true;

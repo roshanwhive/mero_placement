@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   View,
   StyleSheet,
+  ActivityIndicator,
+  ScrollView,
 } from 'react-native';
 import {TextInput} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -19,12 +21,15 @@ import * as yup from 'yup';
 import {Controller, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {showMessage} from 'react-native-flash-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = ({navigation}) => {
   const [value, setValue] = useState(null);
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [loading, setLoading] = useState(true);
   // const [password, setPassword] = useState('');
   const loginLogo = require('../../../assets/loginLogo.png');
+  const USER_ID_KEY = 'USER_ID';
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -36,19 +41,22 @@ const Login = ({navigation}) => {
   );
 
   // const { message } = useSelector(state => state.auth);
-  useEffect(() => {}, [message]);
+  // useEffect(() => {
+  // }, [message]);
 
   useEffect(() => {
     if (isError && statusCode !== 200 && statusCode !== 0) {
       showMessage({
         message: JSON.stringify(message),
         type: 'danger',
+        setLoading: false,
       });
     } else if (isSuccess && statusCode === 200) {
       navigation.navigate('HomeScreen');
       showMessage({
         message: JSON.stringify(message),
         type: 'success',
+        setLoading: false,
       });
     }
     setTimeout(() => {
@@ -105,94 +113,107 @@ const Login = ({navigation}) => {
       />
 
       {/* Title and form */}
+
       <View style={styles.formContainer}>
         <AuthHeader />
-        <AuthLogo imgSrc={loginLogo} />
-        <View style={styles.inputContainer}>
-          <AuthTitle title="Login" />
-          <View style={styles.inputWrapper}>
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({field: {onChange, value}}) => (
-                <TextInput
-                  {...commonTextInputProps}
-                  label="Emaill"
-                  value={value}
-                  onChangeText={onChange}
-                  left={
-                    <TextInput.Icon
-                      icon="email"
-                      size={25}
-                      color={customTextColor.darkGreen}
+        <View style={{flex: 1}}>
+          <ScrollView
+            style={{flex: 1}}
+            contentContainerStyle={styles.scrollViewContent}>
+            <AuthLogo imgSrc={loginLogo} />
+
+            <View style={styles.inputContainer}>
+              <AuthTitle title="Login" />
+              <View style={styles.inputWrapper}>
+                <Controller
+                  control={control}
+                  rules={{
+                    required: true,
+                  }}
+                  render={({field: {onChange, value}}) => (
+                    <TextInput
+                      {...commonTextInputProps}
+                      label="Emaill"
+                      value={value}
+                      onChangeText={onChange}
+                      left={
+                        <TextInput.Icon
+                          icon="email"
+                          size={25}
+                          color={customTextColor.darkGreen}
+                        />
+                      }
                     />
-                  }
+                  )}
+                  name="email"
                 />
-              )}
-              name="email"
-            />
-            {errors.email && (
-              <Text style={styles.errorText}>{errors.email.message}</Text>
-            )}
-          </View>
-          <View style={styles.inputWrapper}>
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({field: {onChange, value}}) => (
-                <TextInput
-                  {...commonTextInputProps}
-                  label="Password"
-                  secureTextEntry={!passwordVisible}
-                  value={value}
-                  onChangeText={onChange}
-                  right={
-                    <TextInput.Icon
-                      icon={passwordVisible ? 'eye' : 'eye-off'}
-                      onPress={togglePasswordVisibility}
-                      size={20}
-                      color={customTextColor.darkGreen}
+                {errors.email && (
+                  <Text style={styles.errorText}>{errors.email.message}</Text>
+                )}
+              </View>
+              <View style={styles.inputWrapper}>
+                <Controller
+                  control={control}
+                  rules={{
+                    required: true,
+                  }}
+                  render={({field: {onChange, value}}) => (
+                    <TextInput
+                      {...commonTextInputProps}
+                      label="Password"
+                      secureTextEntry={!passwordVisible}
+                      value={value}
+                      onChangeText={onChange}
+                      right={
+                        <TextInput.Icon
+                          icon={passwordVisible ? 'eye' : 'eye-off'}
+                          onPress={togglePasswordVisibility}
+                          size={20}
+                          color={customTextColor.darkGreen}
+                        />
+                      }
+                      left={
+                        <TextInput.Icon
+                          icon="lock"
+                          size={25}
+                          color={customTextColor.darkGreen}
+                        />
+                      }
                     />
-                  }
-                  left={
-                    <TextInput.Icon
-                      icon="lock"
-                      size={25}
-                      color={customTextColor.darkGreen}
-                    />
-                  }
+                  )}
+                  name="password"
                 />
-              )}
-              name="password"
-            />
-            {errors.password && (
-              <Text style={styles.errorText}>{errors.password.message}</Text>
-            )}
-          </View>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('ForgotPasswordEnterEmail')}
-            style={styles.forgotPasswordContainer}>
-            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-          </TouchableOpacity>
-          <View style={styles.buttonWrapper}>
-            <TouchableOpacity
-              onPress={handleSubmit(onPressSend)}
-              style={styles.button}>
-              <Text style={styles.buttonText}>Login</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.signupTextContainer}>
-            <Text style={{color: customTextColor.primary}}>
-              Don't have an account?
-            </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-              <Text style={styles.signupText}>Signup</Text>
-            </TouchableOpacity>
-          </View>
+                {errors.password && (
+                  <Text style={styles.errorText}>
+                    {errors.password.message}
+                  </Text>
+                )}
+              </View>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('ForgotPasswordEnterEmail')}
+                style={styles.forgotPasswordContainer}>
+                <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+              </TouchableOpacity>
+              <View style={styles.buttonWrapper}>
+                <TouchableOpacity
+                  onPress={handleSubmit(onPressSend)}
+                  style={styles.button}>
+                  <Text style={styles.buttonText}>Login</Text>
+                  {/* <View style={{ position: 'absolute', top: 0, bottom: 0, right: 0, left: 0 }}>
+                    <ActivityIndicator size={"large"} color={"#00ff00"} />
+                  </View> */}
+                </TouchableOpacity>
+              </View>
+              <View style={styles.signupTextContainer}>
+                <Text style={{color: customTextColor.primary}}>
+                  Don't have an account?
+                </Text>
+                <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+                  <Text style={styles.signupText}>Signup</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </ScrollView>
         </View>
       </View>
     </View>
@@ -204,6 +225,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: customThemeColor.primary,
   },
+  scrollViewContent: {
+    paddingBottom: 0,
+    zIndex: 0,
+    borderTopLeftRadius: 25,
+    position: 'relative',
+    borderTopRightRadius: 25,
+    flexGrow: 1,
+  },
   formContainer: {
     flex: 1,
     width: '100%',
@@ -211,7 +240,9 @@ const styles = StyleSheet.create({
   inputContainer: {
     alignItems: 'center',
     marginHorizontal: 20,
-    bottom: '-8%',
+    paddingTop: 16,
+    paddingBottom: 16,
+    //bottom: '-8%',
   },
   inputWrapper: {
     padding: 4,

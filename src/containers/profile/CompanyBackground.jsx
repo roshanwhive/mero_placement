@@ -2,6 +2,7 @@ import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {customTextColor, customThemeColor} from '../../constants/Color';
+import {ActivityIndicator} from 'react-native-paper';
 
 const Row = ({icon, title, value}) => {
   return (
@@ -13,25 +14,55 @@ const Row = ({icon, title, value}) => {
         </View>
         <Text style={styles.rowLeftText}>: </Text>
       </View>
-      <Text style={styles.rowRightText}>{value}</Text>
+      {title === 'Website' ? (
+        <Text style={styles.rowRightTextWebsite}>{value}</Text>
+      ) : (
+        <Text style={styles.rowRightText}>{value}</Text>
+      )}
     </View>
   );
 };
 
-const CompanyBackground = () => {
+const CompanyBackground = ({backgroundInfo}) => {
   return (
     <ScrollView style={styles.background} showsVerticalScrollIndicator={false}>
-      <View style={styles.container}>
-        <Row icon="house-user" title="Name" value="Whive IT Professional" />
-        <Row icon="mail-bulk" title="Email" value="walkershive@gmail.com" />
-        <Row
-          icon="map-marked-alt"
-          title="Location"
-          value="Chabhill, Kathmandu"
+      {backgroundInfo ? (
+        <View style={styles.container}>
+          <Row
+            icon="house-user"
+            title="Name"
+            value={backgroundInfo.employer_name}
+          />
+          <Row icon="mail-bulk" title="Email" value={backgroundInfo.email} />
+          {backgroundInfo.address.map((address, index) => {
+            return (
+              <Row
+                key={index}
+                icon="map-marked-alt"
+                title={`Location ${address.address_id}`}
+                value={address.address}
+              />
+            );
+          })}
+
+          <Row
+            icon="th-large"
+            title="Type"
+            value={backgroundInfo.company_type.name}
+          />
+          <Row
+            icon="globe-americas"
+            title="Website"
+            value={backgroundInfo.website}
+          />
+        </View>
+      ) : (
+        <ActivityIndicator
+          animating={true}
+          style={{marginVertical: 20}}
+          color={customTextColor.lightGreen}
         />
-        <Row icon="th-large" title="Size" value="45 Employee" />
-        <Row icon="globe-americas" title="Website" value="walkershive.com.np" />
-      </View>
+      )}
     </ScrollView>
   );
 };
@@ -71,6 +102,12 @@ const styles = StyleSheet.create({
     color: customTextColor.secondary,
     fontSize: 16,
     fontWeight: '400',
+  },
+  rowRightTextWebsite: {
+    color: customTextColor.darkGreen,
+    fontSize: 16,
+    fontWeight: '500',
+    textDecorationLine: 'underline',
   },
 });
 export default CompanyBackground;

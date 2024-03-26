@@ -9,6 +9,7 @@ const register = async registerData => {
       `${base_url}candidate/signup?`,
       registerData,
     );
+    await AsyncStorage.setItem('USER', JSON.stringify(response));
     return response.data;
   } catch (error) {
     console.error('Error during register:', error);
@@ -20,7 +21,8 @@ const register = async registerData => {
 const login = async loginData => {
   try {
     const response = await axios.post(`${base_url}login`, loginData);
-    //await AsyncStorage.setItem('jwtToken', response.data.token);
+    await AsyncStorage.setItem('USER_ID', JSON.stringify(response));
+    await AsyncStorage.setItem('isLoggedIn', JSON.stringify(true));
     return response.data;
   } catch (error) {
     console.error('Error during login:', error);

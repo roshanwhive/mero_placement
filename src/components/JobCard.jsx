@@ -6,9 +6,6 @@ import {format, formatDistance, differenceInMilliseconds} from 'date-fns';
 
 const JobCard = ({items, navigation}) => {
   const companyLogo = require('../assets/companyLogo.png');
-  const jobTitle = 'Frontend Developer';
-  const location = 'Raatopul, Kathmandu';
-  const date = '2 days ago';
 
   const [formattedDate, setFormattedDate] = useState('');
   const [formattedDistance, setFormattedDistance] = useState('');
@@ -24,8 +21,6 @@ const JobCard = ({items, navigation}) => {
       }
       setFormattedDate(formattedDate);
       setFormattedDistance(formattedDistance);
-      console.log('items:', items);
-      console.log('items.get_company.logo:', items.get_company.logo);
     }
   }, [items]);
 
@@ -36,14 +31,14 @@ const JobCard = ({items, navigation}) => {
   return (
     <View style={styles.cardContainer}>
       <View style={styles.logoContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('CompanyProfile')}>
-          {items && items.get_company && items.get_company.logo == null ? (
-            <Image
-              source={{
-                uri: 'https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-              }}
-              style={styles.logo}
-            />
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('CompanyProfile', {
+              slug: items ? items.get_company.slug : '',
+            })
+          }>
+          {items && items.get_company && items.get_company.logo !== null ? (
+            <Image source={{uri: items.get_company.logo}} style={styles.logo} />
           ) : (
             <Image source={companyLogo} style={styles.logo} />
           )}
@@ -73,14 +68,13 @@ const JobCard = ({items, navigation}) => {
           />
           <Text style={styles.location}>{formattedDistance}</Text>
         </View>
-
-        <View style={styles.buttonContainer}>
-          <View></View>
-          <View>
-            <TouchableOpacity onPress={onPressApply} style={styles.applyButton}>
-              <Text style={styles.applyButtonText}>Apply</Text>
-            </TouchableOpacity>
-          </View>
+      </View>
+      <View style={styles.buttonContainer}>
+        <View></View>
+        <View>
+          <TouchableOpacity onPress={onPressApply} style={styles.applyButton}>
+            <Text style={styles.applyButtonText}>Apply</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -95,13 +89,13 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     marginHorizontal: 2,
     paddingHorizontal: 16,
-    paddingVertical: 10,
+    paddingVertical: 15,
     shadowColor: 'rgba(150,170,180,0.5)',
     shadowOffset: {width: 0, height: 7},
     shadowOpacity: 1,
     shadowRadius: 30,
     elevation: 10,
-    height: 100,
+    height: 'auto',
   },
   logoContainer: {
     marginRight: 16,
@@ -138,7 +132,7 @@ const styles = StyleSheet.create({
   },
 
   buttonContainer: {
-    top: '-20%',
+    top: '5%',
     width: 'auto',
     display: 'flex',
     justifyContent: 'space-between',

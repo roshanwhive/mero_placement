@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StatusBar, ScrollView, StyleSheet, View, Text} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Categories from '../../components/Categories';
@@ -7,6 +7,7 @@ import SearchBar from '../../containers/SearchBar';
 import TotalJobs from '../../containers/TotalJobs';
 import Training from '../../containers/Training';
 import ActivelySeekingForJobCard from '../../containers/ActivelySeekingForJobCard';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = ({navigation}) => {
   return (
@@ -26,13 +27,13 @@ const Home = ({navigation}) => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollViewContent}>
           {/* Categories */}
-          <Categories />
+          {/* <Categories /> */}
           <ActivelySeekingForJobCard />
           {/* Featured */}
           <View style={styles.featuredContainer}>
             <Featured navigation={navigation} />
           </View>
-          <Training navigation={navigation}  />
+          <Training navigation={navigation} />
           <View style={styles.totalJobs}>
             <TotalJobs navigation={navigation} />
           </View>
@@ -41,6 +42,13 @@ const Home = ({navigation}) => {
     </>
   );
 };
+
+// const [isLoggedIn, setisLoggedIn] =  useState(false)
+// async function getData(){
+//   const data = await AsyncStorage.getItem('isLoggedIn')
+//   //pass data in setLoggedIn
+//   setisLoggedIn(data);
+// }
 
 const styles = StyleSheet.create({
   safeArea: {
