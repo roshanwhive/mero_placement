@@ -62,7 +62,6 @@ const Login = ({navigation}) => {
     setTimeout(() => {
       dispatch(resetState());
     }, 15000);
-    console.log('api' + isError, isSuccess, statusCode, message);
   }, [isError, isSuccess, statusCode, message]);
 
   const schema = yup.object().shape({
@@ -190,7 +189,7 @@ const Login = ({navigation}) => {
                 )}
               </View>
               <TouchableOpacity
-                onPress={() => navigation.navigate('ForgotPasswordEnterEmail')}
+                onPress={() => navigation.navigate('HomeScreen')}
                 style={styles.forgotPasswordContainer}>
                 <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
               </TouchableOpacity>

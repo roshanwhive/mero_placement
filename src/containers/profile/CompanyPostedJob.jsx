@@ -30,7 +30,7 @@ const CompanyPostedJob = ({postedJob}) => {
       horizontal={false}
       showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
-        {postedJob.jobs ? (
+        {!!postedJob.jobs ? (
           postedJob.jobs.map((jobs, index) => {
             return <JobCard key={index} items={jobs} navigation={navigation} />;
           })
