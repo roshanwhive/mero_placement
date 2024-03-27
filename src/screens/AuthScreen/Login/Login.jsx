@@ -6,10 +6,9 @@ import {
   TouchableOpacity,
   View,
   StyleSheet,
-  ActivityIndicator,
   ScrollView,
 } from 'react-native';
-import {TextInput} from 'react-native-paper';
+import {ActivityIndicator, TextInput} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useDispatch, useSelector} from 'react-redux';
 import {loginUser, resetState} from '../../../features/auth/AuthSlice';
@@ -36,7 +35,7 @@ const Login = ({navigation}) => {
   };
   const dispatch = useDispatch();
 
-  const {message, isSuccess, isError, statusCode} = useSelector(
+  const {message, isSuccess, isError, isLoading, statusCode} = useSelector(
     state => state.auth,
   );
 
@@ -197,10 +196,16 @@ const Login = ({navigation}) => {
                 <TouchableOpacity
                   onPress={handleSubmit(onPressSend)}
                   style={styles.button}>
-                  <Text style={styles.buttonText}>Login</Text>
-                  {/* <View style={{ position: 'absolute', top: 0, bottom: 0, right: 0, left: 0 }}>
-                    <ActivityIndicator size={"large"} color={"#00ff00"} />
-                  </View> */}
+                  {isLoading ? (
+                    <ActivityIndicator
+                      animating={true}
+                      style={{paddingVertical: 14}}
+                      color={customTextColor.white}
+                      size={20}
+                    />
+                  ) : (
+                    <Text style={styles.buttonText}>Login</Text>
+                  )}
                 </TouchableOpacity>
               </View>
               <View style={styles.signupTextContainer}>

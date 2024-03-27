@@ -359,14 +359,16 @@ const Signup = ({navigation}) => {
                 <TouchableOpacity
                   onPress={handleSubmit(onPressSend)}
                   style={styles.button}>
-                  {/* {isLoading ? (
+                  {isLoading ? (
                     <ActivityIndicator
                       animating={true}
-                      color={customTextColor.darkGreen}
+                      style={{paddingVertical: 14}}
+                      color={customTextColor.white}
+                      size={20}
                     />
-                  ) : ( */}
-                  <Text style={styles.buttonText}>Signup</Text>
-                  {/* )} */}
+                  ) : (
+                    <Text style={styles.buttonText}>Signup</Text>
+                  )}
                 </TouchableOpacity>
               </View>
               <View style={styles.signupTextContainer}>
