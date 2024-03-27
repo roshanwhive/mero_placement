@@ -1,7 +1,6 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import MenuIcon from '../custom_toolbar/MenuIcon';
-import BackButton from './BackButton';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 export default function AppBar({title, handleBack, isHome}) {
@@ -17,7 +16,7 @@ export default function AppBar({title, handleBack, isHome}) {
           </View>
         ) : (
           <TouchableOpacity onPress={handleBack}>
-            <Icon name="arrow-left" size={20} color="black" />
+            <Icon name="chevron-left" size={20} color="black" />
           </TouchableOpacity>
         )}
       </View>
@@ -59,13 +58,10 @@ const styles = StyleSheet.create({
   },
   middleContainer: {
     flex: 2,
-    backgroundColor: 'white',
-    flexDirection: 'row',
     fontSize: 18,
     marginLeft: 20,
-    marginRight: 10,
+    fontWeight: '500',
     color: 'black',
-    textAlign: 'center',
   },
   rightContainer: {
     flex: 1,
@@ -79,13 +75,6 @@ const styles = StyleSheet.create({
   rightIcon: {
     paddingHorizontal: 20,
     resizeMode: 'contain',
-    backgroundColor: 'white',
-  },
-  container: {
-    flex: 1,
-    backgroundColor: '#111',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   imageContainer: {
     alignItems: 'left',

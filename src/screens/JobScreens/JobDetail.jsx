@@ -58,7 +58,7 @@ const JobDetail = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <AppBar handleBack={handleBack} />
+      <AppBar handleBack={handleBack} title="Go Back" />
 
       {/* Header */}
       {/* <View style={styles.header}>

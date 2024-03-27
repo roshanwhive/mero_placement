@@ -29,7 +29,7 @@ const Home = ({navigation}) => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollViewContent}>
           {/* Categories */}
-          {/* <Categories /> */}
+          <Categories />
           <ActivelySeekingForJobCard />
           {/* Featured */}
           <View style={styles.featuredContainer}>

@@ -62,7 +62,7 @@ const CompanyProfile = ({navigation}) => {
       horizontal={false}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.container}>
-      <AppBar handleBack={handleBack} />
+      <AppBar handleBack={handleBack} title="Company Profile" />
       <View style={styles.header}></View>
 
       {Object.keys(companyProfile).length === 0 || isLoading === true ? (
@@ -74,7 +74,7 @@ const CompanyProfile = ({navigation}) => {
       ) : (
         <>
           <View style={styles.body}>
-            <Image style={styles.avatar} source={companyLogo} />
+            <Image style={styles.avatar} source={{uri: companyProfile?.logo}} />
             <View style={styles.bodyContent}>
               <View style={styles.card}>
                 <Text style={styles.title}>
