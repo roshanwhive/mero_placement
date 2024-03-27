@@ -20,6 +20,7 @@ import {getAllGender} from '../../../features/formData/FormSlice';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import {customTextColor, customThemeColor} from '../../../constants/Color';
 import {registerUser, resetState} from '../../../features/auth/AuthSlice';
+
 const Signup = ({navigation}) => {
   const [value, setValue] = useState(null);
   const [genders, setGenders] = useState([]);
@@ -77,13 +78,8 @@ const Signup = ({navigation}) => {
     }
     setTimeout(() => {
       dispatch(resetState());
-    }, 15000);
-    console.log(isLoading);
+    }, 10000);
   }, [isError, isSuccess, statusCode, message]);
-
-  // useEffect(() => {
-  //   if (isSuccess && statusCode === '200')
-  // }, [isSuccess, statusCode]);
 
   const schema = yup.object().shape({
     name: yup.string().required('Name is Required'),
