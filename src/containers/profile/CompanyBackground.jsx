@@ -6,20 +6,22 @@ import {ActivityIndicator} from 'react-native-paper';
 
 const Row = ({icon, title, value}) => {
   return (
-    <View style={styles.row}>
-      <View style={styles.rowLeft}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Icon name={icon} size={18} style={styles.rowLeftIcons} />
-          <Text style={styles.rowLeftText}>{title} </Text>
+    <ScrollView>
+      <View style={styles.row}>
+        <View style={styles.rowLeft}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Icon name={icon} size={18} style={styles.rowLeftIcons} />
+            <Text style={styles.rowLeftText}>{title} </Text>
+          </View>
+          <Text style={styles.rowLeftText}>: </Text>
         </View>
-        <Text style={styles.rowLeftText}>: </Text>
+        {title === 'Website' ? (
+          <Text style={styles.rowRightTextWebsite}>{value}</Text>
+        ) : (
+          <Text style={styles.rowRightText}>{value}</Text>
+        )}
       </View>
-      {title === 'Website' ? (
-        <Text style={styles.rowRightTextWebsite}>{value}</Text>
-      ) : (
-        <Text style={styles.rowRightText}>{value}</Text>
-      )}
-    </View>
+    </ScrollView>
   );
 };
 

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import {customTextColor} from '../constants/Color';
+import {customTextColor, customThemeColor} from '../constants/Color';
 import {format, formatDistance, differenceInMilliseconds} from 'date-fns';
 import {useDispatch} from 'react-redux';
 import {getSingleJob} from '../features/job/JobSlice';
@@ -98,7 +98,7 @@ const JobCard = ({items, navigation}) => {
 const styles = StyleSheet.create({
   cardContainer: {
     flexDirection: 'row',
-    backgroundColor: '#fff',
+    backgroundColor: customThemeColor.white,
     borderRadius: 8,
     marginVertical: 8,
     marginHorizontal: 2,

@@ -10,6 +10,7 @@ import ActivelySeekingForJobCard from '../../containers/ActivelySeekingForJobCar
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppBar from '../../components/custom_toolbar/AppBar';
 import {customThemeColor} from '../../constants/Color';
+import DrawerContent from '../../components/DrawerContent';
 
 const Home = ({navigation}) => {
   return (

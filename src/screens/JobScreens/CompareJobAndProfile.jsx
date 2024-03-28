@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -8,12 +8,12 @@ import {
   Image,
   SafeAreaView,
 } from 'react-native';
-import { customTextColor, customThemeColor } from '../../constants/Color';
+import {customTextColor, customThemeColor} from '../../constants/Color';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import RoundButtonComp from '../../components/RoundBtn';
-import { Divider } from 'react-native-paper';
+import {Divider} from 'react-native-paper';
 
-const TableHeader = ({ navigation }) => {
+const TableHeader = ({navigation}) => {
   return (
     <>
       <View style={cardStyle.card}>
@@ -30,16 +30,16 @@ const TableHeader = ({ navigation }) => {
     </>
   );
 };
-const ProfileDetail = ({ icon, value }) => {
+const ProfileDetail = ({icon, value}) => {
   return (
     <View
-      style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' }}>
+      style={{flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap'}}>
       <Icon name={icon} size={13} color={customTextColor.primary} />
-      <Text style={[styles.text, { marginLeft: 8 }]}>{value}</Text>
+      <Text style={[styles.text, {marginLeft: 8}]}>{value}</Text>
     </View>
   );
 };
-const CompareJobAndProfile = ({ navigation }) => {
+const CompareJobAndProfile = ({navigation}) => {
   const companyLogo = require('../../assets/companyLogo.png');
 
   return (
@@ -104,42 +104,43 @@ const CompareJobAndProfile = ({ navigation }) => {
         </View>
       </ScrollView> */}
 
-      <SafeAreaView style={{ flex: 1 }}>
-        <View style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          flex: 1
-        }}>
-
-          <View style={{ flex: 1 }}>
+      <SafeAreaView style={{flex: 1}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <View style={{flex: 1}}>
             <Image source={companyLogo} style={styles.logo}></Image>
-            <Text style={{ color: 'black' }}>Shruti Rajopadhyaya</Text>
-            <Text style={{ color: 'black' }}>9843559999</Text>
+            <Text style={{color: 'black'}}>Shruti Rajopadhyaya</Text>
+            <Text style={{color: 'black'}}>9843559999</Text>
           </View>
-          <View style={{ flex: 1 }}>
+          <View style={{flex: 1}}>
             <Image source={companyLogo} style={styles.logo}></Image>
-            <Text style={{ color: 'black' }}>Intern</Text>
-            <Text style={{ color: 'black' }}>Company Name</Text>
-            <Text style={{ color: 'black', marginBottom: 8 }}>Apply Before: march 10, 2024</Text>
+            <Text style={{color: 'black'}}>Intern</Text>
+            <Text style={{color: 'black'}}>Company Name</Text>
+            <Text style={{color: 'black', marginBottom: 8}}>
+              Apply Before: march 10, 2024
+            </Text>
           </View>
         </View>
 
         <Divider />
-        <View style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          flex: 1
-        }}>
-          <View style={{ flex: 1 }}>
-            <Text style={{ color: 'black', marginTop: 8 }}>Your Skills</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <View style={{flex: 1}}>
+            <Text style={{color: 'black', marginTop: 8}}>Your Skills</Text>
             <View style={styles.flexCard}>
               <Text style={[styles.label, styles.link]}>react native</Text>
               <Text style={[styles.label, styles.link]}>Redux</Text>
             </View>
           </View>
 
-          <View style={{ flex: 1 }}>
-            <Text style={{ color: 'black', marginTop: 8 }}>Required Skills</Text>
+          <View style={{flex: 1}}>
+            <Text style={{color: 'black', marginTop: 8}}>Required Skills</Text>
             <View style={styles.flexCard}>
               <Text style={[styles.label, styles.link]}>react native</Text>
               <Text style={[styles.label, styles.link]}>Redux</Text>
@@ -148,21 +149,25 @@ const CompareJobAndProfile = ({ navigation }) => {
         </View>
         <Divider />
 
-        <View style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          flex: 1
-        }}>
-          <View style={{ flex: 1 }}>
-            <Text style={{ color: 'black', marginTop: 8 }}>Your Education level</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <View style={{flex: 1}}>
+            <Text style={{color: 'black', marginTop: 8}}>
+              Your Education level
+            </Text>
             <View style={styles.flexCard}>
               <Text style={[styles.label, styles.link]}>Bachelor</Text>
               <Text style={[styles.label, styles.link]}>Master</Text>
             </View>
           </View>
 
-          <View style={{ flex: 1 }}>
-            <Text style={{ color: 'black', marginTop: 8 }}>Required Education level</Text>
+          <View style={{flex: 1}}>
+            <Text style={{color: 'black', marginTop: 8}}>
+              Required Education level
+            </Text>
             <View style={styles.flexCard}>
               <Text style={[styles.label, styles.link]}>Bachelor</Text>
               <Text style={[styles.label, styles.link]}>Master</Text>
@@ -171,20 +176,22 @@ const CompareJobAndProfile = ({ navigation }) => {
         </View>
         <Divider />
 
-        <View style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          flex: 1
-        }}>
-          <View style={{ flex: 1 }}>
-            <Text style={{ color: 'black', marginTop: 8 }}>Your Experience</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <View style={{flex: 1}}>
+            <Text style={{color: 'black', marginTop: 8}}>Your Experience</Text>
             <View style={styles.flexCard}>
               <Text style={[styles.label, styles.link]}>1 years</Text>
             </View>
           </View>
 
-          <View style={{ flex: 1 }}>
-            <Text style={{ color: 'black', marginTop: 8 }}>Required Experience</Text>
+          <View style={{flex: 1}}>
+            <Text style={{color: 'black', marginTop: 8}}>
+              Required Experience
+            </Text>
             <View style={styles.flexCard}>
               <Text style={[styles.label, styles.link]}>Not Required</Text>
             </View>
@@ -192,39 +199,52 @@ const CompareJobAndProfile = ({ navigation }) => {
         </View>
         <Divider />
 
-        <View style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          flex: 1
-        }}>
-          <View style={{ flex: 1 }}>
-            <Text style={{ color: 'black', marginTop: 8 }}>Your Expected Salary</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <View style={{flex: 1}}>
+            <Text style={{color: 'black', marginTop: 8}}>
+              Your Expected Salary
+            </Text>
             <View style={styles.flexCard}>
               <Text style={[styles.label, styles.link]}>Nrs. 20,000</Text>
             </View>
           </View>
 
-          <View style={{ flex: 1 }}>
-            <Text style={{ color: 'black', marginTop: 8 }}>Required Expected Salary</Text>
+          <View style={{flex: 1}}>
+            <Text style={{color: 'black', marginTop: 8}}>
+              Required Expected Salary
+            </Text>
             <View style={styles.flexCard}>
-              <Text style={[styles.label, styles.link]}>Nrs. 5,000 or above</Text>
+              <Text style={[styles.label, styles.link]}>
+                Nrs. 5,000 or above
+              </Text>
             </View>
           </View>
         </View>
         <Divider />
 
-        <View style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          marginTop: 20,
-          bottom: 0,
-          left: 0
-        }}>
-          <RoundButtonComp label={"Cancel"}
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            marginTop: 20,
+            bottom: 0,
+            left: 0,
+          }}>
+          <RoundButtonComp
+            label={'Cancel'}
             border={true}
             widthBtn={150}
-            marginleftBtn={10} />
-          <RoundButtonComp label="Apply Now" widthBtn={150} marginleftBtn={10} />
+            marginleftBtn={10}
+          />
+          <RoundButtonComp
+            label="Apply Now"
+            widthBtn={150}
+            marginleftBtn={10}
+          />
         </View>
       </SafeAreaView>
     </View>
@@ -238,7 +258,7 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     backgroundColor: customThemeColor.lightBG,
     shadowColor: 'rgba(150,170,180,0.5)',
-    shadowOffset: { width: 0, height: 7 },
+    shadowOffset: {width: 0, height: 7},
     shadowOpacity: 1,
     shadowRadius: 30,
     elevation: 10,
@@ -248,7 +268,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: customThemeColor.white,
     shadowColor: 'rgba(150,170,180,0.5)',
-    shadowOffset: { width: 0, height: 7 },
+    shadowOffset: {width: 0, height: 7},
     shadowOpacity: 1,
     shadowRadius: 30,
     elevation: 10,
@@ -286,7 +306,6 @@ const styles = StyleSheet.create({
     height: 50,
     resizeMode: 'contain',
     borderRadius: 5,
-
   },
   heading: {
     fontSize: 20,
@@ -338,7 +357,7 @@ const cardStyle = StyleSheet.create({
     padding: 20,
     marginVertical: 15,
     shadowColor: 'rgba(150,170,180,0.5)',
-    shadowOffset: { width: 0, height: 7 },
+    shadowOffset: {width: 0, height: 7},
     shadowOpacity: 1,
     shadowRadius: 30,
     elevation: 10,

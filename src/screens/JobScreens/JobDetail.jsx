@@ -184,12 +184,15 @@ const JobDetail = ({navigation}) => {
 
       {/* Job Actions */}
       <View style={styles.jobActions}>
+        {/* <TouchableOpacity style={styles.saveButton}>
+          <Text style={styles.actionButtonText}>Save</Text>
+        </TouchableOpacity> */}
         <TouchableOpacity onPress={handleApply} style={styles.actionButton}>
           <Text style={styles.actionButtonText}>Apply Job</Text>
         </TouchableOpacity>
-        {/* <TouchableOpacity onPress={handleShare} style={styles.actionButton}>
-          <Text style={styles.actionButtonText}>Share</Text>
-        </TouchableOpacity> */}
+        <View style={styles.iconContainer}>
+          <Icon name="share" size={30} color={customTextColor.primary} />
+        </View>
       </View>
     </View>
   );
@@ -300,15 +303,24 @@ const styles = StyleSheet.create({
   jobActions: {
     flexDirection: 'row',
     justifyContent: 'space-around',
+    alignItems: 'center',
     borderTopWidth: 1,
     borderTopColor: '#ccc',
     paddingVertical: 15,
+    paddinghorizontal: 10,
+  },
+  saveButton: {
+    backgroundColor: customThemeColor.darkRed,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    width: 'auto',
+    borderRadius: 5,
   },
   actionButton: {
     backgroundColor: customThemeColor.darkRed,
     paddingHorizontal: 20,
     paddingVertical: 10,
-    width: 300,
+    width: 250,
     borderRadius: 5,
   },
   actionButtonText: {
@@ -317,6 +329,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  iconContainer: {},
   container1: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -328,11 +341,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: customThemeColor.lightBG,
     paddingVertical: 10,
-  },
-  cardContainer1: {
-    width: '30%',
-    alignItems: 'center',
-    padding: 20,
   },
   subtitle: {
     color: customTextColor.primary,

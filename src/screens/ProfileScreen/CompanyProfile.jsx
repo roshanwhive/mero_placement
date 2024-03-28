@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     backgroundColor: customThemeColor.darkRed,
-    height: 200,
+    minHeight: 1000,
   },
   header: {
     height: 100,
@@ -172,9 +172,10 @@ const styles = StyleSheet.create({
     height: 130,
     borderRadius: 63,
     borderWidth: 4,
-    borderColor: 'white',
+    borderColor: customThemeColor.lightBG,
     alignSelf: 'center',
-    top: '-10%',
+    top: '-15%',
+    position: 'relative',
   },
   body: {
     backgroundColor: customThemeColor.white,
@@ -182,7 +183,7 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 20,
   },
   bodyContent: {
-    top: '-10%',
+    top: '-15%',
   },
   card: {
     display: 'flex',
@@ -190,6 +191,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 20,
+    gap: -10,
   },
   title: {
     fontSize: 25,

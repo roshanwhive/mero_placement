@@ -49,7 +49,8 @@ const CompanyPostedJob = ({postedJob}) => {
 const styles = StyleSheet.create({
   background: {
     backgroundColor: customThemeColor.lightBG,
-    flex: 1,
+    // flex: 1,
+    height: 500,
   },
   container: {
     marginHorizontal: 15,
