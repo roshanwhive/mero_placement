@@ -27,7 +27,7 @@ export default function Main() {
       <Provider store={store}>
         <PaperProvider theme={theme}>
           <App />
-          <FlashMessage position="top" />
+          <FlashMessage position="top" duration={2000} />
         </PaperProvider>
       </Provider>
     </PersistGate>

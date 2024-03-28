@@ -126,7 +126,6 @@ const Signup = ({navigation}) => {
     outlineColor: customTextColor.darkGreen,
     activeOutlineColor: customTextColor.darkGreen,
     selectionColor: customTextColor.darkGreen,
-    placeholderTextColor: customTextColor.darkRed,
   };
   return (
     <View style={styles.container}>
@@ -242,6 +241,7 @@ const Signup = ({navigation}) => {
                       labelField="label"
                       valueField="value"
                       searchPlaceholder="Search..."
+                      placeholderStyle={{color: '#3d3b3b'}}
                       value={value}
                       itemTextStyle={{color: customTextColor.darkGreen}}
                       style={[
