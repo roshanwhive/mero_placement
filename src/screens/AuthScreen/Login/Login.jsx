@@ -49,6 +49,8 @@ const Login = ({navigation}) => {
         message: JSON.stringify(message),
         type: 'danger',
         setLoading: false,
+        animationDuration: 1000,
+        animated: true,
       });
     } else if (isSuccess && statusCode === 200) {
       navigation.navigate('HomeScreen');
@@ -56,16 +58,16 @@ const Login = ({navigation}) => {
         message: JSON.stringify(message),
         type: 'success',
         setLoading: false,
+        animationDuration: 1000,
+        animated: true,
       });
+      console.log(isSuccess, statusCode);
     }
   }, [isError, isSuccess, statusCode, message]);
 
   const schema = yup.object().shape({
     email: yup.string().required('Email is Required').email('Invalid Email'),
-    password: yup
-      .string()
-      .required('Password is required')
-      .min(8, 'Password must contain at least 8 characters'),
+    password: yup.string().required('Password is required'),
   });
 
   const {
@@ -81,7 +83,11 @@ const Login = ({navigation}) => {
   });
 
   const onPressSend = formData => {
-    dispatch(loginUser(formData));
+    dispatch(loginUser(formData)).then(() => {
+      setTimeout(() => {
+        dispatch(resetState());
+      }, 10000);
+    });
   };
 
   // const pressbtn = () => {

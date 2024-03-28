@@ -51,7 +51,7 @@ const Signup = ({navigation}) => {
         setGenders(mappedGenderData);
       }
     }, 100);
-  }, [dispatch, getAllGender]);
+  }, [dispatch]);
 
   useEffect(() => {
     if (allGenderData.genders && Array.isArray(allGenderData.genders)) {
@@ -68,12 +68,16 @@ const Signup = ({navigation}) => {
       showMessage({
         message: JSON.stringify(message),
         type: 'danger',
+        animationDuration: 1000,
+        animated: true,
       });
     } else if (isSuccess && statusCode === 200) {
       navigation.navigate('EmailVerification');
       showMessage({
         message: JSON.stringify(message),
         type: 'success',
+        animationDuration: 1000,
+        animated: true,
       });
     }
     setTimeout(() => {
