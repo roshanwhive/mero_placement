@@ -11,6 +11,7 @@ import Account from '../../containers/profile/Account';
 import Preferences from '../../containers/profile/Preferences';
 import Education from '../../containers/profile/Education';
 import Experience from '../../containers/profile/Experience';
+import {customTextColor} from '../../constants/Color';
 
 export default Profile = ({navigation}) => {
   return (
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 22,
     fontWeight: '600',
-    color: '#11401E',
+    color: customTextColor.primary,
   },
 
   buttonContainer: {
