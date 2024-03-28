@@ -60,13 +60,6 @@ const JobDetail = ({navigation}) => {
     <View style={styles.container}>
       <AppBar handleBack={handleBack} title="Go Back" />
 
-      {/* Header */}
-      {/* <View style={styles.header}>
-        <TouchableOpacity onPress={handleBack}>
-          <Icon name="arrow-left" size={24} color="black" />
-        </TouchableOpacity>
-      </View> */}
-
       {/* Job Details */}
       {Object.keys(singleJob).length === 0 || isLoading === true ? (
         <ActivityIndicator
@@ -90,6 +83,9 @@ const JobDetail = ({navigation}) => {
                 <View style={styles.flexCard}>
                   <Text style={[styles.label, styles.link]}>
                     {singleJob.employment_type.employment_type}
+                  </Text>
+                  <Text style={[styles.label1]}>
+                    {singleJob.vacancy_level.name}
                   </Text>
                 </View>
               </View>
@@ -203,9 +199,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: customThemeColor.lightBG,
   },
-  header: {
-    padding: 10,
-  },
   jobDetails: {
     flex: 1,
     marginTop: 20,
@@ -242,6 +235,13 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 15,
     borderRadius: 20,
+  },
+  label1: {
+    backgroundColor: customThemeColor.lightBG,
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    borderRadius: 20,
+    color: customTextColor.primary,
   },
   link: {
     color: customTextColor.lightGreen,

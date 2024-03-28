@@ -122,7 +122,9 @@ const Signup = ({navigation}) => {
 
   //Common input properties
   const onPressSend = formData => {
-    dispatch(registerUser(formData));
+    dispatch(registerUser(formData)).then(() => {
+      dispatch(resetState());
+    });
   };
   const commonTextInputProps = {
     style: styles.input,

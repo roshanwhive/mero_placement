@@ -61,7 +61,6 @@ const Login = ({navigation}) => {
         animationDuration: 1000,
         animated: true,
       });
-      console.log(isSuccess, statusCode);
     }
   }, [isError, isSuccess, statusCode, message]);
 
@@ -84,9 +83,7 @@ const Login = ({navigation}) => {
 
   const onPressSend = formData => {
     dispatch(loginUser(formData)).then(() => {
-      setTimeout(() => {
-        dispatch(resetState());
-      }, 10000);
+      dispatch(resetState());
     });
   };
 
