@@ -1,5 +1,6 @@
 import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
+import {customTextColor} from '../../constants/Color';
 
 const Preferences = () => {
   return (
@@ -43,8 +44,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 22,
-    fontWeight: '600',
-    color: '#11401E',
+    fontWeight: '500',
+    color: customTextColor.primary,
   },
   edit: {
     color: '#2b8256',

@@ -10,10 +10,11 @@ import {
 import {categories} from '../constants';
 import {useDispatch, useSelector} from 'react-redux';
 import {getMainCategories} from '../features/job/JobSlice';
+import {useNavigation} from '@react-navigation/native';
 
 const Categories = () => {
   const [activeCategory, setActiveCategory] = useState(null);
-
+  const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const {mainCategories} = useSelector(state => state.job);
@@ -21,9 +22,17 @@ const Categories = () => {
   useEffect(() => {
     dispatch(getMainCategories());
   }, [dispatch]);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.titleText}>Jobs By Category</Text>
+      <View style={styles.header}>
+        <View>
+          <Text style={styles.title}>Jobs By Category</Text>
+        </View>
+        <TouchableOpacity onPress={() => navigation.navigate('AllCategories')}>
+          <Text style={styles.seeAll}>See All</Text>
+        </TouchableOpacity>
+      </View>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -53,16 +62,28 @@ const Categories = () => {
 };
 
 const styles = StyleSheet.create({
+  header: {
+    marginVertical: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+  },
+  title: {
+    fontWeight: 'bold',
+    color: '#11401E',
+    fontSize: 20,
+  },
+  seeAll: {
+    color: '#2b8256',
+    fontWeight: '500',
+    textDecorationLine: 'underline',
+    paddingRight: 3,
+  },
   container: {
     marginTop: 4,
   },
-  titleText: {
-    fontSize: 20,
-    paddingHorizontal: 10,
-    marginVertical: 10,
-    fontWeight: '600',
-    color: '#11401E',
-  },
+
   scrollViewContent: {
     paddingHorizontal: 15,
   },
@@ -93,16 +114,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#f2d8d8',
   },
   inactiveButton: {
-    backgroundColor: '#f7f7f7',
+    backgroundColor: '#f2f2f2',
   },
   image: {
-    width: 45,
-    height: 45,
+    width: 35,
+    height: 35,
   },
   categoryName: {
     marginTop: 5,
     fontSize: 13,
-    fontWeight: 'bold',
+    fontWeight: '500',
   },
   activeText: {
     color: '#9D050A',

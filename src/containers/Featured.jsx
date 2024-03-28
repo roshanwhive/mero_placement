@@ -11,6 +11,7 @@ import {customTextColor, customThemeColor} from '../constants/Color';
 import {ActivityIndicator} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import {getJobByJobTypes} from '../features/job/JobSlice';
+import CardSkeleton from '../components/skeleton_loader/CardSkeleton';
 
 const Featured = ({navigation}) => {
   const dispatch = useDispatch();
@@ -37,12 +38,10 @@ const Featured = ({navigation}) => {
             return <JobCard key={index} items={item} navigation={navigation} />;
           })
         ) : (
-          <View style={{marginTop: 100}}>
-            <ActivityIndicator
-              animating={true}
-              style={{marginVertical: 20}}
-              color={customTextColor.lightGreen}
-            />
+          <View>
+            <CardSkeleton />
+            <CardSkeleton />
+            <CardSkeleton />
           </View>
         )}
       </View>

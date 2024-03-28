@@ -1,14 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import {customTextColor} from '../constants/Color';
+import {customTextColor, customThemeColor} from '../constants/Color';
 import {format, formatDistance, differenceInMilliseconds} from 'date-fns';
+import {useDispatch} from 'react-redux';
+import {getSingleJob} from '../features/job/JobSlice';
+import {getCompanyProfile} from '../features/company/CompanySlice';
+import AvatarByName from './AvatarbyName';
 
 const JobCard = ({items, navigation}) => {
   const companyLogo = require('../assets/companyLogo.png');
 
   const [formattedDate, setFormattedDate] = useState('');
   const [formattedDistance, setFormattedDistance] = useState('');
+
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (items) {
       const date = new Date(items.created_date);
@@ -23,24 +30,24 @@ const JobCard = ({items, navigation}) => {
       setFormattedDistance(formattedDistance);
     }
   }, [items]);
-
-  const onPressApply = () => {
-    navigation.navigate('JobDetail');
+  const onPressApplyButton = slug => {
+    navigation.navigate('JobDetail', {slug: slug});
   };
 
   return (
     <View style={styles.cardContainer}>
       <View style={styles.logoContainer}>
         <TouchableOpacity
-          onPress={() =>
+          onPress={() => {
+            dispatch(getCompanyProfile(items?.get_company?.slug));
             navigation.navigate('CompanyProfile', {
               slug: items ? items.get_company.slug : '',
-            })
-          }>
+            });
+          }}>
           {items && items.get_company && items.get_company.logo !== null ? (
             <Image source={{uri: items.get_company.logo}} style={styles.logo} />
           ) : (
-            <Image source={companyLogo} style={styles.logo} />
+            <AvatarByName name={items?.getCompanyProfile?.employer_name} />
           )}
         </TouchableOpacity>
       </View>
@@ -72,7 +79,14 @@ const JobCard = ({items, navigation}) => {
       <View style={styles.buttonContainer}>
         <View></View>
         <View>
-          <TouchableOpacity onPress={onPressApply} style={styles.applyButton}>
+          <TouchableOpacity
+            onPress={() => {
+              dispatch(getSingleJob(items?.slug));
+              navigation.navigate('JobDetail', {
+                slug: items ? items.slug : '',
+              });
+            }}
+            style={styles.applyButton}>
             <Text style={styles.applyButtonText}>Apply</Text>
           </TouchableOpacity>
         </View>
@@ -84,7 +98,7 @@ const JobCard = ({items, navigation}) => {
 const styles = StyleSheet.create({
   cardContainer: {
     flexDirection: 'row',
-    backgroundColor: '#fff',
+    backgroundColor: customThemeColor.white,
     borderRadius: 8,
     marginVertical: 8,
     marginHorizontal: 2,
@@ -101,8 +115,8 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   logo: {
-    width: 80,
-    height: 80,
+    width: 60,
+    height: 60,
     resizeMode: 'contain',
     borderRadius: 10,
     objectFit: 'cover',

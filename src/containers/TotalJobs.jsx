@@ -9,8 +9,7 @@ import {
 import JobCard from '../components/JobCard';
 import {useDispatch, useSelector} from 'react-redux';
 import {getAllJobs} from '../features/job/JobSlice';
-import {ActivityIndicator} from 'react-native-paper';
-import {customTextColor} from '../constants/Color';
+import CardSkeleton from '../components/skeleton_loader/CardSkeleton';
 
 const TotalJobs = ({navigation}) => {
   const dispatch = useDispatch();
@@ -41,12 +40,10 @@ const TotalJobs = ({navigation}) => {
             );
           })
         ) : (
-          <View style={{marginTop: 100}}>
-            <ActivityIndicator
-              animating={true}
-              style={{marginVertical: 20}}
-              color={customTextColor.lightGreen}
-            />
+          <View>
+            <CardSkeleton />
+            <CardSkeleton />
+            <CardSkeleton />
           </View>
         )}
       </View>

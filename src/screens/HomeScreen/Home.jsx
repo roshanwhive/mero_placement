@@ -8,14 +8,17 @@ import TotalJobs from '../../containers/TotalJobs';
 import Training from '../../containers/Training';
 import ActivelySeekingForJobCard from '../../containers/ActivelySeekingForJobCard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AppBar from '../../components/custom_toolbar/AppBar';
+import {customThemeColor} from '../../constants/Color';
+import DrawerContent from '../../components/DrawerContent';
 
 const Home = ({navigation}) => {
   return (
     <>
       <SafeAreaView style={styles.safeArea}>
         <StatusBar barStyle="dark-content" />
-
         <View style={styles.header}>
+          <AppBar isHome={true} />
           <View style={styles.textWrapper}>
             <Text style={styles.greetingText}>Hello, Roshan Neupane</Text>
             <Text style={styles.subHeading}>Get Your Dream Job!</Text>
@@ -27,7 +30,7 @@ const Home = ({navigation}) => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollViewContent}>
           {/* Categories */}
-          {/* <Categories /> */}
+          <Categories />
           <ActivelySeekingForJobCard />
           {/* Featured */}
           <View style={styles.featuredContainer}>
@@ -71,8 +74,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   header: {
-    height: 200,
-    backgroundColor: '#9D050A',
+    height: 400,
+    backgroundColor: customThemeColor.darkRed,
     position: 'absolute',
     top: 0,
     left: 0,
@@ -82,7 +85,7 @@ const styles = StyleSheet.create({
   scrollViewContent: {
     paddingBottom: 120,
     paddingTop: 10,
-    marginTop: 120,
+    marginTop: 170,
     zIndex: 0,
     backgroundColor: '#FCFCFC',
     borderTopLeftRadius: 25,

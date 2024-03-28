@@ -10,14 +10,13 @@ import {
 import {customTextColor, customThemeColor} from '../../constants/Color';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import companyLogo from '../../assets/companyLogo.png';
-import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
+import {TabView, TabBar} from 'react-native-tab-view';
 import CompanyBackground from '../../containers/profile/CompanyBackground';
 import CompanyPostedJob from '../../containers/profile/CompanyPostedJob';
-import {useRoute} from '@react-navigation/native';
-import {getCompanyProfile} from '../../features/company/CompanySlice';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import RenderHtml from 'react-native-render-html';
 import {ActivityIndicator} from 'react-native-paper';
+import AppBar from '../../components/custom_toolbar/AppBar';
 
 const renderTabBar = props => (
   <TabBar
@@ -30,21 +29,13 @@ const renderTabBar = props => (
 );
 
 const CompanyProfile = ({navigation}) => {
-  const route = useRoute();
-  const {slug} = route.params;
-  const dispatch = useDispatch();
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     {key: 'first', title: 'Background'},
     {key: 'second', title: 'Posted Job'},
   ]);
 
-  const {companyProfile} = useSelector(state => state.company);
-  const descriptionHtml = companyProfile ? companyProfile.description : '';
-
-  useEffect(() => {
-    dispatch(getCompanyProfile(slug));
-  }, [dispatch, slug]);
+  const {companyProfile, isLoading} = useSelector(state => state.company);
 
   const [showFullDescription, setShowFullDescription] = useState(false);
   const description = companyProfile ? companyProfile.description : '';
@@ -53,108 +44,116 @@ const CompanyProfile = ({navigation}) => {
     setShowFullDescription(!showFullDescription);
   };
 
-  const truncatedDescription = description.slice(0, 300);
+  const truncatedDescription = description ? description.slice(0, 300) : '';
   const readMoreText = showFullDescription ? 'Read less' : 'Read more';
 
   const tagsStyles = {
     p: {
       color: customTextColor.secondary,
+      textAlign: 'justify',
     },
+  };
+
+  const handleBack = () => {
+    navigation.goBack();
   };
   return (
     <ScrollView
       horizontal={false}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.container}>
+      <AppBar handleBack={handleBack} title="Company Profile" />
       <View style={styles.header}></View>
 
-      {companyProfile ? (
-        <View style={styles.body}>
-          <Image style={styles.avatar} source={companyLogo} />
-          <View style={styles.bodyContent}>
-            <View style={styles.card}>
-              <Text style={styles.title}>
-                {companyProfile ? companyProfile.employer_name : ''}
-              </Text>
-              <View>
-                <RenderHtml
-                  contentWidth={100}
-                  ignoredDomTags={false}
-                  tagsStyles={tagsStyles}
-                  source={{
-                    html: showFullDescription
-                      ? description
-                      : truncatedDescription,
-                  }}
-                />
-                {description.length > 300 && (
-                  <TouchableOpacity onPress={toggleDescription}>
-                    <Text
-                      style={{
-                        color: customTextColor.darkGreen,
-                        textDecorationLine: 'underline',
-                      }}>
-                      {readMoreText}
-                    </Text>
-                  </TouchableOpacity>
-                )}
-              </View>
-            </View>
-            <View style={styles.status}>
-              <View style={styles.cardStatus}>
-                <Text style={styles.headingStatus}>Following</Text>
-                <Text style={styles.subheadingStatus}>0</Text>
-              </View>
-              <View style={[styles.cardStatus, styles.borderHorizontal]}>
-                <Text style={styles.headingStatus}>Followers</Text>
-                <Text style={styles.subheadingStatus}>
-                  {companyProfile ? companyProfile.total_followers : ''}
-                </Text>
-              </View>
-              <View style={styles.cardStatus}>
-                <Text style={styles.headingStatus}>Posted Job</Text>
-                <Text style={styles.subheadingStatus}>
-                  {companyProfile ? companyProfile.jobs.length : 0}
-                </Text>
-              </View>
-            </View>
-            <View style={styles.containerFollow}>
-              <TouchableOpacity style={styles.buttonFollow}>
-                <Text style={styles.followText}>Follow</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.shareButton}>
-                <Icon
-                  name="share-square"
-                  size={20}
-                  color={customTextColor.darkGreen}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      ) : (
+      {Object.keys(companyProfile).length === 0 || isLoading === true ? (
         <ActivityIndicator
           animating={true}
-          style={{marginVertical: 20}}
+          style={[styles.body, {flex: 1}]}
           color={customTextColor.lightGreen}
         />
+      ) : (
+        <>
+          <View style={styles.body}>
+            <Image style={styles.avatar} source={{uri: companyProfile?.logo}} />
+            <View style={styles.bodyContent}>
+              <View style={styles.card}>
+                <Text style={styles.title}>
+                  {companyProfile ? companyProfile.employer_name : ''}
+                </Text>
+                <View>
+                  <RenderHtml
+                    contentWidth={100}
+                    ignoredDomTags={['quillbot-extension-portal']}
+                    tagsStyles={tagsStyles}
+                    source={{
+                      html: showFullDescription
+                        ? description
+                        : truncatedDescription,
+                    }}
+                  />
+                  {description && description.length > 300 && (
+                    <TouchableOpacity onPress={toggleDescription}>
+                      <Text
+                        style={{
+                          color: customTextColor.darkGreen,
+                          textDecorationLine: 'underline',
+                        }}>
+                        {readMoreText}
+                      </Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+              </View>
+              <View style={styles.status}>
+                <View style={styles.cardStatus}>
+                  <Text style={styles.headingStatus}>Following</Text>
+                  <Text style={styles.subheadingStatus}>0</Text>
+                </View>
+                <View style={[styles.cardStatus, styles.borderHorizontal]}>
+                  <Text style={styles.headingStatus}>Followers</Text>
+                  <Text style={styles.subheadingStatus}>
+                    {companyProfile ? companyProfile.total_followers : ''}
+                  </Text>
+                </View>
+                <View style={styles.cardStatus}>
+                  <Text style={styles.headingStatus}>Posted Job</Text>
+                  <Text style={styles.subheadingStatus}>
+                    {companyProfile.jobs ? companyProfile.jobs.length : 0}
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.containerFollow}>
+                <TouchableOpacity style={styles.buttonFollow}>
+                  <Text style={styles.followText}>Follow</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.shareButton}>
+                  <Icon
+                    name="share-square"
+                    size={20}
+                    color={customTextColor.darkGreen}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+          <TabView
+            renderTabBar={renderTabBar}
+            navigationState={{index, routes}}
+            renderScene={({route}) => {
+              switch (route.key) {
+                case 'first':
+                  return <CompanyBackground backgroundInfo={companyProfile} />;
+                case 'second':
+                  return <CompanyPostedJob postedJob={companyProfile} />;
+                default:
+                  return null;
+              }
+            }}
+            onIndexChange={setIndex}
+            style={styles.containerTab}
+          />
+        </>
       )}
-      <TabView
-        renderTabBar={renderTabBar}
-        navigationState={{index, routes}}
-        renderScene={({route}) => {
-          switch (route.key) {
-            case 'first':
-              return <CompanyBackground backgroundInfo={companyProfile} />;
-            case 'second':
-              return <CompanyPostedJob postedJob={companyProfile} />;
-            default:
-              return null;
-          }
-        }}
-        onIndexChange={setIndex}
-        style={styles.containerTab}
-      />
     </ScrollView>
   );
 };
@@ -163,7 +162,7 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     backgroundColor: customThemeColor.darkRed,
-    height: 200,
+    minHeight: 1000,
   },
   header: {
     height: 100,
@@ -173,9 +172,10 @@ const styles = StyleSheet.create({
     height: 130,
     borderRadius: 63,
     borderWidth: 4,
-    borderColor: 'white',
+    borderColor: customThemeColor.lightBG,
     alignSelf: 'center',
-    top: '-10%',
+    top: '-15%',
+    position: 'relative',
   },
   body: {
     backgroundColor: customThemeColor.white,
@@ -183,14 +183,15 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 20,
   },
   bodyContent: {
-    top: '-10%',
+    top: '-15%',
   },
   card: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
+    gap: -10,
   },
   title: {
     fontSize: 25,

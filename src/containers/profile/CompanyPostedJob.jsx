@@ -30,7 +30,7 @@ const CompanyPostedJob = ({postedJob}) => {
       horizontal={false}
       showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
-        {postedJob.jobs ? (
+        {!!postedJob.jobs ? (
           postedJob.jobs.map((jobs, index) => {
             return <JobCard key={index} items={jobs} navigation={navigation} />;
           })
@@ -49,7 +49,8 @@ const CompanyPostedJob = ({postedJob}) => {
 const styles = StyleSheet.create({
   background: {
     backgroundColor: customThemeColor.lightBG,
-    flex: 1,
+    // flex: 1,
+    height: 500,
   },
   container: {
     marginHorizontal: 15,

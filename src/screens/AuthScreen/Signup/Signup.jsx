@@ -20,6 +20,7 @@ import {getAllGender} from '../../../features/formData/FormSlice';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import {customTextColor, customThemeColor} from '../../../constants/Color';
 import {registerUser, resetState} from '../../../features/auth/AuthSlice';
+
 const Signup = ({navigation}) => {
   const [value, setValue] = useState(null);
   const [genders, setGenders] = useState([]);
@@ -50,7 +51,7 @@ const Signup = ({navigation}) => {
         setGenders(mappedGenderData);
       }
     }, 100);
-  }, [dispatch, getAllGender]);
+  }, [dispatch]);
 
   useEffect(() => {
     if (allGenderData.genders && Array.isArray(allGenderData.genders)) {
@@ -67,23 +68,22 @@ const Signup = ({navigation}) => {
       showMessage({
         message: JSON.stringify(message),
         type: 'danger',
+        animationDuration: 1000,
+        animated: true,
       });
     } else if (isSuccess && statusCode === 200) {
       navigation.navigate('EmailVerification');
       showMessage({
         message: JSON.stringify(message),
         type: 'success',
+        animationDuration: 1000,
+        animated: true,
       });
     }
     setTimeout(() => {
       dispatch(resetState());
-    }, 15000);
-    console.log(isLoading);
+    }, 10000);
   }, [isError, isSuccess, statusCode, message]);
-
-  // useEffect(() => {
-  //   if (isSuccess && statusCode === '200')
-  // }, [isSuccess, statusCode]);
 
   const schema = yup.object().shape({
     name: yup.string().required('Name is Required'),
@@ -122,7 +122,9 @@ const Signup = ({navigation}) => {
 
   //Common input properties
   const onPressSend = formData => {
-    dispatch(registerUser(formData));
+    dispatch(registerUser(formData)).then(() => {
+      dispatch(resetState());
+    });
   };
   const commonTextInputProps = {
     style: styles.input,
@@ -130,7 +132,6 @@ const Signup = ({navigation}) => {
     outlineColor: customTextColor.darkGreen,
     activeOutlineColor: customTextColor.darkGreen,
     selectionColor: customTextColor.darkGreen,
-    placeholderTextColor: customTextColor.darkRed,
   };
   return (
     <View style={styles.container}>
@@ -246,6 +247,7 @@ const Signup = ({navigation}) => {
                       labelField="label"
                       valueField="value"
                       searchPlaceholder="Search..."
+                      placeholderStyle={{color: '#3d3b3b'}}
                       value={value}
                       itemTextStyle={{color: customTextColor.darkGreen}}
                       style={[
@@ -359,14 +361,16 @@ const Signup = ({navigation}) => {
                 <TouchableOpacity
                   onPress={handleSubmit(onPressSend)}
                   style={styles.button}>
-                  {/* {isLoading ? (
+                  {isLoading ? (
                     <ActivityIndicator
                       animating={true}
-                      color={customTextColor.darkGreen}
+                      style={{paddingVertical: 14}}
+                      color={customTextColor.white}
+                      size={20}
                     />
-                  ) : ( */}
-                  <Text style={styles.buttonText}>Signup</Text>
-                  {/* )} */}
+                  ) : (
+                    <Text style={styles.buttonText}>Signup</Text>
+                  )}
                 </TouchableOpacity>
               </View>
               <View style={styles.signupTextContainer}>
