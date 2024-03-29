@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   },
   scrollViewContent: {
     paddingHorizontal: 15,
-    paddingVertical: 5,
+    paddingVertical: 15,
     overflow: 'visible',
   },
 });

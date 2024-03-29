@@ -11,6 +11,7 @@ import {categories} from '../constants';
 import {useDispatch, useSelector} from 'react-redux';
 import {getMainCategories} from '../features/job/JobSlice';
 import {useNavigation} from '@react-navigation/native';
+import CategoryCardCircle from './skeleton_loader/CategoryCardCircle';
 
 const Categories = () => {
   const [activeCategory, setActiveCategory] = useState(null);
@@ -43,8 +44,9 @@ const Categories = () => {
             ? styles.activeButton
             : styles.inactiveButton;
           const textStyle = isActive ? styles.activeText : styles.inactiveText;
-          return (
-            <View key={index} style={styles.categoryItem}>
+          return <CategoryCardCircle />;
+        })}
+        {/* <View key={index} style={styles.categoryItem}>
               <TouchableOpacity
                 onPress={() => setActiveCategory(category.id)}
                 style={[styles.imageContainer, btnStyle]}>
@@ -53,9 +55,7 @@ const Categories = () => {
               <Text style={[styles.categoryName, textStyle]}>
                 {category.name}
               </Text>
-            </View>
-          );
-        })}
+            </View> */}
       </ScrollView>
     </View>
   );

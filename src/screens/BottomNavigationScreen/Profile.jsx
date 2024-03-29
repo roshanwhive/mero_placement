@@ -15,6 +15,7 @@ import {customTextColor, customThemeColor} from '../../constants/Color';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUserProfile} from '../../features/auth/AuthSlice';
 import {ActivityIndicator} from 'react-native-paper';
+import AppBar from '../../components/custom_toolbar/AppBar';
 
 export default Profile = ({navigation}) => {
   const dispatch = useDispatch();
@@ -31,6 +32,9 @@ export default Profile = ({navigation}) => {
     console.log(userProfile);
   }, [userProfile]);
 
+  const handleBack = () => {
+    navigation.goBack();
+  };
   return (
     <>
       {!!userProfile ? (
@@ -38,6 +42,7 @@ export default Profile = ({navigation}) => {
           horizontal={false}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.container}>
+          <AppBar handleBack={handleBack} title="Profile" />
           <View style={styles.header}></View>
           <Image
             style={styles.avatar}
