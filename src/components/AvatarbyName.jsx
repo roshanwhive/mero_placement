@@ -9,7 +9,7 @@ const AvatarByName = ({name}) => {
     <View
       style={[
         styles.avatarContainer,
-        {backgroundColor: customThemeColor.lightBG},
+        {backgroundColor: customThemeColor.lightestGreen},
       ]}>
       <Text style={styles.avatarText}>{firstLetter}</Text>
     </View>
@@ -19,15 +19,17 @@ const styles = StyleSheet.create({
   avatarContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 60,
-    height: 60,
-    resizeMode: 'contain',
-    borderRadius: 10,
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+    borderRadius: 100,
+    // borderWidth: 4,
+    // borderColor: 'white',
   },
   avatarText: {
-    fontSize: 24,
+    fontSize: 44,
     fontWeight: 'bold',
-    color: customTextColor.primary,
+    color: customTextColor.secondary,
   },
 });
 

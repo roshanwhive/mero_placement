@@ -33,8 +33,8 @@ const Featured = ({navigation}) => {
       </View>
 
       <View style={styles.scrollViewContent}>
-        {jobByTpes.data ? (
-          jobByTpes.data.slice(0, 5).map((item, index) => {
+        {!!jobByTpes?.data ? (
+          jobByTpes?.data?.slice(0, 5).map((item, index) => {
             return <JobCard key={index} items={item} navigation={navigation} />;
           })
         ) : (

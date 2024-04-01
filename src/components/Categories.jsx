@@ -11,6 +11,7 @@ import {categories} from '../constants';
 import {useDispatch, useSelector} from 'react-redux';
 import {getMainCategories} from '../features/job/JobSlice';
 import {useNavigation} from '@react-navigation/native';
+import CategoryCardCircle from './skeleton_loader/CategoryCardCircle';
 
 const Categories = () => {
   const [activeCategory, setActiveCategory] = useState(null);
@@ -53,6 +54,7 @@ const Categories = () => {
               <Text style={[styles.categoryName, textStyle]}>
                 {category.name}
               </Text>
+              {/* <CategoryCardCircle key={index} /> */}
             </View>
           );
         })}
@@ -96,8 +98,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 80,
-    width: 80,
+    height: 90,
+    width: 90,
     padding: 5,
     borderRadius: 100,
     shadowColor: '#000',

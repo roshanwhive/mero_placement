@@ -50,7 +50,7 @@ const getUserProfile = async () => {
   try {
     const config = await getConfigWithToken();
     // console.log(config);
-    const response = await axios.get(`${base_url}candidate/user`, config);
+    const response = await axios.get(`${base_url}candidate/profile`, config);
 
     if (response) {
       return response.data;

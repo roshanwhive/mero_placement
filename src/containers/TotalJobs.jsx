@@ -31,7 +31,7 @@ const TotalJobs = ({navigation}) => {
         </TouchableOpacity>
       </View>
       <View style={styles.scrollViewContent}>
-        {allJobs.data ? (
+        {!!allJobs?.data ? (
           allJobs.data.map((item, index) => {
             return (
               <View key={index}>
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   },
   scrollViewContent: {
     paddingHorizontal: 15,
-    paddingVertical: 5,
+    paddingVertical: 15,
     overflow: 'visible',
   },
 });

@@ -57,6 +57,9 @@ export const getUserProfile = createAsyncThunk(
 //Reset State
 export const resetState = createAction('Reset_all');
 
+//Logout
+export const logout = createAction('Logout');
+
 export const authSlice = createSlice({
   name: 'auth',
   initialState: initialState,
@@ -108,6 +111,7 @@ export const authSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.isAuthenticated = false;
+        state.userProfile = [];
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.isError = true;
@@ -129,6 +133,17 @@ export const authSlice = createSlice({
         state.isError = true;
         state.isLoading = false;
         state.isSuccess = false;
+      })
+
+      //Logout
+      .addCase(logout, state => {
+        state.message = 'Logged out successfully';
+        state.isSuccess = true;
+        state.statusCode = 200;
+        state.isAuthenticated = false;
+        state.userProfile = [];
+        AsyncStorage.removeItem('USER_ID');
+        AsyncStorage.removeItem('isLoggedIn');
       })
 
       //Reset State
