@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Image,
   StatusBar,
@@ -9,14 +9,14 @@ import {
   ActivityIndicator,
   ScrollView,
 } from 'react-native';
-import {TextInput} from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {useDispatch, useSelector} from 'react-redux';
-import {loginUser, resetState} from '../../../features/auth/AuthSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser, resetState } from '../../../features/auth/AuthSlice';
 import AuthHeader from '../../../components/AuthHeader';
 import AuthLogo from '../../../components/AuthLogo';
 import AuthTitle from '../../../components/AuthTitle';
-import {customTextColor, customThemeColor} from '../../../constants/Color';
+import { customTextColor, customThemeColor } from '../../../constants/Color';
 import * as yup from 'yup';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -24,28 +24,24 @@ import { showMessage } from 'react-native-flash-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-
-
-const Login = ({navigation}) => {
+const Login = ({ navigation }) => {
   const [value, setValue] = useState(null);
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [loading, setLoading] = useState(true);
   // const [password, setPassword] = useState('');
   const loginLogo = require('../../../assets/loginLogo.png');
   const USER_ID_KEY = 'USER_ID';
+  const [isLogged, setIsLogged] = useState(false);
+  const [tokenUser, setToken] = useState(null);
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
   const dispatch = useDispatch();
 
-  const {message, isSuccess, isError, statusCode} = useSelector(
+  const { message, isSuccess, isError, statusCode, token, data, isLoading } = useSelector(
     state => state.auth,
   );
 
-  // const { message } = useSelector(state => state.auth);
-  // useEffect(() => {
-  // }, [message]);
 
 
   useEffect(() => {
@@ -53,21 +49,21 @@ const Login = ({navigation}) => {
       showMessage({
         message: JSON.stringify(message),
         type: 'danger',
-        setLoading: false,
+
       });
     } else if (isSuccess && statusCode === 200) {
       navigation.navigate('HomeScreen');
       showMessage({
         message: JSON.stringify(message),
         type: 'success',
-        setLoading: false,
       });
     }
+
     setTimeout(() => {
       dispatch(resetState());
     }, 15000);
-    console.log("api" + isError, isSuccess, statusCode, message);
-  }, [isError, isSuccess, statusCode, message]);
+    console.log("api" + isError, isSuccess, statusCode, message, data.token, isLoading);
+  }, [isError, isSuccess, statusCode, message, isLoading]);
 
   const schema = yup.object().shape({
     email: yup.string().required('Email is Required').email('Invalid Email'),
@@ -81,7 +77,7 @@ const Login = ({navigation}) => {
   const {
     control,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -92,16 +88,8 @@ const Login = ({navigation}) => {
 
   const onPressSend = formData => {
     dispatch(loginUser(formData));
-    dispatch(loginUser(formData));
   };
 
-  // const pressbtn = () => {
-  //   showMessage({
-  //     message: "Success",
-  //     description: "The Event has been created",
-  //     type: "success",
-  //   });
-  // };
 
   const commonTextInputProps = {
     style: styles.input,
@@ -201,16 +189,21 @@ const Login = ({navigation}) => {
                 <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
               </TouchableOpacity>
               <View style={styles.buttonWrapper}>
+
+                <View style={{ position: 'absolute', top: 0, bottom: 0, right: 0, left: 0 }}>
+                  <ActivityIndicator size={"large"} color={"#00ff00"} />
+                </View>
+
                 <TouchableOpacity onPress={handleSubmit(onPressSend)} style={styles.button}>
 
                   <Text style={styles.buttonText}>Login</Text>
-                  {/* <View style={{ position: 'absolute', top: 0, bottom: 0, right: 0, left: 0 }}>
-                    <ActivityIndicator size={"large"} color={"#00ff00"} />
-                  </View> */}
+
                 </TouchableOpacity>
+
+
               </View>
               <View style={styles.signupTextContainer}>
-                <Text style={{ color: customTextColor.primary }}>
+                <Text style={{ color: customTextColor.primary, fontFamily: "Roboto-Bold" }}>
                   Don't have an account?
                 </Text>
                 <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
@@ -220,8 +213,8 @@ const Login = ({navigation}) => {
             </View>
           </ScrollView>
         </View>
-      </View>
-    </View>
+      </View >
+    </View >
   );
 };
 

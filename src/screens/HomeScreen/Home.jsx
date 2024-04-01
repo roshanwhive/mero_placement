@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import {StatusBar, ScrollView, StyleSheet, View, Text} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { StatusBar, ScrollView, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Categories from '../../components/Categories';
 import Featured from '../../containers/Featured';
 import SearchBar from '../../containers/SearchBar';
@@ -9,7 +9,19 @@ import Training from '../../containers/Training';
 import ActivelySeekingForJobCard from '../../containers/ActivelySeekingForJobCard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Home = ({navigation}) => {
+const Home = ({ navigation }) => {
+
+
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem();
+
+    } catch (error) {
+
+    }
+  }
+
+
   return (
     <>
       <SafeAreaView style={styles.safeArea}>
@@ -17,8 +29,10 @@ const Home = ({navigation}) => {
 
         <View style={styles.header}>
           <View style={styles.textWrapper}>
-            <Text style={styles.greetingText}>Hello, Roshan Neupane</Text>
-            <Text style={styles.subHeading}>Get Your Dream Job!</Text>
+            <Text style={[styles.greetingText, styles.font ]}>Hello, Roshan Neupane</Text>
+            <TouchableOpacity>
+              <Text style={[styles.subHeading, styles.font]}>Get Your Dream Job!</Text>
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -33,7 +47,7 @@ const Home = ({navigation}) => {
           <View style={styles.featuredContainer}>
             <Featured navigation={navigation} />
           </View>
-          <Training navigation={navigation}  />
+          <Training navigation={navigation} />
           <View style={styles.totalJobs}>
             <TotalJobs navigation={navigation} />
           </View>
@@ -62,7 +76,7 @@ const styles = StyleSheet.create({
   },
   greetingText: {
     color: '#fcfcfc',
-    fontWeight: 'bold',
+    
     fontSize: 16,
   },
   subHeading: {
@@ -94,6 +108,9 @@ const styles = StyleSheet.create({
   },
   totalJobs: {
     marginTop: 5,
+  },
+  font: {
+    fontFamily: 'Roboto-Regular'
   },
 });
 

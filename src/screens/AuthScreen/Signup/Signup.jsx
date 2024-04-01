@@ -70,7 +70,7 @@ const Signup = ({ navigation }) => {
         type: 'danger',
       });
     } else if (isSuccess && statusCode === 200) {
-      navigation.navigate('EmailVerification');
+      //navigation.navigate('EmailVerification');
       showMessage({
         message: JSON.stringify(message),
         type: 'success',
@@ -145,226 +145,226 @@ const Signup = ({ navigation }) => {
         <AuthHeader />
         <View style={{ flex: 1 }}>
           <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.scrollViewContent}>
-        <View style={styles.inputContainer}>
-          <AuthTitle title="Create an Account" />
-          <View style={styles.inputWrapper}>
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({ field: { onChange, value } }) => (
-                <TextInput
-                  {...commonTextInputProps}
-                  label="Name"
-                  value={value}
-                  onChangeText={onChange}
-                  left={
-                    <TextInput.Icon
-                      icon="account"
-                      size={25}
-                      color={customTextColor.darkGreen}
-                    />
-                  }
-                />
-              )}
-              name="name"
-            />
-            {errors.name && (
-              <Text style={styles.errorText}>{errors.name.message}</Text>
-            )}
-          </View>
-          <View style={styles.inputWrapper}>
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({ field: { onChange, value } }) => (
-                <TextInput
-                  {...commonTextInputProps}
-                  label="Emaill"
-                  value={value}
-                  onChangeText={onChange}
-                  left={
-                    <TextInput.Icon
-                      icon="email"
-                      size={25}
-                      color={customTextColor.darkGreen}
-                    />
-                  }
-                />
-              )}
-              name="email"
-            />
-            {errors.email && (
-              <Text style={styles.errorText}>{errors.email.message}</Text>
-            )}
-          </View>
-          <View style={styles.inputWrapper}>
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({ field: { onChange, value } }) => (
-                <TextInput
-                  {...commonTextInputProps}
-                  label="Contact"
-                  keyboardType="numeric"
-                  value={value}
-                  onChangeText={onChange}
-                  left={
-                    <TextInput.Icon
-                      icon="phone"
-                      size={25}
-                      color={customTextColor.darkGreen}
-                    />
-                  }
-                />
-              )}
-              name="contact"
-            />
-            {errors.contact && (
-              <Text style={styles.errorText}>{errors.contact.message}</Text>
-            )}
-          </View>
-          <View style={styles.inputWrapper}>
-            <Controller
-              control={control}
-              rules={{
-                required: false,
-              }}
-              render={({ field: { onChange, value } }) => (
-                <Dropdown
-                  data={genders}
-                  placeholder="Select Gender"
-                  maxHeight={300}
-                  labelField="label"
-                  valueField="value"
-                  searchPlaceholder="Search..."
-                  value={value}
-                  itemTextStyle={{color: customTextColor.darkGreen}}
-                  style={[
-                    {
-                      borderWidth: 1,
-                      borderColor: customTextColor.darkGreen,
-                      borderRadius: 5,
-                      paddingHorizontal: 16,
-                      paddingVertical: 5,
-                    },
-                    styles.input,
-                  ]}
-                  onChange={item => {
-                    onChange(item.value);
+            <View style={styles.inputContainer}>
+              <AuthTitle title="Create an Account" />
+              <View style={styles.inputWrapper}>
+                <Controller
+                  control={control}
+                  rules={{
+                    required: true,
                   }}
-                  renderLeftIcon={() => (
-                    <Icon
-                      color={customTextColor.darkGreen}
-                      name="user-edit"
-                      size={20}
-                      style={{ marginRight: 13 }}
+                  render={({ field: { onChange, value } }) => (
+                    <TextInput
+                      {...commonTextInputProps}
+                      label="Name"
+                      value={value}
+                      onChangeText={onChange}
+                      left={
+                        <TextInput.Icon
+                          icon="account"
+                          size={25}
+                          color={customTextColor.darkGreen}
+                        />
+                      }
                     />
                   )}
+                  name="name"
                 />
-              )}
-              name="gender_id"
-            />
-            {errors.gender_id && (
-              <Text style={styles.errorText}>{errors.gender_id.message}</Text>
-            )}
-          </View>
-          <View style={styles.inputWrapper}>
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({ field: { onChange, value } }) => (
-                <TextInput
-                  {...commonTextInputProps}
-                  label="Password"
-                  secureTextEntry={!passwordVisible}
-                  value={value}
-                  onChangeText={onChange}
-                  right={
-                    <TextInput.Icon
-                      icon={passwordVisible ? 'eye' : 'eye-off'}
-                      onPress={togglePasswordVisibility}
-                      size={20}
-                      color={customTextColor.darkGreen}
+                {errors.name && (
+                  <Text style={styles.errorText}>{errors.name.message}</Text>
+                )}
+              </View>
+              <View style={styles.inputWrapper}>
+                <Controller
+                  control={control}
+                  rules={{
+                    required: true,
+                  }}
+                  render={({ field: { onChange, value } }) => (
+                    <TextInput
+                      {...commonTextInputProps}
+                      label="Emaill"
+                      value={value}
+                      onChangeText={onChange}
+                      left={
+                        <TextInput.Icon
+                          icon="email"
+                          size={25}
+                          color={customTextColor.darkGreen}
+                        />
+                      }
                     />
-                  }
-                  left={
-                    <TextInput.Icon
-                      icon="lock"
-                      size={25}
-                      color={customTextColor.darkGreen}
-                    />
-                  }
+                  )}
+                  name="email"
                 />
-              )}
-              name="password"
-            />
-            {errors.password && (
-              <Text style={styles.errorText}>{errors.password.message}</Text>
-            )}
-          </View>
-          <View style={styles.inputWrapper}>
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({ field: { onChange, value } }) => (
-                <TextInput
-                  {...commonTextInputProps}
-                  label="Confirm Password"
-                  secureTextEntry={!confirmPasswordVisible}
-                  value={value}
-                  onChangeText={onChange}
-                  right={
-                    <TextInput.Icon
-                      icon={confirmPasswordVisible ? 'eye' : 'eye-off'}
-                      onPress={toggleConfirmPasswordVisibility}
-                      size={20}
-                      color={customTextColor.darkGreen}
+                {errors.email && (
+                  <Text style={styles.errorText}>{errors.email.message}</Text>
+                )}
+              </View>
+              <View style={styles.inputWrapper}>
+                <Controller
+                  control={control}
+                  rules={{
+                    required: true,
+                  }}
+                  render={({ field: { onChange, value } }) => (
+                    <TextInput
+                      {...commonTextInputProps}
+                      label="Contact"
+                      keyboardType="numeric"
+                      value={value}
+                      onChangeText={onChange}
+                      left={
+                        <TextInput.Icon
+                          icon="phone"
+                          size={25}
+                          color={customTextColor.darkGreen}
+                        />
+                      }
                     />
-                  }
-                  left={
-                    <TextInput.Icon
-                      icon="lock"
-                      size={25}
-                      color={customTextColor.darkGreen}
-                    />
-                  }
+                  )}
+                  name="contact"
                 />
-              )}
-              name="password_confirmation"
-            />
-            {errors.password_confirmation && (
-              <Text style={styles.errorText}>
-                {errors.password_confirmation.message}
-              </Text>
-            )}
-          </View>
-          <View style={styles.buttonWrapper}>
-            <TouchableOpacity
-              onPress={handleSubmit(onPressSend)}
-              style={styles.button}>
-              <Text style={styles.buttonText}>Signup</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.signupTextContainer}>
-            <Text style={{ color: customTextColor.primary }}>
-              Already have an account?
-            </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-              <Text style={styles.signupText}>Login</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        </ScrollView>
+                {errors.contact && (
+                  <Text style={styles.errorText}>{errors.contact.message}</Text>
+                )}
+              </View>
+              <View style={styles.inputWrapper}>
+                <Controller
+                  control={control}
+                  rules={{
+                    required: false,
+                  }}
+                  render={({ field: { onChange, value } }) => (
+                    <Dropdown
+                      data={genders}
+                      placeholder="Select Gender"
+                      maxHeight={300}
+                      labelField="label"
+                      valueField="value"
+                      searchPlaceholder="Search..."
+                      value={value}
+                      itemTextStyle={{ color: customTextColor.darkGreen }}
+                      style={[
+                        {
+                          borderWidth: 1,
+                          borderColor: customTextColor.darkGreen,
+                          borderRadius: 5,
+                          paddingHorizontal: 16,
+                          paddingVertical: 5,
+                        },
+                        styles.input,
+                      ]}
+                      onChange={item => {
+                        onChange(item.value);
+                      }}
+                      renderLeftIcon={() => (
+                        <Icon
+                          color={customTextColor.darkGreen}
+                          name="user-edit"
+                          size={20}
+                          style={{ marginRight: 13 }}
+                        />
+                      )}
+                    />
+                  )}
+                  name="gender_id"
+                />
+                {errors.gender_id && (
+                  <Text style={styles.errorText}>{errors.gender_id.message}</Text>
+                )}
+              </View>
+              <View style={styles.inputWrapper}>
+                <Controller
+                  control={control}
+                  rules={{
+                    required: true,
+                  }}
+                  render={({ field: { onChange, value } }) => (
+                    <TextInput
+                      {...commonTextInputProps}
+                      label="Password"
+                      secureTextEntry={!passwordVisible}
+                      value={value}
+                      onChangeText={onChange}
+                      right={
+                        <TextInput.Icon
+                          icon={passwordVisible ? 'eye' : 'eye-off'}
+                          onPress={togglePasswordVisibility}
+                          size={20}
+                          color={customTextColor.darkGreen}
+                        />
+                      }
+                      left={
+                        <TextInput.Icon
+                          icon="lock"
+                          size={25}
+                          color={customTextColor.darkGreen}
+                        />
+                      }
+                    />
+                  )}
+                  name="password"
+                />
+                {errors.password && (
+                  <Text style={styles.errorText}>{errors.password.message}</Text>
+                )}
+              </View>
+              <View style={styles.inputWrapper}>
+                <Controller
+                  control={control}
+                  rules={{
+                    required: true,
+                  }}
+                  render={({ field: { onChange, value } }) => (
+                    <TextInput
+                      {...commonTextInputProps}
+                      label="Confirm Password"
+                      secureTextEntry={!confirmPasswordVisible}
+                      value={value}
+                      onChangeText={onChange}
+                      right={
+                        <TextInput.Icon
+                          icon={confirmPasswordVisible ? 'eye' : 'eye-off'}
+                          onPress={toggleConfirmPasswordVisibility}
+                          size={20}
+                          color={customTextColor.darkGreen}
+                        />
+                      }
+                      left={
+                        <TextInput.Icon
+                          icon="lock"
+                          size={25}
+                          color={customTextColor.darkGreen}
+                        />
+                      }
+                    />
+                  )}
+                  name="password_confirmation"
+                />
+                {errors.password_confirmation && (
+                  <Text style={styles.errorText}>
+                    {errors.password_confirmation.message}
+                  </Text>
+                )}
+              </View>
+              <View style={styles.buttonWrapper}>
+                <TouchableOpacity
+                  onPress={handleSubmit(onPressSend)}
+                  style={styles.button}>
+                  <Text style={styles.buttonText}>Signup</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.signupTextContainer}>
+                <Text style={{ color: customTextColor.primary }}>
+                  Already have an account?
+                </Text>
+                <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                  <Text style={styles.signupText}>Login</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </ScrollView>
         </View>
       </View>
     </View>
