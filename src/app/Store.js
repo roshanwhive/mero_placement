@@ -6,7 +6,8 @@ import {
 } from '@reduxjs/toolkit';
 import authReducer from '../features/auth/AuthSlice';
 import formReducer from '../features/formData/FormSlice';
-import jobCategoryReducer from '../features/job-category/JobSlice';
+import jobCategoryReducer from '../features/job/JobSlice';
+import companyReducer from '../features/company/CompanySlice';
 import {
   persistStore,
   persistReducer,
@@ -27,15 +28,17 @@ const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
   formOptions: formReducer,
   job: jobCategoryReducer,
+  company: companyReducer,
 });
 
 export const store = configureStore({
   reducer: rootReducer,
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
+      // serializableCheck: {
+      //   ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      // },
+      serializableCheck: false,
     }),
 });
 

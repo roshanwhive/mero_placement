@@ -1,29 +1,32 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
-import MenuIcon from '../custom_toolbar/MenuIcon'
-import BackButton from './BackButton'
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React from 'react';
+import MenuIcon from '../custom_toolbar/MenuIcon';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-
-
-export default function AppBar({ title, handleBack }) {
+export default function AppBar({title, handleBack, isHome}) {
   return (
     <View style={styles.navBar}>
       <View style={styles.leftContainer}>
-        {/* <BackButton/> */}
-        <TouchableOpacity onPress={handleBack}>
-          <Icon name="arrow-left" size={20} color="black" />
-        </TouchableOpacity>
+        {isHome ? (
+          <View style={styles.imageContainer}>
+            <Image
+              source={require('../../assets/mero-placement-logo1.png')}
+              style={styles.logoImage}
+            />
+          </View>
+        ) : (
+          <TouchableOpacity onPress={handleBack}>
+            <Icon name="chevron-left" size={20} color="black" />
+          </TouchableOpacity>
+        )}
       </View>
-      <Text style={styles.middleContainer}>
-        {title}
-      </Text>
+      <Text style={styles.middleContainer}>{title}</Text>
 
       <View style={styles.rightContainer}>
-        <MenuIcon onPressBtn={bottom} /></View>
-
+        <MenuIcon onPressBtn={bottom} />
+      </View>
     </View>
-  )
+  );
 }
 
 //const Drawer = createDrawerNavigator();
@@ -32,7 +35,7 @@ const bottom = () => {
   // <Drawer.Navigator>
   //   <Drawer.Screen name='Training' component={Training}></Drawer.Screen>
   // </Drawer.Navigator>
-}
+};
 
 const styles = StyleSheet.create({
   navBar: {
@@ -42,7 +45,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 0,
     shadowColor: 'white',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     backgroundColor: 'white',
     shadowOpacity: 0.8,
     shadowRadius: 4,
@@ -50,17 +53,15 @@ const styles = StyleSheet.create({
   },
   leftContainer: {
     justifyContent: 'flex-start',
-    flexDirection: 'row'
+    marginLeft: 15,
+    flexDirection: 'row',
   },
   middleContainer: {
     flex: 2,
-    backgroundColor: 'white',
-    flexDirection: 'row',
     fontSize: 18,
     marginLeft: 20,
-    marginRight: 10,
+    fontWeight: '500',
     color: 'black',
-    textAlign: 'center',
   },
   rightContainer: {
     flex: 1,
@@ -74,12 +75,15 @@ const styles = StyleSheet.create({
   rightIcon: {
     paddingHorizontal: 20,
     resizeMode: 'contain',
-    backgroundColor: 'white',
   },
-  container: {
-    flex: 1,
-    backgroundColor: '#111',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }
-})
+  imageContainer: {
+    alignItems: 'left',
+    marginVertical: 10,
+    width: 120,
+    height: 40,
+  },
+  logoImage: {
+    width: '100%',
+    height: '100%',
+  },
+});

@@ -5,14 +5,45 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
-  FlatList,
   ScrollView,
 } from 'react-native';
+import {useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {customTextColor, customThemeColor} from '../../constants/Color';
-import {Card} from 'react-native-paper';
+import {ActivityIndicator} from 'react-native-paper';
+import RenderHtml from 'react-native-render-html';
+import AppBar from '../../components/custom_toolbar/AppBar';
+
+const Row = ({label, value}) => {
+  return (
+    <View style={styles.divider}>
+      <View style={[styles.leftGrid]}>
+        <Text style={[styles.heading]}>{label}</Text>
+        <Text style={[styles.heading]}>:</Text>
+      </View>
+
+      <Text style={[styles.subheading, styles.rightText]}>{value}</Text>
+    </View>
+  );
+};
+
+const tagsStyles = {
+  p: {
+    color: customTextColor.secondary,
+    textAlign: 'justify',
+    fontSize: 14,
+  },
+  li: {
+    color: customTextColor.secondary,
+    fontSize: 14,
+    textAlign: 'justify',
+    marginHorizontal: 5,
+  },
+};
 
 const JobDetail = ({navigation}) => {
+  const {singleJob, isLoading} = useSelector(state => state.job);
+
   const handleBack = () => {
     navigation.goBack();
   };
@@ -27,154 +58,137 @@ const JobDetail = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={handleBack}>
-          <Icon name="arrow-left" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
+      <AppBar handleBack={handleBack} title="Go Back" />
 
       {/* Job Details */}
-      <ScrollView
-        style={styles.jobDetails}
-        horizontal={false}
-        indicatorStyle="white"
-        showsVerticalScrollIndicator={false}>
-        <View style={styles.cardHeader}>
-          <View style={styles.companyInfo}>
-            <View>
-              <Text style={styles.companyName}>Walkers Hive</Text>
-              <Text style={styles.jobTitle}>Laravel Developer</Text>
-              <View style={styles.flexCard}>
-                <Text style={[styles.label, styles.link]}>Fulltime</Text>
-                <Text style={[styles.label, styles.link]}>Remote</Text>
+      {Object.keys(singleJob).length === 0 || isLoading === true ? (
+        <ActivityIndicator
+          animating={true}
+          style={{flex: 1}}
+          color={customTextColor.lightGreen}
+        />
+      ) : (
+        <ScrollView
+          style={styles.jobDetails}
+          horizontal={false}
+          indicatorStyle="white"
+          showsVerticalScrollIndicator={false}>
+          <View style={styles.cardHeader}>
+            <View style={styles.companyInfo}>
+              <View>
+                <Text style={styles.companyName}>
+                  {singleJob.get_company.employer_name}
+                </Text>
+                <Text style={styles.jobTitle}>{singleJob.position_name}</Text>
+                <View style={styles.flexCard}>
+                  <Text style={[styles.label, styles.link]}>
+                    {singleJob.employment_type.employment_type}
+                  </Text>
+                  <Text style={[styles.label1]}>
+                    {singleJob.vacancy_level.name}
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.companyLogoContainer}>
+                <Image
+                  source={{uri: singleJob.get_company.logo}}
+                  style={styles.companyLogo}
+                />
               </View>
             </View>
-            <View style={styles.companyLogoContainer}>
-              <Image
-                source={require('../../assets/companyLogo.png')}
-                style={styles.companyLogo}
+            <View style={styles.container1}>
+              <View style={styles.cardSmall}>
+                <Icon
+                  name="eye-slash"
+                  size={25}
+                  color={customTextColor.darkGreen}
+                />
+                <Text style={styles.title}>Views</Text>
+                <Text style={styles.subtitle}>{singleJob.vacancy_views}</Text>
+              </View>
+              <View style={styles.cardSmall}>
+                <Icon
+                  name="users-cog"
+                  size={25}
+                  color={customTextColor.darkGreen}
+                />
+                <Text style={styles.title}>Applicants</Text>
+                <Text style={styles.subtitle}>0</Text>
+              </View>
+              <View style={styles.cardSmall}>
+                <Icon
+                  name="thumbs-up"
+                  size={25}
+                  color={customTextColor.darkGreen}
+                />
+                <Text style={styles.title}>Likes</Text>
+                <Text style={styles.subtitle}>{singleJob.total_likes}</Text>
+              </View>
+            </View>
+            <View style={styles.container2}>
+              <Row label="No. of Vacancy" value={singleJob?.no_of_position} />
+              <Row label="Category" value={singleJob?.category?.name} />
+              <Row label="Location" value={singleJob?.address?.address} />
+              <Row label="Working hour" value={singleJob?.work_hour} />
+              <Row label="Position" value={singleJob?.vacancy_level?.name} />
+              <Row label="Salary" value={singleJob?.salary} />
+              <Row label="Gender" value={singleJob?.gender?.name} />
+              <Row label="Expiry Date" value={singleJob?.deadline} />
+            </View>
+          </View>
+
+          <View style={styles.additionalSections}>
+            <View style={styles.card}>
+              <Text style={styles.sectionTitle}>About the company:</Text>
+              <RenderHtml
+                contentWidth={100}
+                ignoredDomTags={['quillbot-extension-portal']}
+                tagsStyles={tagsStyles}
+                source={{
+                  html: singleJob.get_company?.description,
+                }}
               />
-            </View>
-          </View>
-          <View style={styles.container1}>
-            <View style={styles.cardSmall}>
-              <Icon
-                name="dollar-sign"
-                size={25}
-                color={customTextColor.darkGreen}
-              />
-              <Text style={styles.title}>Salary</Text>
-              <Text style={styles.subtitle}>130k</Text>
-            </View>
-            <View style={styles.cardSmall}>
-              <Icon
-                name="map-marker-alt"
-                size={25}
-                color={customTextColor.darkGreen}
-              />
-              <Text style={styles.title}>Location</Text>
-              <Text style={styles.subtitle}>Chabhil</Text>
-            </View>
-            <View style={styles.cardSmall}>
-              <Icon name="users" size={25} color={customTextColor.darkGreen} />
-              <Text style={styles.title}>Applicants</Text>
-              <Text style={styles.subtitle}> 12</Text>
-            </View>
-          </View>
-          <View style={styles.container2}>
-            <View style={styles.divider}>
-              <View style={[styles.leftGrid]}>
-                <Text style={[styles.heading]}>No. of Vacancy</Text>
-                <Text style={[styles.heading]}>:</Text>
+
+              <Text style={styles.sectionTitle}>Responsibilities:</Text>
+              <View style={{marginBottom: 4, paddingLeft: 5}}>
+                <RenderHtml
+                  contentWidth={100}
+                  ignoredDomTags={['quillbot-extension-portal']}
+                  tagsStyles={tagsStyles}
+                  source={{
+                    html: singleJob?.job_description,
+                  }}
+                />
               </View>
 
-              <Text style={[styles.subheading, styles.rightText]}>
-                Subheading
-              </Text>
-            </View>
-            <View style={styles.divider}>
-              <View style={[styles.leftGrid]}>
-                <Text style={[styles.heading]}>Category</Text>
-                <Text style={[styles.heading]}>:</Text>
+              <Text style={styles.sectionTitle}>Skills:</Text>
+              <View style={{marginBottom: 4, paddingLeft: 5}}>
+                <RenderHtml
+                  contentWidth={100}
+                  ignoredDomTags={['quillbot-extension-portal']}
+                  tagsStyles={tagsStyles}
+                  source={{
+                    html: singleJob?.job_specification,
+                  }}
+                />
+                {/* </Text> */}
               </View>
-
-              <Text style={[styles.subheading, styles.rightText]}>
-                Education
-              </Text>
-            </View>
-            <View style={styles.divider}>
-              <View style={[styles.leftGrid]}>
-                <Text style={[styles.heading]}>Expiry Date</Text>
-                <Text style={[styles.heading]}>:</Text>
-              </View>
-
-              <Text style={[styles.subheading, styles.rightText]}>
-                3 march, 2024
-              </Text>
             </View>
           </View>
-        </View>
-
-        {/* Additional Sections */}
-        <View style={styles.additionalSections}>
-          <View style={styles.card}>
-            <Text style={styles.sectionTitle}>About the company:</Text>
-            <Text style={styles.sectionText}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-              euismod mattis velit, ac fringilla nunc tincidunt in. Mauris in
-              augue vel sapien hendrerit tincidunt.
-            </Text>
-
-            <Text style={styles.sectionTitle}>Responsibilities:</Text>
-            <View style={{marginBottom: 4, paddingLeft: 5}}>
-              <Text style={styles.listText}>
-                {`\u25CF`} Hello Lorem ipsum dolor sit amet.{' '}
-              </Text>
-              <Text style={styles.listText}>
-                {`\u25CF`} Hello Lorem ipsum dolor sit amet.{' '}
-              </Text>
-              <Text style={styles.listText}>
-                {`\u25CF`} Hello Lorem ipsum dolor sit amet.{' '}
-              </Text>
-              <Text style={styles.listText}>
-                {`\u25CF`} Hello Lorem ipsum dolor sit amet.{' '}
-              </Text>
-              <Text style={styles.listText}>
-                {`\u25CF`} Hello Lorem ipsum dolor sit amet.{' '}
-              </Text>
-              <Text style={styles.listText}>
-                {`\u25CF`} Hello Lorem ipsum dolor sit amet.{' '}
-              </Text>
-              <Text style={styles.listText}>
-                {`\u25CF`} Hello Lorem ipsum dolor sit amet.{' '}
-              </Text>
-            </View>
-
-            <Text style={styles.sectionTitle}>Skills:</Text>
-            <View style={{marginBottom: 4, paddingLeft: 5}}>
-              <Text style={styles.listText}>{`\u25CF`} Hello</Text>
-              <Text style={styles.listText}>{`\u25CF`} Hello</Text>
-              <Text style={styles.listText}>{`\u25CF`} Hello</Text>
-              <Text style={styles.listText}>{`\u25CF`} Hello</Text>
-              <Text style={styles.listText}>{`\u25CF`} Hello</Text>
-              <Text style={styles.listText}>{`\u25CF`} Hello</Text>
-              <Text style={styles.listText}>{`\u25CF`} Hello</Text>
-              <Text style={styles.listText}>{`\u25CF`} Hello</Text>
-              <Text style={styles.listText}>{`\u25CF`} Hello</Text>
-            </View>
-          </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      )}
 
       {/* Job Actions */}
       <View style={styles.jobActions}>
+        {/* <TouchableOpacity style={styles.saveButton}>
+          <Text style={styles.actionButtonText}>Save</Text>
+        </TouchableOpacity> */}
         <TouchableOpacity onPress={handleApply} style={styles.actionButton}>
           <Text style={styles.actionButtonText}>Apply Job</Text>
         </TouchableOpacity>
-        {/* <TouchableOpacity onPress={handleShare} style={styles.actionButton}>
-          <Text style={styles.actionButtonText}>Share</Text>
-        </TouchableOpacity> */}
+        <View style={styles.iconContainer}>
+          <Icon name="share" size={30} color={customTextColor.primary} />
+        </View>
       </View>
     </View>
   );
@@ -184,9 +198,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: customThemeColor.lightBG,
-  },
-  header: {
-    padding: 10,
   },
   jobDetails: {
     flex: 1,
@@ -225,6 +236,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 20,
   },
+  label1: {
+    backgroundColor: customThemeColor.lightBG,
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    borderRadius: 20,
+    color: customTextColor.primary,
+  },
   link: {
     color: customTextColor.lightGreen,
     fontSize: 16,
@@ -247,6 +265,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: '600',
+    marginTop: 5,
     color: customTextColor.primary,
   },
   value: {
@@ -284,15 +303,24 @@ const styles = StyleSheet.create({
   jobActions: {
     flexDirection: 'row',
     justifyContent: 'space-around',
+    alignItems: 'center',
     borderTopWidth: 1,
     borderTopColor: '#ccc',
     paddingVertical: 15,
+    paddinghorizontal: 10,
+  },
+  saveButton: {
+    backgroundColor: customThemeColor.darkRed,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    width: 'auto',
+    borderRadius: 5,
   },
   actionButton: {
     backgroundColor: customThemeColor.darkRed,
     paddingHorizontal: 20,
     paddingVertical: 10,
-    width: 300,
+    width: 250,
     borderRadius: 5,
   },
   actionButtonText: {
@@ -301,6 +329,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  iconContainer: {},
   container1: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -312,11 +341,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: customThemeColor.lightBG,
     paddingVertical: 10,
-  },
-  cardContainer1: {
-    width: '30%',
-    alignItems: 'center',
-    padding: 20,
   },
   subtitle: {
     color: customTextColor.primary,

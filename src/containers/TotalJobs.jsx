@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
@@ -7,32 +7,45 @@ import {
   StyleSheet,
 } from 'react-native';
 import JobCard from '../components/JobCard';
+import {useDispatch, useSelector} from 'react-redux';
+import {getAllJobs} from '../features/job/JobSlice';
+import CardSkeleton from '../components/skeleton_loader/CardSkeleton';
 
 const TotalJobs = ({navigation}) => {
+  const dispatch = useDispatch();
+
+  const {allJobs} = useSelector(state => state.job);
+
+  useEffect(() => {
+    dispatch(getAllJobs());
+  }, [dispatch]);
+
   return (
     <View>
       <View style={styles.header}>
         <View>
-          <Text style={styles.title}>Total Jobs</Text>
+          <Text style={styles.title}>Hot Jobs</Text>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate('SeeAllJobs')}>
           <Text style={styles.seeAll}>See All</Text>
         </TouchableOpacity>
       </View>
-      {/* <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scrollViewContent}>
-        <JobCard />
-        <JobCard />
-        <JobCard />
-      </ScrollView> */}
       <View style={styles.scrollViewContent}>
-        <JobCard />
-        <JobCard />
-        <JobCard />
-        <JobCard />
-        <JobCard />
+        {!!allJobs?.data ? (
+          allJobs.data.map((item, index) => {
+            return (
+              <View key={index}>
+                <JobCard navigation={navigation} items={item} />
+              </View>
+            );
+          })
+        ) : (
+          <View>
+            <CardSkeleton />
+            <CardSkeleton />
+            <CardSkeleton />
+          </View>
+        )}
       </View>
     </View>
   );
@@ -59,7 +72,7 @@ const styles = StyleSheet.create({
   },
   scrollViewContent: {
     paddingHorizontal: 15,
-    paddingVertical: 5,
+    paddingVertical: 15,
     overflow: 'visible',
   },
 });

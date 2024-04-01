@@ -9,8 +9,8 @@ import {
 import JobCard from '../../components/JobCard';
 import Icon from 'react-native-vector-icons/Feather';
 import {useDispatch, useSelector} from 'react-redux';
-import {getALlJobs} from '../../features/job-category/JobSlice';
-import {ActivityIndicator, Colors} from 'react-native-paper';
+import {getAllJobs} from '../../features/job/JobSlice';
+import {ActivityIndicator} from 'react-native-paper';
 import {customTextColor, customThemeColor} from '../../constants/Color';
 
 const SeeAllJobs = ({navigation}) => {
@@ -19,9 +19,10 @@ const SeeAllJobs = ({navigation}) => {
 
   useEffect(() => {
     setTimeout(() => {
-      dispatch(getALlJobs());
+      dispatch(getAllJobs());
     }, 200);
   }, [dispatch]);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -60,13 +61,13 @@ const SeeAllJobs = ({navigation}) => {
 
       <ScrollView
         horizontal={false}
-        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollViewContent}>
         {allJobs.data ? (
           allJobs.data.map((item, index) => {
             return (
               <View key={index}>
-                <JobCard items={item} />
+                <JobCard navigation={navigation} items={item} />
               </View>
             );
           })

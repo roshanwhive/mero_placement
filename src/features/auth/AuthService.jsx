@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { base_url } from '../../utils/base_url';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getConfigWithToken} from '../../utils/config';
 
 // Register Service
 const register = async registerData => {
@@ -46,8 +47,25 @@ const logout = async () => {
   }
 };
 
+//Get User Profile
+const getUserProfile = async () => {
+  try {
+    const config = await getConfigWithToken();
+    // console.log(config);
+    const response = await axios.get(`${base_url}candidate/profile`, config);
+
+    if (response) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Error during fetching user profile:', error);
+    throw error;
+  }
+};
+
 export const authService = {
   register,
   login,
   logout,
+  getUserProfile,
 };

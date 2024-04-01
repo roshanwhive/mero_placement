@@ -1,22 +1,40 @@
-import React, {useState} from 'react';
 import {
-  Image,
   StatusBar,
   Text,
   TouchableOpacity,
   View,
   StyleSheet,
 } from 'react-native';
+import * as yup from 'yup';
 import {TextInput} from 'react-native-paper';
+import {yupResolver} from '@hookform/resolvers/yup';
 import AuthHeader from '../../../components/AuthHeader';
 import AuthLogo from '../../../components/AuthLogo';
 import AuthTitle from '../../../components/AuthTitle';
 import {customTextColor, customThemeColor} from '../../../constants/Color';
+import {Controller, useForm} from 'react-hook-form';
 
 const Login = ({navigation}) => {
-  const [email, setEmail] = useState('');
   const forgotPasswordLogo = require('../../../assets/forgotPassword.png');
 
+  const schema = yup.object().shape({
+    email: yup.string().required('Email is required').email('Invalid email'),
+  });
+
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      email: '',
+    },
+  });
+  const onPressSend = formData => {
+    console.log(formData);
+    navigation.navigate('ForgotPasword_EnterOtp');
+  };
   return (
     <View style={styles.container}>
       <StatusBar
@@ -32,26 +50,40 @@ const Login = ({navigation}) => {
         <View style={styles.inputContainer}>
           <AuthTitle title="Forgot Password" />
           <View style={styles.inputWrapper}>
-            <TextInput
-              style={styles.input}
-              label="Email"
-              mode="outlined"
-              outlineColor={customTextColor.darkGreen}
-              activeOutlineColor={customTextColor.darkGreen}
-              selectionColor={customTextColor.darkGreen}
-              left={
-                <TextInput.Icon
-                  icon="email"
-                  size={25}
-                  color={customTextColor.darkGreen}
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({field: {onChange, value}}) => (
+                <TextInput
+                  style={styles.input}
+                  label="Email"
+                  mode="outlined"
+                  outlineColor={customTextColor.darkGreen}
+                  activeOutlineColor={customTextColor.darkGreen}
+                  selectionColor={customTextColor.darkGreen}
+                  value={value}
+                  onChangeText={onChange}
+                  left={
+                    <TextInput.Icon
+                      icon="email"
+                      size={25}
+                      color={customTextColor.darkGreen}
+                    />
+                  }
                 />
-              }
+              )}
+              name="email"
             />
+            {errors.email && (
+              <Text style={styles.errorText}>{errors.email.message}</Text>
+            )}
           </View>
 
           <View style={styles.buttonWrapper}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('ForgotPasword_EnterOtp')}
+              onPress={handleSubmit(onPressSend)}
               style={styles.button}>
               <Text style={styles.buttonText}>Send OTP</Text>
             </TouchableOpacity>
@@ -117,6 +149,11 @@ const styles = StyleSheet.create({
   signupText: {
     color: '#2b8256',
     marginLeft: 5,
+  },
+  errorText: {
+    color: 'red',
+    margin: 0,
+    padding: 0,
   },
 });
 

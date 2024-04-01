@@ -1,7 +1,11 @@
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
+import {customTextColor} from '../../constants/Color';
+import {useSelector} from 'react-redux';
 
 const Account = ({navigation}) => {
+  const {userProfile} = useSelector(state => state.auth);
+
   return (
     <View style={styles.account}>
       <View style={styles.titleContainer}>
@@ -13,15 +17,26 @@ const Account = ({navigation}) => {
       <View style={styles.accountDetailContainer}>
         <View style={[styles.detailCard, styles.borderBottomGray]}>
           <Text style={styles.label}>Contact</Text>
-          <Text style={styles.value}>9840956784</Text>
+          <Text style={styles.value}>
+            {userProfile?.primary_contact || '-'}{' '}
+            {userProfile?.secondary_contact
+              ? '/' + userProfile.secondary_contact
+              : ''}
+          </Text>
         </View>
         <View style={[styles.detailCard, styles.borderBottomGray]}>
           <Text style={styles.label}>Email</Text>
-          <Text style={styles.value}>roshan@gmail.com</Text>
+          <Text style={styles.value}>{userProfile?.profile?.email || '-'}</Text>
+        </View>
+        <View style={[styles.detailCard, styles.borderBottomGray]}>
+          <Text style={styles.label}>DOB</Text>
+          <Text style={styles.value}>{userProfile?.profile?.dob || '-'}</Text>
         </View>
         <View style={styles.detailCard}>
           <Text style={styles.label}>Gender</Text>
-          <Text style={styles.value}>male</Text>
+          <Text style={styles.value}>
+            {userProfile?.profile?.gender?.name || '-'}
+          </Text>
         </View>
       </View>
       {/* Modal */}
@@ -45,8 +60,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 22,
-    fontWeight: '600',
-    color: '#11401E',
+    fontWeight: '500',
+    color: customTextColor.primary,
   },
   edit: {
     color: '#2b8256',

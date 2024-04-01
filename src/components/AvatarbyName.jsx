@@ -1,28 +1,36 @@
 import React from 'react';
-import {View, Text} from 'react-native';
-import Svg, {Text as SvgText} from 'react-native-svg';
+import {View, Text, StyleSheet} from 'react-native';
+import {customTextColor, customThemeColor} from '../constants/Color';
 
-const Avatar = ({text, size, backgroundColor, textColor}) => {
-  const avatarSize = size || 50; // Default size is 50
-  const borderRadius = avatarSize / 2; // Make it a circle
+const AvatarByName = ({name}) => {
+  const firstLetter = name ? name.charAt(0).toUpperCase() : '';
 
   return (
-    <View style={{width: avatarSize, height: avatarSize}}>
-      <Svg width={avatarSize} height={avatarSize}>
-        <SvgText
-          x="50%"
-          y="50%"
-          fontSize={avatarSize * 0.5}
-          fill={textColor || 'white'}
-          textAnchor="middle"
-          alignmentBaseline="middle"
-          fontWeight="bold"
-          fontFamily="Arial">
-          {text.charAt(0).toUpperCase()}
-        </SvgText>
-      </Svg>
+    <View
+      style={[
+        styles.avatarContainer,
+        {backgroundColor: customThemeColor.lightestGreen},
+      ]}>
+      <Text style={styles.avatarText}>{firstLetter}</Text>
     </View>
   );
 };
+const styles = StyleSheet.create({
+  avatarContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+    borderRadius: 100,
+    // borderWidth: 4,
+    // borderColor: 'white',
+  },
+  avatarText: {
+    fontSize: 44,
+    fontWeight: 'bold',
+    color: customTextColor.secondary,
+  },
+});
 
-export default Avatar;
+export default AvatarByName;

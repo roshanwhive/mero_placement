@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -8,13 +8,13 @@ import {
   Image,
   SafeAreaView,
 } from 'react-native';
-import { customTextColor, customThemeColor } from '../../constants/Color';
+import {customTextColor, customThemeColor} from '../../constants/Color';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import RoundButtonComp from '../../components/RoundBtn';
 import { Divider } from 'react-native-paper';
 import AppBar from '../../components/custom_toolbar/AppBar';
 
-const TableHeader = ({ navigation }) => {
+const TableHeader = ({navigation}) => {
   return (
     <>
       <View style={cardStyle.card}>
@@ -31,16 +31,16 @@ const TableHeader = ({ navigation }) => {
     </>
   );
 };
-const ProfileDetail = ({ icon, value }) => {
+const ProfileDetail = ({icon, value}) => {
   return (
     <View
-      style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' }}>
+      style={{flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap'}}>
       <Icon name={icon} size={13} color={customTextColor.primary} />
-      <Text style={[styles.text, { marginLeft: 8 }]}>{value}</Text>
+      <Text style={[styles.text, {marginLeft: 8}]}>{value}</Text>
     </View>
   );
 };
-const CompareJobAndProfile = ({ navigation }) => {
+const CompareJobAndProfile = ({navigation}) => {
   const companyLogo = require('../../assets/companyLogo.png');
 
   return (
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: customThemeColor.white,
     shadowColor: 'rgba(150,170,180,0.5)',
-    shadowOffset: { width: 0, height: 7 },
+    shadowOffset: {width: 0, height: 7},
     shadowOpacity: 1,
     shadowRadius: 30,
     elevation: 10,
@@ -299,7 +299,7 @@ const cardStyle = StyleSheet.create({
     padding: 20,
     marginVertical: 15,
     shadowColor: 'rgba(150,170,180,0.5)',
-    shadowOffset: { width: 0, height: 7 },
+    shadowOffset: {width: 0, height: 7},
     shadowOpacity: 1,
     shadowRadius: 30,
     elevation: 10,

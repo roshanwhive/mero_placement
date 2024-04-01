@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
@@ -8,8 +8,19 @@ import {
 } from 'react-native';
 import JobCard from '../components/JobCard';
 import {customTextColor, customThemeColor} from '../constants/Color';
+import {ActivityIndicator} from 'react-native-paper';
+import {useDispatch, useSelector} from 'react-redux';
+import {getJobByJobTypes} from '../features/job/JobSlice';
+import CardSkeleton from '../components/skeleton_loader/CardSkeleton';
 
 const Featured = ({navigation}) => {
+  const dispatch = useDispatch();
+  const {jobByTpes} = useSelector(state => state.job);
+
+  useEffect(() => {
+    dispatch(getJobByJobTypes(1));
+  }, [dispatch]);
+
   return (
     <View>
       <View style={styles.header}>
@@ -20,24 +31,20 @@ const Featured = ({navigation}) => {
           <Text style={styles.seeAll}>See All</Text>
         </TouchableOpacity>
       </View>
-      {/* <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scrollViewContent}>
-        <JobCard />
-        <JobCard />
-        <JobCard />
-      </ScrollView> */}
+
       <View style={styles.scrollViewContent}>
-        <JobCard navigation={navigation} />
-        <JobCard navigation={navigation} />
-        <JobCard navigation={navigation} />
+        {!!jobByTpes?.data ? (
+          jobByTpes?.data?.slice(0, 5).map((item, index) => {
+            return <JobCard key={index} items={item} navigation={navigation} />;
+          })
+        ) : (
+          <View>
+            <CardSkeleton />
+            <CardSkeleton />
+            <CardSkeleton />
+          </View>
+        )}
       </View>
-      <TouchableOpacity onPress={() => console.log('View All pressed')}>
-        {/* <View style={styles.buttonContainer}>
-          <Text style={styles.buttonText}>View All</Text>
-        </View> */}
-      </TouchableOpacity>
     </View>
   );
 };
