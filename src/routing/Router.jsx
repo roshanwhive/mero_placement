@@ -31,6 +31,7 @@ const Router = () => {
         animation: 'slide_from_right',
       }}>
       {/* <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} /> */}
+      <Stack.Screen name="HomeScreen" component={BottomTab} />
 
       {/* Auth Screen */}
       <Stack.Screen name="Signup" component={Signup} />
@@ -55,7 +56,6 @@ const Router = () => {
       />
 
       {/* Home screen */}
-      <Stack.Screen name="HomeScreen" component={BottomTab} />
       <Stack.Screen name="JobDetail" component={JobDetail} />
       <Stack.Screen name="CompanyProfile" component={CompanyProfile} />
       <Stack.Screen name="SeeAllJobs" component={SeeAllJobs} />

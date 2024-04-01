@@ -35,13 +35,12 @@ const Login = ({navigation}) => {
   };
   const dispatch = useDispatch();
 
-  const {message, isSuccess, isError, isLoading, statusCode} = useSelector(
-    state => state.auth,
-  );
+  const {message, isAuthenticated, isSuccess, isError, isLoading, statusCode} =
+    useSelector(state => state.auth);
 
-  // const { message } = useSelector(state => state.auth);
-  // useEffect(() => {
-  // }, [message]);
+  useEffect(() => {
+    console.log(message);
+  }, [message]);
 
   useEffect(() => {
     if (isError && statusCode !== 200 && statusCode !== 0) {
@@ -52,7 +51,7 @@ const Login = ({navigation}) => {
         animationDuration: 1000,
         animated: true,
       });
-    } else if (isSuccess && statusCode === 200) {
+    } else if (isSuccess && statusCode === 200 && isAuthenticated) {
       navigation.navigate('HomeScreen');
       showMessage({
         message: JSON.stringify(message),
@@ -83,17 +82,11 @@ const Login = ({navigation}) => {
 
   const onPressSend = formData => {
     dispatch(loginUser(formData)).then(() => {
-      dispatch(resetState());
+      setTimeout(() => {
+        dispatch(resetState());
+      }, 10000);
     });
   };
-
-  // const pressbtn = () => {
-  //   showMessage({
-  //     message: "Success",
-  //     description: "The Event has been created",
-  //     type: "success",
-  //   });
-  // };
 
   const commonTextInputProps = {
     style: styles.input,

@@ -43,7 +43,7 @@ const Signup = ({navigation}) => {
   useEffect(() => {
     dispatch(getAllGender());
     setTimeout(() => {
-      if (allGenderData.genders && Array.isArray(allGenderData.genders)) {
+      if (allGenderData.genders && Array.isArray(allGenderData?.genders)) {
         const mappedGenderData = allGenderData.genders.map(item => ({
           label: item.name,
           value: item.gender_id,
@@ -80,9 +80,6 @@ const Signup = ({navigation}) => {
         animated: true,
       });
     }
-    setTimeout(() => {
-      dispatch(resetState());
-    }, 10000);
   }, [isError, isSuccess, statusCode, message]);
 
   const schema = yup.object().shape({
@@ -123,7 +120,9 @@ const Signup = ({navigation}) => {
   //Common input properties
   const onPressSend = formData => {
     dispatch(registerUser(formData)).then(() => {
-      dispatch(resetState());
+      setTimeout(() => {
+        dispatch(resetState());
+      }, 10000);
     });
   };
   const commonTextInputProps = {

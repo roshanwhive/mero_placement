@@ -17,9 +17,9 @@ import CompleteProfile from '../../containers/modal/CompleteProfile';
 const Home = ({navigation}) => {
   const {userProfile} = useSelector(state => state.auth);
 
-  useEffect(() => {
-    console.log(userProfile);
-  }, [userProfile]);
+  // useEffect(() => {
+  //   console.log(userProfile);
+  // }, [userProfile]);
 
   return (
     <>

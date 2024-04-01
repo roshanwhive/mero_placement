@@ -44,9 +44,8 @@ const Categories = () => {
             ? styles.activeButton
             : styles.inactiveButton;
           const textStyle = isActive ? styles.activeText : styles.inactiveText;
-          return <CategoryCardCircle />;
-        })}
-        {/* <View key={index} style={styles.categoryItem}>
+          return (
+            <View key={index} style={styles.categoryItem}>
               <TouchableOpacity
                 onPress={() => setActiveCategory(category.id)}
                 style={[styles.imageContainer, btnStyle]}>
@@ -55,7 +54,10 @@ const Categories = () => {
               <Text style={[styles.categoryName, textStyle]}>
                 {category.name}
               </Text>
-            </View> */}
+              {/* <CategoryCardCircle key={index} /> */}
+            </View>
+          );
+        })}
       </ScrollView>
     </View>
   );
@@ -96,8 +98,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 80,
-    width: 80,
+    height: 90,
+    width: 90,
     padding: 5,
     borderRadius: 100,
     shadowColor: '#000',

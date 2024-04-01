@@ -31,7 +31,7 @@ const TotalJobs = ({navigation}) => {
         </TouchableOpacity>
       </View>
       <View style={styles.scrollViewContent}>
-        {allJobs.data ? (
+        {!!allJobs?.data ? (
           allJobs.data.map((item, index) => {
             return (
               <View key={index}>
