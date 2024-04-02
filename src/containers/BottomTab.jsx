@@ -17,7 +17,7 @@ function MyTabs({navigation}) {
         tabBarIcon: ({color, size}) => {
           let iconName;
 
-          if (route.name === 'Home') {
+          if (route.name === 'HomeScreen') {
             iconName = 'home-outline';
           } else if (route.name === 'Matched Job') {
             iconName = 'briefcase-outline';
@@ -51,8 +51,12 @@ function MyTabs({navigation}) {
           fontWeight: '600',
         },
       })}>
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Matched Job" component={MatchedJob} navigation={navigation}/>
+      <Tab.Screen name="HomeScreen" component={Home} />
+      <Tab.Screen
+        name="Matched Job"
+        component={MatchedJob}
+        navigation={navigation}
+      />
       <Tab.Screen name="Search" component={Search} />
       <Tab.Screen name="My Status" component={MyStatus} />
       <Tab.Screen name="Profile" component={Profile} />

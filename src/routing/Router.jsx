@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React, {useEffect, useState} from 'react';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from '../screens/HomeScreen/Home';
 import Login from '../screens/AuthScreen/Login/Login';
 import Signup from '../screens/AuthScreen/Signup/Signup';
@@ -24,8 +24,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const Stack = createNativeStackNavigator();
 
 const Router = () => {
-
-
   return (
     <Stack.Navigator
       screenOptions={{
@@ -34,7 +32,7 @@ const Router = () => {
         animation: 'slide_from_right',
       }}>
       {/* <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} /> */}
-      <Stack.Screen name="HomeScreen" component={BottomTab} />
+      <Stack.Screen name="Home" component={BottomTab} />
 
       {/* Auth Screen */}
       <Stack.Screen name="Splash" component={WelcomeScreen} />
@@ -42,7 +40,7 @@ const Router = () => {
       <Stack.Screen name="Signup" component={Signup} />
       <Stack.Screen name="EmailVerification" component={EmailVerification} />
       <Stack.Screen name="EmailVerified" component={EmailVerified} />
-      
+
       <Stack.Screen
         name="ForgotPasswordEnterEmail"
         component={ForgotPassword_EnterEmail}

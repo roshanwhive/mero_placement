@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // Define a function to get the token from AsyncStorage
 const getToken = async () => {
   try {
-    return await AsyncStorage.getItem('USER_ID');
+    return await AsyncStorage.getItem('USER_TOKEN');
   } catch (error) {
     console.error('Error retrieving token:', error);
     throw error;
@@ -15,12 +15,9 @@ export const getConfigWithToken = async () => {
   try {
     const token = await getToken();
     const jsonObject = await JSON.parse(token);
-
     const config = {
       headers: {
-        Authorization: jsonObject
-          ? `Bearer ${jsonObject?.data?.data?.token}`
-          : '',
+        Authorization: jsonObject ? `Bearer ${jsonObject}` : '',
         Accept: 'application/json',
       },
     };
