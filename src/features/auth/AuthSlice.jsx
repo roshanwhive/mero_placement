@@ -1,5 +1,6 @@
 import {createSlice, createAsyncThunk, createAction} from '@reduxjs/toolkit';
 import {authService} from './AuthService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const initialState = {
   user: [],
@@ -96,7 +97,7 @@ export const authSlice = createSlice({
         state.isAuthenticated = action.payload.success;
         state.user = action.payload.data;
         state.statusCode = action.payload.status_code;
-        state.token = action.payload.token;
+        state.token = action.payload.data.token;
         state.data = action.payload.data;
       })
       .addCase(loginUser.rejected, (state, action) => {

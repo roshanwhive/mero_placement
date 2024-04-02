@@ -11,16 +11,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppBar from '../../components/custom_toolbar/AppBar';
 import {customThemeColor} from '../../constants/Color';
 import DrawerContent from '../../components/DrawerContent';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import CompleteProfile from '../../containers/modal/CompleteProfile';
+import {getUserProfile} from '../../features/auth/AuthSlice';
 
 const Home = ({navigation}) => {
+  const dispatch = useDispatch();
+
   const {userProfile} = useSelector(state => state.auth);
 
-  // useEffect(() => {
-  //   console.log(userProfile);
-  // }, [userProfile]);
-
+  useEffect(() => {
+    console.log(userProfile);
+  }, [userProfile]);
   return (
     <>
       <CompleteProfile />
@@ -31,7 +33,7 @@ const Home = ({navigation}) => {
           <AppBar isHome={true} />
           <View style={styles.textWrapper}>
             <Text style={styles.greetingText}>
-              Hello, {userProfile?.lead_name}
+              Hello, {userProfile?.profile?.lead_name}
             </Text>
             <Text style={styles.subHeading}>Get Your Dream Job!</Text>
           </View>
@@ -77,7 +79,6 @@ const styles = StyleSheet.create({
   },
   greetingText: {
     color: '#fcfcfc',
-    
     fontSize: 16,
   },
   subHeading: {
@@ -111,7 +112,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   font: {
-    fontFamily: 'Roboto-Regular'
+    fontFamily: 'Roboto-Regular',
   },
 });
 

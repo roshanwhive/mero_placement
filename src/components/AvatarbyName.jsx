@@ -6,11 +6,7 @@ const AvatarByName = ({name}) => {
   const firstLetter = name ? name.charAt(0).toUpperCase() : '';
 
   return (
-    <View
-      style={[
-        styles.avatarContainer,
-        {backgroundColor: customThemeColor.lightestGreen},
-      ]}>
+    <View style={[styles.avatarContainer, {backgroundColor: '#454541'}]}>
       <Text style={styles.avatarText}>{firstLetter}</Text>
     </View>
   );
@@ -29,7 +25,7 @@ const styles = StyleSheet.create({
   avatarText: {
     fontSize: 44,
     fontWeight: 'bold',
-    color: customTextColor.secondary,
+    color: customTextColor.white,
   },
 });
 

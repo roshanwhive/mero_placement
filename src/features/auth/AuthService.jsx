@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { base_url } from '../../utils/base_url';
+import {base_url} from '../../utils/base_url';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getConfigWithToken} from '../../utils/config';
 
@@ -22,9 +22,11 @@ const register = async registerData => {
 const login = async loginData => {
   try {
     const response = await axios.post(`${base_url}login`, loginData);
-    console.log("this is " + JSON.stringify(response.data.data.token));
     await AsyncStorage.setItem('KeepLoggedIn', JSON.stringify(true));
-    await AsyncStorage.setItem('USER_TOKEN', JSON.stringify(response.data.data.token));
+    await AsyncStorage.setItem(
+      'USER_TOKEN',
+      JSON.stringify(response.data.data.token),
+    );
     return response.data;
   } catch (error) {
     console.error('Error during login:', error);
