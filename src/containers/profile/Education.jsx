@@ -1,6 +1,6 @@
 import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
-import {customTextColor} from '../../constants/Color';
+import {customTextColor, customThemeColor} from '../../constants/Color';
 
 const Education = () => {
   return (
@@ -10,13 +10,15 @@ const Education = () => {
         <Text style={styles.edit}>Edit</Text>
       </View>
       <View style={styles.educationDetailContainer}>
-        <View style={[styles.detailCard, styles.borderBottomGray]}>
-          <Text style={styles.label}>Title</Text>
-          <Text style={styles.value}>Education 1</Text>
-        </View>
-        <View style={[styles.detailCard]}>
-          <Text style={styles.label}>Title</Text>
-          <Text style={styles.value}>Education 2</Text>
+        <View>
+          <View style={[styles.detailCard, styles.borderBottomGray]}>
+            <Text style={styles.educationTitle}>Bachelor</Text>
+            <Text style={styles.status}>Passed</Text>
+          </View>
+          <View style={[styles.detailCard, styles.borderBottomGray]}>
+            <Text style={styles.label}>Email</Text>
+            <Text style={styles.value}>Hello</Text>
+          </View>
         </View>
       </View>
     </View>
@@ -27,7 +29,6 @@ const styles = StyleSheet.create({
     width: '110%',
     borderRadius: 20,
     marginBottom: 20,
-    // backgroundColor: '#f6f7fb',
     backgroundColor: '#f7f7f7',
     position: 'relative',
     paddingHorizontal: 20,
@@ -55,10 +56,31 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    marginTop: 10,
+    shadowColor: 'rgba(150,170,180,0.5)',
+    shadowOffset: {width: 0, height: 7},
+    shadowOpacity: 1,
+    shadowRadius: 30,
+    elevation: 10,
   },
   borderBottomGray: {
     borderBottomColor: '#ededed',
     borderBottomWidth: 1,
+  },
+  educationTitle: {
+    fontSize: 20,
+    color: customTextColor.primary,
+    fontWeight: '500',
+  },
+  status: {
+    backgroundColor: customThemeColor.darkGreen,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 20,
+    fontSize: 12,
+    color: customTextColor.white,
   },
   label: {
     fontSize: 15,

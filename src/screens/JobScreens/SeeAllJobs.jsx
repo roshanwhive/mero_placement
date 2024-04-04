@@ -27,7 +27,7 @@ const SeeAllJobs = ({navigation}) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headerCard}>
-          <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <Icon name="arrow-left" size={25} color="#11401E" />
           </TouchableOpacity>
           <Text style={styles.title}>Total Jobs</Text>

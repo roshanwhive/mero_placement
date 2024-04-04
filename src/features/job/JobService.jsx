@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { base_url } from '../../utils/base_url';
-import { err } from 'react-native-svg';
+import {base_url} from '../../utils/base_url';
+import {err} from 'react-native-svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getConfigWithToken } from '../../utils/config';
+import {getConfigWithToken} from '../../utils/config';
 
 //get all job
 const getAllJobs = async () => {
@@ -146,7 +146,6 @@ const getSavedJob = async () => {
     if (response) {
       return response.data;
     }
-
   } catch (error) {
     console.log('Error during fetching saved jobs:', error);
     throw error;

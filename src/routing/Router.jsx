@@ -32,7 +32,7 @@ const Router = () => {
         animation: 'slide_from_right',
       }}>
       {/* <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} /> */}
-      <Stack.Screen name="Home" component={BottomTab} />
+      <Stack.Screen name="HomeScreen" component={BottomTab} />
 
       {/* Auth Screen */}
       <Stack.Screen name="Splash" component={WelcomeScreen} />

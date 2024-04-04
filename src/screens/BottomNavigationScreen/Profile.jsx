@@ -19,6 +19,7 @@ import AppBar from '../../components/custom_toolbar/AppBar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AvatarByName from '../../components/AvatarbyName';
 import UserProfileCard from '../../components/skeleton_loader/UserProfileCard';
+import logoImage from '../../assets/search1.jpg';
 
 export default Profile = ({navigation}) => {
   const dispatch = useDispatch();
@@ -29,23 +30,19 @@ export default Profile = ({navigation}) => {
   const {userProfile, token} = useSelector(state => state.auth);
 
   useEffect(() => {
-    setTimeout(() => {
-      dispatch(getUserProfile());
-    }, 200);
-    console.log('I am profile component');
-  }, [dispatch]);
+    if (isAuthenticated) {
+      setTimeout(() => {
+        dispatch(getUserProfile());
+      }, 200);
+    }
+  }, [dispatch, isAuthenticated]);
 
   const handleBack = () => {
     navigation.goBack();
   };
 
-  useEffect(() => {
-    console.log(typeof userProfile);
-  }, [userProfile]);
-
   const handleLogout = () => {
     dispatch(logout());
-
     setTimeout(() => {
       navigation.navigate('Login');
     }, 2000);
@@ -57,34 +54,66 @@ export default Profile = ({navigation}) => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.container}>
         <AppBar handleBack={handleBack} title="Profile" />
-        <View style={styles.header}></View>
-        {!!userProfile?.profile?.featured_image ? (
-          <Image
-            style={styles.avatar}
-            source={{uri: userProfile?.profile?.featured_image}}
-          />
-        ) : (
-          <View style={styles.avatar}>
-            <AvatarByName name={userProfile?.profile?.lead_name} />
-          </View>
+        {isAuthenticated && (
+          <>
+            <View style={styles.header}></View>
+
+            {!!userProfile?.profile?.featured_image ? (
+              <Image
+                style={styles.avatar}
+                source={{uri: userProfile?.profile?.featured_image}}
+              />
+            ) : (
+              <View style={styles.avatar}>
+                <AvatarByName name={userProfile?.profile?.lead_name} />
+              </View>
+            )}
+          </>
         )}
 
         <View style={styles.body}>
-          <View style={styles.bodyContent}>
-            <View style={styles.nameContainer}>
-              <Text style={styles.name}>{userProfile?.profile?.lead_name}</Text>
-            </View>
-            {!!userProfile ? <Account /> : <UserProfileCard />}
-            {!!userProfile ? <Preferences /> : <UserProfileCard />}
-            {!!userProfile ? <Education /> : <UserProfileCard />}
-            {!!userProfile ? <Experience /> : <UserProfileCard />}
+          {isAuthenticated ? (
+            <>
+              <View style={styles.bodyContent}>
+                <View style={styles.nameContainer}>
+                  <Text style={styles.name}>
+                    {userProfile?.profile?.lead_name}
+                  </Text>
+                </View>
+                {!!userProfile ? <Account /> : <UserProfileCard />}
+                {!!userProfile ? <Preferences /> : <UserProfileCard />}
+                {!!userProfile ? <Education /> : <UserProfileCard />}
+                {!!userProfile ? <Experience /> : <UserProfileCard />}
 
-            <TouchableOpacity
-              onPress={handleLogout}
-              style={[styles.buttonContainer, styles.buttonLogout]}>
-              <Text style={styles.logoutText}>Logout</Text>
-            </TouchableOpacity>
-          </View>
+                <TouchableOpacity
+                  onPress={handleLogout}
+                  style={[styles.buttonContainer, styles.buttonLogout]}>
+                  <Text style={styles.logoutText}>Logout</Text>
+                </TouchableOpacity>
+              </View>
+            </>
+          ) : (
+            <View style={styles.bodyContent1}>
+              <Image source={logoImage} style={styles.image} />
+              <Text style={styles.title}>Get Your Dream Job</Text>
+              <Text style={styles.subtitle}>
+                Update your profile information to attrack recruiters.
+              </Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Login')}
+                style={[styles.buttonContainer, styles.buttonLogout]}>
+                <Text style={styles.logoutText}>Login</Text>
+              </TouchableOpacity>
+              <View style={styles.textContainer}>
+                <Text style={{color: customTextColor.primary, fontSize: 16}}>
+                  Don't have an account?
+                </Text>
+                <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+                  <Text style={styles.signupText}>Signup</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
         </View>
       </ScrollView>
     </>
@@ -95,10 +124,9 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: customThemeColor.white,
     flexGrow: 1,
-    borderTopLeftRadius: 20,
   },
   header: {
-    backgroundColor: '#9D050A',
+    backgroundColor: customThemeColor.darkRed,
     height: 200,
   },
   avatar: {
@@ -106,7 +134,7 @@ const styles = StyleSheet.create({
     height: 130,
     borderRadius: 100,
     borderWidth: 4,
-    borderColor: 'white',
+    borderColor: customTextColor.white,
     top: '-13%',
     alignSelf: 'center',
     marginTop: 130,
@@ -119,8 +147,42 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 40,
   },
+  bodyContent1: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 40,
+    height: '100%',
+  },
+  image: {
+    width: 250,
+    height: 210,
+    borderRadius: 50,
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  subtitle: {
+    textAlign: 'center',
+    fontSize: 16,
+    marginBottom: 20,
+  },
+  textContainer: {
+    marginTop: 50,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  signupText: {
+    color: customTextColor.lightGreen,
+    marginLeft: 5,
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
   nameContainer: {
-    marginTop: 40,
+    marginTop: 50,
     marginBottom: 20,
   },
   name: {
@@ -141,11 +203,11 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
   buttonLogout: {
-    backgroundColor: '#9D050A',
+    backgroundColor: customTextColor.darkRed,
   },
 
   logoutText: {
-    color: '#ffffff',
+    color: customTextColor.white,
     fontSize: 20,
     fontWeight: '600',
   },

@@ -139,16 +139,13 @@ export const getJobByJobTypes = createAsyncThunk(
 );
 
 //--------------------------------------Saved Job---------------------------------
-export const getSavedJob = createAsyncThunk(
-  'job/saved-job',
-  async thunkAPI => {
-    try {
-      return await jobService.getSavedJob();
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  },
-);
+export const getSavedJob = createAsyncThunk('job/saved-job', async thunkAPI => {
+  try {
+    return await jobService.getSavedJob();
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
+});
 
 //Reset State
 export const resetJobCategoryState = createAction('Reset_all_Job_Category');
@@ -343,8 +340,8 @@ export const jobCategorySlice = createSlice({
         state.isSuccess = false;
       })
 
-       // ------------------------------------Get Saved Jobs -------------------------------
-       .addCase(getSavedJob.pending, state => {
+      // ------------------------------------Get Saved Jobs -------------------------------
+      .addCase(getSavedJob.pending, state => {
         state.isLoading = true;
       })
       .addCase(getSavedJob.fulfilled, (state, action) => {
@@ -360,7 +357,6 @@ export const jobCategorySlice = createSlice({
         state.isLoading = false;
         state.isSuccess = false;
       })
-
 
       //Reset State
       .addCase(resetJobCategoryState, state => {

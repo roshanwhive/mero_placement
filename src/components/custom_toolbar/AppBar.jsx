@@ -2,6 +2,7 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import MenuIcon from '../custom_toolbar/MenuIcon';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import {customThemeColor} from '../../constants/Color';
 
 export default function AppBar({title, handleBack, isHome}) {
   return (
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0,
     shadowColor: 'white',
     shadowOffset: {width: 0, height: 2},
-    backgroundColor: 'white',
+    backgroundColor: customThemeColor.white,
     shadowOpacity: 0.8,
     shadowRadius: 4,
     elevation: 1,
