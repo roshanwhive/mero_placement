@@ -1,26 +1,51 @@
-import {View, Text, StyleSheet} from 'react-native';
-import React from 'react';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import React, {useEffect} from 'react';
 import {customTextColor} from '../../constants/Color';
+import {useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
 
 const Preferences = () => {
+  const {userProfile} = useSelector(state => state.auth);
+  const navigation = useNavigation();
+
   return (
     <View style={styles.preference}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>Preferences</Text>
-        <Text style={styles.edit}>Edit</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
+          <Text style={styles.edit}>Edit</Text>
+        </TouchableOpacity>
       </View>
       <View style={styles.accountDetailContainer}>
         <View style={[styles.detailCard, styles.borderBottomGray]}>
           <Text style={styles.label}>Job Category</Text>
-          <Text style={styles.value}>Category 1</Text>
+          <Text style={styles.value}>
+            {userProfile?.preference[0]?.job_category?.name || '-'}
+          </Text>
         </View>
         <View style={[styles.detailCard, styles.borderBottomGray]}>
-          <Text style={styles.label}>Job Level</Text>
-          <Text style={styles.value}>Level 1</Text>
+          <Text style={styles.label}>Skills</Text>
+          <Text style={styles.value}>
+            {userProfile?.preference[0]?.get_skill?.skill || '-'}
+          </Text>
         </View>
         <View style={[styles.detailCard]}>
-          <Text style={styles.label}>Skills</Text>
-          <Text style={styles.value}>5 skills</Text>
+          <Text style={styles.label}>Job Title</Text>
+          <Text style={styles.value}>
+            {userProfile?.preference[0]?.title_name || '-'}
+          </Text>
+        </View>
+        <View style={[styles.detailCard]}>
+          <Text style={styles.label}>Availablity</Text>
+          <Text style={styles.value}>
+            {userProfile?.preference[0]?.availible_type?.employment_type || '-'}
+          </Text>
+        </View>
+        <View style={[styles.detailCard]}>
+          <Text style={styles.label}>Level</Text>
+          <Text style={styles.value}>
+            {userProfile?.preference[0]?.level?.name || '-'}
+          </Text>
         </View>
       </View>
     </View>

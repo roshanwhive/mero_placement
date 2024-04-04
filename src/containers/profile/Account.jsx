@@ -2,10 +2,11 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import {customTextColor} from '../../constants/Color';
 import {useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
 
-const Account = ({navigation}) => {
+const Account = () => {
   const {userProfile} = useSelector(state => state.auth);
-
+  const navigation = useNavigation();
   return (
     <View style={styles.account}>
       <View style={styles.titleContainer}>
@@ -18,9 +19,9 @@ const Account = ({navigation}) => {
         <View style={[styles.detailCard, styles.borderBottomGray]}>
           <Text style={styles.label}>Contact</Text>
           <Text style={styles.value}>
-            {userProfile?.primary_contact || '-'}{' '}
-            {userProfile?.secondary_contact
-              ? '/' + userProfile.secondary_contact
+            {userProfile?.profile?.primary_contact || '-'}{' '}
+            {userProfile?.profile?.secondary_contact
+              ? '/' + userProfile?.profile?.secondary_contact
               : ''}
           </Text>
         </View>

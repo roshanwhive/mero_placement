@@ -74,10 +74,10 @@ export const authSlice = createSlice({
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.isError = !action.payload.success;
-        state.isSuccess = action.payload.success;
-        state.message = action.payload.message;
-        state.statusCode = action.payload.status_code;
+        state.isError = !action.payload?.success;
+        state.isSuccess = action.payload?.success;
+        state.message = action.payload?.message;
+        state.statusCode = action.payload?.status_code;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isError = true;
@@ -91,19 +91,21 @@ export const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.isError = !action.payload.success;
-        state.isSuccess = action.payload.success;
-        state.message = action.payload.message;
-        state.isAuthenticated = action.payload.success;
-        state.user = action.payload.data;
-        state.statusCode = action.payload.status_code;
-        state.token = action.payload.data.token;
-        state.data = action.payload.data;
+        state.isError = !action.payload?.success;
+        state.isSuccess = action.payload?.success;
+        state.message = action.payload?.message;
+        state.isAuthenticated = action.payload?.success;
+        state.user = action.payload?.data;
+        state.statusCode = action.payload?.status_code;
+        state.token = action.payload?.data?.token;
+        state.data = action.payload?.data;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isError = true;
         state.isLoading = false;
         state.isSuccess = false;
+        state.message = action.payload?.message || 'An error occurred';
+        state.statusCode = action.payload?.status_code;
       })
 
       //Logout User
@@ -146,7 +148,7 @@ export const authSlice = createSlice({
         state.statusCode = 200;
         state.isAuthenticated = false;
         state.userProfile = [];
-        AsyncStorage.removeItem('USER_ID');
+        AsyncStorage.removeItem('USER_TOKEN');
         AsyncStorage.removeItem('isLoggedIn');
       })
 

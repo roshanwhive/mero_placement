@@ -22,11 +22,14 @@ const register = async registerData => {
 const login = async loginData => {
   try {
     const response = await axios.post(`${base_url}login`, loginData);
-    await AsyncStorage.setItem('KeepLoggedIn', JSON.stringify(true));
-    await AsyncStorage.setItem(
-      'USER_TOKEN',
-      JSON.stringify(response.data.data.token),
-    );
+    console.log(response.data);
+    if (response.data.status_code === 200) {
+      await AsyncStorage.setItem('KeepLoggedIn', JSON.stringify(true));
+      await AsyncStorage.setItem(
+        'USER_TOKEN',
+        JSON.stringify(response.data.data.token),
+      );
+    }
     return response.data;
   } catch (error) {
     console.error('Error during login:', error);

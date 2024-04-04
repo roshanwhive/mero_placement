@@ -23,13 +23,8 @@ import {showMessage} from 'react-native-flash-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = ({navigation}) => {
-  const [value, setValue] = useState(null);
   const [passwordVisible, setPasswordVisible] = useState(false);
-  // const [password, setPassword] = useState('');
   const loginLogo = require('../../../assets/loginLogo.png');
-  const USER_ID_KEY = 'USER_ID';
-  const [isLogged, setIsLogged] = useState(false);
-  const [tokenUser, setToken] = useState(null);
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -49,7 +44,7 @@ const Login = ({navigation}) => {
         animated: true,
       });
     } else if (isSuccess && statusCode === 200 && isAuthenticated) {
-      navigation.navigate('HomeScreen');
+      navigation.navigate('Home');
       showMessage({
         message: JSON.stringify(message),
         type: 'success',
@@ -59,6 +54,10 @@ const Login = ({navigation}) => {
       });
     }
   }, [isError, isSuccess, statusCode, message]);
+
+  useEffect(() => {
+    console.log('this is isloading', isLoading);
+  }, [isLoading]);
 
   const schema = yup.object().shape({
     email: yup.string().required('Email is Required').email('Invalid Email'),

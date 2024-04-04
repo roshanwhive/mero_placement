@@ -16,13 +16,8 @@ import CompleteProfile from '../../containers/modal/CompleteProfile';
 import {getUserProfile} from '../../features/auth/AuthSlice';
 
 const Home = ({navigation}) => {
-  const dispatch = useDispatch();
-
   const {userProfile} = useSelector(state => state.auth);
 
-  useEffect(() => {
-    console.log(userProfile);
-  }, [userProfile]);
   return (
     <>
       <CompleteProfile />
