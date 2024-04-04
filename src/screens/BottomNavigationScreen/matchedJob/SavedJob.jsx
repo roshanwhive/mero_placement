@@ -11,12 +11,6 @@ const SavedJob = ({ navigation }) => {
   const dispatch = useDispatch();
   const {savedJobs} = useSelector(state => state.job);
 
-
-
-
-
-
-  
   useEffect(() => {
     dispatch(getSavedJob());
   }, [dispatch]);

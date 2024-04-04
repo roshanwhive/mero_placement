@@ -2,6 +2,7 @@ import axios from 'axios';
 import { base_url } from '../../utils/base_url';
 import { err } from 'react-native-svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getConfigWithToken } from '../../utils/config';
 
 //get all job
 const getAllJobs = async () => {
@@ -140,10 +141,8 @@ const getJobByJobTypes = async id => {
 //get saved job
 const getSavedJob = async () => {
   try {
-    const token = await AsyncStorage.getItem('USER_TOKEN');
-    const header = { 'Authorization': 'Bearer' + token };
-    const response = await axios.get(`${base_url}candidate/status/saved-job`,{header});
-    console.log("this is token saved" + token);
+    const config = await getConfigWithToken();
+    const response = await axios.get(`${base_url}candidate/status/saved-job`, config);
     if (response) {
       return response.data;
     }
