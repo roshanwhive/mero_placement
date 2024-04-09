@@ -4,6 +4,7 @@ import SavedJob from '../matchedJob/SavedJob';
 import AppBar from '../../../components/custom_toolbar/AppBar';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import MatchedJob from './MatchedJob';
+import { customFonts } from '../../../constants/theme';
 
 const FirstRoute = () => (
   // <View style={{ flex: 1, backgroundColor: '#ff4081' }} />
@@ -39,6 +40,7 @@ const MatchedJobTab = ({navigation}) => {
             <Text
               style={{
                 color: focused ? 'white' : 'gray',
+                fontFamily: customFonts.fontPoppins,
               }}>
               {route.title}
             </Text>

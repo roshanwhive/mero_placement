@@ -9,6 +9,8 @@ import AppBar from '../../components/custom_toolbar/AppBar';
 import {customThemeColor} from '../../constants/Color';
 import {useSelector} from 'react-redux';
 import CompleteProfile from '../../containers/modal/CompleteProfile';
+import {getUserProfile} from '../../features/auth/AuthSlice';
+import {customFontSize, customFonts} from '../../constants/theme';
 
 const Home = ({navigation}) => {
   const {userProfile} = useSelector(state => state.auth);
@@ -58,16 +60,17 @@ const styles = StyleSheet.create({
   },
   textWrapper: {
     paddingHorizontal: 20,
-    paddingVertical: 25,
+    paddingVertical: 20,
   },
   greetingText: {
     color: '#fcfcfc',
-    fontSize: 16,
+    fontSize: customFontSize.font16,
+    fontFamily: customFonts.fontPoppins,
   },
   subHeading: {
-    fontSize: 30,
+    fontSize: customFontSize.font24,
     color: '#ffffff',
-    fontWeight: '600',
+    fontFamily: customFonts.fontPoppins,
   },
   header: {
     height: 400,
@@ -93,9 +96,6 @@ const styles = StyleSheet.create({
   },
   totalJobs: {
     marginTop: 5,
-  },
-  font: {
-    fontFamily: 'Roboto-Regular',
   },
 });
 

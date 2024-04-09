@@ -4,6 +4,7 @@ import AppBar from '../../../components/custom_toolbar/AppBar';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import JobApplied from './JobApplied';
 import ProfileVisits from './ProfileVisits';
+import { customFonts } from '../../../constants/theme';
 
 
 
@@ -44,7 +45,9 @@ const MyStatus = () => {
         renderLabel={({ focused, route }) => {
           return (
             <Text style={{ 
-            color: focused ? 'white': 'gray'}}>
+            color: focused ? 'white': 'gray',
+            fontFamily: customFonts.fontPoppins,
+            }}>
               {route.title}
             </Text>
           );

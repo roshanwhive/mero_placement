@@ -25,6 +25,8 @@ import {Controller, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {showMessage} from 'react-native-flash-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {GlobalStyleSheet} from '../../../constants/StyleSheet';
+import {customFontSize, customFonts} from '../../../constants/theme';
 
 const Login = ({navigation}) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -111,7 +113,7 @@ const Login = ({navigation}) => {
 
       {/* Title and form */}
 
-      <View style={styles.formContainer}>
+      <View style={GlobalStyleSheet.formContainer}>
         <AuthHeader />
         <View style={{flex: 1}}>
           <ScrollView
@@ -208,7 +210,11 @@ const Login = ({navigation}) => {
                 </TouchableOpacity>
               </View>
               <View style={styles.signupTextContainer}>
-                <Text style={{color: customTextColor.primary}}>
+                <Text
+                  style={{
+                    color: customTextColor.primary,
+                    fontFamily: customFonts.fontPoppins,
+                  }}>
                   Don't have an account?
                 </Text>
                 <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
@@ -236,10 +242,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 25,
     flexGrow: 1,
   },
-  formContainer: {
-    flex: 1,
-    width: '100%',
-  },
+
   inputContainer: {
     alignItems: 'center',
     marginHorizontal: 20,
@@ -261,6 +264,7 @@ const styles = StyleSheet.create({
   },
   forgotPasswordText: {
     color: customTextColor.lightGreen,
+    fontFamily: customFonts.fontPoppins,
   },
   buttonWrapper: {
     width: '100%',
@@ -271,11 +275,11 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   buttonText: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: customFontSize.font20,
     color: customTextColor.white,
     textAlign: 'center',
     padding: 10,
+    fontFamily: customFonts.fontRobotoBold,
   },
   signupTextContainer: {
     marginTop: 10,
@@ -285,6 +289,7 @@ const styles = StyleSheet.create({
   signupText: {
     color: customTextColor.lightGreen,
     marginLeft: 5,
+    fontFamily: customFonts.fontPoppins,
   },
   errorText: {
     color: 'red',

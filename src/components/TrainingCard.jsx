@@ -2,6 +2,7 @@ import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {customTextColor, customThemeColor} from '../constants/Color';
 import reactTraining from '../assets/training/react-training.png';
+import { customFontSize, customFonts } from '../constants/theme';
 
 const TrainingCard = ({navigation}) => {
   return (
@@ -42,9 +43,8 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 5,
+    fontSize: customFontSize.font16,
+    fontFamily: customFonts.fontPoppins,
     color: customTextColor.primary,
   },
   flexCard: {
@@ -53,9 +53,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   price: {
-    fontSize: 14,
+    fontSize: customFontSize.font14,
     color: customTextColor.lightGreen,
-    fontWeight: 'bold',
+    fontFamily: customFonts.fontItallics,
   },
   button: {
     backgroundColor: customThemeColor.darkRed,
@@ -64,8 +64,8 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     borderRadius: 5,
     width: 60,
-    fontSize: 14,
-    fontWeight: '500',
+    fontSize: customFontSize.font14,
+    fontFamily: customFonts.fontRobotoBold,
   },
 });
 

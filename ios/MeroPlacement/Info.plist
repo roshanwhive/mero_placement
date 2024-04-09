@@ -54,6 +54,14 @@
 		<string>Roboto-Bold.ttf</string>
 		<string>Roboto-Italic.ttf</string>
 		<string>Roboto-Regular.ttf</string>
+		<string>BeVietnamPro-Bold.ttf</string>
+		<string>BeVietnamPro-Medium.ttf</string>
+		<string>Poppins-Black.ttf</string>
+		<string>Poppins-Bold.ttf</string>
+		<string>Poppins-Light.ttf</string>
+		<string>Poppins-Medium.ttf</string>
+		<string>Poppins-Regular.ttf</string>
+		<string>Prompt-Medium.ttf</string>
 	</array>
 </dict>
 </plist>

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,18 +7,21 @@ import {
   Image,
   StyleSheet,
 } from 'react-native';
-import {categories} from '../constants';
-import {useDispatch, useSelector} from 'react-redux';
-import {getMainCategories} from '../features/job/JobSlice';
-import {useNavigation} from '@react-navigation/native';
+import { categories } from '../constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { getMainCategories } from '../features/job/JobSlice';
+import { useNavigation } from '@react-navigation/native';
 import CategoryCardCircle from './skeleton_loader/CategoryCardCircle';
+import { customFontSize, customFonts } from '../constants/theme';
+import { customTextColor } from '../constants/Color';
+import { GlobalStyleSheet } from '../constants/StyleSheet';
 
 const Categories = () => {
   const [activeCategory, setActiveCategory] = useState(null);
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {mainCategories} = useSelector(state => state.job);
+  const { mainCategories } = useSelector(state => state.job);
 
   useEffect(() => {
     dispatch(getMainCategories());
@@ -28,10 +31,10 @@ const Categories = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <View>
-          <Text style={styles.title}>Jobs By Category</Text>
+          <Text style={GlobalStyleSheet.Hometitle}>Jobs By Category</Text>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate('AllCategories')}>
-          <Text style={styles.seeAll}>See All</Text>
+          <Text style={GlobalStyleSheet.seeAll}>See All</Text>
         </TouchableOpacity>
       </View>
       <ScrollView
@@ -71,17 +74,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
   },
-  title: {
-    fontWeight: 'bold',
-    color: '#11401E',
-    fontSize: 20,
-  },
-  seeAll: {
-    color: '#2b8256',
-    fontWeight: '500',
-    textDecorationLine: 'underline',
-    paddingRight: 3,
-  },
+
   container: {
     marginTop: 4,
   },
@@ -124,8 +117,8 @@ const styles = StyleSheet.create({
   },
   categoryName: {
     marginTop: 5,
-    fontSize: 13,
-    fontWeight: '500',
+    fontSize: customFontSize.font12,
+    fontFamily: customFonts.font,
   },
   activeText: {
     color: '#9D050A',
