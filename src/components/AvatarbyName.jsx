@@ -19,8 +19,6 @@ const styles = StyleSheet.create({
     height: '100%',
     resizeMode: 'cover',
     borderRadius: 100,
-    // borderWidth: 4,
-    // borderColor: 'white',
   },
   avatarText: {
     fontSize: 44,

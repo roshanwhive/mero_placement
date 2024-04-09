@@ -122,7 +122,7 @@ const Signup = ({navigation}) => {
     dispatch(registerUser(formData)).then(() => {
       setTimeout(() => {
         dispatch(resetState());
-      }, 10000);
+      }, 1000);
     });
   };
   const commonTextInputProps = {

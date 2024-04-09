@@ -148,6 +148,7 @@ export const authSlice = createSlice({
         state.statusCode = 200;
         state.isAuthenticated = false;
         state.userProfile = [];
+        state.token = '';
         AsyncStorage.removeItem('USER_TOKEN');
         AsyncStorage.removeItem('isLoggedIn');
       })

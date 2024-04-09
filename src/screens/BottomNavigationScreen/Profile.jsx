@@ -20,22 +20,30 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AvatarByName from '../../components/AvatarbyName';
 import UserProfileCard from '../../components/skeleton_loader/UserProfileCard';
 import logoImage from '../../assets/search1.jpg';
+import RenderHtml from 'react-native-render-html';
+import {showMessage} from 'react-native-flash-message';
+import AvatarSkeleton from '../../components/skeleton_loader/AvatarSkeleton';
 
 export default Profile = ({navigation}) => {
   const dispatch = useDispatch();
 
-  const {message, isAuthenticated, isSuccess, isError, isLoading, statusCode} =
-    useSelector(state => state.auth);
+  const {
+    message,
+    isAuthenticated,
+    userProfile,
+    token,
+    isSuccess,
+    isError,
+    isLoading,
+    statusCode,
+  } = useSelector(state => state.auth);
   const user = AsyncStorage.getItem('USER_TOKEN');
-  const {userProfile, token} = useSelector(state => state.auth);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      setTimeout(() => {
-        dispatch(getUserProfile());
-      }, 200);
-    }
-  }, [dispatch, isAuthenticated]);
+    setTimeout(() => {
+      dispatch(getUserProfile());
+    }, 100000);
+  }, [dispatch]);
 
   const handleBack = () => {
     navigation.goBack();
@@ -43,9 +51,14 @@ export default Profile = ({navigation}) => {
 
   const handleLogout = () => {
     dispatch(logout());
-    setTimeout(() => {
-      navigation.navigate('Login');
-    }, 2000);
+    navigation.navigate('Login');
+    showMessage({
+      message: 'Logout Successfully',
+      type: 'success',
+      setLoading: false,
+      animationDuration: 1000,
+      animated: true,
+    });
   };
   return (
     <>
@@ -54,36 +67,52 @@ export default Profile = ({navigation}) => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.container}>
         <AppBar handleBack={handleBack} title="Profile" />
-        {isAuthenticated && (
-          <>
-            <View style={styles.header}></View>
 
-            {!!userProfile?.profile?.featured_image ? (
-              <Image
-                style={styles.avatar}
-                source={{uri: userProfile?.profile?.featured_image}}
-              />
-            ) : (
-              <View style={styles.avatar}>
-                <AvatarByName name={userProfile?.profile?.lead_name} />
-              </View>
-            )}
-          </>
-        )}
+        {isAuthenticated && <View style={styles.header}></View>}
 
         <View style={styles.body}>
           {isAuthenticated ? (
             <>
               <View style={styles.bodyContent}>
-                <View style={styles.nameContainer}>
-                  <Text style={styles.name}>
-                    {userProfile?.profile?.lead_name}
-                  </Text>
-                </View>
-                {!!userProfile ? <Account /> : <UserProfileCard />}
-                {!!userProfile ? <Preferences /> : <UserProfileCard />}
-                {!!userProfile ? <Education /> : <UserProfileCard />}
-                {!!userProfile ? <Experience /> : <UserProfileCard />}
+                {!!userProfile?.profile?.featured_image ? (
+                  <Image
+                    style={styles.avatar}
+                    source={{uri: userProfile?.profile?.featured_image}}
+                  />
+                ) : (
+                  <AvatarSkeleton />
+                )}
+                {/* <View style={styles.avatar}>
+                    <AvatarByName name={userProfile?.profile?.lead_name} />
+                  </View> */}
+                {!!userProfile?.profile && (
+                  <View style={styles.nameContainer}>
+                    <Text style={styles.name}>
+                      {userProfile?.profile?.lead_name}
+                    </Text>
+                    <RenderHtml
+                      contentWidth={100}
+                      ignoredDomTags={['quillbot-extension-portal']}
+                      tagsStyles={tagsStyles}
+                      source={{
+                        html: userProfile?.profile?.bio,
+                      }}
+                    />
+                  </View>
+                )}
+
+                {!!userProfile?.profile ? <Account /> : <UserProfileCard />}
+                {!!userProfile?.preference ? (
+                  <Preferences />
+                ) : (
+                  <UserProfileCard />
+                )}
+                {!!userProfile?.education ? <Education /> : <UserProfileCard />}
+                {!!userProfile?.experience ? (
+                  <Experience />
+                ) : (
+                  <UserProfileCard />
+                )}
 
                 <TouchableOpacity
                   onPress={handleLogout}
@@ -120,6 +149,20 @@ export default Profile = ({navigation}) => {
   );
 };
 
+const tagsStyles = {
+  p: {
+    color: customTextColor.secondary,
+    textAlign: 'center',
+    fontSize: 14,
+  },
+  li: {
+    color: customTextColor.secondary,
+    fontSize: 14,
+    textAlign: 'justify',
+    marginHorizontal: 5,
+  },
+};
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: customThemeColor.white,
@@ -127,23 +170,21 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: customThemeColor.darkRed,
-    height: 200,
+    height: 150,
+    position: 'relative',
   },
   avatar: {
     width: 130,
     height: 130,
     borderRadius: 100,
     borderWidth: 4,
-    borderColor: customTextColor.white,
-    top: '-13%',
+    borderColor: customThemeColor.lighterBg,
     alignSelf: 'center',
-    marginTop: 130,
   },
   body: {
-    top: '-18%',
+    top: '-6%',
   },
   bodyContent: {
-    flex: 1,
     alignItems: 'center',
     padding: 40,
   },
@@ -182,8 +223,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   nameContainer: {
-    marginTop: 50,
-    marginBottom: 20,
+    marginTop: 20,
+    marginBottom: 30,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   name: {
     fontSize: 22,
@@ -205,7 +249,10 @@ const styles = StyleSheet.create({
   buttonLogout: {
     backgroundColor: customTextColor.darkRed,
   },
-
+  bio: {
+    fontSize: 16,
+    color: customTextColor.secondary,
+  },
   logoutText: {
     color: customTextColor.white,
     fontSize: 20,

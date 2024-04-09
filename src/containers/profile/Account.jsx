@@ -11,7 +11,10 @@ const Account = () => {
     <View style={styles.account}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>Account</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('EditProfile', {title: 'Profile'})
+          }>
           <Text style={styles.edit}>Edit</Text>
         </TouchableOpacity>
       </View>
@@ -75,6 +78,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: 15,
+    flexWrap: 'wrap',
   },
   borderBottomGray: {
     borderBottomColor: '#ededed',

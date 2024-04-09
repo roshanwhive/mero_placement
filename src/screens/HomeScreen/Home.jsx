@@ -1,19 +1,14 @@
-import React, {useEffect, useState} from 'react';
 import {StatusBar, ScrollView, StyleSheet, View, Text} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Categories from '../../components/Categories';
 import Featured from '../../containers/Featured';
-import SearchBar from '../../containers/SearchBar';
 import TotalJobs from '../../containers/TotalJobs';
 import Training from '../../containers/Training';
 import ActivelySeekingForJobCard from '../../containers/ActivelySeekingForJobCard';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppBar from '../../components/custom_toolbar/AppBar';
 import {customThemeColor} from '../../constants/Color';
-import DrawerContent from '../../components/DrawerContent';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import CompleteProfile from '../../containers/modal/CompleteProfile';
-import {getUserProfile} from '../../features/auth/AuthSlice';
 
 const Home = ({navigation}) => {
   const {userProfile} = useSelector(state => state.auth);
@@ -54,13 +49,6 @@ const Home = ({navigation}) => {
     </>
   );
 };
-
-// const [isLoggedIn, setisLoggedIn] =  useState(false)
-// async function getData(){
-//   const data = await AsyncStorage.getItem('isLoggedIn')
-//   //pass data in setLoggedIn
-//   setisLoggedIn(data);
-// }
 
 const styles = StyleSheet.create({
   safeArea: {

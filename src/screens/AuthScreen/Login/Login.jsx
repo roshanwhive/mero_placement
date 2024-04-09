@@ -11,7 +11,11 @@ import {
 import {ActivityIndicator, TextInput} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useDispatch, useSelector} from 'react-redux';
-import {loginUser, resetState} from '../../../features/auth/AuthSlice';
+import {
+  getUserProfile,
+  loginUser,
+  resetState,
+} from '../../../features/auth/AuthSlice';
 import AuthHeader from '../../../components/AuthHeader';
 import AuthLogo from '../../../components/AuthLogo';
 import AuthTitle from '../../../components/AuthTitle';
@@ -31,8 +35,16 @@ const Login = ({navigation}) => {
   };
   const dispatch = useDispatch();
 
-  const {message, isAuthenticated, isSuccess, isError, isLoading, statusCode} =
-    useSelector(state => state.auth);
+  const {
+    message,
+    token,
+    isAuthenticated,
+    isSuccess,
+    isError,
+    isLoading,
+    userProfile,
+    statusCode,
+  } = useSelector(state => state.auth);
 
   useEffect(() => {
     if (isError && statusCode !== 200 && statusCode !== 0) {
@@ -55,10 +67,6 @@ const Login = ({navigation}) => {
     }
   }, [isError, isSuccess, statusCode, message]);
 
-  useEffect(() => {
-    console.log('this is isloading', isLoading);
-  }, [isLoading]);
-
   const schema = yup.object().shape({
     email: yup.string().required('Email is Required').email('Invalid Email'),
     password: yup.string().required('Password is required'),
@@ -77,11 +85,13 @@ const Login = ({navigation}) => {
   });
 
   const onPressSend = formData => {
-    dispatch(loginUser(formData)).then(() => {
-      setTimeout(() => {
-        dispatch(resetState());
-      }, 10000);
-    });
+    dispatch(loginUser(formData))
+      .then(() => dispatch(getUserProfile()))
+      .then(() => {
+        setTimeout(() => {
+          dispatch(resetState());
+        }, 1000);
+      });
   };
 
   const commonTextInputProps = {
@@ -177,7 +187,7 @@ const Login = ({navigation}) => {
                 )}
               </View>
               <TouchableOpacity
-                onPress={() => navigation.navigate('HomeScreen')}
+                onPress={() => navigation.navigate('Home')}
                 style={styles.forgotPasswordContainer}>
                 <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
               </TouchableOpacity>

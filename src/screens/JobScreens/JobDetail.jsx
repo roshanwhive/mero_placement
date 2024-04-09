@@ -180,9 +180,6 @@ const JobDetail = ({navigation}) => {
 
       {/* Job Actions */}
       <View style={styles.jobActions}>
-        {/* <TouchableOpacity style={styles.saveButton}>
-          <Text style={styles.actionButtonText}>Save</Text>
-        </TouchableOpacity> */}
         <TouchableOpacity onPress={handleApply} style={styles.actionButton}>
           <Text style={styles.actionButtonText}>Apply Job</Text>
         </TouchableOpacity>
