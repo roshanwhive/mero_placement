@@ -13,6 +13,7 @@ import {customTextColor, customThemeColor} from '../../constants/Color';
 import {ActivityIndicator} from 'react-native-paper';
 import RenderHtml from 'react-native-render-html';
 import AppBar from '../../components/custom_toolbar/AppBar';
+import { customFontSize, customFonts } from '../../constants/theme';
 
 const Row = ({label, value}) => {
   return (
@@ -31,11 +32,11 @@ const tagsStyles = {
   p: {
     color: customTextColor.secondary,
     textAlign: 'justify',
-    fontSize: 14,
+    fontSize: customFontSize.font14,
   },
   li: {
     color: customTextColor.secondary,
-    fontSize: 14,
+    fontSize: customFontSize.font14,
     textAlign: 'justify',
     marginHorizontal: 5,
   },
@@ -201,12 +202,12 @@ const styles = StyleSheet.create({
   },
   jobDetails: {
     flex: 1,
-    marginTop: 20,
+    marginTop: 5,
     paddingHorizontal: 15,
   },
   cardHeader: {
     backgroundColor: customThemeColor.white,
-    borderRadius: 25,
+    borderRadius: 5,
     padding: 20,
     marginBottom: 20,
   },
@@ -217,12 +218,13 @@ const styles = StyleSheet.create({
   },
   companyName: {
     color: customTextColor.secondary,
-    fontSize: 14,
+    fontSize: customFontSize.font14,
+    fontFamily: customFonts.fontPrompt,
   },
   jobTitle: {
-    fontSize: 25,
+    fontSize: customFontSize.font20,
     color: customTextColor.primary,
-    fontWeight: '600',
+    fontFamily: customFonts.fontPoppins,
   },
   flexCard: {
     display: 'flex',
@@ -235,6 +237,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 15,
     borderRadius: 20,
+    fontFamily: customFonts.fontPrompt,
   },
   label1: {
     backgroundColor: customThemeColor.lightBG,
@@ -242,10 +245,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 20,
     color: customTextColor.primary,
+    fontFamily: customFonts.fontPrompt,
   },
   link: {
     color: customTextColor.lightGreen,
-    fontSize: 16,
+    fontSize: customFontSize.font16,
   },
   companyLogoContainer: {
     alignItems: 'flex-end',
@@ -263,19 +267,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   title: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: customFontSize.font16,
+    fontFamily: customFonts.fontPoppins,
     marginTop: 5,
     color: customTextColor.primary,
   },
   value: {
     color: customTextColor.primary,
-    fontSize: 18,
-    fontWeight: '500',
+    fontSize: customFontSize.font16,
+    fontFamily: customFonts.fontPoppins,
   },
   listText: {
-    fontSize: 14,
-    fontWeight: '400',
+    fontSize: customFontSize.font14,
+    fontFamily: customFonts.fontPoppins,
     paddingVertical: 4,
     color: customTextColor.primary,
   },
@@ -290,15 +294,15 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     color: customTextColor.primary,
-    fontWeight: '600',
+    fontFamily: customFonts.fontPoppins,
     marginBottom: 5,
     marginTop: 10,
   },
   sectionText: {
-    fontSize: 14,
+    fontSize: customFontSize.font14,
     marginBottom: 10,
     color: customTextColor.primary,
-    fontWeight: '400',
+    fontFamily: customFonts.fontPoppins,
   },
   jobActions: {
     flexDirection: 'row',
@@ -325,8 +329,8 @@ const styles = StyleSheet.create({
   },
   actionButtonText: {
     color: customTextColor.white,
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: customFontSize.font16,
+    fontFamily: customFonts.fontPrompt,
     textAlign: 'center',
   },
   iconContainer: {},
@@ -345,6 +349,7 @@ const styles = StyleSheet.create({
   subtitle: {
     color: customTextColor.primary,
     textAlign: 'center',
+    fontFamily: customFonts.fontPoppins,
   },
   container2: {
     marginTop: 10,
@@ -356,15 +361,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   heading: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: customFontSize.font16,
+    fontFamily: customFonts.fontBevietnamMedium,
     color: customTextColor.primary,
     paddingVertical: 10,
     marginRight: 6,
   },
   subheading: {
-    fontSize: 16,
-    fontWeight: 'normal',
+    fontSize: customFontSize.font14,
+    fontFamily: customFonts.fontPoppins,
     color: customTextColor.secondary,
   },
   leftGrid: {

@@ -2,12 +2,44 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "src/assets/fonts/BeVietnamPro-Bold.ttf",
+      "sha1": "0bd7e256f73efd0a8135c5090d62f150107ff37a"
+    },
+    {
+      "path": "src/assets/fonts/BeVietnamPro-Medium.ttf",
+      "sha1": "7525dd63d853386f3c192fa78502e547ea620e96"
+    },
+    {
       "path": "src/assets/fonts/Montserrat-Italic-VariableFont_wght.ttf",
       "sha1": "92d0e87485dff4f41184e3ae9497c5d1795c1827"
     },
     {
       "path": "src/assets/fonts/Montserrat-VariableFont_wght.ttf",
       "sha1": "debd10e57fb07dd24187c41679885129449c1435"
+    },
+    {
+      "path": "src/assets/fonts/Poppins-Black.ttf",
+      "sha1": "645e04c53c6b5b35bce654a811ebce16af8aa721"
+    },
+    {
+      "path": "src/assets/fonts/Poppins-Bold.ttf",
+      "sha1": "875cf0cecd647bcf22e79d633d868c1b1ec98dfa"
+    },
+    {
+      "path": "src/assets/fonts/Poppins-Light.ttf",
+      "sha1": "e247a92158e112f8bf7b638c8d95381d66b00dbb"
+    },
+    {
+      "path": "src/assets/fonts/Poppins-Medium.ttf",
+      "sha1": "283f21b44efbdbf276ba802be2d949a36bbc4233"
+    },
+    {
+      "path": "src/assets/fonts/Poppins-Regular.ttf",
+      "sha1": "fdd3002e7d814ee47c1c1b8487c72c6bbb3a2d00"
+    },
+    {
+      "path": "src/assets/fonts/Prompt-Medium.ttf",
+      "sha1": "ed15bfac8ac1e25dfbaef4c3e7dc6178b3347379"
     },
     {
       "path": "src/assets/fonts/Roboto-Bold.ttf",

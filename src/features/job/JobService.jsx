@@ -1,8 +1,8 @@
 import axios from 'axios';
-import {base_url} from '../../utils/base_url';
-import {err} from 'react-native-svg';
+import { base_url } from '../../utils/base_url';
+import { err } from 'react-native-svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {getConfigWithToken} from '../../utils/config';
+import { getConfigWithToken } from '../../utils/config';
 
 //get all job
 const getAllJobs = async () => {
@@ -152,6 +152,34 @@ const getSavedJob = async () => {
   }
 };
 
+//get matched job
+const getMatchedJob = async () => {
+  try {
+    const config = await getConfigWithToken();
+    const response = await axios.get(`${base_url}candidate/status/matching-job`, config);
+    if (response) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log('Error during fetching matched jobs:', error);
+    throw error;
+  }
+};
+
+//get applied job
+const getAppliedJob = async () => {
+  try {
+    const config = await getConfigWithToken();
+    const response = await axios.get(`${base_url}candidate/status/matching-job`, config);
+    if (response) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log('Error during fetching matched jobs:', error);
+    throw error;
+  }
+};
+
 export const jobService = {
   getJobCategories,
   getMainCategories,
@@ -165,4 +193,6 @@ export const jobService = {
   getJobTypes,
   getJobByJobTypes,
   getSavedJob,
+  getMatchedJob,
+  getAppliedJob,
 };

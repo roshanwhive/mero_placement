@@ -1,11 +1,11 @@
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import React, {useEffect} from 'react';
-import {customTextColor} from '../../constants/Color';
-import {useNavigation} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useEffect } from 'react';
+import { customTextColor } from '../../constants/Color';
+import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 const Preferences = () => {
-  const {userProfile} = useSelector(state => state.auth);
+  const { userProfile } = useSelector(state => state.auth);
   const navigation = useNavigation();
 
   return (
@@ -16,7 +16,7 @@ const Preferences = () => {
           <Text style={styles.edit}>Edit</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.accountDetailContainer}>
+      {/* <View style={styles.accountDetailContainer}>
         <View style={[styles.detailCard, styles.borderBottomGray]}>
           <Text style={styles.label}>Job Category</Text>
           <Text style={styles.value}>
@@ -47,7 +47,7 @@ const Preferences = () => {
             {userProfile?.preference[0]?.level?.name || '-'}
           </Text>
         </View>
-      </View>
+      </View> */}
     </View>
   );
 };

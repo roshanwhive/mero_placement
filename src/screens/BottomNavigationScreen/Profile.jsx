@@ -20,6 +20,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AvatarByName from '../../components/AvatarbyName';
 import UserProfileCard from '../../components/skeleton_loader/UserProfileCard';
 import logoImage from '../../assets/search1.jpg';
+import { GlobalStyleSheet } from '../../constants/StyleSheet';
+import { customFontSize, customFonts } from '../../constants/theme';
 
 export default Profile = ({navigation}) => {
   const dispatch = useDispatch();
@@ -105,7 +107,9 @@ export default Profile = ({navigation}) => {
                 <Text style={styles.logoutText}>Login</Text>
               </TouchableOpacity>
               <View style={styles.textContainer}>
-                <Text style={{color: customTextColor.primary, fontSize: 16}}>
+                <Text style={{color: customTextColor.primary, 
+                  fontSize: customFontSize.font16,
+                  fontFamily: customFonts.fontPoppins,}}>
                   Don't have an account?
                 </Text>
                 <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
@@ -161,14 +165,16 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 25,
-    fontWeight: 'bold',
     marginBottom: 10,
     textAlign: 'center',
+    color: '#11401E',
+    fontFamily: customFonts.fontRobotoBold,
   },
   subtitle: {
     textAlign: 'center',
-    fontSize: 16,
-    marginBottom: 20,
+    color: '#11401E',
+    fontFamily: customFonts.fontPoppins,
+    fontSize: customFontSize.font14,
   },
   textContainer: {
     marginTop: 50,
@@ -178,8 +184,8 @@ const styles = StyleSheet.create({
   signupText: {
     color: customTextColor.lightGreen,
     marginLeft: 5,
-    fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: customFontSize.font16,
+    fontFamily: customFonts.fontPoppins,
   },
   nameContainer: {
     marginTop: 50,
@@ -209,6 +215,6 @@ const styles = StyleSheet.create({
   logoutText: {
     color: customTextColor.white,
     fontSize: 20,
-    fontWeight: '600',
+    fontFamily: customFonts.fontPoppins,
   },
 });

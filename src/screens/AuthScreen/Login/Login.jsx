@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Image,
   StatusBar,
@@ -8,21 +8,23 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import {ActivityIndicator, TextInput} from 'react-native-paper';
+import { ActivityIndicator, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {useDispatch, useSelector} from 'react-redux';
-import {loginUser, resetState} from '../../../features/auth/AuthSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser, resetState } from '../../../features/auth/AuthSlice';
 import AuthHeader from '../../../components/AuthHeader';
 import AuthLogo from '../../../components/AuthLogo';
 import AuthTitle from '../../../components/AuthTitle';
-import {customTextColor, customThemeColor} from '../../../constants/Color';
+import { customTextColor, customThemeColor } from '../../../constants/Color';
 import * as yup from 'yup';
-import {Controller, useForm} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup';
-import {showMessage} from 'react-native-flash-message';
+import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { showMessage } from 'react-native-flash-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { GlobalStyleSheet } from '../../../constants/StyleSheet';
+import { customFontSize, customFonts } from '../../../constants/theme';
 
-const Login = ({navigation}) => {
+const Login = ({ navigation }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const loginLogo = require('../../../assets/loginLogo.png');
 
@@ -31,7 +33,7 @@ const Login = ({navigation}) => {
   };
   const dispatch = useDispatch();
 
-  const {message, isAuthenticated, isSuccess, isError, isLoading, statusCode} =
+  const { message, isAuthenticated, isSuccess, isError, isLoading, statusCode } =
     useSelector(state => state.auth);
 
   useEffect(() => {
@@ -67,7 +69,7 @@ const Login = ({navigation}) => {
   const {
     control,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -101,11 +103,11 @@ const Login = ({navigation}) => {
 
       {/* Title and form */}
 
-      <View style={styles.formContainer}>
+      <View style={GlobalStyleSheet.formContainer}>
         <AuthHeader />
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <ScrollView
-            style={{flex: 1}}
+            style={{ flex: 1 }}
             contentContainerStyle={styles.scrollViewContent}>
             <AuthLogo imgSrc={loginLogo} />
 
@@ -117,7 +119,7 @@ const Login = ({navigation}) => {
                   rules={{
                     required: true,
                   }}
-                  render={({field: {onChange, value}}) => (
+                  render={({ field: { onChange, value } }) => (
                     <TextInput
                       {...commonTextInputProps}
                       label="Emaill"
@@ -144,7 +146,7 @@ const Login = ({navigation}) => {
                   rules={{
                     required: true,
                   }}
-                  render={({field: {onChange, value}}) => (
+                  render={({ field: { onChange, value } }) => (
                     <TextInput
                       {...commonTextInputProps}
                       label="Password"
@@ -188,7 +190,7 @@ const Login = ({navigation}) => {
                   {isLoading ? (
                     <ActivityIndicator
                       animating={true}
-                      style={{paddingVertical: 14}}
+                      style={{ paddingVertical: 14 }}
                       color={customTextColor.white}
                       size={20}
                     />
@@ -198,7 +200,7 @@ const Login = ({navigation}) => {
                 </TouchableOpacity>
               </View>
               <View style={styles.signupTextContainer}>
-                <Text style={{color: customTextColor.primary}}>
+                <Text style={{ color: customTextColor.primary, fontFamily: customFonts.fontPoppins }}>
                   Don't have an account?
                 </Text>
                 <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
@@ -226,10 +228,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 25,
     flexGrow: 1,
   },
-  formContainer: {
-    flex: 1,
-    width: '100%',
-  },
+
   inputContainer: {
     alignItems: 'center',
     marginHorizontal: 20,
@@ -251,6 +250,7 @@ const styles = StyleSheet.create({
   },
   forgotPasswordText: {
     color: customTextColor.lightGreen,
+    fontFamily: customFonts.fontPoppins,
   },
   buttonWrapper: {
     width: '100%',
@@ -261,11 +261,11 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   buttonText: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: customFontSize.font20,
     color: customTextColor.white,
     textAlign: 'center',
     padding: 10,
+    fontFamily: customFonts.fontRobotoBold,
   },
   signupTextContainer: {
     marginTop: 10,
@@ -275,6 +275,7 @@ const styles = StyleSheet.create({
   signupText: {
     color: customTextColor.lightGreen,
     marginLeft: 5,
+    fontFamily: customFonts.fontPoppins,
   },
   errorText: {
     color: 'red',

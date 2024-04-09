@@ -35,7 +35,6 @@ const Router = () => {
       <Stack.Screen name="HomeScreen" component={BottomTab} />
 
       {/* Auth Screen */}
-      <Stack.Screen name="Splash" component={WelcomeScreen} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Signup" component={Signup} />
       <Stack.Screen name="EmailVerification" component={EmailVerification} />

@@ -2,10 +2,11 @@ import {View, Text, ScrollView, StyleSheet, Image} from 'react-native';
 import React from 'react';
 import {customTextColor, customThemeColor} from '../constants/Color';
 import TrainingCard from '../components/TrainingCard';
+import { GlobalStyleSheet } from '../constants/StyleSheet';
 const Training = ({navigation}) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Available Courses</Text>
+      <Text style={GlobalStyleSheet.Hometitle}>Available Courses</Text>
       <ScrollView
         horizontal={true}
         indicatorStyle="white"

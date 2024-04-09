@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,15 +7,16 @@ import {
   StyleSheet,
 } from 'react-native';
 import JobCard from '../components/JobCard';
-import {customTextColor, customThemeColor} from '../constants/Color';
-import {ActivityIndicator} from 'react-native-paper';
-import {useDispatch, useSelector} from 'react-redux';
-import {getJobByJobTypes} from '../features/job/JobSlice';
+import { customTextColor, customThemeColor } from '../constants/Color';
+import { ActivityIndicator } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
+import { getJobByJobTypes } from '../features/job/JobSlice';
 import CardSkeleton from '../components/skeleton_loader/CardSkeleton';
+import { GlobalStyleSheet } from '../constants/StyleSheet';
 
-const Featured = ({navigation}) => {
+const Featured = ({ navigation }) => {
   const dispatch = useDispatch();
-  const {jobByTpes} = useSelector(state => state.job);
+  const { jobByTpes } = useSelector(state => state.job);
 
   useEffect(() => {
     dispatch(getJobByJobTypes(1));
@@ -25,10 +26,10 @@ const Featured = ({navigation}) => {
     <View>
       <View style={styles.header}>
         <View>
-          <Text style={styles.title}>Top Jobs</Text>
+          <Text style={GlobalStyleSheet.Hometitle}>Top Jobs</Text>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate('SeeAllJobs')}>
-          <Text style={styles.seeAll}>See All</Text>
+          <Text style={GlobalStyleSheet.seeAll}>See All</Text>
         </TouchableOpacity>
       </View>
 

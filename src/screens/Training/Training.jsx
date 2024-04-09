@@ -4,6 +4,7 @@ import AppBar from '../../components/custom_toolbar/AppBar';
 import { customTextColor, customThemeColor } from '../../constants/Color';
 import RoundButtonComp from '../../components/RoundBtn';
 import { Divider } from 'react-native-paper';
+import { customFonts } from '../../constants/theme';
 
 
 const Training = () => {
@@ -42,7 +43,7 @@ const Training = () => {
               <View>
                 <Text style={styles.companyName}>Course</Text>
                 <Divider />
-                
+
                 <Text style={styles.jobTitle}>React Native</Text>
                 <Text style={styles.jobTitle}>Redux Training</Text>
                 <View style={styles.flexCard}>
@@ -183,7 +184,8 @@ const styles = StyleSheet.create({
   },
   companyName: {
     color: customTextColor.secondary,
-    fontSize: 14,
+    fontSize: 50,
+    fontFamily: customFonts.fontPoppins
   },
   jobTitle: {
     fontSize: 18,

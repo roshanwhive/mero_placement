@@ -20,6 +20,7 @@ import {getAllGender} from '../../../features/formData/FormSlice';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import {customTextColor, customThemeColor} from '../../../constants/Color';
 import {registerUser, resetState} from '../../../features/auth/AuthSlice';
+import { customFontSize, customFonts } from '../../../constants/theme';
 
 const Signup = ({navigation}) => {
   const [value, setValue] = useState(null);
@@ -373,7 +374,7 @@ const Signup = ({navigation}) => {
                 </TouchableOpacity>
               </View>
               <View style={styles.signupTextContainer}>
-                <Text style={{color: customTextColor.primary}}>
+                <Text style={{color: customTextColor.primary, fontFamily: customFonts.fontPoppins}}>
                   Already have an account?
                 </Text>
                 <TouchableOpacity onPress={() => navigation.navigate('Login')}>
@@ -433,11 +434,11 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   buttonText: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: customFontSize.font20,
     color: customTextColor.white,
     textAlign: 'center',
     padding: 10,
+    fontFamily: customFonts.fontRobotoBold,
   },
   signupTextContainer: {
     marginTop: 10,
@@ -450,6 +451,7 @@ const styles = StyleSheet.create({
   signupText: {
     color: customTextColor.lightGreen,
     marginLeft: 5,
+    fontFamily: customFonts.fontPoppins,
   },
 });
 
