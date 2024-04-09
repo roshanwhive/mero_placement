@@ -10,6 +10,7 @@ import JobCard from '../components/JobCard';
 import {useDispatch, useSelector} from 'react-redux';
 import {getAllJobs} from '../features/job/JobSlice';
 import CardSkeleton from '../components/skeleton_loader/CardSkeleton';
+import { GlobalStyleSheet } from '../constants/StyleSheet';
 
 const TotalJobs = ({navigation}) => {
   const dispatch = useDispatch();
@@ -24,10 +25,10 @@ const TotalJobs = ({navigation}) => {
     <View>
       <View style={styles.header}>
         <View>
-          <Text style={styles.title}>Hot Jobs</Text>
+          <Text style={GlobalStyleSheet.Hometitle}>Hot Jobs</Text>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate('SeeAllJobs')}>
-          <Text style={styles.seeAll}>See All</Text>
+          <Text style={GlobalStyleSheet.seeAll}>See All</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.scrollViewContent}>

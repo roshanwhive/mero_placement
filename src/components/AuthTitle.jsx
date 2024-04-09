@@ -1,5 +1,6 @@
 import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
+import { customFontSize, customFonts } from '../constants/theme';
 
 const AuthTitle = ({title}) => {
   return (
@@ -19,7 +20,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     color: '#11401E',
-    fontSize: 30,
-    fontWeight: '600',
+    fontSize: customFontSize.font30,
+    fontFamily: customFonts.fontPoppins,
   },
 });

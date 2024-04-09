@@ -11,7 +11,11 @@ import {
 import {ActivityIndicator, TextInput} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useDispatch, useSelector} from 'react-redux';
-import {loginUser, resetState} from '../../../features/auth/AuthSlice';
+import {
+  getUserProfile,
+  loginUser,
+  resetState,
+} from '../../../features/auth/AuthSlice';
 import AuthHeader from '../../../components/AuthHeader';
 import AuthLogo from '../../../components/AuthLogo';
 import AuthTitle from '../../../components/AuthTitle';
@@ -21,26 +25,28 @@ import {Controller, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {showMessage} from 'react-native-flash-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {GlobalStyleSheet} from '../../../constants/StyleSheet';
+import {customFontSize, customFonts} from '../../../constants/theme';
 
 const Login = ({navigation}) => {
-  const [value, setValue] = useState(null);
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [loading, setLoading] = useState(true);
-  // const [password, setPassword] = useState('');
   const loginLogo = require('../../../assets/loginLogo.png');
-  const USER_ID_KEY = 'USER_ID';
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
   const dispatch = useDispatch();
 
-  const {message, isAuthenticated, isSuccess, isError, isLoading, statusCode} =
-    useSelector(state => state.auth);
-
-  useEffect(() => {
-    console.log(message);
-  }, [message]);
+  const {
+    message,
+    token,
+    isAuthenticated,
+    isSuccess,
+    isError,
+    isLoading,
+    userProfile,
+    statusCode,
+  } = useSelector(state => state.auth);
 
   useEffect(() => {
     if (isError && statusCode !== 200 && statusCode !== 0) {
@@ -52,7 +58,7 @@ const Login = ({navigation}) => {
         animated: true,
       });
     } else if (isSuccess && statusCode === 200 && isAuthenticated) {
-      navigation.navigate('HomeScreen');
+      navigation.navigate('Home');
       showMessage({
         message: JSON.stringify(message),
         type: 'success',
@@ -81,11 +87,13 @@ const Login = ({navigation}) => {
   });
 
   const onPressSend = formData => {
-    dispatch(loginUser(formData)).then(() => {
-      setTimeout(() => {
-        dispatch(resetState());
-      }, 10000);
-    });
+    dispatch(loginUser(formData))
+      .then(() => dispatch(getUserProfile()))
+      .then(() => {
+        setTimeout(() => {
+          dispatch(resetState());
+        }, 1000);
+      });
   };
 
   const commonTextInputProps = {
@@ -105,7 +113,7 @@ const Login = ({navigation}) => {
 
       {/* Title and form */}
 
-      <View style={styles.formContainer}>
+      <View style={GlobalStyleSheet.formContainer}>
         <AuthHeader />
         <View style={{flex: 1}}>
           <ScrollView
@@ -181,7 +189,7 @@ const Login = ({navigation}) => {
                 )}
               </View>
               <TouchableOpacity
-                onPress={() => navigation.navigate('HomeScreen')}
+                onPress={() => navigation.navigate('Home')}
                 style={styles.forgotPasswordContainer}>
                 <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
               </TouchableOpacity>
@@ -202,7 +210,11 @@ const Login = ({navigation}) => {
                 </TouchableOpacity>
               </View>
               <View style={styles.signupTextContainer}>
-                <Text style={{color: customTextColor.primary}}>
+                <Text
+                  style={{
+                    color: customTextColor.primary,
+                    fontFamily: customFonts.fontPoppins,
+                  }}>
                   Don't have an account?
                 </Text>
                 <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
@@ -230,10 +242,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 25,
     flexGrow: 1,
   },
-  formContainer: {
-    flex: 1,
-    width: '100%',
-  },
+
   inputContainer: {
     alignItems: 'center',
     marginHorizontal: 20,
@@ -255,6 +264,7 @@ const styles = StyleSheet.create({
   },
   forgotPasswordText: {
     color: customTextColor.lightGreen,
+    fontFamily: customFonts.fontPoppins,
   },
   buttonWrapper: {
     width: '100%',
@@ -265,11 +275,11 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   buttonText: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: customFontSize.font20,
     color: customTextColor.white,
     textAlign: 'center',
     padding: 10,
+    fontFamily: customFonts.fontRobotoBold,
   },
   signupTextContainer: {
     marginTop: 10,
@@ -279,6 +289,7 @@ const styles = StyleSheet.create({
   signupText: {
     color: customTextColor.lightGreen,
     marginLeft: 5,
+    fontFamily: customFonts.fontPoppins,
   },
   errorText: {
     color: 'red',

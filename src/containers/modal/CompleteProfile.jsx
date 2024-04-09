@@ -13,7 +13,7 @@ const CompleteProfile = () => {
   useEffect(() => {
     setTimeout(() => {
       setVisible(true);
-    }, 10000);
+    }, 6000);
   }, [0]);
 
   const hideModal = () => setVisible(false);

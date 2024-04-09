@@ -2,15 +2,19 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import {customTextColor} from '../../constants/Color';
 import {useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
 
-const Account = ({navigation}) => {
+const Account = () => {
   const {userProfile} = useSelector(state => state.auth);
-
+  const navigation = useNavigation();
   return (
     <View style={styles.account}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>Account</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('EditProfile', {title: 'Profile'})
+          }>
           <Text style={styles.edit}>Edit</Text>
         </TouchableOpacity>
       </View>
@@ -18,9 +22,9 @@ const Account = ({navigation}) => {
         <View style={[styles.detailCard, styles.borderBottomGray]}>
           <Text style={styles.label}>Contact</Text>
           <Text style={styles.value}>
-            {userProfile?.primary_contact || '-'}{' '}
-            {userProfile?.secondary_contact
-              ? '/' + userProfile.secondary_contact
+            {userProfile?.profile?.primary_contact || '-'}{' '}
+            {userProfile?.profile?.secondary_contact
+              ? '/' + userProfile?.profile?.secondary_contact
               : ''}
           </Text>
         </View>
@@ -74,6 +78,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: 15,
+    flexWrap: 'wrap',
   },
   borderBottomGray: {
     borderBottomColor: '#ededed',

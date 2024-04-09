@@ -22,8 +22,14 @@ const register = async registerData => {
 const login = async loginData => {
   try {
     const response = await axios.post(`${base_url}login`, loginData);
-    await AsyncStorage.setItem('USER_ID', JSON.stringify(response));
-    await AsyncStorage.setItem('isLoggedIn', JSON.stringify(true));
+    console.log(response.data);
+    if (response.data.status_code === 200) {
+      await AsyncStorage.setItem('KeepLoggedIn', JSON.stringify(true));
+      await AsyncStorage.setItem(
+        'USER_TOKEN',
+        JSON.stringify(response.data.data.token),
+      );
+    }
     return response.data;
   } catch (error) {
     console.error('Error during login:', error);
@@ -36,7 +42,8 @@ const logout = async () => {
   try {
     const response = await axios.post(`${base_url}logout`);
     if (response) {
-      await AsyncStorage.removeItem('jwtToken');
+      await AsyncStorage.setItem('USER_TOKEN', '');
+      await AsyncStorage.setItem('KeepLoggedIn', '');
       return response.data;
     }
   } catch (error) {
@@ -49,7 +56,6 @@ const logout = async () => {
 const getUserProfile = async () => {
   try {
     const config = await getConfigWithToken();
-    // console.log(config);
     const response = await axios.get(`${base_url}candidate/profile`, config);
 
     if (response) {

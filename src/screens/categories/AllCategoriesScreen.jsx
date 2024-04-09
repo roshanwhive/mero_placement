@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
@@ -12,6 +12,7 @@ import {
 import {customTextColor, customThemeColor} from '../../constants/Color';
 import AppBar from '../../components/custom_toolbar/AppBar';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
 
 const categoriesData = [
   {
@@ -57,6 +58,14 @@ const categoriesData = [
 ];
 const AllCategoriesScreen = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const {mainCategories} = useSelector(state => state.job);
+
+  useEffect(() => {
+    console.log(mainCategories);
+  }, [mainCategories]);
+
   const renderItem = ({item}) => (
     <TouchableOpacity style={styles.card}>
       <Image source={item.image} style={styles.image} resizeMode="contain" />

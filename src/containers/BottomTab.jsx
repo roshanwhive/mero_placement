@@ -7,6 +7,7 @@ import MyStatus from '../screens/BottomNavigationScreen/myStatus/MyStatus';
 import Search from '../screens/BottomNavigationScreen/Search';
 import Home from '../screens/HomeScreen/Home';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { customFontSize, customFonts } from '../constants/theme';
 
 const Tab = createBottomTabNavigator();
 
@@ -47,12 +48,16 @@ function MyTabs({navigation}) {
         },
         tabBarLabelStyle: {
           marginBottom: 10,
-          fontSize: 13,
-          fontWeight: '600',
+          fontSize: customFontSize.font13,
+          fontFamily: customFonts.fontPoppins,
         },
       })}>
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Matched Job" component={MatchedJob} navigation={navigation}/>
+      <Tab.Screen
+        name="Matched Job"
+        component={MatchedJob}
+        navigation={navigation}
+      />
       <Tab.Screen name="Search" component={Search} />
       <Tab.Screen name="My Status" component={MyStatus} />
       <Tab.Screen name="Profile" component={Profile} />

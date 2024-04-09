@@ -1,25 +1,19 @@
-import React, {useEffect, useState} from 'react';
 import {StatusBar, ScrollView, StyleSheet, View, Text} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Categories from '../../components/Categories';
 import Featured from '../../containers/Featured';
-import SearchBar from '../../containers/SearchBar';
 import TotalJobs from '../../containers/TotalJobs';
 import Training from '../../containers/Training';
 import ActivelySeekingForJobCard from '../../containers/ActivelySeekingForJobCard';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppBar from '../../components/custom_toolbar/AppBar';
 import {customThemeColor} from '../../constants/Color';
-import DrawerContent from '../../components/DrawerContent';
 import {useSelector} from 'react-redux';
 import CompleteProfile from '../../containers/modal/CompleteProfile';
+import {getUserProfile} from '../../features/auth/AuthSlice';
+import {customFontSize, customFonts} from '../../constants/theme';
 
 const Home = ({navigation}) => {
   const {userProfile} = useSelector(state => state.auth);
-
-  // useEffect(() => {
-  //   console.log(userProfile);
-  // }, [userProfile]);
 
   return (
     <>
@@ -31,7 +25,7 @@ const Home = ({navigation}) => {
           <AppBar isHome={true} />
           <View style={styles.textWrapper}>
             <Text style={styles.greetingText}>
-              Hello, {userProfile?.lead_name}
+              Hello, {userProfile?.profile?.lead_name}
             </Text>
             <Text style={styles.subHeading}>Get Your Dream Job!</Text>
           </View>
@@ -58,13 +52,6 @@ const Home = ({navigation}) => {
   );
 };
 
-// const [isLoggedIn, setisLoggedIn] =  useState(false)
-// async function getData(){
-//   const data = await AsyncStorage.getItem('isLoggedIn')
-//   //pass data in setLoggedIn
-//   setisLoggedIn(data);
-// }
-
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
@@ -73,17 +60,17 @@ const styles = StyleSheet.create({
   },
   textWrapper: {
     paddingHorizontal: 20,
-    paddingVertical: 25,
+    paddingVertical: 20,
   },
   greetingText: {
     color: '#fcfcfc',
-    fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: customFontSize.font16,
+    fontFamily: customFonts.fontPoppins,
   },
   subHeading: {
-    fontSize: 30,
+    fontSize: customFontSize.font24,
     color: '#ffffff',
-    fontWeight: '600',
+    fontFamily: customFonts.fontPoppins,
   },
   header: {
     height: 400,

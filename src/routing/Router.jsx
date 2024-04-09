@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from '../screens/HomeScreen/Home';
 import Login from '../screens/AuthScreen/Login/Login';
@@ -19,6 +19,7 @@ import Training from '../screens/Training/Training';
 import CompareJobAndProfile from '../screens/JobScreens/CompareJobAndProfile';
 import EmailVerified from '../screens/AuthScreen/Signup/EmailVerified';
 import AllCategoriesScreen from '../screens/categories/AllCategoriesScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createNativeStackNavigator();
 
@@ -34,10 +35,11 @@ const Router = () => {
       <Stack.Screen name="HomeScreen" component={BottomTab} />
 
       {/* Auth Screen */}
+      <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Signup" component={Signup} />
       <Stack.Screen name="EmailVerification" component={EmailVerification} />
       <Stack.Screen name="EmailVerified" component={EmailVerified} />
-      <Stack.Screen name="Login" component={Login} />
+
       <Stack.Screen
         name="ForgotPasswordEnterEmail"
         component={ForgotPassword_EnterEmail}
