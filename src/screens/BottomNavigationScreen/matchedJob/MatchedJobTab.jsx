@@ -1,14 +1,15 @@
-import {View, Text, StyleSheet, useWindowDimensions} from 'react-native';
+import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
 import React from 'react';
 import SavedJob from '../matchedJob/SavedJob';
 import AppBar from '../../../components/custom_toolbar/AppBar';
-import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import MatchedJob from './MatchedJob';
 import { customFonts } from '../../../constants/theme';
+import AddPref from './AddPref';
 
 const FirstRoute = () => (
   // <View style={{ flex: 1, backgroundColor: '#ff4081' }} />
-  <MatchedJob></MatchedJob>
+  <AddPref></AddPref>
 );
 
 const SecondRoute = () => (
@@ -21,21 +22,21 @@ const renderScene = SceneMap({
   second: SecondRoute,
 });
 
-const MatchedJobTab = ({navigation}) => {
+const MatchedJobTab = ({ navigation }) => {
   const layout = useWindowDimensions();
   const handleBackClick = () => {
     navigation.goBack();
   };
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    {key: 'first', title: 'Matched Job'},
-    {key: 'second', title: 'Saved Job'},
+    { key: 'first', title: 'Matched Job' },
+    { key: 'second', title: 'Saved Job' },
   ]);
   const renderTabBar = props => {
     return (
       <TabBar
         {...props}
-        renderLabel={({focused, route}) => {
+        renderLabel={({ focused, route }) => {
           return (
             <Text
               style={{
@@ -56,10 +57,10 @@ const MatchedJobTab = ({navigation}) => {
     <>
       <AppBar title={'Matched Job'} handleBack={handleBackClick} />
       <TabView
-        navigationState={{index, routes}}
+        navigationState={{ index, routes }}
         renderScene={renderScene}
         onIndexChange={setIndex}
-        initialLayout={{width: layout.width}}
+        initialLayout={{ width: layout.width }}
         renderTabBar={renderTabBar}
       />
     </>
@@ -67,7 +68,7 @@ const MatchedJobTab = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {width: '100%', height: '100%'},
+  container: { width: '100%', height: '100%' },
   tabBar: {
     backgroundColor: '#9D050A',
     borderBottomWidth: 1,

@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const ProfileVisits = () => {
+const FollowedJob = () => {
   const Search = require('../../../assets/search1.jpg');
 
   return (
@@ -11,4 +11,4 @@ const ProfileVisits = () => {
   )
 }
 
-export default ProfileVisits;
+export default FollowedJob;

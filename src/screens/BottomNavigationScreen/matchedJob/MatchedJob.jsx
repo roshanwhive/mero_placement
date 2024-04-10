@@ -1,30 +1,31 @@
-import { View, Text } from 'react-native'
+import { View, Text, ScrollView, StyleSheet } from 'react-native'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getMatchedJob } from '../../../features/job/JobSlice'
 import { GlobalStyleSheet } from '../../../constants/StyleSheet'
 import JobCard from '../../../components/JobCard'
 import CardSkeleton from '../../../components/skeleton_loader/CardSkeleton'
+import { customThemeColor } from '../../../constants/Color'
+import { getMatchedJob } from '../../../features/status/StatusSlice'
+import { useNavigation } from '@react-navigation/native'
 
-const MatchedJob = ({ navigation }) => {
+const MatchedJob = () => {
   const dispatch = useDispatch();
-  const { matchedJobs } = useSelector(state => state.job);
+  const navigation = useNavigation();
+  const { matchedJobs } = useSelector(state => state.status);
+  const { message } = useSelector(state => state.status);
 
 
   useEffect(() => {
     dispatch(getMatchedJob());
   }, [dispatch]);
 
-  // useEffect(() => {
-  //  console.log("matched", message);
-  // } , [message]);
 
   return (
-    <View style={GlobalStyleSheet.scrollViewContent}>
-      {!matchedJobs ? (
+    <ScrollView contentContainerStyle={styles.scrollViewContent} style={GlobalStyleSheet.scrollViewContent}>
+      {!!matchedJobs ? (
         matchedJobs?.map((item, index) => {
           return (
-            <View key={index}>
+            <View key={index} style={styles.cardContainer}>
               <JobCard navigation={navigation} items={item} />
             </View>
           );
@@ -37,8 +38,21 @@ const MatchedJob = ({ navigation }) => {
         </View>
       )}
 
-    </View>
+    </ScrollView>
   );
 };
 
+const styles = StyleSheet.create({
+  cardContainer: {
+    display: 'flex',
+    flexWrap: "wrap",
+    height: 150
+  },
+  scrollViewContent: {
+    paddingVertical: 5,
+    overflow: 'visible',
+    flex: 1,
+    backgroundColor: customThemeColor.lightBG,
+  },
+});
 export default MatchedJob;

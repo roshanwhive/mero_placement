@@ -3,7 +3,7 @@ import { StyleSheet, Text, useWindowDimensions } from 'react-native';
 import AppBar from '../../../components/custom_toolbar/AppBar';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import JobApplied from './JobApplied';
-import ProfileVisits from './ProfileVisits';
+import FollowedJob from './FollowedJob';
 import { customFonts } from '../../../constants/theme';
 
 
@@ -15,11 +15,11 @@ const FirstRoute = () => (
 
 const SecondRoute = () => (
   // <View style={{ flex: 1, backgroundColor: '#673ab7' }} />
-  <ProfileVisits></ProfileVisits>
+  <FollowedJob></FollowedJob>
 );
 const ThirdRoute = () => (
   // <View style={{ flex: 1, backgroundColor: '#673ab7' }} />
-  <ProfileVisits></ProfileVisits>
+  <FollowedJob></FollowedJob>
 );
 
 const renderScene = SceneMap({
@@ -34,8 +34,8 @@ const MyStatus = () => {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     { key: 'first', title: 'Job Applied' },
-    { key: 'second', title: 'Profile Visit' },
-    { key: 'third', title: 'CV Download' },
+    { key: 'second', title: 'Followed Job' },
+    { key: 'third', title: 'Followed Company' },
   ]);
 
   const renderTabBar = props => {
@@ -44,9 +44,9 @@ const MyStatus = () => {
         {...props}
         renderLabel={({ focused, route }) => {
           return (
-            <Text style={{ 
-            color: focused ? 'white': 'gray',
-            fontFamily: customFonts.fontPoppins,
+            <Text style={{
+              color: focused ? 'white' : 'gray',
+              fontFamily: customFonts.fontPoppins,
             }}>
               {route.title}
             </Text>
@@ -60,11 +60,11 @@ const MyStatus = () => {
 
   return (
     <><AppBar title={"My Status"} /><TabView
-          navigationState={{ index, routes }}
-          renderScene={renderScene}
-          onIndexChange={setIndex}
-          initialLayout={{ width: layout.width }}
-          renderTabBar={renderTabBar} /></>
+      navigationState={{ index, routes }}
+      renderScene={renderScene}
+      onIndexChange={setIndex}
+      initialLayout={{ width: layout.width }}
+      renderTabBar={renderTabBar} /></>
   );
 }
 
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     padding: 1.5,
     marginBottom: -2,
   },
-  
+
 });
 
 export default MyStatus;
