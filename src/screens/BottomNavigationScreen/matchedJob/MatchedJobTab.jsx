@@ -5,11 +5,10 @@ import AppBar from '../../../components/custom_toolbar/AppBar';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import MatchedJob from './MatchedJob';
 import { customFonts } from '../../../constants/theme';
-import AddPref from './AddPref';
 
 const FirstRoute = () => (
   // <View style={{ flex: 1, backgroundColor: '#ff4081' }} />
-  <AddPref></AddPref>
+  <MatchedJob></MatchedJob>
 );
 
 const SecondRoute = () => (

@@ -8,9 +8,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import JobCard from '../../../components/JobCard';
 import CardSkeleton from '../../../components/skeleton_loader/CardSkeleton';
 import { getAppliedJob } from '../../../features/status/StatusSlice';
+import { useNavigation } from '@react-navigation/native';
 
-const JobApplied = ({ navigation }) => {
+const JobApplied = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+
   const { appliedJobs } = useSelector(state => state.status);
 
   useEffect(() => {

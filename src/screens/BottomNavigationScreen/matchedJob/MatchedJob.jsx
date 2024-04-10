@@ -12,7 +12,6 @@ const MatchedJob = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const { matchedJobs } = useSelector(state => state.status);
-  const { message } = useSelector(state => state.status);
 
 
   useEffect(() => {

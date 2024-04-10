@@ -7,6 +7,8 @@ const initialState = {
     savedJobs: [],
     matchedJobs: [],
     appliedJobs: [],
+    followedJob: [],
+    followedCompany: [],
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -36,6 +38,24 @@ export const getMatchedJob = createAsyncThunk('job/matched-job', async thunkAPI 
 export const getAppliedJob = createAsyncThunk('job/applied-job', async thunkAPI => {
     try {
         return await StatusService.getAppliedJob();
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+    }
+});
+
+//--------------------------------------Followed Job---------------------------------
+export const getFollowedJob = createAsyncThunk('job/followed-job', async thunkAPI => {
+    try {
+        return await StatusService.getFollowedJob();
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+    }
+});
+
+//--------------------------------------Followed Company---------------------------------
+export const getFollowedCompany = createAsyncThunk('job/followed-company', async thunkAPI => {
+    try {
+        return await StatusService.getFollowedCompany();
     } catch (error) {
         return thunkAPI.rejectWithValue(error);
     }
@@ -100,6 +120,42 @@ export const statusSlice = createSlice({
                 state.appliedJobs = action.payload.data;
             })
             .addCase(getAppliedJob.rejected, (state, action) => {
+                state.isError = true;
+                state.isLoading = false;
+                state.isSuccess = false;
+            })
+
+            // ------------------------------------Get followed Jobs -------------------------------
+            .addCase(getFollowedJob.pending, state => {
+                state.isLoading = true;
+            })
+            .addCase(getFollowedJob.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = !action.payload.success;
+                state.isSuccess = action.payload.success;
+                state.message = action.payload.message;
+                state.statusCode = action.payload.status_code;
+                state.followedJob = action.payload.data;
+            })
+            .addCase(getFollowedJob.rejected, (state, action) => {
+                state.isError = true;
+                state.isLoading = false;
+                state.isSuccess = false;
+            })
+
+            // ------------------------------------Get followed company -------------------------------
+            .addCase(getFollowedCompany.pending, state => {
+                state.isLoading = true;
+            })
+            .addCase(getFollowedCompany.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = !action.payload.success;
+                state.isSuccess = action.payload.success;
+                state.message = action.payload.message;
+                state.statusCode = action.payload.status_code;
+                state.followedCompany = action.payload.data;
+            })
+            .addCase(getFollowedCompany.rejected, (state, action) => {
                 state.isError = true;
                 state.isLoading = false;
                 state.isSuccess = false;
