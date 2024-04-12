@@ -12,7 +12,7 @@ const MatchedJob = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const { matchedJobs } = useSelector(state => state.status);
-
+  const { userProfile } = useSelector(state => state.auth);
 
   useEffect(() => {
     dispatch(getMatchedJob());
@@ -20,7 +20,9 @@ const MatchedJob = () => {
 
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollViewContent} style={GlobalStyleSheet.scrollViewContent}>
+    <ScrollView contentContainerStyle={styles.scrollViewContent}
+      style={GlobalStyleSheet.scrollViewContent}>
+      {/* {!!userProfile?.preference ? () } */}
       {!!matchedJobs ? (
         matchedJobs?.map((item, index) => {
           return (
