@@ -1,11 +1,12 @@
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {customTextColor} from '../../constants/Color';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 
 const Account = () => {
   const {userProfile} = useSelector(state => state.auth);
+
   const navigation = useNavigation();
   return (
     <View style={styles.account}>

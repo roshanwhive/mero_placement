@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -7,21 +7,21 @@ import {
   Image,
   StyleSheet,
 } from 'react-native';
-import { categories } from '../constants';
-import { useDispatch, useSelector } from 'react-redux';
-import { getMainCategories } from '../features/job/JobSlice';
-import { useNavigation } from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {getMainCategories} from '../features/job/JobSlice';
+import {useNavigation} from '@react-navigation/native';
 import CategoryCardCircle from './skeleton_loader/CategoryCardCircle';
-import { customFontSize, customFonts } from '../constants/theme';
-import { customTextColor } from '../constants/Color';
-import { GlobalStyleSheet } from '../constants/StyleSheet';
+import {customFontSize, customFonts} from '../constants/theme';
+import {customTextColor, customThemeColor} from '../constants/Color';
+import {GlobalStyleSheet} from '../constants/StyleSheet';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const Categories = () => {
   const [activeCategory, setActiveCategory] = useState(null);
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const { mainCategories } = useSelector(state => state.job);
+  const {mainCategories} = useSelector(state => state.job);
 
   useEffect(() => {
     dispatch(getMainCategories());
@@ -37,26 +37,24 @@ const Categories = () => {
           <Text style={GlobalStyleSheet.seeAll}>See All</Text>
         </TouchableOpacity>
       </View>
+
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.scrollViewContent}>
-        {categories.map((category, index) => {
-          const isActive = category.id == activeCategory;
-          const btnStyle = isActive
-            ? styles.activeButton
-            : styles.inactiveButton;
-          const textStyle = isActive ? styles.activeText : styles.inactiveText;
+        {mainCategories.map((category, index) => {
           return (
             <View key={index} style={styles.categoryItem}>
               <TouchableOpacity
                 onPress={() => setActiveCategory(category.id)}
-                style={[styles.imageContainer, btnStyle]}>
-                <Image style={styles.image} source={category.image} />
+                style={styles.imageContainer}>
+                <Icon
+                  name={category?.icon}
+                  size={40}
+                  color={customTextColor.darkRed}
+                />
               </TouchableOpacity>
-              <Text style={[styles.categoryName, textStyle]}>
-                {category.name}
-              </Text>
+              <Text style={styles.categoryName}>{category.name}</Text>
               {/* <CategoryCardCircle key={index} /> */}
             </View>
           );
@@ -103,29 +101,14 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    backgroundColor: '#ccc',
+    backgroundColor: customThemeColor.lightBG,
   },
-  activeButton: {
-    backgroundColor: '#f2d8d8',
-  },
-  inactiveButton: {
-    backgroundColor: '#f2f2f2',
-  },
-  image: {
-    width: 35,
-    height: 35,
-  },
+
   categoryName: {
+    width: 100,
     marginTop: 5,
     fontSize: customFontSize.font12,
     fontFamily: customFonts.font,
-  },
-  activeText: {
-    color: '#9D050A',
-    fontWeight: 'bold',
-  },
-  inactiveText: {
-    color: '#888',
   },
 });
 

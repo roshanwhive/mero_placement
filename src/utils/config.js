@@ -14,9 +14,7 @@ const getToken = async () => {
 export const getConfigWithToken = async () => {
   try {
     const token = await getToken();
-    console.log("token",token);
     const jsonObject = await JSON.parse(token);
-    console.log("tokenjson",jsonObject);
     const config = {
       headers: {
         Authorization: jsonObject ? `Bearer ${jsonObject}` : '',

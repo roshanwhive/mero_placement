@@ -150,22 +150,28 @@ export const getSavedJob = createAsyncThunk('job/saved-job', async thunkAPI => {
 });
 
 //--------------------------------------Matched Job---------------------------------
-export const getMatchedJob = createAsyncThunk('job/matched-job', async thunkAPI => {
-  try {
-    return await jobService.getMatchedJob();
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error);
-  }
-});
+export const getMatchedJob = createAsyncThunk(
+  'job/matched-job',
+  async thunkAPI => {
+    try {
+      return await jobService.getMatchedJob();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
 
 //--------------------------------------Applied Job---------------------------------
-export const getAppliedJob = createAsyncThunk('job/applied-job', async thunkAPI => {
-  try {
-    return await jobService.getAppliedJob();
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error);
-  }
-});
+export const getAppliedJob = createAsyncThunk(
+  'job/applied-job',
+  async thunkAPI => {
+    try {
+      return await jobService.getAppliedJob();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
 
 //Reset State
 export const resetJobCategoryState = createAction('Reset_all_Job_Category');

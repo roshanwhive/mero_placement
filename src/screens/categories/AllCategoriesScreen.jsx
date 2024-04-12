@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -13,63 +13,37 @@ import {customTextColor, customThemeColor} from '../../constants/Color';
 import AppBar from '../../components/custom_toolbar/AppBar';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
+import {getAllCategories} from '../../features/formData/FormSlice';
 
-const categoriesData = [
-  {
-    id: 1,
-    title: 'Category 1',
-    image: require('../../assets/categories/commercial.png'),
-  },
-  {
-    id: 2,
-    title: 'Category 2',
-    image: require('../../assets/categories/designing.png'),
-  },
-  {
-    id: 3,
-    title: 'Category 3',
-    image: require('../../assets/categories/finance.png'),
-  },
-  {
-    id: 43,
-    title: 'Category 3',
-    image: require('../../assets/categories/finance.png'),
-  },
-  {
-    id: 21,
-    title: 'Category 1',
-    image: require('../../assets/categories/commercial.png'),
-  },
-  {
-    id: 22,
-    title: 'Category 2',
-    image: require('../../assets/categories/designing.png'),
-  },
-  {
-    id: 8,
-    title: 'Category 3',
-    image: require('../../assets/categories/finance.png'),
-  },
-  {
-    id: 9,
-    title: 'Category 3',
-    image: require('../../assets/categories/finance.png'),
-  },
-];
 const AllCategoriesScreen = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+
   const navigation = useNavigation();
   const dispatch = useDispatch();
-
   const {mainCategories} = useSelector(state => state.job);
 
+  // Filtered categories state
+  const [filteredCategories, setFilteredCategories] = useState(mainCategories);
+
   useEffect(() => {
-    console.log(mainCategories);
-  }, [mainCategories]);
+    dispatch(getAllCategories());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (searchQuery.trim() === '') {
+      setFilteredCategories(mainCategories);
+    } else {
+      const filteredData = mainCategories.filter(category =>
+        category.name.toLowerCase().includes(searchQuery.toLowerCase()),
+      );
+      setFilteredCategories(filteredData);
+    }
+  }, [mainCategories, searchQuery]);
 
   const renderItem = ({item}) => (
     <TouchableOpacity style={styles.card}>
-      <Image source={item.image} style={styles.image} resizeMode="contain" />
-      <Text style={styles.title}>{item.title}</Text>
+      {/* <Image source={item.image} style={styles.image} resizeMode="contain" /> */}
+      <Text style={styles.title}>{item.name}</Text>
     </TouchableOpacity>
   );
 
@@ -77,19 +51,30 @@ const AllCategoriesScreen = () => {
     navigation.goBack();
   };
 
+  const handleSearch = text => {
+    setSearchQuery(text);
+  };
+
   return (
     <View style={styles.container}>
+      {/* App bar */}
       <AppBar handleBack={handleBack} title="Categories" />
+
+      {/* Search input */}
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.searchInput}
           placeholder="Browse categories..."
+          onChangeText={handleSearch}
+          value={searchQuery}
         />
       </View>
+
+      {/* FlatList with filtered categories */}
       <FlatList
-        data={categoriesData}
+        data={filteredCategories}
         renderItem={renderItem}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={item => item?.job_category_id?.toString()}
         numColumns={2}
         contentContainerStyle={styles.categoryList}
       />

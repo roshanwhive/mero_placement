@@ -7,36 +7,76 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import {Avatar} from 'react-native-paper';
 import {customTextColor, customThemeColor} from '../../constants/Color';
 import {useNavigation} from '@react-navigation/native';
 import {useRoute} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
-import defaultUser from '../../assets/default-user.jpg';
+import {Controller, useForm} from 'react-hook-form';
+import {
+  launchCamera,
+  launchImageLibrary,
+  ImagePicker,
+  showImagePicker,
+} from 'react-native-image-picker';
 
 const AccountEdit = () => {
-  const userProfile = useSelector(state => state.auth);
+  const [selectedImage, setSelectedImage] = useState(
+    userProfile?.profile?.featured_image || null,
+  );
+
+  const {userProfile} = useSelector(state => state.auth);
+  const {control, handleSubmit} = useForm();
+
+  const onSubmit = formData => {
+    console.log(formData);
+  };
+
+  const handleCameraLaunch = () => {
+    const options = {
+      mediaType: 'photo',
+      includeBase64: false,
+      maxHeight: 2000,
+      maxWidth: 2000,
+    };
+
+    launchCamera(options, handleResponse);
+  };
+
+  const openImagePicker = () => {
+    const options = {
+      mediaType: 'photo',
+      includeBase64: false,
+      maxHeight: 2000,
+      maxWidth: 2000,
+    };
+
+    launchImageLibrary(options, handleResponse);
+  };
+
+  const handleResponse = response => {
+    if (response.didCancel) {
+      console.log('User cancelled image picker');
+    } else if (response.error) {
+      console.log('Image picker error: ', response.error);
+    } else {
+      let imageUri = response.uri || response.assets?.[0]?.uri;
+      setSelectedImage(imageUri);
+    }
+  };
+
   return (
     <>
       <View style={styles.profileImage}>
         <Text style={styles.text}>Profile Image</Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}>
-          {/* <Avatar.Image
-            size={100}
-            source={require('../../assets/companyLogo.png')}
-            style={styles.avatarImage}
-          /> */}
-          {!!userProfile?.profile?.featured_image ? (
-            <Avatar.Image
-              size={100}
-              source={{uri: userProfile?.profile?.featured_image}}
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          {selectedImage ? (
+            <Image
               style={styles.avatarImage}
+              source={{uri: selectedImage}}
+              resizeMode="cover"
             />
           ) : (
             <Image
@@ -44,36 +84,166 @@ const AccountEdit = () => {
               source={require('../../assets/default-user.jpg')}
             />
           )}
-          <Text style={styles.link}>Upload</Text>
+          <View style={styles.selectContainer}>
+            <TouchableOpacity
+              style={styles.uploadButton}
+              onPress={handleCameraLaunch}>
+              <Icon
+                color={customTextColor.darkRed}
+                name="camera"
+                size={25}
+                style={{marginRight: 13}}
+              />
+              <Text style={styles.link}>Take Photo</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.uploadButton}
+              onPress={openImagePicker}>
+              <Icon
+                color={customTextColor.darkRed}
+                name="image"
+                size={25}
+                style={{marginRight: 13}}
+              />
+              <Text style={styles.link}>Upload File</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
       <View style={[styles.inputWrapper, {marginTop: 20}]}>
         <Text style={styles.label}>Bio</Text>
-        <TextInput style={styles.input} />
+        <Controller
+          control={control}
+          render={({field: {onChange, onBlur, value}}) => (
+            <Controller
+              control={control}
+              render={({field: {onChange, onBlur, value}}) => (
+                <TextInput
+                  style={styles.input}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  placeholder="Bio"
+                />
+              )}
+              name="bio"
+              defaultValue={userProfile?.profile?.bio || ''}
+            />
+          )}
+          name="bio"
+          defaultValue={userProfile?.profile?.bio}
+        />
       </View>
       <View style={styles.cardContainer}>
         <Text style={styles.title}>Account Information</Text>
 
         <View style={styles.inputWrapper}>
           <Text style={styles.label}>Name</Text>
-          <TextInput style={styles.input} />
+          <Controller
+            control={control}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInput
+                style={styles.input}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                placeholder="Name"
+              />
+            )}
+            name="name"
+            defaultValue={userProfile?.profile?.lead_name || ''}
+          />
         </View>
         <View style={styles.inputWrapper}>
           <Text style={styles.label}>Email</Text>
-          <TextInput style={styles.input} />
+          <Controller
+            control={control}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInput
+                style={styles.input}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                placeholder="Email"
+              />
+            )}
+            name="email"
+            defaultValue={userProfile?.profile?.email || ''}
+          />
         </View>
         <View style={styles.inputWrapper}>
-          <Text style={styles.label}>Contact</Text>
-          <TextInput style={styles.input} />
+          <Text style={styles.label}>Contact Primary</Text>
+          <Controller
+            control={control}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInput
+                style={styles.input}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                placeholder="Contact"
+              />
+            )}
+            name="contact primary"
+            defaultValue={userProfile?.profile?.primary_contact || ''}
+          />
+        </View>
+        <View style={styles.inputWrapper}>
+          <Text style={styles.label}>Contact Secondary</Text>
+          <Controller
+            control={control}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInput
+                style={styles.input}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                placeholder="Contact"
+              />
+            )}
+            name="contact secondary"
+            defaultValue={userProfile?.profile?.secondary_contact || ''}
+          />
         </View>
         <View style={styles.inputWrapper}>
           <Text style={styles.label}>Gender</Text>
-          <TextInput style={styles.input} />
+          <Controller
+            control={control}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInput
+                style={styles.input}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                placeholder="Gender"
+              />
+            )}
+            name="gender"
+            defaultValue={userProfile?.profile?.gender?.name || ''}
+          />
         </View>
         <View style={styles.inputWrapper}>
           <Text style={styles.label}>DOB</Text>
-          <TextInput style={styles.input} />
+          <Controller
+            control={control}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInput
+                style={styles.input}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                placeholder="DOB"
+              />
+            )}
+            name="dob"
+            defaultValue={userProfile?.profile?.dob || ''}
+          />
         </View>
+      </View>
+      <View style={styles.jobActions}>
+        <TouchableOpacity style={styles.actionButton}>
+          <Text style={styles.actionButtonText}>Save</Text>
+        </TouchableOpacity>
       </View>
     </>
   );
@@ -198,13 +368,15 @@ const EditProfile = () => {
         {title === 'Education' && <EducationEdit />}
         {title === 'Experience' && <ExperienceEdit />}
       </View>
-      <View style={styles.jobActions}>
-        <TouchableOpacity style={styles.actionButton}>
-          <Text style={styles.actionButtonText}>Save</Text>
-        </TouchableOpacity>
-      </View>
     </ScrollView>
   );
+};
+
+const tagsStyles = {
+  p: {
+    color: customTextColor.secondary,
+    textAlign: 'justify',
+  },
 };
 
 const styles = StyleSheet.create({
@@ -240,26 +412,35 @@ const styles = StyleSheet.create({
   },
   avatarImage: {
     marginTop: 10,
+    width: 110,
+    height: 110,
+    borderRadius: 100,
+    marginTop: 10,
+    alignSelf: 'center',
+    borderWidth: 3,
+    borderColor: customThemeColor.lighterBg,
   },
   link: {
     fontSize: 18,
     color: '#9D050A',
-    marginHorizontal: 30,
     fontWeight: '600',
   },
   avatar: {
-    width: 100,
-    height: 100,
+    width: 110,
+    height: 110,
     borderRadius: 100,
     marginTop: 10,
     alignSelf: 'center',
+    borderWidth: 3,
+    objectFit: 'cover',
+    borderColor: customThemeColor.lighterBg,
   },
 
   profileImage: {},
   cardContainer: {
     marginTop: 20,
     gap: 20,
-    // paddingHorizontal: 20,
+    paddingHorizontal: 20,
     paddingVertical: 20,
     borderRadius: 30,
   },
@@ -297,6 +478,24 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  selectContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  uploadButton: {
+    marginLeft: 20,
+    backgroundColor: customThemeColor.lightBG,
+    margin: 5,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 0,
+    paddingVertical: 5,
+    borderRadius: 100,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
   },
 });
 

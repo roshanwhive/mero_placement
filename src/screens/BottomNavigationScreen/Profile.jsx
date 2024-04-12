@@ -44,7 +44,7 @@ export default Profile = ({navigation}) => {
   useEffect(() => {
     setTimeout(() => {
       dispatch(getUserProfile());
-    }, 100000);
+    }, 1000);
   }, [dispatch]);
 
   const handleBack = () => {

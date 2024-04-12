@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import { customTextColor, customThemeColor } from '../constants/Color';
-import { format, formatDistance, differenceInMilliseconds } from 'date-fns';
-import { useDispatch } from 'react-redux';
-import { getSingleJob } from '../features/job/JobSlice';
-import { getCompanyProfile } from '../features/company/CompanySlice';
+import {customTextColor, customThemeColor} from '../constants/Color';
+import {format, formatDistance, differenceInMilliseconds} from 'date-fns';
+import {useDispatch} from 'react-redux';
+import {getSingleJob} from '../features/job/JobSlice';
+import {getCompanyProfile} from '../features/company/CompanySlice';
 import AvatarByName from './AvatarbyName';
-import { customFontSize, customFonts } from '../constants/theme';
+import {customFontSize, customFonts} from '../constants/theme';
 
-const JobCard = ({ items, navigation }) => {
+const JobCard = ({items, navigation}) => {
   const companyLogo = require('../assets/companyLogo.png');
 
   const [formattedDate, setFormattedDate] = useState('');
@@ -21,7 +21,7 @@ const JobCard = ({ items, navigation }) => {
     if (items) {
       const date = new Date(items.created_date);
       const formattedDate = format(date, 'd MMMM yyyy');
-      const distance = formatDistance(new Date(), date, { addSuffix: true });
+      const distance = formatDistance(new Date(), date, {addSuffix: true});
       let formattedDistance = distance.replace('about ', '').replace('in ', '');
 
       if (!formattedDistance.endsWith('ago')) {
@@ -32,7 +32,7 @@ const JobCard = ({ items, navigation }) => {
     }
   }, [items]);
   const onPressApplyButton = slug => {
-    navigation.navigate('JobDetail', { slug: slug });
+    navigation.navigate('JobDetail', {slug: slug});
   };
 
   return (
@@ -46,9 +46,9 @@ const JobCard = ({ items, navigation }) => {
             });
           }}>
           {items && items.get_company && items.get_company.logo !== null ? (
-            <Image source={{ uri: items.get_company.logo }} style={styles.logo} />
+            <Image source={{uri: items.get_company.logo}} style={styles.logo} />
           ) : (
-            <AvatarByName name={items?.getCompanyProfile?.employer_name} />
+            <AvatarByName name={items?.get_company?.employer_name} />
           )}
         </TouchableOpacity>
       </View>
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 15,
     shadowColor: 'rgba(150,170,180,0.5)',
-    shadowOffset: { width: 0, height: 7 },
+    shadowOffset: {width: 0, height: 7},
     shadowOpacity: 1,
     shadowRadius: 30,
     elevation: 10,

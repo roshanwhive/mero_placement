@@ -56,6 +56,17 @@ export const getUserProfile = createAsyncThunk(
   },
 );
 
+export const updateUserProfile = createAsyncThunk(
+  'auth/update-user-profile',
+  async (formData, thunkAPI) => {
+    try {
+      return await authService.updateUserProfile(formData);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
 //Reset State
 export const resetState = createAction('Reset_all');
 
@@ -136,6 +147,28 @@ export const authSlice = createSlice({
         state.userProfile = action.payload.data;
       })
       .addCase(getUserProfile.rejected, (state, action) => {
+        state.isError = true;
+        state.isLoading = false;
+        state.isSuccess = false;
+      })
+
+      //Update User Profile
+      .addCase(updateUserProfile.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = !action.payload?.success;
+        state.isSuccess = action.payload?.success;
+        state.message =
+          action.payload?.message?.error?.name[0] ||
+          action.payload?.message?.error?.email[0] ||
+          action.payload?.message?.error?.address[0] ||
+          action.payload?.message?.error?.phone[0] ||
+          action.payload?.message?.error?.dob[0] ||
+          action.payload?.message?.error?.gender[0];
+      })
+      .addCase(updateUserProfile.rejected, (state, action) => {
         state.isError = true;
         state.isLoading = false;
         state.isSuccess = false;

@@ -11,6 +11,7 @@ import {useSelector} from 'react-redux';
 import CompleteProfile from '../../containers/modal/CompleteProfile';
 import {getUserProfile} from '../../features/auth/AuthSlice';
 import {customFontSize, customFonts} from '../../constants/theme';
+import {useEffect} from 'react';
 
 const Home = ({navigation}) => {
   const {userProfile} = useSelector(state => state.auth);

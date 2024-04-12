@@ -22,7 +22,6 @@ const register = async registerData => {
 const login = async loginData => {
   try {
     const response = await axios.post(`${base_url}login`, loginData);
-    console.log(response.data);
     if (response.data.status_code === 200) {
       await AsyncStorage.setItem('KeepLoggedIn', JSON.stringify(true));
       await AsyncStorage.setItem(
@@ -67,9 +66,28 @@ const getUserProfile = async () => {
   }
 };
 
+//post User Profile
+const updateUserProfile = async formData => {
+  try {
+    const config = await getConfigWithToken();
+    const response = await axios.post(
+      `${base_url}candidate/profile-setting`,
+      formData,
+      config,
+    );
+    if (response) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Error during updating user profile:', error);
+    throw error;
+  }
+};
+
 export const authService = {
   register,
   login,
   logout,
   getUserProfile,
+  updateUserProfile,
 };
