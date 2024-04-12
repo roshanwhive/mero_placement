@@ -7,11 +7,14 @@ import JobAppliedList from '../../../containers/JobAppliedList';
 import { useDispatch, useSelector } from 'react-redux';
 import JobCard from '../../../components/JobCard';
 import CardSkeleton from '../../../components/skeleton_loader/CardSkeleton';
-import { getAppliedJob } from '../../../features/job/JobSlice';
+import { getAppliedJob } from '../../../features/status/StatusSlice';
+import { useNavigation } from '@react-navigation/native';
 
-const JobApplied = ({ navigation }) => {
+const JobApplied = () => {
   const dispatch = useDispatch();
-  const { appliedJobs } = useSelector(state => state.job);
+  const navigation = useNavigation();
+
+  const { appliedJobs } = useSelector(state => state.status);
 
   useEffect(() => {
     dispatch(getAppliedJob());
@@ -23,22 +26,21 @@ const JobApplied = ({ navigation }) => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollViewContent}>
 
-        {
-          !appliedJobs ? (
-            appliedJobs?.map((item, index) => {
-              return (
-                <View key={index}>
-                  <JobCard navigation={navigation} items={item} />
-                </View>
-              );
-            })
-          ) : (
-            <View>
-              <CardSkeleton />
-              <CardSkeleton />
-              <CardSkeleton />
-            </View>
-          )
+        {!!appliedJobs ? (
+          appliedJobs?.map((item, index) => {
+            return (
+              <View key={index}>
+                <JobCard navigation={navigation} items={item} />
+              </View>
+            );
+          })
+        ) : (
+          <View>
+            <CardSkeleton />
+            <CardSkeleton />
+            <CardSkeleton />
+          </View>
+        )
         }
       </ScrollView>
     </SafeAreaView>

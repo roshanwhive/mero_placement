@@ -58,7 +58,7 @@ const JobCard = ({items, navigation}) => {
         <View style={styles.contentContainer}>
           <Icon
             name="map-pin"
-            size={14}
+            size={10}
             color={customTextColor.secondary}
             style={styles.icon}
           />
@@ -70,7 +70,7 @@ const JobCard = ({items, navigation}) => {
         <View style={styles.contentContainer}>
           <Icon
             name="clock"
-            size={14}
+            size={10}
             color={customTextColor.secondary}
             style={styles.icon}
           />
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 30,
     elevation: 10,
-    height: 'auto',
+    height: "auto",
   },
   logoContainer: {
     marginRight: 16,

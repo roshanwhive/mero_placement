@@ -6,6 +6,7 @@ import logoImage from '../../assets/complete-profile.png';
 import {useNavigation} from '@react-navigation/native';
 import {customThemeColor} from '../../constants/Color';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { customFontSize, customFonts } from '../../constants/theme';
 
 const CompleteProfile = () => {
   const [visible, setVisible] = useState(false);
@@ -77,19 +78,20 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   title: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: customFontSize.font20,
+    fontFamily: customFonts.fontBold,
     marginBottom: 10,
     textAlign: 'center',
   },
   subtitle: {
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: customFontSize.font16,
     marginBottom: 20,
+    fontFamily: customFonts.fontPoppins,
   },
   button: {
     marginTop: 10,
-    fontWeight: '700',
+    fontFamily: customFonts.fontPrompt,
     backgroundColor: customThemeColor.darkRed,
   },
 });
