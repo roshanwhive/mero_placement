@@ -5,27 +5,28 @@ import { GlobalStyleSheet } from '../../../constants/StyleSheet';
 import JobCard from '../../../components/JobCard';
 import CardSkeleton from '../../../components/skeleton_loader/CardSkeleton';
 import { getSavedJob } from '../../../features/status/StatusSlice';
+import { useNavigation } from '@react-navigation/native';
 
-const SavedJob = ({ navigation }) => {
+const SavedJob = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const { savedJobs } = useSelector(state => state.status);
-  const { message } = useSelector(state => state.status);
 
   useEffect(() => {
     dispatch(getSavedJob());
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log("saved", message);
-  }, [message]);
+  // useEffect(() => {
+  //   console.log("saved", message);
+  // }, [message]);
 
   return (
-    <View style={GlobalStyleSheet.scrollViewContent}>
+    <View  contentContainerStyle={GlobalStyleSheet.scrollViewContentStatus}
+    style={GlobalStyleSheet.scrollViewContent}>
       {!!savedJobs ? (
         savedJobs?.map((item, index) => {
           return (
-            <View key={index}>
-
+            <View key={index} style={GlobalStyleSheet.cardContainer}>
               <JobCard navigation={navigation} items={item} />
               <View></View>
             </View>

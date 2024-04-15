@@ -1,10 +1,13 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import MenuIcon from '../custom_toolbar/MenuIcon';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {customThemeColor} from '../../constants/Color';
+import { customThemeColor } from '../../constants/Color';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
-export default function AppBar({title, handleBack, isHome}) {
+//const Drawer = createDrawerNavigator();
+
+export default function AppBar({ title, handleBack, isHome }) {
   return (
     <View style={styles.navBar}>
       <View style={styles.leftContainer}>
@@ -30,12 +33,10 @@ export default function AppBar({title, handleBack, isHome}) {
   );
 }
 
-//const Drawer = createDrawerNavigator();
+
 
 const bottom = () => {
-  // <Drawer.Navigator>
-  //   <Drawer.Screen name='Training' component={Training}></Drawer.Screen>
-  // </Drawer.Navigator>
+
 };
 
 const styles = StyleSheet.create({
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 0,
     shadowColor: 'white',
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     backgroundColor: customThemeColor.white,
     shadowOpacity: 0.8,
     shadowRadius: 4,

@@ -1,4 +1,4 @@
-package com.meroplacement
+package com.whive.meroplacement
 
 import android.app.Application
 import com.facebook.react.PackageList

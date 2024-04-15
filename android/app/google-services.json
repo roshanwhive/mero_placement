@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "320769980537",
+    "project_id": "meroplacement-77e61",
+    "storage_bucket": "meroplacement-77e61.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:320769980537:android:281c84b3ba30e04cfdfca8",
+        "android_client_info": {
+          "package_name": "com.whive.meroplacement"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCy2KYOKezXBEJJYVhOP39MpP9o8PDyA2o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -9,6 +9,8 @@ import JobCard from '../../../components/JobCard';
 import CardSkeleton from '../../../components/skeleton_loader/CardSkeleton';
 import { getAppliedJob } from '../../../features/status/StatusSlice';
 import { useNavigation } from '@react-navigation/native';
+import { GlobalStyleSheet } from '../../../constants/StyleSheet';
+import { customThemeColor } from '../../../constants/Color';
 
 const JobApplied = () => {
   const dispatch = useDispatch();
@@ -21,15 +23,15 @@ const JobApplied = () => {
   }, [dispatch]);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: customThemeColor.lightBG }}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollViewContent}>
+        contentContainerStyle={GlobalStyleSheet.scrollViewContentStatus}>
 
         {!!appliedJobs ? (
           appliedJobs?.map((item, index) => {
             return (
-              <View key={index}>
+              <View key={index} style={GlobalStyleSheet.cardContainer}>
                 <JobCard navigation={navigation} items={item} />
               </View>
             );
@@ -46,23 +48,5 @@ const JobApplied = () => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-
-  scrollViewContent: {
-    paddingBottom: 0,
-    zIndex: 0,
-    backgroundColor: '#FCFCFC',
-    borderTopLeftRadius: 25,
-    position: 'relative',
-    borderTopRightRadius: 25,
-  },
-  featuredContainer: {
-    marginTop: 5,
-  },
-  totalJobs: {
-    marginTop: 5,
-  },
-});
 
 export default JobApplied;
