@@ -5,6 +5,7 @@ import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import JobApplied from './JobApplied';
 import FollowedJob from './FollowedJob';
 import { customFonts } from '../../../constants/theme';
+import FollowedCompany from './FollowedCompany';
 
 
 
@@ -19,7 +20,7 @@ const SecondRoute = () => (
 );
 const ThirdRoute = () => (
   // <View style={{ flex: 1, backgroundColor: '#673ab7' }} />
-  <FollowedJob></FollowedJob>
+  <FollowedCompany></FollowedCompany>
 );
 
 const renderScene = SceneMap({

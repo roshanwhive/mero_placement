@@ -1,3 +1,4 @@
+import { customThemeColor } from "./Color";
 import { customFontSize, customFonts } from "./theme";
 
 export const GlobalStyleSheet = {
@@ -5,6 +6,8 @@ export const GlobalStyleSheet = {
     paddingHorizontal: 15,
     paddingVertical: 5,
     overflow: 'visible',
+    flex: 1,
+    backgroundColor: customThemeColor.lightBG,
   },
 
   formContainer: {
@@ -23,5 +26,16 @@ export const GlobalStyleSheet = {
     color: '#11401E',
     fontSize: customFontSize.font18,
     fontFamily: customFonts.fontPoppins,
+  },
+
+  cardContainer: {
+    display: 'flex',
+    flexWrap: "wrap",
+    height: 150
+  },
+
+  scrollViewContentStatus: {
+    overflow: 'visible',
+    backgroundColor: customThemeColor.lightBG,
   },
 }

@@ -7,48 +7,32 @@ import CardSkeleton from '../../../components/skeleton_loader/CardSkeleton'
 import { customThemeColor } from '../../../constants/Color'
 import { getMatchedJob } from '../../../features/status/StatusSlice'
 import { useNavigation } from '@react-navigation/native'
+import AddPref from './AddPref'
+import { Item } from 'react-native-paper/lib/typescript/components/Drawer/Drawer'
+import NoSavedJob from './NoSavedJob'
+import MatchedJobView from './MatchedJobView'
 
 const MatchedJob = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const { matchedJobs } = useSelector(state => state.status);
   const { userProfile } = useSelector(state => state.auth);
 
+
   useEffect(() => {
-    dispatch(getMatchedJob());
+    console.log("userProfile", typeof userProfile);
   }, [dispatch]);
 
-
   return (
-    <ScrollView contentContainerStyle={styles.scrollViewContent}
+    <ScrollView contentContainerStyle={GlobalStyleSheet.scrollViewContentStatus}
       style={GlobalStyleSheet.scrollViewContent}>
-      {/* {!!userProfile?.preference ? () } */}
-      {!!matchedJobs ? (
-        matchedJobs?.map((item, index) => {
-          return (
-            <View key={index} style={styles.cardContainer}>
-              <JobCard navigation={navigation} items={item} />
-            </View>
-          );
-        })
-      ) : (
-        <View>
-          <CardSkeleton />
-          <CardSkeleton />
-          <CardSkeleton />
-        </View>
-      )}
-
+      {!!userProfile?.preference ? <MatchedJobView /> : <AddPref />}
+      {/* <MatchedJobView /> */}
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  cardContainer: {
-    display: 'flex',
-    flexWrap: "wrap",
-    height: 150
-  },
+
   scrollViewContent: {
     paddingVertical: 5,
     overflow: 'visible',

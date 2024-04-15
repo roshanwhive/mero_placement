@@ -1,4 +1,4 @@
-package com.meroplacement
+package com.whive.meroplacement
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

@@ -1,37 +1,36 @@
-import { View, Text, Image, ScrollView, StyleSheet } from 'react-native'
+import { View, Text, ScrollView } from 'react-native'
 import React, { useEffect } from 'react'
+import NoSavedJob from '../matchedJob/NoSavedJob'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { getFollowedJob } from '../../../features/status/StatusSlice';
-import JobCard from '../../../components/JobCard';
-import { GlobalStyleSheet } from '../../../constants/StyleSheet';
+import { getFollowedCompany } from '../../../features/status/StatusSlice';
 import CardSkeleton from '../../../components/skeleton_loader/CardSkeleton';
-import { customThemeColor } from '../../../constants/Color';
+import { GlobalStyleSheet } from '../../../constants/StyleSheet';
+import JobCard from '../../../components/JobCard';
 
+const FollowedCompany = () => {
 
-const FollowedJob = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const { followedJob } = useSelector(state => state.status);
+  const { followedCompany } = useSelector(state => state.status);
 
 
   useEffect(() => {
-    dispatch(getFollowedJob());
+    dispatch(getFollowedCompany());
   }, [dispatch]);
 
   useEffect(() => {
-    console.log("followed", typeof followedJob);
-  }, [followedJob]);
-
+    console.log("followedcompany", typeof followedCompany);
+  }, [followedCompany]);
 
   return (
     <ScrollView contentContainerStyle={GlobalStyleSheet.scrollViewContentStatus}
       style={GlobalStyleSheet.scrollViewContent}>
-      {!!followedJob ? (
-        followedJob?.map((item, index) => {
+      {!!followedCompany ? (
+        followedCompany?.map((item, index) => {
           return (
             <View key={index} style={GlobalStyleSheet.cardContainer}>
-              {/* <JobCard navigation={navigation} items={item} /> */}
+              <JobCard navigation={navigation} items={item} />
             </View>
           );
         })
@@ -44,7 +43,7 @@ const FollowedJob = () => {
       )}
 
     </ScrollView>
-
   );
 }
-export default FollowedJob;
+
+export default FollowedCompany;

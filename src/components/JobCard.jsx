@@ -48,13 +48,22 @@ const JobCard = ({ items, navigation }) => {
           {items && items.get_company && items.get_company.logo !== null ? (
             <Image source={{ uri: items.get_company.logo }} style={styles.logo} />
           ) : (
-            <AvatarByName name={items?.getCompanyProfile?.employer_name} />
+            <AvatarByName name={items?.get_company?.employer_name} />
+            // <Image source={{ uri: items.logo }} style={styles.logo} />
+
           )}
         </TouchableOpacity>
       </View>
 
       <View style={styles.jobDetailsContainer}>
-        <Text style={styles.jobTitle}>{items ? items.position_name : ''}</Text>
+
+        {
+          items.position_name ? (
+            <Text style={styles.jobTitle}>{items ? items.position_name : ''}</Text>
+          ) : (
+            <Text style={styles.jobTitle}>{items ? items.employer_name : ''}</Text>
+          )
+        }
         <View style={styles.contentContainer}>
           <Icon
             name="map-pin"
@@ -110,7 +119,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 30,
     elevation: 10,
-    height: "auto",
+    height: 130,
   },
   logoContainer: {
     marginRight: 16,
