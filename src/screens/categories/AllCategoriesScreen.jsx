@@ -14,36 +14,37 @@ import AppBar from '../../components/custom_toolbar/AppBar';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {getAllCategories} from '../../features/formData/FormSlice';
+import {getJobCategories} from '../../features/job/JobSlice';
 
 const AllCategoriesScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const {mainCategories} = useSelector(state => state.job);
+  const {jobCategories} = useSelector(state => state.job);
 
   // Filtered categories state
-  const [filteredCategories, setFilteredCategories] = useState(mainCategories);
+  const [filteredCategories, setFilteredCategories] = useState(jobCategories);
 
   useEffect(() => {
     dispatch(getAllCategories());
+    dispatch(getJobCategories());
   }, [dispatch]);
 
   useEffect(() => {
     if (searchQuery.trim() === '') {
-      setFilteredCategories(mainCategories);
+      setFilteredCategories(jobCategories);
     } else {
-      const filteredData = mainCategories.filter(category =>
-        category.name.toLowerCase().includes(searchQuery.toLowerCase()),
+      const filteredData = jobCategories?.filter(category =>
+        category?.name?.toLowerCase().includes(searchQuery.toLowerCase()),
       );
       setFilteredCategories(filteredData);
     }
-  }, [mainCategories, searchQuery]);
+  }, [jobCategories, searchQuery]);
 
   const renderItem = ({item}) => (
     <TouchableOpacity style={styles.card}>
-      {/* <Image source={item.image} style={styles.image} resizeMode="contain" /> */}
-      <Text style={styles.title}>{item.name}</Text>
+      <Text style={styles.title}>{item?.name}</Text>
     </TouchableOpacity>
   );
 

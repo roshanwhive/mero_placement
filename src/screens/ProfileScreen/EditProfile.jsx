@@ -13,22 +13,27 @@ import {Avatar} from 'react-native-paper';
 import {customTextColor, customThemeColor} from '../../constants/Color';
 import {useNavigation} from '@react-navigation/native';
 import {useRoute} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {Controller, useForm} from 'react-hook-form';
+import {Dropdown} from 'react-native-element-dropdown';
 import {
   launchCamera,
   launchImageLibrary,
   ImagePicker,
   showImagePicker,
 } from 'react-native-image-picker';
+import {getAllGender} from '../../features/formData/FormSlice';
 
 const AccountEdit = () => {
   const [selectedImage, setSelectedImage] = useState(
     userProfile?.profile?.featured_image || null,
   );
+  const [genders, setGenders] = useState([]);
 
   const {userProfile} = useSelector(state => state.auth);
+  const {allGenderData} = useSelector(state => state.formOptions);
   const {control, handleSubmit} = useForm();
+  const dispatch = useDispatch();
 
   const onSubmit = formData => {
     console.log(formData);
@@ -55,6 +60,19 @@ const AccountEdit = () => {
 
     launchImageLibrary(options, handleResponse);
   };
+
+  useEffect(() => {
+    dispatch(getAllGender());
+    setTimeout(() => {
+      if (allGenderData?.genders && Array.isArray(allGenderData?.genders)) {
+        const mappedGenderData = allGenderData?.genders.map(item => ({
+          label: item.name,
+          value: item.gender_id,
+        }));
+        setGenders(mappedGenderData);
+      }
+    }, 100);
+  }, [allGenderData]);
 
   const handleResponse = response => {
     if (response.didCancel) {
@@ -115,23 +133,18 @@ const AccountEdit = () => {
         <Controller
           control={control}
           render={({field: {onChange, onBlur, value}}) => (
-            <Controller
-              control={control}
-              render={({field: {onChange, onBlur, value}}) => (
-                <TextInput
-                  style={styles.input}
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                  placeholder="Bio"
-                />
-              )}
-              name="bio"
-              defaultValue={userProfile?.profile?.bio || ''}
+            <TextInput
+              style={styles.textArea}
+              multiline={true}
+              numberOfLines={3}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              placeholder="Bio"
             />
           )}
           name="bio"
-          defaultValue={userProfile?.profile?.bio}
+          defaultValue={userProfile?.profile?.bio || ''}
         />
       </View>
       <View style={styles.cardContainer}>
@@ -172,6 +185,44 @@ const AccountEdit = () => {
           />
         </View>
         <View style={styles.inputWrapper}>
+          <Text style={styles.label}>Gender</Text>
+          <Controller
+            control={control}
+            rules={{
+              required: false,
+            }}
+            render={({field: {onChange, value}}) => (
+              <Dropdown
+                data={genders}
+                placeholder="Select Gender"
+                maxHeight={300}
+                labelField="label"
+                valueField="value"
+                searchPlaceholder="Search..."
+                placeholderStyle={{color: customTextColor.secondary}}
+                selectedTextStyle={{color: customTextColor.secondary}}
+                itemTextStyle={{color: customTextColor.secondary}}
+                value={value || userProfile?.profile?.gender?.name}
+                style={[
+                  {
+                    borderBottomWidth: 1,
+                    borderBottomColor: customTextColor.secondary,
+                    borderRadius: 5,
+                    paddingHorizontal: 16,
+                    paddingVertical: 5,
+                    color: customTextColor.secondary,
+                  },
+                  styles.input,
+                ]}
+                onChange={item => {
+                  onChange(item.value);
+                }}
+              />
+            )}
+            name="gender_id"
+          />
+        </View>
+        <View style={styles.inputWrapper}>
           <Text style={styles.label}>Contact Primary</Text>
           <Controller
             control={control}
@@ -205,23 +256,7 @@ const AccountEdit = () => {
             defaultValue={userProfile?.profile?.secondary_contact || ''}
           />
         </View>
-        <View style={styles.inputWrapper}>
-          <Text style={styles.label}>Gender</Text>
-          <Controller
-            control={control}
-            render={({field: {onChange, onBlur, value}}) => (
-              <TextInput
-                style={styles.input}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                placeholder="Gender"
-              />
-            )}
-            name="gender"
-            defaultValue={userProfile?.profile?.gender?.name || ''}
-          />
-        </View>
+
         <View style={styles.inputWrapper}>
           <Text style={styles.label}>DOB</Text>
           <Controller
@@ -455,6 +490,16 @@ const styles = StyleSheet.create({
     borderBottomColor: '#e0e0e0',
     paddingVertical: 0,
     fontSize: 14,
+    color: customTextColor.secondary,
+  },
+  textArea: {
+    backgroundColor: 'transparent',
+    borderWidth: 2,
+    borderColor: customThemeColor.lightBG,
+    paddingVertical: 0,
+    fontSize: 14,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
     color: customTextColor.secondary,
   },
 

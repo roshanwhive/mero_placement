@@ -49,7 +49,12 @@ const Login = ({navigation}) => {
   } = useSelector(state => state.auth);
 
   useEffect(() => {
-    if (isError && statusCode !== 200 && statusCode !== 0) {
+    if (
+      isError &&
+      statusCode !== 200 &&
+      statusCode !== 0 &&
+      message !== undefined
+    ) {
       showMessage({
         message: JSON.stringify(message),
         type: 'danger',
@@ -67,6 +72,7 @@ const Login = ({navigation}) => {
         animated: true,
       });
     }
+    console.log(isSuccess, statusCode, isAuthenticated);
   }, [isError, isSuccess, statusCode, message]);
 
   const schema = yup.object().shape({
@@ -92,7 +98,7 @@ const Login = ({navigation}) => {
       .then(() => {
         setTimeout(() => {
           dispatch(resetState());
-        }, 1000);
+        }, 5000);
       });
   };
 

@@ -1,8 +1,5 @@
 import axios from 'axios';
-import { base_url } from '../../utils/base_url';
-import { err } from 'react-native-svg';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getConfigWithToken } from '../../utils/config';
+import {base_url} from '../../utils/base_url';
 
 //get all job
 const getAllJobs = async () => {
@@ -126,10 +123,10 @@ const getJobTypes = async () => {
   }
 };
 //  get Job By Job Type
-const getJobByJobTypes = async id => {
+const getJobByJobTypes = async slug => {
   try {
     const response = await axios.get(
-      `${base_url}home/jobs-by-company-types/${id}`,
+      `${base_url}home/jobs-by-jobs-types/${slug}`,
     );
     return response.data;
   } catch (error) {
@@ -137,7 +134,6 @@ const getJobByJobTypes = async id => {
     throw error;
   }
 };
-
 
 export const jobService = {
   getJobCategories,

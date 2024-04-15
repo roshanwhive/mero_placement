@@ -32,7 +32,11 @@ const CompanyPostedJob = ({postedJob}) => {
       <View style={styles.container}>
         {!!postedJob.jobs ? (
           postedJob.jobs.map((jobs, index) => {
-            return <JobCard key={index} items={jobs} navigation={navigation} />;
+            return (
+              <View style={styles.cardContainer}>
+                <JobCard key={index} items={jobs} navigation={navigation} />
+              </View>
+            );
           })
         ) : (
           <ActivityIndicator
@@ -55,6 +59,10 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 15,
     marginTop: 25,
+                             },
+  cardContainer: {
+    height: 100,
+    display: 'flex',
   },
   row: {
     padding: 10,

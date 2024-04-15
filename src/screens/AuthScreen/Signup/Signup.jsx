@@ -20,7 +20,7 @@ import {getAllGender} from '../../../features/formData/FormSlice';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import {customTextColor, customThemeColor} from '../../../constants/Color';
 import {registerUser, resetState} from '../../../features/auth/AuthSlice';
-import { customFontSize, customFonts } from '../../../constants/theme';
+import {customFontSize, customFonts} from '../../../constants/theme';
 
 const Signup = ({navigation}) => {
   const [value, setValue] = useState(null);
@@ -247,9 +247,10 @@ const Signup = ({navigation}) => {
                       labelField="label"
                       valueField="value"
                       searchPlaceholder="Search..."
-                      placeholderStyle={{color: '#3d3b3b'}}
                       value={value}
-                      itemTextStyle={{color: customTextColor.darkGreen}}
+                      placeholderStyle={{color: customTextColor.secondary}}
+                      selectedTextStyle={{color: customTextColor.secondary}}
+                      itemTextStyle={{color: customTextColor.secondary}}
                       style={[
                         {
                           borderWidth: 1,
@@ -257,6 +258,7 @@ const Signup = ({navigation}) => {
                           borderRadius: 5,
                           paddingHorizontal: 16,
                           paddingVertical: 5,
+                          color: customTextColor.secondary,
                         },
                         styles.input,
                       ]}
@@ -374,7 +376,11 @@ const Signup = ({navigation}) => {
                 </TouchableOpacity>
               </View>
               <View style={styles.signupTextContainer}>
-                <Text style={{color: customTextColor.primary, fontFamily: customFonts.fontPoppins}}>
+                <Text
+                  style={{
+                    color: customTextColor.primary,
+                    fontFamily: customFonts.fontPoppins,
+                  }}>
                   Already have an account?
                 </Text>
                 <TouchableOpacity onPress={() => navigation.navigate('Login')}>

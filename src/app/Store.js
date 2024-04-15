@@ -25,9 +25,13 @@ const authPersistConfig = {
   key: 'auth',
   storage: AsyncStorage,
 };
+const formOptionsPersistConfig = {
+  key: 'formOptions',
+  storage: AsyncStorage,
+};
 const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
-  formOptions: formReducer,
+  formOptions: persistReducer(formOptionsPersistConfig, formReducer),
   job: jobCategoryReducer,
   company: companyReducer,
   status: statusReducer,
@@ -40,6 +44,7 @@ export const store = configureStore({
       // serializableCheck: {
       //   ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       // },
+
       serializableCheck: false,
     }),
 });

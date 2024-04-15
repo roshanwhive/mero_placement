@@ -39,17 +39,14 @@ export default Profile = ({navigation}) => {
     isLoading,
     statusCode,
   } = useSelector(state => state.auth);
-  const user = AsyncStorage.getItem('USER_TOKEN');
-
-  useEffect(() => {
-    setTimeout(() => {
-      dispatch(getUserProfile());
-    }, 1000);
-  }, [dispatch]);
 
   const handleBack = () => {
     navigation.goBack();
   };
+
+  useEffect(() => {
+    getUserProfile();
+  }, [dispatch]);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -62,6 +59,7 @@ export default Profile = ({navigation}) => {
       animated: true,
     });
   };
+
   return (
     <>
       <ScrollView
@@ -92,14 +90,8 @@ export default Profile = ({navigation}) => {
                     <Text style={styles.name}>
                       {userProfile?.profile?.lead_name}
                     </Text>
-                    <RenderHtml
-                      contentWidth={100}
-                      ignoredDomTags={['quillbot-extension-portal']}
-                      tagsStyles={tagsStyles}
-                      source={{
-                        html: userProfile?.profile?.bio,
-                      }}
-                    />
+
+                    <Text style={styles.bio}>{userProfile?.profile.bio}</Text>
                   </View>
                 )}
 
@@ -156,20 +148,6 @@ export default Profile = ({navigation}) => {
   );
 };
 
-const tagsStyles = {
-  p: {
-    color: customTextColor.secondary,
-    textAlign: 'center',
-    fontSize: 14,
-  },
-  li: {
-    color: customTextColor.secondary,
-    fontSize: 14,
-    textAlign: 'justify',
-    marginHorizontal: 5,
-  },
-};
-
 const styles = StyleSheet.create({
   container: {
     backgroundColor: customThemeColor.white,
@@ -189,7 +167,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   body: {
-    top: '-6%',
+    top: '-4%',
   },
   bodyContent: {
     alignItems: 'center',
@@ -243,7 +221,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: customTextColor.primary,
   },
-
   buttonContainer: {
     marginTop: 10,
     bottom: '-10%',
@@ -261,6 +238,7 @@ const styles = StyleSheet.create({
   bio: {
     fontSize: 16,
     color: customTextColor.secondary,
+    textAlign: 'center',
   },
   logoutText: {
     color: customTextColor.white,

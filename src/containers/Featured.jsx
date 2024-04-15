@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
@@ -7,19 +7,19 @@ import {
   StyleSheet,
 } from 'react-native';
 import JobCard from '../components/JobCard';
-import { customTextColor, customThemeColor } from '../constants/Color';
-import { ActivityIndicator } from 'react-native-paper';
-import { useDispatch, useSelector } from 'react-redux';
-import { getJobByJobTypes } from '../features/job/JobSlice';
+import {customTextColor, customThemeColor} from '../constants/Color';
+import {ActivityIndicator} from 'react-native-paper';
+import {useDispatch, useSelector} from 'react-redux';
+import {getJobByJobTypes} from '../features/job/JobSlice';
 import CardSkeleton from '../components/skeleton_loader/CardSkeleton';
-import { GlobalStyleSheet } from '../constants/StyleSheet';
+import {GlobalStyleSheet} from '../constants/StyleSheet';
 
-const Featured = ({ navigation }) => {
+const Featured = ({navigation}) => {
   const dispatch = useDispatch();
-  const { jobByTpes } = useSelector(state => state.job);
+  const {jobByTpes} = useSelector(state => state.job);
 
   useEffect(() => {
-    dispatch(getJobByJobTypes(1));
+    dispatch(getJobByJobTypes('top_job'));
   }, [dispatch]);
 
   return (

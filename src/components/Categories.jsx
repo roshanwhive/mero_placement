@@ -8,7 +8,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {getMainCategories} from '../features/job/JobSlice';
+import {getJobCategories, getMainCategories} from '../features/job/JobSlice';
 import {useNavigation} from '@react-navigation/native';
 import CategoryCardCircle from './skeleton_loader/CategoryCardCircle';
 import {customFontSize, customFonts} from '../constants/theme';
@@ -25,6 +25,7 @@ const Categories = () => {
 
   useEffect(() => {
     dispatch(getMainCategories());
+    dispatch(getJobCategories());
   }, [dispatch]);
 
   return (
@@ -42,14 +43,14 @@ const Categories = () => {
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.scrollViewContent}>
-        {mainCategories.map((category, index) => {
+        {mainCategories?.map((category, index) => {
           return (
             <View key={index} style={styles.categoryItem}>
               <TouchableOpacity
                 onPress={() => setActiveCategory(category.id)}
                 style={styles.imageContainer}>
                 <Icon
-                  name={category?.icon}
+                  name={category?.icons}
                   size={40}
                   color={customTextColor.darkRed}
                 />
@@ -109,6 +110,8 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontSize: customFontSize.font12,
     fontFamily: customFonts.font,
+    color: customTextColor.secondary,
+    textAlign: 'center',
   },
 });
 

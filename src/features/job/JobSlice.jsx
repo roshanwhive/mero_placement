@@ -128,9 +128,9 @@ export const getJobTypes = createAsyncThunk(
 );
 export const getJobByJobTypes = createAsyncThunk(
   'job/get-job-by-job-types',
-  async (id, thunkAPI) => {
+  async (slug, thunkAPI) => {
     try {
-      return await jobService.getJobByJobTypes(id);
+      return await jobService.getJobByJobTypes(slug);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -273,7 +273,7 @@ export const jobCategorySlice = createSlice({
         state.isError = !action.payload.success;
         state.isSuccess = action.payload.success;
         state.message = action.payload.message;
-        state.jobCategories = action.payload.data;
+        state.companyTypes = action.payload.data;
       })
       .addCase(getCompanyTypes.rejected, (state, action) => {
         state.isError = true;
@@ -306,7 +306,7 @@ export const jobCategorySlice = createSlice({
         state.isError = !action.payload.success;
         state.isSuccess = action.payload.success;
         state.message = action.payload.message;
-        state.jobCategories = action.payload.data;
+        state.employmentTypes = action.payload.data;
       })
       .addCase(getEmploymentTypes.rejected, (state, action) => {
         state.isError = true;
@@ -339,7 +339,7 @@ export const jobCategorySlice = createSlice({
         state.isError = !action.payload.success;
         state.isSuccess = action.payload.success;
         state.message = action.payload.message;
-        state.jobCategories = action.payload.data;
+        state.jobTypes = action.payload.data;
       })
       .addCase(getJobTypes.rejected, (state, action) => {
         state.isError = true;

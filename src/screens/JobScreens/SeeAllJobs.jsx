@@ -12,16 +12,52 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getAllJobs} from '../../features/job/JobSlice';
 import {ActivityIndicator} from 'react-native-paper';
 import {customTextColor, customThemeColor} from '../../constants/Color';
+import {Dropdown} from 'react-native-element-dropdown';
+import {getAllCategories} from '../../features/formData/FormSlice';
+
+const data = [
+  {label: 'Item Hello world I am 1', value: '1'},
+  {label: 'Item 2', value: '2'},
+  {label: 'Item 3', value: '3'},
+  {label: 'Item 4', value: '4'},
+  {label: 'Item 5', value: '5'},
+  {label: 'Item 6', value: '6'},
+  {label: 'Item 7', value: '7'},
+  {label: 'Item 8', value: '8'},
+];
 
 const SeeAllJobs = ({navigation}) => {
   const dispatch = useDispatch();
-  const {allJobs} = useSelector(state => state.job);
+  const {allJobs, jobCategories} = useSelector(state => state.job);
+
+  const [value, setValue] = useState(null);
+
+  const renderItem = item => {
+    return (
+      <View style={styles.item}>
+        <Text style={styles.textItem}>{item.name}</Text>
+        {item.value === value && (
+          <Icon
+            style={styles.icon}
+            color={customTextColor.lightGreen}
+            name="check"
+            size={20}
+          />
+        )}
+      </View>
+    );
+  };
 
   useEffect(() => {
     setTimeout(() => {
       dispatch(getAllJobs());
+      dispatch(getAllCategories());
     }, 200);
   }, [dispatch]);
+
+  useEffect(() => {
+    console.log(jobCategories);
+  }, [jobCategories]);
 
   return (
     <View style={styles.container}>
@@ -39,22 +75,33 @@ const SeeAllJobs = ({navigation}) => {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.scrollViewContentFilter}>
           <TouchableOpacity style={styles.filterButton}>
-            <Text style={styles.categoryTitle}>All</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.filterButton}>
-            <Text style={styles.categoryTitle}>Hot</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.filterButton}>
-            <Text style={styles.categoryTitle}>Top</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.filterButton}>
-            <Text style={styles.categoryTitle}>Finance</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.filterButton}>
-            <Text style={styles.categoryTitle}>Banking</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.filterButton}>
-            <Text style={styles.categoryTitle}>Education</Text>
+            <Dropdown
+              style={styles.dropdown}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              inputSearchStyle={styles.inputSearchStyle}
+              iconStyle={styles.iconStyle}
+              data={jobCategories}
+              search
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder="Select item"
+              searchPlaceholder="Search..."
+              value={value}
+              onChange={item => {
+                setValue(item.value);
+              }}
+              renderLeftIcon={() => (
+                <Icon
+                  style={styles.icon}
+                  color={customTextColor.lightGreen}
+                  name="check"
+                  size={20}
+                />
+              )}
+              renderItem={renderItem}
+            />
           </TouchableOpacity>
         </ScrollView>
       </View>
@@ -63,8 +110,8 @@ const SeeAllJobs = ({navigation}) => {
         horizontal={false}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollViewContent}>
-        {allJobs.data ? (
-          allJobs.data.map((item, index) => {
+        {allJobs?.data ? (
+          allJobs?.data?.map((item, index) => {
             return (
               <View key={index}>
                 <JobCard navigation={navigation} items={item} />
@@ -115,22 +162,11 @@ const styles = StyleSheet.create({
   filterContainer: {
     display: 'flex',
     gap: 10,
+    marginLeft: 5,
     flexDirection: 'row',
     marginVertical: 15,
   },
-  filterButton: {
-    backgroundColor: '#FCFCFC',
-    // borderWidth: 1,
-    // borderColor: '#9D050A',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 50,
-    shadowColor: 'rgba(150,170,180,0.5)',
-    shadowOffset: {width: 0, height: 7},
-    shadowOpacity: 1,
-    shadowRadius: 30,
-    elevation: 10,
-  },
+  filterButton: {},
   categoryTitle: {
     color: '#11401E',
     fontSize: 16,
@@ -138,6 +174,58 @@ const styles = StyleSheet.create({
   scrollViewContent: {
     paddingVertical: 5,
     overflow: 'visible',
+  },
+
+  // Dropdown
+  containerDropdown: {
+    backgroundColor: 'white',
+    padding: 16,
+  },
+  dropdown: {
+    height: 50,
+    minWidth: 200,
+    backgroundColor: 'white',
+    borderRadius: 5,
+    padding: 12,
+    shadowColor: '#fcfcfc',
+    borderWidth: 1,
+    borderColor: customThemeColor.lightBG,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+
+    elevation: 2,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  item: {
+    padding: 17,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  textItem: {
+    flex: 1,
+    fontSize: 16,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+    borderRadius: 10,
   },
 });
 

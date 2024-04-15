@@ -1,21 +1,24 @@
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {customTextColor} from '../../constants/Color';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
+import {getAllGender} from '../../features/formData/FormSlice';
 
 const Account = () => {
   const {userProfile} = useSelector(state => state.auth);
 
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   return (
     <View style={styles.account}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>Account</Text>
         <TouchableOpacity
-          onPress={() =>
-            navigation.navigate('EditProfile', {title: 'Profile'})
-          }>
+          onPress={() => {
+            navigation.navigate('EditProfile', {title: 'Profile'});
+            dispatch(getAllGender());
+          }}>
           <Text style={styles.edit}>Edit</Text>
         </TouchableOpacity>
       </View>
