@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     backgroundColor: customThemeColor.white,
     borderRadius: 10,
     marginHorizontal: 16,
-    marginTop: 20,
+    marginTop: 10,
     shadowColor: 'rgba(150,170,180,0.5)',
     shadowOffset: {width: 0, height: 7},
     shadowOpacity: 1,
@@ -47,13 +47,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontSize: customFontSize.font18,
+    fontSize: customFontSize.font16,
     marginBottom: 4,
     color: customTextColor.primary,
     fontFamily: customFonts.fontBold
   },
   subtitle: {
-    fontSize: customFontSize.font14,
+    fontSize: customFontSize.font12,
     color: customTextColor.secondary,
     fontFamily: customFonts.font,
   },

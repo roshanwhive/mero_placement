@@ -4,18 +4,18 @@ import { customTextColor } from '../../../constants/Color';
 import { customFontSize, customFonts } from '../../../constants/theme';
 import logoImage from '../../../assets/search1.jpg';
 
-const AddPref = () => {
+const AddPref = ({title, subtitle, btnText}) => {
     return (
         <View style={styles.bodyContent1}>
             <Image source={logoImage} style={styles.image} />
-            <Text style={styles.title}>No Matched job Found</Text>
+            <Text style={styles.title}>{title}</Text>
             <Text style={styles.subtitle}>
-                Add your preferences to view Matched Job.
+                {subtitle}
             </Text>
             <TouchableOpacity
                 // onPress={() => navigation.navigate('Login')}
                 style={[styles.buttonContainer, styles.buttonLogout]}>
-                <Text style={styles.logoutText}>Add Preference</Text>
+                <Text style={styles.logoutText}>{btnText}</Text>
             </TouchableOpacity>
         </View>
     )

@@ -1,20 +1,21 @@
-import {StatusBar, ScrollView, StyleSheet, View, Text} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { StatusBar, ScrollView, StyleSheet, View, Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Categories from '../../components/Categories';
 import Featured from '../../containers/Featured';
 import TotalJobs from '../../containers/TotalJobs';
 import Training from '../../containers/Training';
 import ActivelySeekingForJobCard from '../../containers/ActivelySeekingForJobCard';
 import AppBar from '../../components/custom_toolbar/AppBar';
-import {customThemeColor} from '../../constants/Color';
-import {useSelector} from 'react-redux';
+import { customThemeColor } from '../../constants/Color';
+import { useSelector } from 'react-redux';
 import CompleteProfile from '../../containers/modal/CompleteProfile';
-import {getUserProfile} from '../../features/auth/AuthSlice';
-import {customFontSize, customFonts} from '../../constants/theme';
-import {useEffect} from 'react';
+import { getUserProfile } from '../../features/auth/AuthSlice';
+import { customFontSize, customFonts } from '../../constants/theme';
+import { useEffect } from 'react';
+import Carousel from '../../components/Carousel';
 
-const Home = ({navigation}) => {
-  const {userProfile} = useSelector(state => state.auth);
+const Home = ({ navigation }) => {
+  const { userProfile } = useSelector(state => state.auth);
 
   return (
     <>
@@ -36,6 +37,7 @@ const Home = ({navigation}) => {
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollViewContent}>
+          <Carousel />
           {/* Categories */}
           <Categories />
           <ActivelySeekingForJobCard />
@@ -65,16 +67,16 @@ const styles = StyleSheet.create({
   },
   greetingText: {
     color: '#fcfcfc',
-    fontSize: customFontSize.font16,
+    fontSize: customFontSize.font14,
     fontFamily: customFonts.fontPoppins,
   },
   subHeading: {
-    fontSize: customFontSize.font24,
+    fontSize: customFontSize.font18,
     color: '#ffffff',
     fontFamily: customFonts.fontPoppins,
   },
   header: {
-    height: 400,
+    height: 130,
     backgroundColor: customThemeColor.darkRed,
     position: 'absolute',
     top: 0,
@@ -84,8 +86,7 @@ const styles = StyleSheet.create({
   },
   scrollViewContent: {
     paddingBottom: 120,
-    paddingTop: 10,
-    marginTop: 170,
+    marginTop: 130,
     zIndex: 0,
     backgroundColor: '#FCFCFC',
     borderTopLeftRadius: 25,

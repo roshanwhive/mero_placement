@@ -51,7 +51,7 @@ const Categories = () => {
                 style={styles.imageContainer}>
                 <Icon
                   name={category?.icons}
-                  size={40}
+                  size={20}
                   color={customTextColor.darkRed}
                 />
               </TouchableOpacity>
@@ -90,8 +90,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 90,
-    width: 90,
+    height: 50,
+    width: 50,
     padding: 5,
     borderRadius: 100,
     shadowColor: '#000',
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   categoryName: {
     width: 100,
     marginTop: 5,
-    fontSize: customFontSize.font12,
+    fontSize: 11,
     fontFamily: customFonts.font,
     color: customTextColor.secondary,
     textAlign: 'center',

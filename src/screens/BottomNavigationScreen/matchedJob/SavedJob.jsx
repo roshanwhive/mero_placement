@@ -16,13 +16,13 @@ const SavedJob = () => {
     dispatch(getSavedJob());
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   console.log("saved", message);
-  // }, [message]);
+  useEffect(() => {
+    console.log("saved", typeof savedJobs);
+  }, [savedJobs]);
 
   return (
-    <View  contentContainerStyle={GlobalStyleSheet.scrollViewContentStatus}
-    style={GlobalStyleSheet.scrollViewContent}>
+    <View contentContainerStyle={GlobalStyleSheet.scrollViewContentStatus}
+      style={GlobalStyleSheet.scrollViewContent}>
       {!!savedJobs ? (
         savedJobs?.map((item, index) => {
           return (
