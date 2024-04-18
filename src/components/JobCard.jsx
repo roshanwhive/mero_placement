@@ -9,7 +9,7 @@ import { getCompanyProfile } from '../features/company/CompanySlice';
 import AvatarByName from './AvatarbyName';
 import { customFontSize, customFonts } from '../constants/theme';
 
-const JobCard = ({ ites, navigation }) => {
+const JobCard = ({ items, navigation }) => {
   const companyLogo = require('../assets/companyLogo.png');
 
   const [formattedDate, setFormattedDate] = useState('');
@@ -28,7 +28,7 @@ const JobCard = ({ ites, navigation }) => {
         formattedDistance += ' ago';
       }
       setFormattedDate
-      +(formattedDate);
+        + (formattedDate);
       setFormattedDistance(formattedDistance);
     }
   }, [items]);

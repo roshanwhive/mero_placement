@@ -24,8 +24,8 @@ const MatchedJobView = () => {
 
     return (
         <View>
-            {!!matchedJobs ? (
-                matchedJobs?.map((item, index) => {
+            {!!matchedJobs?.data ? (
+                matchedJobs?.data?.map((item, index) => {
                     return (
                         <View key={index} style={GlobalStyleSheet.cardContainer}>
                             <JobCard navigation={navigation} items={item} />

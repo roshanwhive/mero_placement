@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React, { useEffect, useState } from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from '../screens/HomeScreen/Home';
 import Login from '../screens/AuthScreen/Login/Login';
 import Signup from '../screens/AuthScreen/Signup/Signup';
