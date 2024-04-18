@@ -2,10 +2,12 @@ import React from 'react';
 import {View, TextInput, Text, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import {customTextColor, customThemeColor} from '../constants/Color';
+import AppBar from '../components/custom_toolbar/AppBar';
 
 const SearchBar = () => {
   return (
     <View>
+      <AppBar />
       <View style={styles.searchBar}>
         <View style={styles.searchInputContainer}>
           <Icon name="search" size={25} color={customTextColor.secondary} />

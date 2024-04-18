@@ -15,7 +15,7 @@ import {GlobalStyleSheet} from '../constants/StyleSheet';
 const TotalJobs = ({navigation}) => {
   const dispatch = useDispatch();
 
-  const {allJobs} = useSelector(state => state.job);
+  const {totalJobs} = useSelector(state => state.job);
 
   useEffect(() => {
     dispatch(getAllJobs());
@@ -27,13 +27,17 @@ const TotalJobs = ({navigation}) => {
         <View>
           <Text style={GlobalStyleSheet.Hometitle}>Hot Jobs</Text>
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate('SeeAllJobs')}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('SeeAllJobs');
+            dispatch(getAllJobs());
+          }}>
           <Text style={GlobalStyleSheet.seeAll}>See All</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.scrollViewContent}>
-        {!!allJobs?.data ? (
-          allJobs.data.map((item, index) => {
+        {!!totalJobs?.data ? (
+          totalJobs.data.map((item, index) => {
             return (
               <View key={index}>
                 <JobCard navigation={navigation} items={item} />

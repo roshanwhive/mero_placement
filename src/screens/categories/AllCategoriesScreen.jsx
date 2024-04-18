@@ -14,7 +14,7 @@ import AppBar from '../../components/custom_toolbar/AppBar';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {getAllCategories} from '../../features/formData/FormSlice';
-import {getJobCategories} from '../../features/job/JobSlice';
+import {getJobCategories, getJobByCategory} from '../../features/job/JobSlice';
 
 const AllCategoriesScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -56,6 +56,12 @@ const AllCategoriesScreen = () => {
     setSearchQuery(text);
   };
 
+  const handleCategoryClick = categoryId => {
+    dispatch(getJobByCategory(categoryId)).then(() =>
+      navigation.navigate('SeeAllJobs'),
+    );
+  };
+
   return (
     <View style={styles.container}>
       {/* App bar */}
@@ -66,6 +72,7 @@ const AllCategoriesScreen = () => {
         <TextInput
           style={styles.searchInput}
           placeholder="Browse categories..."
+          placeholderTextColor={customTextColor.primary}
           onChangeText={handleSearch}
           value={searchQuery}
         />
@@ -100,6 +107,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderBottomColor: customThemeColor.lighterBg,
     paddingHorizontal: 12,
+    color: customTextColor.primary,
     paddingVertical: 8,
     backgroundColor: customThemeColor.lightBG,
   },

@@ -67,7 +67,7 @@ const getUserProfile = async () => {
 };
 
 //post User Profile
-const updateUserProfile = async formData => {
+const updateUserAccount = async formData => {
   try {
     const config = await getConfigWithToken();
     const response = await axios.post(
@@ -79,7 +79,7 @@ const updateUserProfile = async formData => {
       return response.data;
     }
   } catch (error) {
-    console.error('Error during updating user profile:', error);
+    console.error('Error during updating user Account Inforamtion:', error);
     throw error;
   }
 };
@@ -89,5 +89,5 @@ export const authService = {
   login,
   logout,
   getUserProfile,
-  updateUserProfile,
+  updateUserAccount,
 };

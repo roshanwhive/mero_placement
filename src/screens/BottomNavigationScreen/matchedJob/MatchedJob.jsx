@@ -21,7 +21,7 @@ const MatchedJob = () => {
 
 
   useEffect(() => {
-    console.log("userProfile", typeof userProfile);
+    console.log('userProfile', typeof userProfile);
   }, [dispatch]);
 
   useEffect(() => {
@@ -50,7 +50,8 @@ const MatchedJob = () => {
   }
 
   return (
-    <ScrollView contentContainerStyle={GlobalStyleSheet.scrollViewContentStatus}
+    <ScrollView
+      contentContainerStyle={GlobalStyleSheet.scrollViewContentStatus}
       style={GlobalStyleSheet.scrollViewContent}>
       <ActivityIndicator animating={animate} size="large" color="#ffffff" />
       {!!userProfile?.preference ? <MatchedJobView /> : <AddProp />}
@@ -59,7 +60,6 @@ const MatchedJob = () => {
 };
 
 const styles = StyleSheet.create({
-
   scrollViewContent: {
     paddingVertical: 5,
     overflow: 'visible',

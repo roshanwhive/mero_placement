@@ -25,6 +25,10 @@ import {showMessage} from 'react-native-flash-message';
 import AvatarSkeleton from '../../components/skeleton_loader/AvatarSkeleton';
 import {GlobalStyleSheet} from '../../constants/StyleSheet';
 import {customFontSize, customFonts} from '../../constants/theme';
+import {WebView} from 'react-native-webview';
+
+const MYPROFILE =
+  'https://demo.meroplacement.com/candidate/dashboard/your-profile';
 
 export default Profile = ({navigation}) => {
   const dispatch = useDispatch();
@@ -66,7 +70,7 @@ export default Profile = ({navigation}) => {
         horizontal={false}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.container}>
-        <AppBar handleBack={handleBack} title="Profile" />
+        <AppBar handleBack={handleBack} />
 
         {isAuthenticated && <View style={styles.header}></View>}
 

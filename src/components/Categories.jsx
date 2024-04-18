@@ -8,7 +8,11 @@ import {
   StyleSheet,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {getJobCategories, getMainCategories} from '../features/job/JobSlice';
+import {
+  getJobByCategory,
+  getJobCategories,
+  getMainCategories,
+} from '../features/job/JobSlice';
 import {useNavigation} from '@react-navigation/native';
 import CategoryCardCircle from './skeleton_loader/CategoryCardCircle';
 import {customFontSize, customFonts} from '../constants/theme';
@@ -28,6 +32,12 @@ const Categories = () => {
     dispatch(getJobCategories());
   }, [dispatch]);
 
+  const handleCategoryClick = categoryId => {
+    dispatch(getJobByCategory(categoryId)).then(() =>
+      navigation.navigate('SeeAllJobs'),
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -43,23 +53,33 @@ const Categories = () => {
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.scrollViewContent}>
-        {mainCategories?.map((category, index) => {
-          return (
-            <View key={index} style={styles.categoryItem}>
-              <TouchableOpacity
-                onPress={() => setActiveCategory(category.id)}
-                style={styles.imageContainer}>
-                <Icon
-                  name={category?.icons}
-                  size={20}
-                  color={customTextColor.darkRed}
-                />
-              </TouchableOpacity>
-              <Text style={styles.categoryName}>{category.name}</Text>
-              {/* <CategoryCardCircle key={index} /> */}
-            </View>
-          );
-        })}
+        {mainCategories.length !== 0 ? (
+          mainCategories?.map((category, index) => {
+            return (
+              <View key={index} style={styles.categoryItem}>
+                <TouchableOpacity
+                  onPress={() => handleCategoryClick(category?.job_category_id)}
+                  style={styles.imageContainer}>
+                  <Icon
+                    name={category?.icons}
+                    size={40}
+                    color={customTextColor.darkRed}
+                  />
+                </TouchableOpacity>
+                <Text style={styles.categoryName}>{category?.name}</Text>
+              </View>
+            );
+          })
+        ) : (
+          <>
+            <CategoryCardCircle />
+            <CategoryCardCircle />
+            <CategoryCardCircle />
+            <CategoryCardCircle />
+            <CategoryCardCircle />
+            <CategoryCardCircle />
+          </>
+        )}
       </ScrollView>
     </View>
   );

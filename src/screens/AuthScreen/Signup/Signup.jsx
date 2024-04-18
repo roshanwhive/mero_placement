@@ -23,9 +23,7 @@ import {registerUser, resetState} from '../../../features/auth/AuthSlice';
 import {customFontSize, customFonts} from '../../../constants/theme';
 
 const Signup = ({navigation}) => {
-  const [value, setValue] = useState(null);
   const [genders, setGenders] = useState([]);
-  const [genderID, setGenderID] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
@@ -118,7 +116,6 @@ const Signup = ({navigation}) => {
     },
   });
 
-  //Common input properties
   const onPressSend = formData => {
     dispatch(registerUser(formData)).then(() => {
       setTimeout(() => {
@@ -126,13 +123,17 @@ const Signup = ({navigation}) => {
       }, 1000);
     });
   };
+
+  //Common input properties
   const commonTextInputProps = {
     style: styles.input,
     mode: 'outlined',
     outlineColor: customTextColor.darkGreen,
     activeOutlineColor: customTextColor.darkGreen,
     selectionColor: customTextColor.darkGreen,
+    disabled: isLoading,
   };
+
   return (
     <View style={styles.container}>
       <StatusBar
@@ -242,6 +243,7 @@ const Signup = ({navigation}) => {
                   render={({field: {onChange, value}}) => (
                     <Dropdown
                       data={genders}
+                      disable={isLoading}
                       placeholder="Select Gender"
                       maxHeight={300}
                       labelField="label"
