@@ -32,10 +32,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 16,
+    padding: 10,
     backgroundColor: customThemeColor.white,
     borderRadius: 10,
-    marginHorizontal: 16,
+    marginHorizontal: 10,
     marginTop: 10,
     shadowColor: 'rgba(150,170,180,0.5)',
     shadowOffset: {width: 0, height: 7},
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     fontFamily: customFonts.font,
   },
   swicthButton: {
-    fontSize: 30,
+    fontSize: 20,
   },
 });
 

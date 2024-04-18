@@ -23,15 +23,15 @@ const Home = ({ navigation }) => {
 
       <SafeAreaView style={styles.safeArea}>
         <StatusBar barStyle="dark-content" />
-        <View style={styles.header}>
-          <AppBar isHome={true} />
-          <View style={styles.textWrapper}>
+
+        <AppBar isHome={true} />
+        {/* <View style={styles.textWrapper}>
             <Text style={styles.greetingText}>
               Hello, {userProfile?.profile?.lead_name}
             </Text>
             <Text style={styles.subHeading}>Get Your Dream Job!</Text>
-          </View>
-        </View>
+          </View> */}
+
 
         {/* Main */}
         <ScrollView
@@ -46,9 +46,9 @@ const Home = ({ navigation }) => {
             <Featured navigation={navigation} />
           </View>
           <Training navigation={navigation} />
-          <View style={styles.totalJobs}>
-            <TotalJobs navigation={navigation} />
-          </View>
+
+          <TotalJobs navigation={navigation} />
+
         </ScrollView>
       </SafeAreaView>
     </>
@@ -85,19 +85,16 @@ const styles = StyleSheet.create({
     zIndex: 0,
   },
   scrollViewContent: {
-    paddingBottom: 120,
-    marginTop: 130,
+    paddingBottom: 0,
     zIndex: 0,
     backgroundColor: '#FCFCFC',
-    borderTopLeftRadius: 25,
     position: 'relative',
-    borderTopRightRadius: 25,
   },
   featuredContainer: {
-    marginTop: 5,
+    marginTop: 0,
   },
   totalJobs: {
-    marginTop: 5,
+    marginTop: 0,
   },
 });
 

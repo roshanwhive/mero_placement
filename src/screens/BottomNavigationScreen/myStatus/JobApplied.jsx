@@ -28,8 +28,8 @@ const JobApplied = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={GlobalStyleSheet.scrollViewContentStatus}>
 
-        {!!appliedJobs ? (
-          appliedJobs?.map((item, index) => {
+        {!!appliedJobs?.data ? (
+          appliedJobs?.data?.map((item, index) => {
             return (
               <View key={index} style={GlobalStyleSheet.cardContainer}>
                 <JobCard navigation={navigation} items={item} />

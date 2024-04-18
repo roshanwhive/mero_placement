@@ -3,6 +3,7 @@ import React from 'react';
 import {customTextColor, customThemeColor} from '../constants/Color';
 import TrainingCard from '../components/TrainingCard';
 import { GlobalStyleSheet } from '../constants/StyleSheet';
+import { customFontSize } from '../constants/theme';
 const Training = ({navigation}) => {
   return (
     <View style={styles.container}>
@@ -23,12 +24,12 @@ const Training = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 10,
+    marginTop: 5,
     backgroundColor: customThemeColor.primary,
     paddingHorizontal: 15,
   },
   heading: {
-    fontSize: 20,
+    fontSize: customFontSize.font14,
     fontWeight: 'bold',
     color: customTextColor.darkGreen,
   },

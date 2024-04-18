@@ -24,15 +24,15 @@ const MatchedJob = () => {
     console.log('userProfile', typeof userProfile);
   }, [dispatch]);
 
-  useEffect(() => {
-    CloseActivityIndicator();
-  }, [])
+  // useEffect(() => {
+  //   CloseActivityIndicator();
+  // }, [])
 
-  const CloseActivityIndicator = () => {
-    setTimeout(() => {
-      setAnimate(false);
-    }, 2000);
-  };
+  // const CloseActivityIndicator = () => {
+  //   setTimeout(() => {
+  //     setAnimate(false);
+  //   }, 2000);
+  // };
 
 
   const AddProp = () => {
@@ -53,8 +53,9 @@ const MatchedJob = () => {
     <ScrollView
       contentContainerStyle={GlobalStyleSheet.scrollViewContentStatus}
       style={GlobalStyleSheet.scrollViewContent}>
-      <ActivityIndicator animating={animate} size="large" color="#ffffff" />
-      {!!userProfile?.preference ? <MatchedJobView /> : <AddProp />}
+      {/* <ActivityIndicator animating={animate} size="large" color="#ffffff" /> */}
+      {/* {!!userProfile?.preference ? <MatchedJobView /> : <AddProp />} */}
+      <MatchedJobView/>
     </ScrollView>
   );
 };

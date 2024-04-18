@@ -4,7 +4,7 @@ import { customTextColor } from '../../../constants/Color';
 import { customFontSize, customFonts } from '../../../constants/theme';
 import logoImage from '../../../assets/search1.jpg';
 
-const AddPref = ({title, subtitle, btnText}) => {
+const AddPref = ({title, subtitle, btnText, handleBtn}) => {
     return (
         <View style={styles.bodyContent1}>
             <Image source={logoImage} style={styles.image} />
@@ -13,7 +13,7 @@ const AddPref = ({title, subtitle, btnText}) => {
                 {subtitle}
             </Text>
             <TouchableOpacity
-                // onPress={() => navigation.navigate('Login')}
+                onPress={handleBtn}
                 style={[styles.buttonContainer, styles.buttonLogout]}>
                 <Text style={styles.logoutText}>{btnText}</Text>
             </TouchableOpacity>
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         padding: 40,
-        height: '80%',
+        height: '100%',
     },
     title: {
         fontSize: 25,

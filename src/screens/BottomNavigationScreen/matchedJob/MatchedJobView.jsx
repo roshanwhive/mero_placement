@@ -34,9 +34,9 @@ const MatchedJobView = () => {
                 })
             ) : (
                 <View>
+                    {/* <CardSkeleton />
                     <CardSkeleton />
-                    <CardSkeleton />
-                    <CardSkeleton />
+                    <CardSkeleton /> */}
                 </View>
             )}
         </View>
