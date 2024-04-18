@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
@@ -13,7 +13,8 @@ import {customTextColor, customThemeColor} from '../../constants/Color';
 import {ActivityIndicator} from 'react-native-paper';
 import RenderHtml from 'react-native-render-html';
 import AppBar from '../../components/custom_toolbar/AppBar';
-import { customFontSize, customFonts } from '../../constants/theme';
+import {customFontSize, customFonts} from '../../constants/theme';
+import AvatarByName from '../../components/AvatarbyName';
 
 const Row = ({label, value}) => {
   return (
@@ -57,6 +58,10 @@ const JobDetail = ({navigation}) => {
     // Handle job sharing
   };
 
+  useEffect(() => {
+    console.log(singleJob?.get_company?.logo);
+  }, []);
+
   return (
     <View style={styles.container}>
       <AppBar handleBack={handleBack} title="Go Back" />
@@ -91,10 +96,14 @@ const JobDetail = ({navigation}) => {
                 </View>
               </View>
               <View style={styles.companyLogoContainer}>
-                <Image
-                  source={{uri: singleJob.get_company.logo}}
-                  style={styles.companyLogo}
-                />
+                {singleJob?.get_company?.logo !== null ? (
+                  <Image
+                    source={{uri: singleJob?.get_company?.logo}}
+                    style={styles.companyLogo}
+                  />
+                ) : (
+                  <AvatarByName name={singleJob?.get_company?.employer_name} />
+                )}
               </View>
             </View>
             <View style={styles.container1}>

@@ -72,7 +72,6 @@ const Login = ({navigation}) => {
         animated: true,
       });
     }
-    console.log(isSuccess, statusCode, isAuthenticated);
   }, [isError, isSuccess, statusCode, message]);
 
   const schema = yup.object().shape({
@@ -141,6 +140,7 @@ const Login = ({navigation}) => {
                       label="Emaill"
                       value={value}
                       onChangeText={onChange}
+                      disabled={isLoading}
                       left={
                         <TextInput.Icon
                           icon="email"
@@ -168,6 +168,7 @@ const Login = ({navigation}) => {
                       label="Password"
                       secureTextEntry={!passwordVisible}
                       value={value}
+                      disabled={isLoading}
                       onChangeText={onChange}
                       right={
                         <TextInput.Icon
@@ -195,7 +196,7 @@ const Login = ({navigation}) => {
                 )}
               </View>
               <TouchableOpacity
-                onPress={() => navigation.navigate('Home')}
+                onPress={() => navigation.navigate('ForgotPasswordEnterEmail')}
                 style={styles.forgotPasswordContainer}>
                 <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
               </TouchableOpacity>

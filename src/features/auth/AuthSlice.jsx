@@ -56,11 +56,11 @@ export const getUserProfile = createAsyncThunk(
   },
 );
 
-export const updateUserProfile = createAsyncThunk(
+export const updateUserAccountInformation = createAsyncThunk(
   'auth/update-user-profile',
   async (formData, thunkAPI) => {
     try {
-      return await authService.updateUserProfile(formData);
+      return await authService.updateUserAccount(formData);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -87,8 +87,10 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isError = !action.payload?.success;
         state.isSuccess = action.payload?.success;
-        state.message = action.payload?.message;
-        state.statusCode = action.payload?.status_code;
+        state.message =
+          action?.payload?.message?.contact[0] ||
+          action.payload?.message?.email[0];
+        state.statusCode = action.payload?.status_;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isError = true;
@@ -153,22 +155,16 @@ export const authSlice = createSlice({
       })
 
       //Update User Profile
-      .addCase(updateUserProfile.pending, state => {
+      .addCase(updateUserAccountInformation.pending, state => {
         state.isLoading = true;
       })
-      .addCase(updateUserProfile.fulfilled, (state, action) => {
+      .addCase(updateUserAccountInformation.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = !action.payload?.success;
         state.isSuccess = action.payload?.success;
-        state.message =
-          action.payload?.message?.error?.name[0] ||
-          action.payload?.message?.error?.email[0] ||
-          action.payload?.message?.error?.address[0] ||
-          action.payload?.message?.error?.phone[0] ||
-          action.payload?.message?.error?.dob[0] ||
-          action.payload?.message?.error?.gender[0];
+        state.message = action.payload?.message;
       })
-      .addCase(updateUserProfile.rejected, (state, action) => {
+      .addCase(updateUserAccountInformation.rejected, (state, action) => {
         state.isError = true;
         state.isLoading = false;
         state.isSuccess = false;

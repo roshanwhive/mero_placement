@@ -16,6 +16,8 @@ import {useRoute} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {Controller, useForm} from 'react-hook-form';
 import {Dropdown} from 'react-native-element-dropdown';
+import * as yup from 'yup';
+import {yupResolver} from '@hookform/resolvers/yup';
 import {
   launchCamera,
   launchImageLibrary,
@@ -28,14 +30,14 @@ const AccountEdit = () => {
   const [selectedImage, setSelectedImage] = useState(
     userProfile?.profile?.featured_image || null,
   );
-  const [genders, setGenders] = useState([]);
 
+  const [genders, setGenders] = useState([]);
   const {userProfile} = useSelector(state => state.auth);
   const {allGenderData} = useSelector(state => state.formOptions);
   const {control, handleSubmit} = useForm();
   const dispatch = useDispatch();
 
-  const onSubmit = formData => {
+  const handleAccountUpdate = formData => {
     console.log(formData);
   };
 
@@ -63,6 +65,9 @@ const AccountEdit = () => {
 
   useEffect(() => {
     dispatch(getAllGender());
+  }, [dispatch]);
+
+  useEffect(() => {
     setTimeout(() => {
       if (allGenderData?.genders && Array.isArray(allGenderData?.genders)) {
         const mappedGenderData = allGenderData?.genders.map(item => ({
@@ -73,6 +78,23 @@ const AccountEdit = () => {
       }
     }, 100);
   }, [allGenderData]);
+
+  const schema = yup.object().shape({
+    bio: yup.string(),
+    name: yup.string().required('Name is Required'),
+    email: yup.string().required('Email is required').email('Invalid email'),
+    contactprimary: yup
+      .string()
+      .required('Contact is required')
+      .min(10, 'Must be equal to 10')
+      .max(10, 'Must be Equal to 10'),
+    contactsecondary: yup
+      .string()
+      .min(10, 'Must be equal to 10')
+      .max(10, 'Must be Equal to 10'),
+    gender_id: yup.string(),
+    dob: yup.date().required('Date is required'),
+  });
 
   const handleResponse = response => {
     if (response.didCancel) {
@@ -276,7 +298,9 @@ const AccountEdit = () => {
         </View>
       </View>
       <View style={styles.jobActions}>
-        <TouchableOpacity style={styles.actionButton}>
+        <TouchableOpacity
+          style={styles.actionButton}
+          onPress={handleAccountUpdate}>
           <Text style={styles.actionButtonText}>Save</Text>
         </TouchableOpacity>
       </View>

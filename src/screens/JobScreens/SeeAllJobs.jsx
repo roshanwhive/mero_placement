@@ -15,49 +15,23 @@ import {customTextColor, customThemeColor} from '../../constants/Color';
 import {Dropdown} from 'react-native-element-dropdown';
 import {getAllCategories} from '../../features/formData/FormSlice';
 
-const data = [
-  {label: 'Item Hello world I am 1', value: '1'},
-  {label: 'Item 2', value: '2'},
-  {label: 'Item 3', value: '3'},
-  {label: 'Item 4', value: '4'},
-  {label: 'Item 5', value: '5'},
-  {label: 'Item 6', value: '6'},
-  {label: 'Item 7', value: '7'},
-  {label: 'Item 8', value: '8'},
-];
-
 const SeeAllJobs = ({navigation}) => {
   const dispatch = useDispatch();
   const {allJobs, jobCategories} = useSelector(state => state.job);
 
-  const [value, setValue] = useState(null);
-
-  const renderItem = item => {
-    return (
-      <View style={styles.item}>
-        <Text style={styles.textItem}>{item.name}</Text>
-        {item.value === value && (
-          <Icon
-            style={styles.icon}
-            color={customTextColor.lightGreen}
-            name="check"
-            size={20}
-          />
-        )}
-      </View>
-    );
-  };
+  const [category, setCategory] = useState(null);
+  const [isFocusCategory, setIsFocusCategory] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
-      dispatch(getAllJobs());
+      // dispatch(getAllJobs());
       dispatch(getAllCategories());
     }, 200);
   }, [dispatch]);
 
   useEffect(() => {
-    console.log(jobCategories);
-  }, [jobCategories]);
+    console.log(allJobs);
+  }, [allJobs]);
 
   return (
     <View style={styles.container}>
@@ -75,33 +49,44 @@ const SeeAllJobs = ({navigation}) => {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.scrollViewContentFilter}>
           <TouchableOpacity style={styles.filterButton}>
-            <Dropdown
-              style={styles.dropdown}
-              placeholderStyle={styles.placeholderStyle}
-              selectedTextStyle={styles.selectedTextStyle}
-              inputSearchStyle={styles.inputSearchStyle}
-              iconStyle={styles.iconStyle}
-              data={jobCategories}
-              search
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder="Select item"
-              searchPlaceholder="Search..."
-              value={value}
-              onChange={item => {
-                setValue(item.value);
-              }}
-              renderLeftIcon={() => (
-                <Icon
-                  style={styles.icon}
-                  color={customTextColor.lightGreen}
-                  name="check"
-                  size={20}
-                />
-              )}
-              renderItem={renderItem}
-            />
+            <View style={styles.containerDropdown}>
+              <Dropdown
+                style={[
+                  styles.dropdown,
+                  isFocusCategory && {borderColor: 'blue'},
+                ]}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                inputSearchStyle={styles.inputSearchStyle}
+                iconStyle={styles.iconStyle}
+                data={jobCategories}
+                search
+                maxHeight={300}
+                labelField="name"
+                valueField="name"
+                placeholder={!isFocusCategory ? 'Select Category' : '...'}
+                searchPlaceholder="Search..."
+                value={category}
+                onFocus={() => setIsFocusCategory(true)}
+                onBlur={() => setIsFocusCategory(false)}
+                onChange={item => {
+                  setCategory(item?.name);
+                  setIsFocusCategory(false);
+                }}
+                renderLeftIcon={() => (
+                  <Icon
+                    style={styles.icon}
+                    color={
+                      isFocusCategory
+                        ? customTextColor.darkRed
+                        : customTextColor.primary
+                    }
+                    name="check-circle"
+                    size={20}
+                  />
+                )}
+              />
+            </View>
           </TouchableOpacity>
         </ScrollView>
       </View>
@@ -136,6 +121,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal: 10,
+    backgroundColor: customThemeColor.lightBG,
   },
   header: {
     marginTop: 20,
@@ -178,39 +164,26 @@ const styles = StyleSheet.create({
 
   // Dropdown
   containerDropdown: {
-    backgroundColor: 'white',
-    padding: 16,
+    marginHorizontal: 10,
   },
   dropdown: {
     height: 50,
+    backgroundColor: customThemeColor.white,
+    borderRadius: 8,
+    paddingHorizontal: 8,
     minWidth: 200,
-    backgroundColor: 'white',
-    borderRadius: 5,
-    padding: 12,
-    shadowColor: '#fcfcfc',
-    borderWidth: 1,
-    borderColor: customThemeColor.lightBG,
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-
-    elevation: 2,
   },
   icon: {
-    marginRight: 5,
+    marginRight: 10,
   },
-  item: {
-    padding: 17,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  textItem: {
-    flex: 1,
-    fontSize: 16,
+  label: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    left: 22,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: 14,
   },
   placeholderStyle: {
     fontSize: 16,
@@ -225,7 +198,6 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
-    borderRadius: 10,
   },
 });
 

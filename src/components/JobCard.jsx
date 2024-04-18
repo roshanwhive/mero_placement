@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 30,
     elevation: 10,
-    height: 130,
+    height: 'auto',
   },
   logoContainer: {
     marginRight: 16,

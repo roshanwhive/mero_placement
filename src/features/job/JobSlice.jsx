@@ -3,6 +3,7 @@ import {jobService} from './JobService';
 
 const initialState = {
   allJobs: [],
+  totalJobs: [],
   singleJob: {},
   jobCategories: [],
   mainCategories: [],
@@ -190,6 +191,7 @@ export const jobCategorySlice = createSlice({
         state.message = action.payload.message;
         state.statusCode = action.payload.status_code;
         state.allJobs = action.payload.data;
+        state.totalJobs = action.payload.data;
       })
       .addCase(getAllJobs.rejected, (state, action) => {
         state.isError = true;
