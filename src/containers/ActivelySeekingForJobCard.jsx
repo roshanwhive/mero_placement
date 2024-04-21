@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {Switch} from 'react-native-paper';
 import {customTextColor, customThemeColor} from '../constants/Color';
-import { customFontSize, customFonts } from '../constants/theme';
+import {customFontSize, customFonts} from '../constants/theme';
 
 const ActivelySeekingForJobCard = ({title, subtitle}) => {
   const [isSwitchOn, setIsSwitchOn] = React.useState(false);
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     fontSize: customFontSize.font18,
     marginBottom: 4,
     color: customTextColor.primary,
-    fontFamily: customFonts.fontBold
+    fontFamily: customFonts.fontBold,
   },
   subtitle: {
     fontSize: customFontSize.font14,

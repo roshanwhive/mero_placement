@@ -103,6 +103,7 @@ const Signup = ({navigation}) => {
     control,
     handleSubmit,
     formState: {errors},
+    setError,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {

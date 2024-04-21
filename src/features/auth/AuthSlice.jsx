@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const initialState = {
   user: [],
-  userProfile: [],
+  userProfile: {},
   isError: false,
   isAuthenticated: false,
   isSuccess: false,
@@ -87,10 +87,7 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isError = !action.payload?.success;
         state.isSuccess = action.payload?.success;
-        state.message =
-          action?.payload?.message?.contact[0] ||
-          action.payload?.message?.email[0];
-        state.statusCode = action.payload?.status_;
+        state.message = action?.payload?.message;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isError = true;
