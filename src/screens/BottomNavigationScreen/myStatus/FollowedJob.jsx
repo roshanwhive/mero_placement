@@ -27,8 +27,8 @@ const FollowedJob = () => {
   return (
     <ScrollView contentContainerStyle={GlobalStyleSheet.scrollViewContentStatus}
       style={GlobalStyleSheet.scrollViewContent}>
-      {!!followedJob ? (
-        followedJob?.map((item, index) => {
+      {!!followedJob?.data ? (
+        followedJob?.data?.map((item, index) => {
           return (
             <View key={index} style={GlobalStyleSheet.cardContainer}>
               {/* <JobCard navigation={navigation} items={item} /> */}

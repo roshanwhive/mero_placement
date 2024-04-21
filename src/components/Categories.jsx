@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,17 +7,17 @@ import {
   Image,
   StyleSheet,
 } from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   getJobByCategory,
   getJobCategories,
   getMainCategories,
 } from '../features/job/JobSlice';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import CategoryCardCircle from './skeleton_loader/CategoryCardCircle';
-import {customFontSize, customFonts} from '../constants/theme';
-import {customTextColor, customThemeColor} from '../constants/Color';
-import {GlobalStyleSheet} from '../constants/StyleSheet';
+import { customFontSize, customFonts } from '../constants/theme';
+import { customTextColor, customThemeColor } from '../constants/Color';
+import { GlobalStyleSheet } from '../constants/StyleSheet';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const Categories = () => {
@@ -25,7 +25,7 @@ const Categories = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {mainCategories} = useSelector(state => state.job);
+  const { mainCategories } = useSelector(state => state.job);
 
   useEffect(() => {
     dispatch(getMainCategories());
@@ -61,7 +61,7 @@ const Categories = () => {
                   style={styles.imageContainer}>
                   <Icon
                     name={category?.icons}
-                    size={40}
+                    size={20}
                     color={customTextColor.darkRed}
                   />
                 </TouchableOpacity>
@@ -109,8 +109,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 90,
-    width: 90,
+    height: 40,
+    width: 40,
     padding: 5,
     borderRadius: 100,
     shadowColor: '#000',
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   categoryName: {
     width: 100,
     marginTop: 5,
-    fontSize: customFontSize.font12,
+    fontSize: 11,
     fontFamily: customFonts.font,
     color: customTextColor.secondary,
     textAlign: 'center',

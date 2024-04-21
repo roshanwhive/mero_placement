@@ -1,6 +1,5 @@
 import { View, Text, ScrollView } from 'react-native'
 import React, { useEffect } from 'react'
-import NoSavedJob from '../matchedJob/NoSavedJob'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { getFollowedCompany } from '../../../features/status/StatusSlice';
@@ -26,8 +25,8 @@ const FollowedCompany = () => {
   return (
     <ScrollView contentContainerStyle={GlobalStyleSheet.scrollViewContentStatus}
       style={GlobalStyleSheet.scrollViewContent}>
-      {!!followedCompany ? (
-        followedCompany?.map((item, index) => {
+      {!!followedCompany?.data ? (
+        followedCompany?.data?.map((item, index) => {
           return (
             <View key={index} style={GlobalStyleSheet.cardContainer}>
               <JobCard navigation={navigation} items={item} />

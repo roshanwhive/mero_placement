@@ -4,22 +4,19 @@ import { customTextColor } from '../../../constants/Color';
 import { customFontSize, customFonts } from '../../../constants/theme';
 import logoImage from '../../../assets/search1.jpg';
 
-const NoSavedJob = () => {
+const AddPref = ({title, subtitle, btnText, handleBtn}) => {
     return (
         <View style={styles.bodyContent1}>
             <Image source={logoImage} style={styles.image} />
+            <Text style={styles.title}>{title}</Text>
             <Text style={styles.subtitle}>
-                You haven't saved any jobs yet.
+                {subtitle}
             </Text>
-            <View style={styles.signupTextContainer}>
-                <TouchableOpacity >
-                    <Text style={styles.signupText}>Browse Jobs  </Text>
-                </TouchableOpacity>
-                <Text style={{ color: customTextColor.primary, fontFamily: customFonts.fontPoppins }}>
-                    and apply now
-                </Text>
-
-            </View>
+            <TouchableOpacity
+                onPress={handleBtn}
+                style={[styles.buttonContainer, styles.buttonLogout]}>
+                <Text style={styles.logoutText}>{btnText}</Text>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -29,7 +26,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         padding: 40,
-        height: '80%',
+        height: '100%',
     },
     title: {
         fontSize: 25,
@@ -45,17 +42,24 @@ const styles = StyleSheet.create({
         fontSize: customFontSize.font14,
     },
 
-    signupTextContainer: {
+    buttonContainer: {
         marginTop: 10,
+        bottom: '-10%',
+        height: 45,
         flexDirection: 'row',
         justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 5,
+        width: 150,
+        borderRadius: 30,
     },
-    signupText: {
-        color: customTextColor.lightGreen,
-        marginLeft: 5,
+    buttonLogout: {
+        backgroundColor: customTextColor.darkRed,
+    },
+    logoutText: {
+        color: customTextColor.white,
         fontSize: customFontSize.font16,
-        fontFamily: customFonts.fontBold,
-        textDecorationLine: 'underline',
+        fontFamily: customFonts.fontPoppins,
     },
     image: {
         width: 250,
@@ -65,4 +69,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default NoSavedJob;
+export default AddPref;
