@@ -31,7 +31,6 @@ export const GlobalStyleSheet = {
   cardContainer: {
     display: 'flex',
     flexWrap: "wrap",
-    height: 150
   },
 
   scrollViewContentStatus: {

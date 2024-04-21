@@ -16,15 +16,15 @@ const SavedJob = () => {
     dispatch(getSavedJob());
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   console.log("saved", message);
-  // }, [message]);
+  useEffect(() => {
+    console.log("saved", typeof savedJobs);
+  }, [savedJobs]);
 
   return (
-    <View  contentContainerStyle={GlobalStyleSheet.scrollViewContentStatus}
-    style={GlobalStyleSheet.scrollViewContent}>
+    <View contentContainerStyle={GlobalStyleSheet.scrollViewContentStatus}
+      style={GlobalStyleSheet.scrollViewContent}>
       {!!savedJobs ? (
-        savedJobs?.map((item, index) => {
+        savedJobs?.data?.map((item, index) => {
           return (
             <View key={index} style={GlobalStyleSheet.cardContainer}>
               <JobCard navigation={navigation} items={item} />

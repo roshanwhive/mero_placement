@@ -4,7 +4,7 @@ import { getMatchedJob } from "../../../features/status/StatusSlice";
 import { useEffect } from "react";
 import CardSkeleton from "../../../components/skeleton_loader/CardSkeleton";
 import JobCard from "../../../components/JobCard";
-import { GlobalStyleSheet } from "../../../constants/StyleSheet";
+import { GlobalStyleSheet } from "../../../constants/StyleSheet";   
 import { View } from "react-native";
 
 
@@ -13,33 +13,47 @@ const MatchedJobView = () => {
     const dispatch = useDispatch();
     const navigation = useNavigation();
     const { matchedJobs } = useSelector(state => state.status);
+    const { isLoading } = useSelector(state => state.auth);
 
     useEffect(() => {
         dispatch(getMatchedJob());
     }, [dispatch]);
 
+   
     useEffect(() => {
         console.log("matchedjob", typeof matchedJobs);
     }, [matchedJobs]);
 
     return (
-        <View>
-            {!!matchedJobs ? (
-                matchedJobs?.map((item, index) => {
-                    return (
-                        <View key={index} style={GlobalStyleSheet.cardContainer}>
-                            <JobCard navigation={navigation} items={item} />
-                        </View>
-                    );
-                })
+        <>
+            {isLoading ? (
+                <>
+
+                    <CardSkeleton />
+                    <CardSkeleton />
+                    <CardSkeleton />
+                </>
             ) : (
+
                 <View>
-                    <CardSkeleton />
-                    <CardSkeleton />
-                    <CardSkeleton />
+                    {!!matchedJobs ? (
+                        matchedJobs?.data?.map((item, index) => {
+                            return (
+                                <View key={index} style={GlobalStyleSheet.cardContainer}>
+                                    <JobCard navigation={navigation} items={item} />
+                                </View>
+                            );
+                        })
+                    ) : (
+                        <View>
+                            <CardSkeleton />
+                            <CardSkeleton />
+                            <CardSkeleton />
+                        </View>
+                    )}
                 </View>
             )}
-        </View>
+        </>
     );
 };
 
