@@ -24,14 +24,8 @@ const Home = ({ navigation }) => {
       <SafeAreaView style={styles.safeArea}>
         <StatusBar barStyle="dark-content" />
 
-        <AppBar isHome={true} />
-        {/* <View style={styles.textWrapper}>
-            <Text style={styles.greetingText}>
-              Hello, {userProfile?.profile?.lead_name}
-            </Text>
-            <Text style={styles.subHeading}>Get Your Dream Job!</Text>
-          </View> */}
-
+        <AppBar isHome={true}  />
+       
 
         {/* Main */}
         <ScrollView

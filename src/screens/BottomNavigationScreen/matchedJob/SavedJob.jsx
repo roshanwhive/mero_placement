@@ -23,7 +23,7 @@ const SavedJob = () => {
   return (
     <View contentContainerStyle={GlobalStyleSheet.scrollViewContentStatus}
       style={GlobalStyleSheet.scrollViewContent}>
-      {!!savedJobs?.data ? (
+      {!!savedJobs ? (
         savedJobs?.data?.map((item, index) => {
           return (
             <View key={index} style={GlobalStyleSheet.cardContainer}>

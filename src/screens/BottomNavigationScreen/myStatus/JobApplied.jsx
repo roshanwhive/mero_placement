@@ -23,29 +23,28 @@ const JobApplied = () => {
   }, [dispatch]);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: customThemeColor.lightBG }}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={GlobalStyleSheet.scrollViewContentStatus}>
 
-        {!!appliedJobs?.data ? (
-          appliedJobs?.data?.map((item, index) => {
-            return (
-              <View key={index} style={GlobalStyleSheet.cardContainer}>
-                <JobCard navigation={navigation} items={item} />
-              </View>
-            );
-          })
-        ) : (
-          <View>
-            <CardSkeleton />
-            <CardSkeleton />
-            <CardSkeleton />
-          </View>
-        )
-        }
-      </ScrollView>
-    </SafeAreaView>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={GlobalStyleSheet.scrollViewContentStatus}
+      style={GlobalStyleSheet.scrollViewContent}>
+      {!!appliedJobs?.data ? (
+        appliedJobs?.data?.map((item, index) => {
+          return (
+            <View key={index} style={GlobalStyleSheet.cardContainer}>
+              <JobCard navigation={navigation} items={item} />
+            </View>
+          );
+        })
+      ) : (
+        <View>
+          <CardSkeleton />
+          <CardSkeleton />
+          <CardSkeleton />
+        </View>
+      )
+      }
+    </ScrollView>
   );
 };
 

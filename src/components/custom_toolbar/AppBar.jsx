@@ -1,13 +1,22 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useCallback, useRef } from 'react';
 import MenuIcon from '../custom_toolbar/MenuIcon';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {customThemeColor} from '../../constants/Color';
-import {createDrawerNavigator} from '@react-navigation/drawer';
+import { customThemeColor } from '../../constants/Color';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 
 //const Drawer = createDrawerNavigator();
 
-export default function AppBar({title, handleBack, isHome}) {
+const AppBar = ({ title, handleBack, isHome }) => {
+
+  const bottomSheetRef = useRef < BottomSheet > (null);
+
+  const handleSheetChanges = useCallback((index) => {
+    console.log('handleSheetChanges', index);
+  }, [])
+
+
   return (
     <View style={styles.navBar}>
       <View style={styles.leftContainer}>
@@ -33,7 +42,21 @@ export default function AppBar({title, handleBack, isHome}) {
   );
 }
 
-const bottom = () => {};
+const bottom = () => {
+  <View style={styles.container}>
+    <BottomSheet
+      ref={bottomSheetRef}
+      onChange={handleSheetChanges}>
+
+      <BottomSheetView style={styles.contentContainer}>
+
+        <Text>This is bottom Sheet</Text>
+
+      </BottomSheetView>
+
+    </BottomSheet>
+  </View>
+};
 
 const styles = StyleSheet.create({
   navBar: {
@@ -43,7 +66,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 0,
     shadowColor: 'white',
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     backgroundColor: customThemeColor.white,
     shadowOpacity: 0.8,
     shadowRadius: 4,
@@ -84,4 +107,15 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  container: {
+    flex: 1,
+    padding: 24,
+    backgroundColor: 'grey',
+  },
+  contentContainer: {
+    flex: 1,
+    alignItems: 'center',
+  },
 });
+
+export default AppBar;

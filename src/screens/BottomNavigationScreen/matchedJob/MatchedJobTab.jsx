@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
-import React from 'react';
+import { View, Text, StyleSheet, useWindowDimensions, ActivityIndicator } from 'react-native';
+import React, { useEffect } from 'react';
 import SavedJob from '../matchedJob/SavedJob';
 import AppBar from '../../../components/custom_toolbar/AppBar';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
@@ -7,11 +7,13 @@ import MatchedJob from './MatchedJob';
 import { customFonts } from '../../../constants/theme';
 import AddPref from './AddPref';
 import { useDispatch, useSelector } from 'react-redux';
+import CardSkeleton from '../../../components/skeleton_loader/CardSkeleton';
+import { customTextColor } from '../../../constants/Color';
 
 
 
 const FirstRoute = () => (
-  // <View style={{ flex: 1, backgroundColor: '#ff4081' }} />
+  //<View style={{ flex: 1, backgroundColor: '#ff4081' }} />
   <MatchedJob></MatchedJob>
 );
 
@@ -28,7 +30,7 @@ const renderScene = SceneMap({
 const MatchedJobTab = ({ navigation }) => {
 
   const dispatch = useDispatch();
-  const { isAuthenticated, token, userProfile } = useSelector(state => state.auth);
+  const { isAuthenticated, token, userProfile, isLoading } = useSelector(state => state.auth);
 
   const layout = useWindowDimensions();
   const handleBackClick = () => {
@@ -48,6 +50,10 @@ const MatchedJobTab = ({ navigation }) => {
     navigation.goBack();
   };
 
+  useEffect(() => {
+    console.log("isloading", isLoading);
+  }, [isLoading]);
+
 
   const AddProp = () => {
     return (
@@ -65,27 +71,40 @@ const MatchedJobTab = ({ navigation }) => {
 
   const renderTabBar = props => {
     return (
-      <><View>
-        {!!!userProfile?.preference ? (
-          <AddProp />
+      <>
+        {isLoading ? (
+          <>
+            <ActivityIndicator
+              animating={true}
+              style={{ flex: 1 }}
+              color={customTextColor.lightGreen}
+            />
+          </>
         ) : (
-          <TabBar
-            {...props}
-            renderLabel={({ focused, route }) => {
-              return (
-                <Text
-                  style={{
-                    color: focused ? 'white' : 'gray',
-                    fontFamily: customFonts.fontPoppins,
-                  }}>
-                  {route.title}
-                </Text>
-              );
-            }}
-            indicatorStyle={styles.indicatorStyle}
-            style={styles.tabBar} />
+
+          <View>
+            {!!!userProfile?.preference ? (
+              <AddProp />
+            ) : (
+              <TabBar
+                {...props}
+                renderLabel={({ focused, route }) => {
+                  return (
+                    <Text
+                      style={{
+                        color: focused ? 'white' : 'gray',
+                        fontFamily: customFonts.fontPoppins,
+                      }}>
+                      {route.title}
+                    </Text>
+                  );
+                }}
+                indicatorStyle={styles.indicatorStyle}
+                style={styles.tabBar} />
+            )}
+          </View>
         )}
-      </View></>
+      </>
     );
   };
 
@@ -104,7 +123,7 @@ const MatchedJobTab = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { width: '100%', height: '100%' },
+
   tabBar: {
     backgroundColor: '#9D050A',
     borderBottomWidth: 1,
