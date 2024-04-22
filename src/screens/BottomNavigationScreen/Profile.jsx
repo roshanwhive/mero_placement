@@ -8,27 +8,22 @@ import {
   ScrollView,
 } from 'react-native';
 import Account from '../../containers/profile/Account';
-import Preferences from '../../containers/profile/Preferences';
-import Education from '../../containers/profile/Education';
-import Experience from '../../containers/profile/Experience';
+
 import {customTextColor, customThemeColor} from '../../constants/Color';
 import {useDispatch, useSelector} from 'react-redux';
-import {getUserProfile, logout} from '../../features/auth/AuthSlice';
-import {ActivityIndicator} from 'react-native-paper';
+import {
+  getUserProfile,
+  logout,
+  resetState,
+} from '../../features/auth/AuthSlice';
 import AppBar from '../../components/custom_toolbar/AppBar';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import AvatarByName from '../../components/AvatarbyName';
 import UserProfileCard from '../../components/skeleton_loader/UserProfileCard';
 import logoImage from '../../assets/search1.jpg';
-import RenderHtml from 'react-native-render-html';
 import {showMessage} from 'react-native-flash-message';
 import AvatarSkeleton from '../../components/skeleton_loader/AvatarSkeleton';
-import {GlobalStyleSheet} from '../../constants/StyleSheet';
 import {customFontSize, customFonts} from '../../constants/theme';
-import {WebView} from 'react-native-webview';
-
-const MYPROFILE =
-  'https://demo.meroplacement.com/candidate/dashboard/your-profile';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import {Divider} from 'react-native-paper';
 
 export default Profile = ({navigation}) => {
   const dispatch = useDispatch();
@@ -49,7 +44,9 @@ export default Profile = ({navigation}) => {
   };
 
   useEffect(() => {
-    getUserProfile();
+    if (isAuthenticated === true && token !== '') {
+      dispatch(getUserProfile());
+    }
   }, [dispatch]);
 
   const handleLogout = () => {
@@ -72,7 +69,7 @@ export default Profile = ({navigation}) => {
         contentContainerStyle={styles.container}>
         <AppBar handleBack={handleBack} />
 
-        {isAuthenticated && <View style={styles.header}></View>}
+        {/* {isAuthenticated && <View style={styles.header}></View>} */}
 
         <View style={styles.body}>
           {isAuthenticated ? (
@@ -86,31 +83,106 @@ export default Profile = ({navigation}) => {
                 ) : (
                   <AvatarSkeleton />
                 )}
-                {/* <View style={styles.avatar}>
-                    <AvatarByName name={userProfile?.profile?.lead_name} />
-                  </View> */}
+
                 {!!userProfile?.profile && (
                   <View style={styles.nameContainer}>
                     <Text style={styles.name}>
                       {userProfile?.profile?.lead_name}
                     </Text>
 
-                    <Text style={styles.bio}>{userProfile?.profile.bio}</Text>
+                    <Text style={styles.bio}>
+                      {userProfile?.profile?.email}
+                    </Text>
                   </View>
                 )}
+                <View style={styles.smallCard}>
+                  <View style={styles.card}>
+                    <Text style={styles.number}>11</Text>
+                    <Text style={styles.name1}>Jobs Aplied</Text>
+                  </View>
+                  <View style={styles.card}>
+                    <Text style={styles.number}>11</Text>
+                    <Text style={styles.name1}>Saved Jobs</Text>
+                  </View>
+                  <View style={styles.card}>
+                    <Text style={styles.number}>11</Text>
+                    <Text style={styles.name1}>Followed Company</Text>
+                  </View>
+                </View>
 
-                {!!userProfile?.profile ? <Account /> : <UserProfileCard />}
-                {!!userProfile?.preference ? (
-                  <Preferences />
-                ) : (
-                  <UserProfileCard />
-                )}
-                {!!userProfile?.education ? <Education /> : <UserProfileCard />}
-                {!!userProfile?.experience ? (
-                  <Experience />
-                ) : (
-                  <UserProfileCard />
-                )}
+                <View style={styles.bottonContainer}>
+                  <TouchableOpacity
+                    style={styles.editBtn}
+                    onPress={() => navigation.navigate('UpdateProfile')}>
+                    <Text style={styles.editBtnText}>Update Profile</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.profileViewBtn}
+                    onPress={() => navigation.navigate('ProfilePreview')}>
+                    <Text style={styles.previewBtnText}>Preview Profile</Text>
+                  </TouchableOpacity>
+                </View>
+
+                {/* {!!userProfile?.profile ? <Account /> : <UserProfileCard />} */}
+
+                <View style={styles.profileCard}>
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Profile Information</Text>
+                    {/* <TouchableOpacity>
+                      <Text style={styles.edit}>Edit</Text>
+                    </TouchableOpacity> */}
+                  </View>
+                  <View style={styles.accountDetailContainer}>
+                    <View style={styles.detailCard}>
+                      <Text style={styles.label}>Basic Info</Text>
+                      <Icon
+                        name="chevron-circle-right"
+                        size={20}
+                        color={customTextColor.lightGreen}
+                      />
+                    </View>
+                    <Divider />
+
+                    <View style={styles.detailCard}>
+                      <Text style={styles.label}>Preference</Text>
+                      <Icon
+                        name="chevron-circle-right"
+                        size={20}
+                        color={customTextColor.lightGreen}
+                      />
+                    </View>
+                    <Divider />
+
+                    <View style={styles.detailCard}>
+                      <Text style={styles.label}>Education</Text>
+                      <Icon
+                        name="chevron-circle-right"
+                        size={20}
+                        color={customTextColor.lightGreen}
+                      />
+                    </View>
+                    <Divider />
+
+                    <View style={styles.detailCard}>
+                      <Text style={styles.label}>Experience</Text>
+                      <Icon
+                        name="chevron-circle-right"
+                        size={20}
+                        color={customTextColor.lightGreen}
+                      />
+                    </View>
+                    <Divider />
+
+                    <View style={styles.detailCard}>
+                      <Text style={styles.label}>Other Information</Text>
+                      <Icon
+                        name="chevron-circle-right"
+                        size={20}
+                        color={customTextColor.lightGreen}
+                      />
+                    </View>
+                  </View>
+                </View>
 
                 <TouchableOpacity
                   onPress={handleLogout}
@@ -157,11 +229,6 @@ const styles = StyleSheet.create({
     backgroundColor: customThemeColor.white,
     flexGrow: 1,
   },
-  header: {
-    backgroundColor: customThemeColor.darkRed,
-    height: 150,
-    position: 'relative',
-  },
   avatar: {
     width: 130,
     height: 130,
@@ -170,17 +237,15 @@ const styles = StyleSheet.create({
     borderColor: customThemeColor.lighterBg,
     alignSelf: 'center',
   },
-  body: {
-    top: '-4%',
-  },
   bodyContent: {
     alignItems: 'center',
-    padding: 40,
+    paddingHorizontal: 40,
+    marginTop: 20,
+    marginBottom: 50,
   },
   bodyContent1: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 40,
     height: '100%',
   },
   image: {
@@ -188,6 +253,29 @@ const styles = StyleSheet.create({
     height: 210,
     borderRadius: 50,
     marginBottom: 20,
+  },
+  smallCard: {
+    height: 'auto',
+    width: '100%',
+    marginVertical: 20,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+  card: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 120,
+    height: 'auto',
+  },
+  number: {
+    fontSize: 20,
+    color: customTextColor.primary,
+    fontWeight: 'bold',
+  },
+  name1: {
+    marginTop: 8,
+    fontSize: 14,
+    color: customTextColor.secondary,
   },
   title: {
     fontSize: 25,
@@ -215,7 +303,7 @@ const styles = StyleSheet.create({
   },
   nameContainer: {
     marginTop: 20,
-    marginBottom: 30,
+    marginBottom: 10,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
@@ -248,5 +336,83 @@ const styles = StyleSheet.create({
     color: customTextColor.white,
     fontSize: 20,
     fontFamily: customFonts.fontPoppins,
+  },
+
+  // --------------Bottom Container--------------
+  bottonContainer: {
+    marginTop: 10,
+    flexDirection: 'row',
+    marginBottom: 40,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 20,
+  },
+  editBtn: {
+    borderWidth: 1,
+    borderColor: customTextColor.darkRed,
+    paddingHorizontal: 25,
+    borderRadius: 15,
+    paddingVertical: 10,
+  },
+  editBtnText: {
+    color: customTextColor.darkRed,
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  profileViewBtn: {
+    borderWidth: 1,
+    borderColor: customTextColor.darkRed,
+    backgroundColor: customThemeColor.darkRed,
+    paddingHorizontal: 25,
+    borderRadius: 15,
+    paddingVertical: 10,
+  },
+  previewBtnText: {
+    color: customTextColor.white,
+    fontSize: 16,
+    fontWeight: '700',
+  },
+
+  // ----------Profile card------------------
+  profileCard: {
+    width: '110%',
+    borderRadius: 20,
+    backgroundColor: '#f7f7f7',
+    position: 'relative',
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+  },
+  titleContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: '500',
+    color: customTextColor.primary,
+  },
+  edit: {
+    color: '#2b8256',
+    fontWeight: '500',
+    fontSize: 16,
+    textDecorationLine: 'underline',
+  },
+  detailCard: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 20,
+    flexWrap: 'wrap',
+  },
+  borderBottomGray: {
+    borderBottomColor: customThemeColor.lighterBg,
+    borderBottomWidth: 0.5,
+  },
+  label: {
+    fontSize: 15,
+    color: customTextColor.primary,
   },
 });

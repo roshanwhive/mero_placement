@@ -14,8 +14,8 @@ import { customFontSize, customFonts } from '../../constants/theme';
 import { useEffect } from 'react';
 import Carousel from '../../components/Carousel';
 
-const Home = ({ navigation }) => {
-  const { userProfile } = useSelector(state => state.auth);
+const Home = ({navigation}) => {
+  const {userProfile, isLoading} = useSelector(state => state.auth);
 
   return (
     <>

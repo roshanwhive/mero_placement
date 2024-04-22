@@ -255,7 +255,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     paddingTop: 16,
     paddingBottom: 16,
-    //bottom: '-8%',
   },
   inputWrapper: {
     padding: 4,

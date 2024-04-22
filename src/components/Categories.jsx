@@ -33,9 +33,8 @@ const Categories = () => {
   }, [dispatch]);
 
   const handleCategoryClick = categoryId => {
-    dispatch(getJobByCategory(categoryId)).then(() =>
-      navigation.navigate('SeeAllJobs'),
-    );
+    navigation.navigate('SeeAllJobs');
+    dispatch(getJobByCategory(categoryId));
   };
 
   return (

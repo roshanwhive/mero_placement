@@ -20,6 +20,8 @@ import CompareJobAndProfile from '../screens/JobScreens/CompareJobAndProfile';
 import EmailVerified from '../screens/AuthScreen/Signup/EmailVerified';
 import AllCategoriesScreen from '../screens/categories/AllCategoriesScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ProfilePreview from '../containers/profile/ProfilePreview';
+import UpdateProfile from '../containers/profile/UpdateProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -62,6 +64,8 @@ const Router = () => {
       <Stack.Screen name="CompanyProfile" component={CompanyProfile} />
       <Stack.Screen name="SeeAllJobs" component={SeeAllJobs} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
+      <Stack.Screen name="ProfilePreview" component={ProfilePreview} />
+      <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
       <Stack.Screen name="Training" component={Training} />
       <Stack.Screen name="AllCategories" component={AllCategoriesScreen} />
       <Stack.Screen

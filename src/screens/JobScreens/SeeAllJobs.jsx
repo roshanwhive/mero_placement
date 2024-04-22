@@ -17,14 +17,13 @@ import {getAllCategories} from '../../features/formData/FormSlice';
 
 const SeeAllJobs = ({navigation}) => {
   const dispatch = useDispatch();
-  const {allJobs, jobCategories} = useSelector(state => state.job);
+  const {allJobs, jobCategories, isLoading} = useSelector(state => state.job);
 
   const [category, setCategory] = useState(null);
   const [isFocusCategory, setIsFocusCategory] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
-      // dispatch(getAllJobs());
       dispatch(getAllCategories());
     }, 200);
   }, [dispatch]);
@@ -95,7 +94,7 @@ const SeeAllJobs = ({navigation}) => {
         horizontal={false}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollViewContent}>
-        {allJobs?.data ? (
+        {allJobs?.data && isLoading !== true ? (
           allJobs?.data?.map((item, index) => {
             return (
               <View key={index}>
