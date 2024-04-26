@@ -1,21 +1,19 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useCallback, useRef } from 'react';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useCallback, useRef} from 'react';
 import MenuIcon from '../custom_toolbar/MenuIcon';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { customThemeColor } from '../../constants/Color';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import {customThemeColor} from '../../constants/Color';
+// import { createDrawerNavigator } from '@react-navigation/drawer';
+// import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 
 //const Drawer = createDrawerNavigator();
 
-const AppBar = ({ title, handleBack, isHome }) => {
+const AppBar = ({title, handleBack, isHome}) => {
+  // const bottomSheetRef = useRef < BottomSheet > (null);
 
-  const bottomSheetRef = useRef < BottomSheet > (null);
-
-  const handleSheetChanges = useCallback((index) => {
-    console.log('handleSheetChanges', index);
-  }, [])
-
+  // const handleSheetChanges = useCallback((index) => {
+  //   console.log('handleSheetChanges', index);
+  // }, [])
 
   return (
     <View style={styles.navBar}>
@@ -40,11 +38,11 @@ const AppBar = ({ title, handleBack, isHome }) => {
       </View>
     </View>
   );
-}
+};
 
 const bottom = () => {
   <View style={styles.container}>
-    <BottomSheet
+    {/* <BottomSheet
       ref={bottomSheetRef}
       onChange={handleSheetChanges}>
 
@@ -54,8 +52,8 @@ const bottom = () => {
 
       </BottomSheetView>
 
-    </BottomSheet>
-  </View>
+    </BottomSheet> */}
+  </View>;
 };
 
 const styles = StyleSheet.create({
@@ -66,7 +64,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 0,
     shadowColor: 'white',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     backgroundColor: customThemeColor.white,
     shadowOpacity: 0.8,
     shadowRadius: 4,
