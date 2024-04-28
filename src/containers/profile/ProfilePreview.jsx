@@ -76,7 +76,7 @@ const ProfilePreview = () => {
           <Image
             style={styles.photo}
             source={{
-              uri: 'https://www.bootdey.com/img/Content/avatar/avatar6.png',
+              uri: userProfile?.profile?.featured_image,
             }}
           />
           <View>

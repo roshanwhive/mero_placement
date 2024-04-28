@@ -1,13 +1,13 @@
-import { StatusBar, ScrollView, StyleSheet, View, Text } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {StatusBar, ScrollView, StyleSheet, View, Text} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import Categories from '../../components/Categories';
 import Featured from '../../containers/Featured';
 import TotalJobs from '../../containers/TotalJobs';
 import Training from '../../containers/Training';
 import ActivelySeekingForJobCard from '../../containers/ActivelySeekingForJobCard';
 import AppBar from '../../components/custom_toolbar/AppBar';
-import { customThemeColor } from '../../constants/Color';
-import { useSelector } from 'react-redux';
+import {customThemeColor} from '../../constants/Color';
+import {useSelector} from 'react-redux';
 import CompleteProfile from '../../containers/modal/CompleteProfile';
 import { getUserProfile } from '../../features/auth/AuthSlice';
 import { customFontSize, customFonts } from '../../constants/theme';
@@ -31,7 +31,6 @@ const Home = ({ navigation }) => {
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollViewContent}>
-          <Carousel />
           {/* Categories */}
           <Categories />
           <ActivelySeekingForJobCard />
@@ -40,9 +39,9 @@ const Home = ({ navigation }) => {
             <Featured navigation={navigation} />
           </View>
           <Training navigation={navigation} />
-
-          <TotalJobs navigation={navigation} />
-
+          <View style={styles.totalJobs}>
+            <TotalJobs navigation={navigation} />
+          </View>
         </ScrollView>
       </SafeAreaView>
     </>
@@ -61,16 +60,16 @@ const styles = StyleSheet.create({
   },
   greetingText: {
     color: '#fcfcfc',
-    fontSize: customFontSize.font14,
+    fontSize: customFontSize.font16,
     fontFamily: customFonts.fontPoppins,
   },
   subHeading: {
-    fontSize: customFontSize.font18,
+    fontSize: customFontSize.font24,
     color: '#ffffff',
     fontFamily: customFonts.fontPoppins,
   },
   header: {
-    height: 130,
+    height: 400,
     backgroundColor: customThemeColor.darkRed,
     position: 'absolute',
     top: 0,
@@ -79,16 +78,20 @@ const styles = StyleSheet.create({
     zIndex: 0,
   },
   scrollViewContent: {
-    paddingBottom: 0,
+    paddingBottom: 120,
+    paddingTop: 10,
+    marginTop: 170,
     zIndex: 0,
     backgroundColor: '#FCFCFC',
+    borderTopLeftRadius: 25,
     position: 'relative',
+    borderTopRightRadius: 25,
   },
   featuredContainer: {
-    marginTop: 0,
+    marginTop: 5,
   },
   totalJobs: {
-    marginTop: 0,
+    marginTop: 5,
   },
 });
 

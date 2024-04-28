@@ -1,5 +1,5 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useCallback, useRef } from 'react';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useCallback, useRef} from 'react';
 import MenuIcon from '../custom_toolbar/MenuIcon';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { customThemeColor } from '../../constants/Color';
@@ -40,7 +40,7 @@ const AppBar = ({ title, handleBack, isHome }) => {
       </View>
     </View>
   );
-}
+};
 
 const bottom = () => {
   <View style={styles.container}>
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 0,
     shadowColor: 'white',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     backgroundColor: customThemeColor.white,
     shadowOpacity: 0.8,
     shadowRadius: 4,
