@@ -74,7 +74,12 @@ const Carousel = () => {
   };
 
   return (
-    <View style={{ width: dimension.width }}>
+    <View style={{ 
+      width: 360,
+      borderRadius: 10,
+      overflow: "hidden",
+      marginLeft:20,
+      }}>
       <ScrollView
         horizontal
         ref={scrollRef}
@@ -87,7 +92,7 @@ const Carousel = () => {
           <Image
             key={index}
             source={{ uri: `${value.url}` }}
-            style={{ width: dimension?.width, height: 200, resizeMode: 'cover' }}
+            style={{ width: dimension?.width, height: 200 }}
             PlaceholderContent={<ActivityIndicator />}
           />
         ))}

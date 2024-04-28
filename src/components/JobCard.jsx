@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: customThemeColor.white,
     borderRadius: 8,
-    marginVertical: 8,
+    marginVertical: 5,
     marginHorizontal: 2,
     paddingHorizontal: 15,
     paddingVertical: 15,

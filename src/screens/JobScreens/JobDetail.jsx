@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,16 +7,16 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {customTextColor, customThemeColor} from '../../constants/Color';
-import {ActivityIndicator} from 'react-native-paper';
+import { customTextColor, customThemeColor } from '../../constants/Color';
+import { ActivityIndicator, Divider } from 'react-native-paper';
 import RenderHtml from 'react-native-render-html';
 import AppBar from '../../components/custom_toolbar/AppBar';
-import {customFontSize, customFonts} from '../../constants/theme';
+import { customFontSize, customFonts } from '../../constants/theme';
 import AvatarByName from '../../components/AvatarbyName';
 
-const Row = ({label, value}) => {
+const Row = ({ label, value }) => {
   return (
     <View style={styles.divider}>
       <View style={[styles.leftGrid]}>
@@ -33,18 +33,18 @@ const tagsStyles = {
   p: {
     color: customTextColor.secondary,
     textAlign: 'justify',
-    fontSize: customFontSize.font14,
+    fontSize: customFontSize.font12,
   },
   li: {
     color: customTextColor.secondary,
-    fontSize: customFontSize.font14,
+    fontSize: customFontSize.font12,
     textAlign: 'justify',
     marginHorizontal: 5,
   },
 };
 
-const JobDetail = ({navigation}) => {
-  const {singleJob, isLoading} = useSelector(state => state.job);
+const JobDetail = ({ navigation }) => {
+  const { singleJob, isLoading } = useSelector(state => state.job);
 
   const handleBack = () => {
     navigation.goBack();
@@ -64,17 +64,18 @@ const JobDetail = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <AppBar handleBack={handleBack} title="Go Back" />
+      <AppBar handleBack={handleBack} title={singleJob.position_name} />
 
       {/* Job Details */}
       {Object.keys(singleJob).length === 0 || isLoading === true ? (
         <ActivityIndicator
           animating={true}
-          style={{flex: 1}}
+          style={{ flex: 1 }}
           color={customTextColor.lightGreen}
         />
+
       ) : (
-        <ScrollView
+        <><ScrollView
           style={styles.jobDetails}
           horizontal={false}
           indicatorStyle="white"
@@ -98,49 +99,47 @@ const JobDetail = ({navigation}) => {
               <View style={styles.companyLogoContainer}>
                 {singleJob?.get_company?.logo !== null ? (
                   <Image
-                    source={{uri: singleJob?.get_company?.logo}}
-                    style={styles.companyLogo}
-                  />
+                    source={{ uri: singleJob?.get_company?.logo }}
+                    style={styles.companyLogo} />
                 ) : (
                   <AvatarByName name={singleJob?.get_company?.employer_name} />
                 )}
               </View>
             </View>
-            <View style={styles.container1}>
+            <Divider />
+            {/* <View style={styles.container1}>
               <View style={styles.cardSmall}>
                 <Icon
                   name="eye-slash"
-                  size={25}
-                  color={customTextColor.darkGreen}
-                />
+                  size={15}
+                  color={customTextColor.darkGreen} />
                 <Text style={styles.title}>Views</Text>
                 <Text style={styles.subtitle}>{singleJob.vacancy_views}</Text>
               </View>
               <View style={styles.cardSmall}>
                 <Icon
                   name="users-cog"
-                  size={25}
-                  color={customTextColor.darkGreen}
-                />
+                  size={15}
+                  color={customTextColor.darkGreen} />
                 <Text style={styles.title}>Applicants</Text>
                 <Text style={styles.subtitle}>0</Text>
               </View>
               <View style={styles.cardSmall}>
                 <Icon
                   name="thumbs-up"
-                  size={25}
-                  color={customTextColor.darkGreen}
-                />
+                  size={15}
+                  color={customTextColor.darkGreen} />
                 <Text style={styles.title}>Likes</Text>
                 <Text style={styles.subtitle}>{singleJob.total_likes}</Text>
               </View>
-            </View>
-            <View style={styles.container2}>
+            </View> */}
+            <Text style={styles.basicjob}>Basic Job Information</Text>
+            <View>
               <Row label="No. of Vacancy" value={singleJob?.no_of_position} />
               <Row label="Category" value={singleJob?.category?.name} />
-              <Row label="Location" value={singleJob?.address?.address} />
+              {/* <Row label="Location" value={singleJob?.address?.address} /> */}
               <Row label="Working hour" value={singleJob?.work_hour} />
-              <Row label="Position" value={singleJob?.vacancy_level?.name} />
+              {/* <Row label="Position" value={singleJob?.vacancy_level?.name} /> */}
               <Row label="Salary" value={singleJob?.salary} />
               <Row label="Gender" value={singleJob?.gender?.name} />
               <Row label="Expiry Date" value={singleJob?.deadline} />
@@ -148,7 +147,7 @@ const JobDetail = ({navigation}) => {
           </View>
 
           <View style={styles.additionalSections}>
-            <View style={styles.card}>
+            <View style={styles.cardHeader}>
               <Text style={styles.sectionTitle}>About the company:</Text>
               <RenderHtml
                 contentWidth={100}
@@ -156,47 +155,42 @@ const JobDetail = ({navigation}) => {
                 tagsStyles={tagsStyles}
                 source={{
                   html: singleJob.get_company?.description,
-                }}
-              />
+                }} />
 
               <Text style={styles.sectionTitle}>Responsibilities:</Text>
-              <View style={{marginBottom: 4, paddingLeft: 5}}>
+              <View style={{ marginBottom: 4, paddingLeft: 5 }}>
                 <RenderHtml
                   contentWidth={100}
                   ignoredDomTags={['quillbot-extension-portal']}
                   tagsStyles={tagsStyles}
                   source={{
                     html: singleJob?.job_description,
-                  }}
-                />
+                  }} />
               </View>
 
               <Text style={styles.sectionTitle}>Skills:</Text>
-              <View style={{marginBottom: 4, paddingLeft: 5}}>
+              <View style={{ marginBottom: 4, paddingLeft: 5 }}>
                 <RenderHtml
                   contentWidth={100}
                   ignoredDomTags={['quillbot-extension-portal']}
                   tagsStyles={tagsStyles}
                   source={{
                     html: singleJob?.job_specification,
-                  }}
-                />
+                  }} />
                 {/* </Text> */}
               </View>
             </View>
           </View>
         </ScrollView>
+          <View style={styles.jobActions}>
+            <TouchableOpacity onPress={handleApply} style={styles.actionButton}>
+              <Text style={styles.actionButtonText}>Apply Job</Text>
+            </TouchableOpacity>
+            <View style={styles.iconContainer}>
+              <Icon name="share" size={25} color={customTextColor.primary} />
+            </View>
+          </View></>
       )}
-
-      {/* Job Actions */}
-      <View style={styles.jobActions}>
-        <TouchableOpacity onPress={handleApply} style={styles.actionButton}>
-          <Text style={styles.actionButtonText}>Apply Job</Text>
-        </TouchableOpacity>
-        <View style={styles.iconContainer}>
-          <Icon name="share" size={30} color={customTextColor.primary} />
-        </View>
-      </View>
     </View>
   );
 };
@@ -215,7 +209,7 @@ const styles = StyleSheet.create({
     backgroundColor: customThemeColor.white,
     borderRadius: 5,
     padding: 20,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   companyInfo: {
     flexDirection: 'row',
@@ -223,8 +217,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   companyName: {
-    color: customTextColor.secondary,
-    fontSize: customFontSize.font14,
+    color: customTextColor.primary,
+    fontSize: customFontSize.font18,
     fontFamily: customFonts.fontPrompt,
   },
   jobTitle: {
@@ -241,21 +235,22 @@ const styles = StyleSheet.create({
   label: {
     backgroundColor: customThemeColor.lightestGreen,
     paddingVertical: 5,
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
     borderRadius: 20,
     fontFamily: customFonts.fontPrompt,
   },
   label1: {
     backgroundColor: customThemeColor.lightBG,
     paddingVertical: 5,
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
     borderRadius: 20,
     color: customTextColor.primary,
     fontFamily: customFonts.fontPrompt,
+    fontSize: customFontSize.font12,
   },
   link: {
     color: customTextColor.lightGreen,
-    fontSize: customFontSize.font16,
+    fontSize: customFontSize.font12,
   },
   companyLogoContainer: {
     alignItems: 'flex-end',
@@ -273,7 +268,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   title: {
-    fontSize: customFontSize.font16,
+    fontSize: customFontSize.font14,
     fontFamily: customFonts.fontPoppins,
     marginTop: 5,
     color: customTextColor.primary,
@@ -298,7 +293,7 @@ const styles = StyleSheet.create({
   },
   additionalSections: {},
   sectionTitle: {
-    fontSize: 18,
+    fontSize: customFontSize.font14,
     color: customTextColor.primary,
     fontFamily: customFonts.fontPoppins,
     marginBottom: 5,
@@ -356,26 +351,25 @@ const styles = StyleSheet.create({
     color: customTextColor.primary,
     textAlign: 'center',
     fontFamily: customFonts.fontPoppins,
+    fontSize: customFontSize.font13,
   },
   container2: {
     marginTop: 10,
   },
   divider: {
-    borderBottomColor: customThemeColor.lightBG,
-    borderBottomWidth: 1,
     flexDirection: 'row',
     alignItems: 'center',
   },
   heading: {
-    fontSize: customFontSize.font16,
-    fontFamily: customFonts.fontBevietnamMedium,
+    fontSize: customFontSize.font14,
+    fontFamily: customFonts.fontRoboto,
     color: customTextColor.primary,
     paddingVertical: 10,
     marginRight: 6,
   },
   subheading: {
     fontSize: customFontSize.font14,
-    fontFamily: customFonts.fontPoppins,
+    fontFamily: customFonts.fontRoboto,
     color: customTextColor.secondary,
   },
   leftGrid: {
@@ -386,6 +380,12 @@ const styles = StyleSheet.create({
   },
   rightText: {
     width: '55%',
+  },
+  basicjob: {
+    fontSize: customFontSize.font16,
+    color: customTextColor.primary,
+    fontFamily: customFonts.fontPoppins,
+    marginTop: 5,
   },
 });
 

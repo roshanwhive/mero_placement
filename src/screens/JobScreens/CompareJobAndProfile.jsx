@@ -79,6 +79,7 @@ const CompareJobAndProfile = ({ navigation }) => {
                   <View style={styles.flexCard}>
                     <Text style={[styles.label, styles.link]}>react native redux networking</Text>
                     <Text style={[styles.label, styles.link]}>Redux</Text>
+
                   </View>
                 </View>
                 <View style={{ width: '50%' }}>

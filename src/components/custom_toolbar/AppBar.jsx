@@ -3,18 +3,18 @@ import React, { useCallback, useRef } from 'react';
 import MenuIcon from '../custom_toolbar/MenuIcon';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { customThemeColor } from '../../constants/Color';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import { customFontSize, customFonts } from '../../constants/theme';
+
 
 //const Drawer = createDrawerNavigator();
 
 const AppBar = ({ title, handleBack, isHome }) => {
 
-  const bottomSheetRef = useRef < BottomSheet > (null);
+  // const bottomSheetRef = useRef < BottomSheet > (null);
 
-  const handleSheetChanges = useCallback((index) => {
-    console.log('handleSheetChanges', index);
-  }, [])
+  // const handleSheetChanges = useCallback((index) => {
+  //   console.log('handleSheetChanges', index);
+  // }, [])
 
 
   return (
@@ -44,7 +44,7 @@ const AppBar = ({ title, handleBack, isHome }) => {
 
 const bottom = () => {
   <View style={styles.container}>
-    <BottomSheet
+    {/* <BottomSheet
       ref={bottomSheetRef}
       onChange={handleSheetChanges}>
 
@@ -54,7 +54,7 @@ const bottom = () => {
 
       </BottomSheetView>
 
-    </BottomSheet>
+    </BottomSheet> */}
   </View>
 };
 
@@ -79,9 +79,9 @@ const styles = StyleSheet.create({
   },
   middleContainer: {
     flex: 2,
-    fontSize: 18,
+    fontSize: customFontSize.font18,
     marginLeft: 20,
-    fontWeight: '500',
+    fontFamily:customFonts.fontPoppins,
     color: 'black',
   },
   rightContainer: {

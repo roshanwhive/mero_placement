@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, useWindowDimensions, ActivityIndicator } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import SavedJob from '../matchedJob/SavedJob';
 import AppBar from '../../../components/custom_toolbar/AppBar';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
@@ -36,8 +36,8 @@ const MatchedJobTab = ({ navigation }) => {
   const handleBackClick = () => {
     navigation.goBack();
   };
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
     { key: 'first', title: 'Matched Job' },
     { key: 'second', title: 'Saved Job' },
   ]);
@@ -49,10 +49,21 @@ const MatchedJobTab = ({ navigation }) => {
   const handleProfile = () => {
     navigation.goBack();
   };
+  const [animate, setAnimate] = useState(true);
 
   useEffect(() => {
     console.log("isloading", isLoading);
   }, [isLoading]);
+
+  useEffect(() => {
+    CloseActivityIndicator();
+  }, [])
+
+  const CloseActivityIndicator = () => {
+    setTimeout(() => {
+      setAnimate(false);
+    }, 3000);
+  };
 
 
   const AddProp = () => {
@@ -72,20 +83,21 @@ const MatchedJobTab = ({ navigation }) => {
   const renderTabBar = props => {
     return (
       <>
-        {isLoading ? (
-          <>
+        <View style={{ flex: 1, height: '100%' }}>
+          {isLoading ? (
+
             <ActivityIndicator
               animating={true}
-              style={{ flex: 1 }}
+              style={{ flex: 1, height: '100%' }}
               color={customTextColor.lightGreen}
             />
-          </>
-        ) : (
 
-          <View>
-            {!!!userProfile?.preference ? (
-              <AddProp />
-            ) : (
+          ) : (
+
+            <View>
+              {!!!userProfile?.preference ? (
+                <AddProp />
+              ) : (
               <TabBar
                 {...props}
                 renderLabel={({ focused, route }) => {
@@ -101,9 +113,10 @@ const MatchedJobTab = ({ navigation }) => {
                 }}
                 indicatorStyle={styles.indicatorStyle}
                 style={styles.tabBar} />
-            )}
-          </View>
-        )}
+              )}
+            </View>
+          )}
+        </View>
       </>
     );
   };
@@ -112,11 +125,21 @@ const MatchedJobTab = ({ navigation }) => {
     <>
       <AppBar handleBack={handleBackClick} />
       <TabView
+        renderTabBar={renderTabBar}
         navigationState={{ index, routes }}
-        renderScene={renderScene}
+        renderScene={({ route }) => {
+          switch (route.key) {
+            case 'first':
+              return <MatchedJob />;
+            case 'second':
+              return <SavedJob />;
+            default:
+              return null;
+          }
+        }}
         onIndexChange={setIndex}
         initialLayout={{ width: layout.width }}
-        renderTabBar={renderTabBar}
+
       />
     </>
   );

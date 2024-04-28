@@ -1,5 +1,5 @@
-import {createSlice, createAsyncThunk, createAction} from '@reduxjs/toolkit';
-import {jobService} from './JobService';
+import { createSlice, createAsyncThunk, createAction } from '@reduxjs/toolkit';
+import { jobService } from './JobService';
 
 const initialState = {
   allJobs: [],
@@ -202,6 +202,8 @@ export const jobCategorySlice = createSlice({
       // ------------------------------------Get single Jobs -------------------------------
       .addCase(getSingleJob.pending, state => {
         state.isLoading = true;
+        state.singleJob = [];
+
       })
       .addCase(getSingleJob.fulfilled, (state, action) => {
         state.isLoading = false;
