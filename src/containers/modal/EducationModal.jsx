@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Image} from 'react-native';
-import {Modal, Portal, Text, Button, Provider} from 'react-native-paper';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Image } from 'react-native';
+import { Modal, Portal, Text, Button, Provider } from 'react-native-paper';
 import * as Animatable from 'react-native-animatable';
 import logoImage from '../../assets/complete-profile.png';
-import {useNavigation} from '@react-navigation/native';
-import {customThemeColor} from '../../constants/Color';
+import { useNavigation } from '@react-navigation/native';
+import { customThemeColor } from '../../constants/Color';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 const EducationModal = () => {
   const [visible, setVisible] = useState(false);

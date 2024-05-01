@@ -1,13 +1,13 @@
-import {StatusBar, ScrollView, StyleSheet, View, Text} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { StatusBar, ScrollView, StyleSheet, View, Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Categories from '../../components/Categories';
 import Featured from '../../containers/Featured';
 import TotalJobs from '../../containers/TotalJobs';
 import Training from '../../containers/Training';
 import ActivelySeekingForJobCard from '../../containers/ActivelySeekingForJobCard';
 import AppBar from '../../components/custom_toolbar/AppBar';
-import {customThemeColor} from '../../constants/Color';
-import {useSelector} from 'react-redux';
+import { customThemeColor } from '../../constants/Color';
+import { useSelector } from 'react-redux';
 import CompleteProfile from '../../containers/modal/CompleteProfile';
 import { getUserProfile } from '../../features/auth/AuthSlice';
 import { customFontSize, customFonts } from '../../constants/theme';
@@ -31,6 +31,7 @@ const Home = ({ navigation }) => {
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollViewContent}>
+          <Carousel />
           {/* Categories */}
           <Categories />
           <ActivelySeekingForJobCard />
@@ -78,9 +79,7 @@ const styles = StyleSheet.create({
     zIndex: 0,
   },
   scrollViewContent: {
-    paddingBottom: 120,
-    paddingTop: 10,
-    marginTop: 170,
+    paddingBottom: 10,
     zIndex: 0,
     backgroundColor: '#FCFCFC',
     borderTopLeftRadius: 25,

@@ -5,7 +5,7 @@ import { customFontSize, customFonts } from '../constants/theme'
 
 export default function RoundButtonComp({ label, border = false, onPressBtn, widthBtn = '100%' }) {
     return (
-        <TouchableOpacity onPress={() => onPressBtn()}>
+        <TouchableOpacity onPress={onPressBtn}>
             <View style={
                 {
                     //if the border is true it will be ##3036a6 else f45c4e
@@ -14,17 +14,14 @@ export default function RoundButtonComp({ label, border = false, onPressBtn, wid
                     paddingHorizontal: 20,
                     paddingVertical: 10,
                     borderRadius: 5,
-                    marginLeft: 10,
                     borderWidth: border ? 1 : 0,
                     borderColor: 'black',
-
-                }
-            }>
+                }}>
                 <Text style={
                     {
                         color: border ? 'black' : 'white',
                         textAlign: 'center',
-                        fontFamily: customFonts.fontPrompt,
+                        fontFamily: customFonts.fontPoppins,
                         fontSize: customFontSize.font16,
                     }
                 }>{label}</Text>

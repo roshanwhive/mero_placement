@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StatusBar,
   Text,
@@ -8,21 +8,21 @@ import {
   ScrollView,
 } from 'react-native';
 import * as yup from 'yup';
-import {Controller, useForm} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup';
-import {ActivityIndicator, TextInput} from 'react-native-paper';
-import {Dropdown} from 'react-native-element-dropdown';
-import {useDispatch, useSelector} from 'react-redux';
+import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { ActivityIndicator, TextInput } from 'react-native-paper';
+import { Dropdown } from 'react-native-element-dropdown';
+import { useDispatch, useSelector } from 'react-redux';
 import AuthHeader from '../../../components/AuthHeader';
 import AuthTitle from '../../../components/AuthTitle';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {getAllGender} from '../../../features/formData/FormSlice';
-import {showMessage, hideMessage} from 'react-native-flash-message';
-import {customTextColor, customThemeColor} from '../../../constants/Color';
-import {registerUser, resetState} from '../../../features/auth/AuthSlice';
-import {customFontSize, customFonts} from '../../../constants/theme';
+import { getAllGender } from '../../../features/formData/FormSlice';
+import { showMessage, hideMessage } from 'react-native-flash-message';
+import { customTextColor, customThemeColor } from '../../../constants/Color';
+import { registerUser, resetState } from '../../../features/auth/AuthSlice';
+import { customFontSize, customFonts } from '../../../constants/theme';
 
-const Signup = ({navigation}) => {
+const Signup = ({ navigation }) => {
   const [genders, setGenders] = useState([]);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
@@ -34,8 +34,8 @@ const Signup = ({navigation}) => {
     setConfirmPasswordVisible(!confirmPasswordVisible);
   };
   const dispatch = useDispatch();
-  const {allGenderData} = useSelector(state => state.formOptions);
-  const {message, isSuccess, isLoading, isError, statusCode} = useSelector(
+  const { allGenderData } = useSelector(state => state.formOptions);
+  const { message, isSuccess, isLoading, isError, statusCode } = useSelector(
     state => state.auth,
   );
 
@@ -52,15 +52,7 @@ const Signup = ({navigation}) => {
     }, 100);
   }, [dispatch]);
 
-  useEffect(() => {
-    if (allGenderData.genders && Array.isArray(allGenderData.genders)) {
-      const mappedGenderData = allGenderData.genders.map(item => ({
-        label: item.name,
-        value: item.gender_id,
-      }));
-      setGenders(mappedGenderData);
-    }
-  }, [allGenderData]);
+
 
   useEffect(() => {
     if (isError && statusCode !== 200 && statusCode !== 0) {
@@ -102,7 +94,7 @@ const Signup = ({navigation}) => {
   const {
     control,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
     setError,
   } = useForm({
     resolver: yupResolver(schema),
@@ -146,9 +138,9 @@ const Signup = ({navigation}) => {
       {/* Title and form */}
       <View style={styles.formContainer}>
         <AuthHeader />
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <ScrollView
-            style={{flex: 1}}
+            style={{ flex: 1 }}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.scrollViewContent}>
             <View style={styles.inputContainer}>
@@ -159,7 +151,7 @@ const Signup = ({navigation}) => {
                   rules={{
                     required: true,
                   }}
-                  render={({field: {onChange, value}}) => (
+                  render={({ field: { onChange, value } }) => (
                     <TextInput
                       {...commonTextInputProps}
                       label="Name"
@@ -186,7 +178,7 @@ const Signup = ({navigation}) => {
                   rules={{
                     required: true,
                   }}
-                  render={({field: {onChange, value}}) => (
+                  render={({ field: { onChange, value } }) => (
                     <TextInput
                       {...commonTextInputProps}
                       label="Emaill"
@@ -213,7 +205,7 @@ const Signup = ({navigation}) => {
                   rules={{
                     required: true,
                   }}
-                  render={({field: {onChange, value}}) => (
+                  render={({ field: { onChange, value } }) => (
                     <TextInput
                       {...commonTextInputProps}
                       label="Contact"
@@ -241,7 +233,7 @@ const Signup = ({navigation}) => {
                   rules={{
                     required: false,
                   }}
-                  render={({field: {onChange, value}}) => (
+                  render={({ field: { onChange, value } }) => (
                     <Dropdown
                       data={genders}
                       disable={isLoading}
@@ -251,9 +243,9 @@ const Signup = ({navigation}) => {
                       valueField="value"
                       searchPlaceholder="Search..."
                       value={value}
-                      placeholderStyle={{color: customTextColor.secondary}}
-                      selectedTextStyle={{color: customTextColor.secondary}}
-                      itemTextStyle={{color: customTextColor.secondary}}
+                      placeholderStyle={{ color: customTextColor.secondary }}
+                      selectedTextStyle={{ color: customTextColor.secondary }}
+                      itemTextStyle={{ color: customTextColor.secondary }}
                       style={[
                         {
                           borderWidth: 1,
@@ -273,7 +265,7 @@ const Signup = ({navigation}) => {
                           color={customTextColor.darkGreen}
                           name="user-edit"
                           size={20}
-                          style={{marginRight: 13}}
+                          style={{ marginRight: 13 }}
                         />
                       )}
                     />
@@ -292,7 +284,7 @@ const Signup = ({navigation}) => {
                   rules={{
                     required: true,
                   }}
-                  render={({field: {onChange, value}}) => (
+                  render={({ field: { onChange, value } }) => (
                     <TextInput
                       {...commonTextInputProps}
                       label="Password"
@@ -330,7 +322,7 @@ const Signup = ({navigation}) => {
                   rules={{
                     required: true,
                   }}
-                  render={({field: {onChange, value}}) => (
+                  render={({ field: { onChange, value } }) => (
                     <TextInput
                       {...commonTextInputProps}
                       label="Confirm Password"
@@ -369,7 +361,7 @@ const Signup = ({navigation}) => {
                   {isLoading ? (
                     <ActivityIndicator
                       animating={true}
-                      style={{paddingVertical: 14}}
+                      style={{ paddingVertical: 14 }}
                       color={customTextColor.white}
                       size={20}
                     />

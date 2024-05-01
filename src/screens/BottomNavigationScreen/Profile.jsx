@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,8 +9,8 @@ import {
 } from 'react-native';
 import Account from '../../containers/profile/Account';
 
-import {customTextColor, customThemeColor} from '../../constants/Color';
-import {useDispatch, useSelector} from 'react-redux';
+import { customTextColor, customThemeColor } from '../../constants/Color';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   getUserProfile,
   logout,
@@ -19,13 +19,13 @@ import {
 import AppBar from '../../components/custom_toolbar/AppBar';
 import UserProfileCard from '../../components/skeleton_loader/UserProfileCard';
 import logoImage from '../../assets/search1.jpg';
-import {showMessage} from 'react-native-flash-message';
+import { showMessage } from 'react-native-flash-message';
 import AvatarSkeleton from '../../components/skeleton_loader/AvatarSkeleton';
-import {customFontSize, customFonts} from '../../constants/theme';
+import { customFontSize, customFonts } from '../../constants/theme';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {Divider} from 'react-native-paper';
+import { Divider } from 'react-native-paper';
 
-export default Profile = ({navigation}) => {
+export default Profile = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const {
@@ -78,7 +78,7 @@ export default Profile = ({navigation}) => {
                 {!!userProfile?.profile?.featured_image ? (
                   <Image
                     style={styles.avatar}
-                    source={{uri: userProfile?.profile?.featured_image}}
+                    source={{ uri: userProfile?.profile?.featured_image }}
                   />
                 ) : (
                   <AvatarSkeleton />
@@ -137,7 +137,7 @@ export default Profile = ({navigation}) => {
                       <Text style={styles.label}>Basic Info</Text>
                       <Icon
                         name="chevron-circle-right"
-                        size={20}
+                        size={17}
                         color={customTextColor.lightGreen}
                       />
                     </View>
@@ -147,7 +147,7 @@ export default Profile = ({navigation}) => {
                       <Text style={styles.label}>Preference</Text>
                       <Icon
                         name="chevron-circle-right"
-                        size={20}
+                        size={17}
                         color={customTextColor.lightGreen}
                       />
                     </View>
@@ -157,7 +157,7 @@ export default Profile = ({navigation}) => {
                       <Text style={styles.label}>Education</Text>
                       <Icon
                         name="chevron-circle-right"
-                        size={20}
+                        size={17}
                         color={customTextColor.lightGreen}
                       />
                     </View>
@@ -167,7 +167,7 @@ export default Profile = ({navigation}) => {
                       <Text style={styles.label}>Experience</Text>
                       <Icon
                         name="chevron-circle-right"
-                        size={20}
+                        size={17}
                         color={customTextColor.lightGreen}
                       />
                     </View>
@@ -177,7 +177,7 @@ export default Profile = ({navigation}) => {
                       <Text style={styles.label}>Other Information</Text>
                       <Icon
                         name="chevron-circle-right"
-                        size={20}
+                        size={17}
                         color={customTextColor.lightGreen}
                       />
                     </View>
@@ -256,7 +256,6 @@ const styles = StyleSheet.create({
   },
   smallCard: {
     height: 'auto',
-    width: '100%',
     marginVertical: 20,
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -268,17 +267,18 @@ const styles = StyleSheet.create({
     height: 'auto',
   },
   number: {
-    fontSize: 20,
+    fontSize: customFontSize.font18,
     color: customTextColor.primary,
-    fontWeight: 'bold',
+    fontFamily: customFonts.fontRobotoBold,
   },
   name1: {
     marginTop: 8,
-    fontSize: 14,
+    fontSize: customFontSize.font14,
     color: customTextColor.secondary,
+    fontFamily: customFonts.fontRoboto,
   },
   title: {
-    fontSize: 25,
+    fontSize: customFontSize.font18,
     marginBottom: 10,
     textAlign: 'center',
     color: '#11401E',
@@ -309,8 +309,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   name: {
-    fontSize: 22,
-    fontWeight: '600',
+    fontSize: customFontSize.font20,
+    fontFamily: customFonts.fontPoppins,
     color: customTextColor.primary,
   },
   buttonContainer: {
@@ -342,7 +342,7 @@ const styles = StyleSheet.create({
   bottonContainer: {
     marginTop: 10,
     flexDirection: 'row',
-    marginBottom: 40,
+    marginBottom: 25,
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -353,12 +353,12 @@ const styles = StyleSheet.create({
     borderColor: customTextColor.darkRed,
     paddingHorizontal: 25,
     borderRadius: 15,
-    paddingVertical: 10,
+    paddingVertical: 7,
   },
   editBtnText: {
     color: customTextColor.darkRed,
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: customFontSize.font16,
+    fontFamily: customFonts.fontPoppins,
   },
   profileViewBtn: {
     borderWidth: 1,
@@ -366,19 +366,19 @@ const styles = StyleSheet.create({
     backgroundColor: customThemeColor.darkRed,
     paddingHorizontal: 25,
     borderRadius: 15,
-    paddingVertical: 10,
+    paddingVertical: 7,
   },
   previewBtnText: {
     color: customTextColor.white,
-    fontSize: 16,
-    fontWeight: '700',
+    fontSize: customFontSize.font16,
+    fontFamily: customFonts.fontPoppins,
   },
 
   // ----------Profile card------------------
   profileCard: {
     width: '110%',
     borderRadius: 20,
-    backgroundColor: '#f7f7f7',
+    backgroundColor: customThemeColor.lightBG,
     position: 'relative',
     paddingHorizontal: 20,
     paddingVertical: 20,
@@ -387,11 +387,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 20,
+    marginBottom: 5,
   },
   title: {
-    fontSize: 22,
-    fontWeight: '500',
+    fontSize: customFontSize.font20,
+    fontFamily: customFonts.fontPoppins,
     color: customTextColor.primary,
   },
   edit: {
@@ -412,7 +412,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
   },
   label: {
-    fontSize: 15,
+    fontSize: customFontSize.font14,
     color: customTextColor.primary,
+    fontFamily: customFonts.fontPoppins,
   },
 });

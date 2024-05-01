@@ -9,6 +9,7 @@ import formReducer from '../features/formData/FormSlice';
 import jobCategoryReducer from '../features/job/JobSlice';
 import companyReducer from '../features/company/CompanySlice';
 import statusReducer from '../features/status/StatusSlice';
+import jobApplyReducer from '../features/applyJob/applyJobSlice'
 import {
   persistStore,
   persistReducer,
@@ -35,6 +36,7 @@ const rootReducer = combineReducers({
   job: jobCategoryReducer,
   company: companyReducer,
   status: statusReducer,
+  jobApply: jobApplyReducer,
 });
 
 export const store = configureStore({

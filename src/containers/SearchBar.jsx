@@ -1,8 +1,9 @@
 import React from 'react';
-import {View, TextInput, Text, StyleSheet} from 'react-native';
+import { View, TextInput, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import {customTextColor, customThemeColor} from '../constants/Color';
+import { customTextColor, customThemeColor } from '../constants/Color';
 import AppBar from '../components/custom_toolbar/AppBar';
+import { customFontSize, customFonts } from '../constants/theme';
 
 const SearchBar = () => {
   return (
@@ -10,15 +11,17 @@ const SearchBar = () => {
       <AppBar />
       <View style={styles.searchBar}>
         <View style={styles.searchInputContainer}>
-          <Icon name="search" size={25} color={customTextColor.secondary} />
+          <Icon name="search" size={15} color={customTextColor.secondary} />
           <Text>|</Text>
-          <TextInput placeholder="Search Jobs" style={styles.searchInput} />
+          <TextInput
+            placeholderTextColor="#706f6f"
+            placeholder="Search Jobs" style={styles.searchInput} />
         </View>
       </View>
       <View style={styles.bodyContent}>
         <View style={styles.flexCard}>
           <Text style={styles.title}>Recent Search</Text>
-          <Text style={styles.viewAll}>Cear All</Text>
+          <Text style={styles.viewAll}>Clear All</Text>
         </View>
       </View>
     </View>
@@ -40,7 +43,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 30,
     shadowColor: 'rgba(150,170,180,0.5)',
-    shadowOffset: {width: 0, height: 7},
+    shadowOffset: { width: 0, height: 7 },
     shadowOpacity: 1,
     shadowRadius: 30,
     elevation: 10,
@@ -50,6 +53,7 @@ const styles = StyleSheet.create({
   searchInput: {
     marginLeft: 10,
     flex: 1,
+    color: customTextColor.secondary,
   },
   bodyContent: {
     margin: 15,
@@ -60,12 +64,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   title: {
-    fontSize: 16,
+    fontSize: customFontSize.font16,
     color: customTextColor.primary,
+    fontFamily: customFonts.font,
   },
   viewAll: {
     color: customTextColor.lightGreen,
-    fontWeight: '500',
+    fontFamily: customFonts.font,
     textDecorationLine: 'underline',
     paddingRight: 3,
   },

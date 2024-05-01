@@ -50,8 +50,10 @@ const JobDetail = ({ navigation }) => {
     navigation.goBack();
   };
 
-  const handleApply = () => {
-    navigation.navigate('CompareJobAndProfile');
+  const handleApply = (slug) => {
+   slug = singleJob?.slug;
+    navigation.navigate('CompareJobAndProfile', { slug });
+    console.log("button", slug);
   };
 
   const handleShare = () => {
@@ -59,7 +61,7 @@ const JobDetail = ({ navigation }) => {
   };
 
   useEffect(() => {
-    console.log(singleJob?.get_company?.logo);
+    console.log("image", singleJob?.slug);
   }, []);
 
   return (
@@ -93,6 +95,9 @@ const JobDetail = ({ navigation }) => {
                   </Text>
                   <Text style={[styles.label1]}>
                     {singleJob.vacancy_level.name}
+                  </Text>
+                  <Text style={[styles.label1]}>
+                    {singleJob.salary_type.salary_type}
                   </Text>
                 </View>
               </View>

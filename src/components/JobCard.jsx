@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   jobTitle: {
-    fontSize: customFontSize.font18,
+    fontSize: customFontSize.font16,
     fontFamily: customFonts.fontPrompt,
     marginBottom: 4,
     color: '#000000',
