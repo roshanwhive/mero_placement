@@ -1,14 +1,14 @@
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
-import {customTextColor, customThemeColor} from '../../constants/Color';
-import {useSelector} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { customTextColor, customThemeColor } from '../../constants/Color';
+import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const Education = () => {
   const [showInfo, setShowInfo] = useState(null);
 
-  const {userProfile} = useSelector(state => state.auth);
+  const { userProfile } = useSelector(state => state.auth);
   const navigation = useNavigation();
 
   const toggleInfo = id => {
@@ -25,7 +25,7 @@ const Education = () => {
         <Text style={styles.title}>Education</Text>
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate('EditProfile', {title: 'Education'})
+            navigation.navigate('EditProfile', { title: 'Education' })
           }>
           <Text style={styles.edit}>Edit</Text>
         </TouchableOpacity>
@@ -33,7 +33,7 @@ const Education = () => {
 
       {userProfile?.education?.map((items, index) => {
         return (
-          <View key={index} style={{padding: 10, marginBottom: 10}}>
+          <View key={index} style={{ padding: 10, marginBottom: 10 }}>
             <TouchableOpacity onPress={() => toggleInfo(items.education_id)}>
               <View
                 style={{

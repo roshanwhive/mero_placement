@@ -90,6 +90,10 @@ export const applyJobSlice = createSlice({
         state.isSuccess = false;
         state.statusCode = 0;
         state.isError = false;
+        state.isSuccessConfirm = false;
+        state.statusCodeConfirm = 0;
+
+
       });
   },
 });

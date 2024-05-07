@@ -94,7 +94,6 @@ export const statusSlice = createSlice({
                 state.isLoading = true;
             })
             .addCase(getMatchedJob.fulfilled, (state, action) => {
-                console.log("matchedresponse", action.payload.data);
                 state.isLoading = false;
                 state.isError = !action.payload.success;
                 state.isSuccess = action.payload.success;

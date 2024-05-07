@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import logoImage from '../../assets/complete-profile.png';
 import { customFontSize, customFonts } from '../../constants/theme';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { getapplyJobConfirm } from '../../features/applyJob/applyJobSlice';
+import { getapplyJobConfirm, resetapplyJobState } from '../../features/applyJob/applyJobSlice';
 import RoundButtonComp from '../../components/RoundBtn';
 import { showMessage } from 'react-native-flash-message';
 
@@ -37,8 +37,6 @@ const ResumeModal = ({ hideModal, slug }) => {
     }, [resume]);
 
 
-
-
     const handleSubmit = () => {
         data = { slug: slug, resume: resumeID }
         dispatch(getapplyJobConfirm(data))
@@ -46,8 +44,8 @@ const ResumeModal = ({ hideModal, slug }) => {
     }
 
     useEffect(() => {
-        console.log("SubmitJob", messageConfirm)
-    })
+        console.log("SubmitJob", isSuccessConfirm, statusCodeConfirm)
+    }, [isSuccessConfirm, statusCodeConfirm])
 
     useEffect(() => {
         if (isErrorConfirm && statusCodeConfirm !== 200 && statusCodeConfirm !== 0) {
@@ -65,6 +63,10 @@ const ResumeModal = ({ hideModal, slug }) => {
                 animationDuration: 1000,
                 animated: true,
             });
+            setTimeout(() => {
+                dispatch(resetapplyJobState())
+            })
+
         }
     }, [isErrorConfirm, isSuccessConfirm, statusCodeConfirm, messageConfirm]);
 

@@ -9,7 +9,10 @@ import formReducer from '../features/formData/FormSlice';
 import jobCategoryReducer from '../features/job/JobSlice';
 import companyReducer from '../features/company/CompanySlice';
 import statusReducer from '../features/status/StatusSlice';
-import jobApplyReducer from '../features/applyJob/applyJobSlice'
+import jobApplyReducer from '../features/applyJob/applyJobSlice';
+import educationReducer from '../features/profile/EducationSlice';
+import preferenceReducer from '../features/profile/PreferenceSlice';
+import experienceReduer from '../features/profile/ExperienceSlice';
 import {
   persistStore,
   persistReducer,
@@ -37,6 +40,9 @@ const rootReducer = combineReducers({
   company: companyReducer,
   status: statusReducer,
   jobApply: jobApplyReducer,
+  education: educationReducer,
+  preference: preferenceReducer,
+  experience: experienceReduer,
 });
 
 export const store = configureStore({

@@ -24,9 +24,11 @@ import AvatarSkeleton from '../../components/skeleton_loader/AvatarSkeleton';
 import { customFontSize, customFonts } from '../../constants/theme';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Divider } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 
-export default Profile = ({ navigation }) => {
+export default Profile = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const {
     message,
@@ -143,34 +145,42 @@ export default Profile = ({ navigation }) => {
                     </View>
                     <Divider />
 
-                    <View style={styles.detailCard}>
-                      <Text style={styles.label}>Preference</Text>
-                      <Icon
-                        name="chevron-circle-right"
-                        size={17}
-                        color={customTextColor.lightGreen}
-                      />
-                    </View>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('PreferenceAdd')}>
+                      <View style={styles.detailCard}>
+                        <Text style={styles.label}>Preference</Text>
+                        <Icon
+                          name="chevron-circle-right"
+                          size={17}
+                          color={customTextColor.lightGreen}
+                        />
+                      </View>
+                    </TouchableOpacity>
                     <Divider />
 
-                    <View style={styles.detailCard}>
-                      <Text style={styles.label}>Education</Text>
-                      <Icon
-                        name="chevron-circle-right"
-                        size={17}
-                        color={customTextColor.lightGreen}
-                      />
-                    </View>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('EducationAdd')}>
+                      <View style={styles.detailCard}>
+                        <Text style={styles.label}>Education</Text>
+                        <Icon
+                          name="chevron-circle-right"
+                          size={17}
+                          color={customTextColor.lightGreen}
+                        />
+                      </View>
+                    </TouchableOpacity>
                     <Divider />
 
-                    <View style={styles.detailCard}>
-                      <Text style={styles.label}>Experience</Text>
-                      <Icon
-                        name="chevron-circle-right"
-                        size={17}
-                        color={customTextColor.lightGreen}
-                      />
-                    </View>
+                    <TouchableOpacity onPress={() => navigation.navigate('ExperienceAdd')}>
+                      <View style={styles.detailCard}>
+                        <Text style={styles.label}>Experience</Text>
+                        <Icon
+                          name="chevron-circle-right"
+                          size={17}
+                          color={customTextColor.lightGreen}
+                        />
+                      </View>
+                    </TouchableOpacity>
                     <Divider />
 
                     <View style={styles.detailCard}>
@@ -316,7 +326,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: 10,
     bottom: '-10%',
-    height: 45,
+    height: 35,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -334,7 +344,7 @@ const styles = StyleSheet.create({
   },
   logoutText: {
     color: customTextColor.white,
-    fontSize: 20,
+    fontSize: customFontSize.font18,
     fontFamily: customFonts.fontPoppins,
   },
 

@@ -22,6 +22,11 @@ import AllCategoriesScreen from '../screens/categories/AllCategoriesScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ProfilePreview from '../containers/profile/ProfilePreview';
 import UpdateProfile from '../containers/profile/UpdateProfile';
+import EducationAdd from '../screens/BottomNavigationScreen/profile/education/EducationAdd';
+import EducationList from '../screens/BottomNavigationScreen/profile/education/EducationList';
+import PreferenceList from '../screens/BottomNavigationScreen/profile/preference/PreferenceList';
+import PreferenceAdd from '../screens/BottomNavigationScreen/profile/preference/PreferenceAdd';
+import ExperienceAdd from '../screens/BottomNavigationScreen/profile/experience/ExperienceAdd';
 
 const Stack = createNativeStackNavigator();
 
@@ -66,12 +71,14 @@ const Router = () => {
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="ProfilePreview" component={ProfilePreview} />
       <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
+      <Stack.Screen name="EducationAdd" component={EducationAdd} />
+      <Stack.Screen name="EducationList" component={EducationList} />
+      <Stack.Screen name="PreferenceList" component={PreferenceList} />
+      <Stack.Screen name="PreferenceAdd" component={PreferenceAdd} />
+      <Stack.Screen name="ExperienceAdd" component={ExperienceAdd} />
       <Stack.Screen name="Training" component={Training} />
       <Stack.Screen name="AllCategories" component={AllCategoriesScreen} />
-      <Stack.Screen
-        name="CompareJobAndProfile"
-        component={CompareJobAndProfile}
-      />
+      <Stack.Screen name="CompareJobAndProfile" component={CompareJobAndProfile} />
     </Stack.Navigator>
   );
 };
