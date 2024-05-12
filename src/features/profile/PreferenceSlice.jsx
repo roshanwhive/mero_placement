@@ -24,7 +24,7 @@ export const getAllPreference = createAsyncThunk(
 );
 
 export const getSinglePreference = createAsyncThunk(
-    'job/get-single-preference',
+    'profile/get-single-preference',
     async (id, thunkAPI) => {
         try {
             return await preferenceService.getSinglePreference(id);
@@ -33,6 +33,40 @@ export const getSinglePreference = createAsyncThunk(
         }
     },
 );
+
+export const addPreference = createAsyncThunk(
+    'profile/add-preference',
+    async (prefData, thunkAPI) => {
+        try {
+            return await preferenceService.addPreference(prefData);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+    },
+);
+
+export const delPreference = createAsyncThunk(
+    'profile/del-single-preference',
+    async (id, thunkAPI) => {
+        try {
+            return await preferenceService.delPreference(id);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+    },
+);
+
+export const updatePreference = createAsyncThunk(
+    'profile/update-preference',
+    async (prefData, thunkAPI) => {
+        try {
+            return await preferenceService.updatePreference(prefData);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+    },
+);
+
 
 //Reset State
 export const resetPreferenceState = createAction('Reset_all_Preference');
@@ -62,7 +96,7 @@ export const preferenceSlice = createSlice({
                 state.isSuccess = false;
             })
 
-            // ------------------------------------Get Single Education -------------------------------
+            // ------------------------------------Get Single Preference -------------------------------
             .addCase(getSinglePreference.pending, state => {
                 state.isLoading = true;
             })
@@ -80,23 +114,58 @@ export const preferenceSlice = createSlice({
                 state.isSuccess = false;
             })
 
-            // // ------------------------------------Save Education -------------------------------
-            // .addCase(addEducation.pending, state => {
-            //     state.isLoading = true;
-            // })
-            // .addCase(addEducation.fulfilled, (state, action) => {
-            //     state.isLoading = false;
-            //     state.isError = !action.payload.success;
-            //     state.isSuccess = action.payload.success;
-            //     state.message = action.payload.message;
-            //     state.statusCode = action.payload.status_code;
-            //     state.addEducation = action.payload.data;
-            // })
-            // .addCase(addEducation.rejected, (state, action) => {
-            //     state.isError = true;
-            //     state.isLoading = false;
-            //     state.isSuccess = false;
-            // })
+            // ------------------------------------Add Preference -------------------------------
+            .addCase(addPreference.pending, state => {
+                state.isLoading = true;
+            })
+            .addCase(addPreference.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = !action.payload.success;
+                state.isSuccess = action.payload.success;
+                state.message = action.payload.message;
+                state.statusCode = action.payload.status_code;
+            })
+            .addCase(addPreference.rejected, (state, action) => {
+                state.isError = true;
+                state.isLoading = false;
+                state.isSuccess = false;
+            })
+
+            // ------------------------------------Delete Preference -------------------------------
+            .addCase(delPreference.pending, state => {
+                state.isLoading = true;
+            })
+            .addCase(delPreference.fulfilled, (state, action) => {
+                console.log("delete", action.payload.message)
+                state.isLoading = false;
+                state.isError = !action.payload.success;
+                state.isSuccess = action.payload.success;
+                state.message = action.payload.message;
+                state.statusCode = action.payload.status_code;
+            })
+            .addCase(delPreference.rejected, (state, action) => {
+                state.isError = true;
+                state.isLoading = false;
+                state.isSuccess = false;
+            })
+
+            // ------------------------------------Update preference -------------------------------
+            .addCase(updatePreference.pending, state => {
+                state.isLoading = true;
+            })
+            .addCase(updatePreference.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = !action.payload.success;
+                state.isSuccess = action.payload.success;
+                state.message = action.payload.message;
+                state.statusCode = action.payload.status_code;
+                state.singlePreference = action.payload.data;
+            })
+            .addCase(updatePreference.rejected, (state, action) => {
+                state.isError = true;
+                state.isLoading = false;
+                state.isSuccess = false;
+            })
 
             //Reset State
             .addCase(resetPreferenceState, state => {

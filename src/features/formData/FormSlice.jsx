@@ -5,6 +5,7 @@ import { getAllPreference } from '../profile/PreferenceSlice';
 const initialState = {
   allCategoriesData: [],
   allGenderData: [],
+  eduFormData: {},
   prefFormData: {},
   category: [],
   available_type: [],
@@ -36,6 +37,14 @@ export const getAllCategories = createAsyncThunk(
 export const getAllGender = createAsyncThunk('form/gender', async thunkAPI => {
   try {
     return await formService.getGender();
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
+});
+
+export const getEduFormData = createAsyncThunk('form/eduForm', async thunkAPI => {
+  try {
+    return await formService.getEduFormData();
   } catch (error) {
     return thunkAPI.rejectWithValue(error);
   }
@@ -83,6 +92,23 @@ export const formSlice = createSlice({
         state.isSuccess = false;
       })
 
+      //Edu form Data
+      .addCase(getEduFormData.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(getEduFormData.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.eduFormData = action.payload.data;
+        state.degree = action.payload.data.degree;
+      })
+      .addCase(getEduFormData.rejected, (state, action) => {
+        state.isError = true;
+        state.isLoading = false;
+        state.isSuccess = false;
+      })
+
       //Pref form Data
       .addCase(getPrefFormData.pending, state => {
         state.isLoading = true;
@@ -110,7 +136,6 @@ export const formSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(getExpFormData.fulfilled, (state, action) => {
-        console.log("expForm res", action.payload.data.category)
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;

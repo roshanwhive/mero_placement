@@ -10,6 +10,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dropdown } from "react-native-element-dropdown";
 import { getExpFormData } from "../../../../features/formData/FormSlice";
 import DatePicker from "react-native-date-picker";
+import { Controller, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from 'yup';
+import { addExperience, resetExperienceState } from "../../../../features/profile/ExperienceSlice";
+import { showMessage } from "react-native-flash-message";
 
 const ExperienceAdd = () => {
 
@@ -23,7 +28,9 @@ const ExperienceAdd = () => {
     const [show, setShow] = useState(true);
 
     const { organization_type, job_level, job_category } = useSelector(state => state.formOptions);
-
+    const { messageAdd, isSuccess, isLoading, isError, statusCode } = useSelector(
+        state => state.experience,
+    );
     useEffect(() => {
         dispatch(getExpFormData());
     }, [dispatch]);
@@ -69,6 +76,65 @@ const ExperienceAdd = () => {
         navigation.goBack();
     };
 
+    // useEffect(() => {
+    //     if (isError && statusCode !== 200 && statusCode !== 0) {
+    //         showMessage({
+    //             message: JSON.stringify(message),
+    //             type: 'danger',
+    //             animationDuration: 1000,
+    //             animated: true,
+    //         });
+    //     } else if (isSuccess && statusCode === 200) {
+    //         navigation.navigate('ExperienceList');
+    //         showMessage({
+    //             message: JSON.stringify(message),
+    //             type: 'success',
+    //             animationDuration: 1000,
+    //             animated: true,
+    //         });
+    //     }
+    // }, [isError, isSuccess, statusCode, message]);
+
+    const schema = yup.object().shape({
+        organization_name: yup.string().required('Organization name is required'),
+    });
+
+    const {
+        control,
+        handleSubmit,
+        formState: { errors },
+        setError,
+    } = useForm(
+        {
+            resolver: yupResolver(schema),
+            defaultValues: {
+                organization_name: '',
+                organization_type_id: '',
+                job_level_id: '',
+                job_category_id: '',
+                position: '',
+                dutis: '',
+                start_date: '',
+                end_date: '',
+            },
+        }
+    );
+
+    const onPressAdd = experienceData => {
+        dispatch(addExperience(experienceData)).then(() => {
+            // //navigation.navigate('ExperienceList');
+            // showMessage({
+            //     message: JSON.stringify(messageAdd),
+            //     type: 'success',
+            //     animationDuration: 1000,
+            //     animated: true,
+            // });
+            setTimeout(() => {
+                dispatch(resetExperienceState());
+            }, 1000);
+        })
+    };
+
     const commonTextInputProps = {
         style: styles.input,
         mode: 'outlined',
@@ -87,116 +153,197 @@ const ExperienceAdd = () => {
 
                 <View style={GlobalStyleSheet.containerForm}>
                     <View style={GlobalStyleSheet.inputWrapper}>
-                        <TextInput
-                            {...commonTextInputProps}
-                            label="Organization Name"
-                        >
-                        </TextInput>
+                        <Controller
+                            control={control}
+                            rules={{
+                                required: true,
+                            }}
+                            render={({ field: { onChange, value } }) => (
+                                <TextInput
+                                    {...commonTextInputProps}
+                                    label="Organization Name"
+                                    value={value}
+                                    onChangeText={onChange}
+                                />
+                            )}
+                            name="organization_name"
+                        />
+                        {errors.organization_name && (
+                            <Text style={styles.errorText}>{errors.org_Name.message}</Text>
+                        )}
                     </View>
 
                     <View style={GlobalStyleSheet.inputWrapper}>
-                        <Dropdown
-                            data={organizationType}
-                            placeholder='Select Organization Type'
-                            maxHeight={300}
-                            labelField="label"
-                            valueField="value"
-                            value={organizationId}
-                            placeholderStyle={{ color: customTextColor.secondary }}
-                            selectedTextStyle={{ color: customTextColor.secondary }}
-                            itemTextStyle={{ color: customTextColor.secondary }}
-                            style={[
-                                {
-                                    borderWidth: 1,
-                                    borderColor: customTextColor.darkGreen,
-                                    borderRadius: 5,
-                                    paddingHorizontal: 16,
-                                    paddingVertical: 5,
-                                },
-                                styles.input,
-                            ]}
-                            onChange={item => {
-                                setOrganizationId(item.value)
-                                //handleSubmit(item.value)
-                                console.log("click" + item.value);
+                        <Controller
+                            control={control}
+                            rules={{
+                                required: false,
                             }}
-                        // onChange={(item) => handleSubmit(item.value)}
+                            render={({
+                                field: {
+                                    onChange, value
+                                }
+                            }) => (
+                                <Dropdown
+                                    data={organizationType}
+                                    placeholder='Select Organization Type'
+                                    maxHeight={300}
+                                    labelField="label"
+                                    valueField="value"
+                                    value={organizationId}
+                                    placeholderStyle={{ color: customTextColor.secondary }}
+                                    selectedTextStyle={{ color: customTextColor.primary }}
+                                    itemTextStyle={{ color: customTextColor.secondary }}
+                                    style={[
+                                        {
+                                            borderWidth: 1,
+                                            borderColor: customTextColor.darkGreen,
+                                            borderRadius: 5,
+                                            paddingHorizontal: 16,
+                                            paddingVertical: 5,
+                                        },
+                                        styles.input,
+                                    ]}
+                                    onChange={item => {
+                                        onChange(item.value)
+                                        //handleSubmit(item.value)
+                                        console.log("click" + item.value);
+                                    }}
+                                // onChange={(item) => handleSubmit(item.value)}
+                                />
+                            )}
+                            name="organization_type_id"
                         />
                     </View>
                     <View style={GlobalStyleSheet.inputWrapper}>
-                        <Dropdown
-                            data={jobLevel}
-                            placeholder='Select Job Level'
-                            maxHeight={300}
-                            labelField="label"
-                            valueField="value"
-                            value={jobLevelId}
-                            placeholderStyle={{ color: customTextColor.secondary }}
-                            selectedTextStyle={{ color: customTextColor.secondary }}
-                            itemTextStyle={{ color: customTextColor.secondary }}
-                            style={[
-                                {
-                                    borderWidth: 1,
-                                    borderColor: customTextColor.darkGreen,
-                                    borderRadius: 5,
-                                    paddingHorizontal: 16,
-                                    paddingVertical: 5,
-                                },
-                                styles.input,
-                            ]}
-                            onChange={item => {
-                                setJobLevelId(item.value)
-                                //handleSubmit(item.value)
-                                console.log("click" + item.value);
+                        <Controller
+                            control={control}
+                            rules={{
+                                required: false,
                             }}
-                        // onChange={(item) => handleSubmit(item.value)}
+                            render={({
+                                field: {
+                                    onChange, value
+                                }
+                            }) => (
+                                <Dropdown
+                                    data={jobLevel}
+                                    placeholder='Select Job Level'
+                                    maxHeight={300}
+                                    labelField="label"
+                                    valueField="value"
+                                    value={jobLevelId}
+                                    placeholderStyle={{ color: customTextColor.secondary }}
+                                    selectedTextStyle={{ color: customTextColor.primary }}
+                                    itemTextStyle={{ color: customTextColor.secondary }}
+                                    style={[
+                                        {
+                                            borderWidth: 1,
+                                            borderColor: customTextColor.darkGreen,
+                                            borderRadius: 5,
+                                            paddingHorizontal: 16,
+                                            paddingVertical: 5,
+                                        },
+                                        styles.input,
+                                    ]}
+                                    onChange={item => {
+                                        onChange(item.value)
+                                        //handleSubmit(item.value)
+                                        console.log("click" + item.value);
+                                    }}
+                                // onChange={(item) => handleSubmit(item.value)}
+                                />
+                            )}
+                            name="job_level_id"
                         />
                     </View>
+
                     <View style={GlobalStyleSheet.inputWrapper}>
-                        <Dropdown
-                            data={jobCategory}
-                            placeholder='Select Category'
-                            maxHeight={300}
-                            labelField="label"
-                            valueField="value"
-                            value={jobCategoryId}
-                            placeholderStyle={{ color: customTextColor.secondary }}
-                            selectedTextStyle={{ color: customTextColor.secondary }}
-                            itemTextStyle={{ color: customTextColor.secondary }}
-                            style={[
-                                {
-                                    borderWidth: 1,
-                                    borderColor: customTextColor.darkGreen,
-                                    borderRadius: 5,
-                                    paddingHorizontal: 16,
-                                    paddingVertical: 5,
-                                },
-                                styles.input,
-                            ]}
-                            onChange={item => {
-                                setJobCategoryId(item.value)
-                                //handleSubmit(item.value)
-                                console.log("click" + item.value);
+                        <Controller
+                            control={control}
+                            rules={{
+                                required: false,
                             }}
-                        // onChange={(item) => handleSubmit(item.value)}
+                            render={({
+                                field: {
+                                    onChange, value
+                                }
+                            }) => (
+                                <Dropdown
+                                    data={jobCategory}
+                                    placeholder='Select Category'
+                                    maxHeight={300}
+                                    labelField="label"
+                                    valueField="value"
+                                    value={jobCategoryId}
+                                    placeholderStyle={{ color: customTextColor.secondary }}
+                                    selectedTextStyle={{ color: customTextColor.primary }}
+                                    itemTextStyle={{ color: customTextColor.secondary }}
+                                    style={[
+                                        {
+                                            borderWidth: 1,
+                                            borderColor: customTextColor.darkGreen,
+                                            borderRadius: 5,
+                                            paddingHorizontal: 16,
+                                            paddingVertical: 5,
+                                        },
+                                        styles.input,
+                                    ]}
+                                    onChange={item => {
+                                        onChange(item.value)
+                                        //handleSubmit(item.value)
+                                        console.log("click" + item.value);
+                                    }}
+                                // onChange={(item) => handleSubmit(item.value)}
+                                />
+                            )}
+                            name="job_category_id"
                         />
                     </View>
+
                     <View style={GlobalStyleSheet.inputWrapper}>
-                        <TextInput
-                            {...commonTextInputProps}
-                            label="Position"
-                        >
-                        </TextInput>
+                        <Controller
+                            control={control}
+                            rules={{
+                                required: true,
+                            }}
+                            render={({ field: { onChange, value } }) => (
+                                <TextInput
+                                    {...commonTextInputProps}
+                                    label="Position"
+                                    value={value}
+                                    onChangeText={onChange}
+                                />
+                                // {errors.name && (
+                                //     <Text style={styles.errorText}>{errors.name.message}</Text>
+                                //   )}
+                            )}
+                            name="position"
+                        />
                     </View>
 
 
                     <View style={GlobalStyleSheet.inputWrapper}>
-                        <TextInput
-                            {...commonTextInputProps}
-                            label="Duties"
-                        >
-                        </TextInput>
+                        <Controller
+                            control={control}
+                            rules={{
+                                required: true,
+                            }}
+                            render={({ field: { onChange, value } }) => (
+                                <TextInput
+                                    {...commonTextInputProps}
+                                    label="Duties"
+                                    value={value}
+                                    onChangeText={onChange}
+                                />
+                                // {errors.name && (
+                                //     <Text style={styles.errorText}>{errors.name.message}</Text>
+                                //   )}
+                            )}
+                            name="dutis"
+                        />
                     </View>
+
                     <View style={GlobalStyleSheet.inputWrapper}>
 
                         <TouchableOpacity onPress={() => setOpen(true)}>
@@ -212,13 +359,26 @@ const ExperienceAdd = () => {
                                     setOpen(false)
                                 }}
                             />
-                            <TextInput
-                                {...commonTextInputProps}
-                                label="Start Date"
-                                editable={false}
-                                value={date}
-                            >
-                            </TextInput>
+                            <Controller
+                                control={control}
+                                rules={{
+                                    required: true,
+                                }}
+                                render={({ field: { onChange, value } }) => (
+                                    <TextInput
+                                        {...commonTextInputProps}
+                                        label="Start Date"
+                                        value={value}
+                                        onChangeText={onChange}
+                                    />
+                                    // {errors.name && (
+                                    //     <Text style={styles.errorText}>{errors.name.message}</Text>
+                                    //   )}
+                                )}
+                                name="start_date"
+                            />
+
+
                         </TouchableOpacity>
                     </View>
                     <View style={GlobalStyleSheet.inputWrapper}>
@@ -235,18 +395,30 @@ const ExperienceAdd = () => {
                                     setOpen(false)
                                 }}
                             />
-                            <TextInput
-                                {...commonTextInputProps}
-                                label="End Date"
-                                editable={false}
-                                value={date}
-                            >
-                            </TextInput>
+
+                            <Controller
+                                control={control}
+                                rules={{
+                                    required: true,
+                                }}
+                                render={({ field: { onChange, value } }) => (
+                                    <TextInput
+                                        {...commonTextInputProps}
+                                        label="End Date"
+                                        value={value}
+                                        onChangeText={onChange}
+                                    />
+                                    // {errors.name && (
+                                    //     <Text style={styles.errorText}>{errors.name.message}</Text>
+                                    //   )}
+                                )}
+                                name="end_date"
+                            />
                         </TouchableOpacity>
                     </View>
                 </View>
                 <View style={GlobalStyleSheet.buttonWrapper}>
-                    <TouchableOpacity style={GlobalStyleSheet.button} onPress={() => navigation.navigate('EducationList')}>
+                    <TouchableOpacity style={GlobalStyleSheet.button} onPress={handleSubmit(onPressAdd)}>
 
                         <Text style={GlobalStyleSheet.buttonText}>Save Changes</Text>
                     </TouchableOpacity>
@@ -297,6 +469,11 @@ const styles = StyleSheet.create({
         marginRight: 5,
         marginTop: 5,
         justifyContent: 'space-between',
+    },
+    errorText: {
+        color: 'red',
+        margin: 0,
+        padding: 0,
     },
 
 });

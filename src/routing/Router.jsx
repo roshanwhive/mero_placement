@@ -27,6 +27,8 @@ import EducationList from '../screens/BottomNavigationScreen/profile/education/E
 import PreferenceList from '../screens/BottomNavigationScreen/profile/preference/PreferenceList';
 import PreferenceAdd from '../screens/BottomNavigationScreen/profile/preference/PreferenceAdd';
 import ExperienceAdd from '../screens/BottomNavigationScreen/profile/experience/ExperienceAdd';
+import ExperienceList from '../screens/BottomNavigationScreen/profile/experience/ExperienceList';
+import Index from '../screens/BottomNavigationScreen/profile/education';
 
 const Stack = createNativeStackNavigator();
 
@@ -73,9 +75,11 @@ const Router = () => {
       <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
       <Stack.Screen name="EducationAdd" component={EducationAdd} />
       <Stack.Screen name="EducationList" component={EducationList} />
+      <Stack.Screen name="Index" component={Index} />
       <Stack.Screen name="PreferenceList" component={PreferenceList} />
       <Stack.Screen name="PreferenceAdd" component={PreferenceAdd} />
       <Stack.Screen name="ExperienceAdd" component={ExperienceAdd} />
+      <Stack.Screen name="ExperienceList" component={ExperienceList} />
       <Stack.Screen name="Training" component={Training} />
       <Stack.Screen name="AllCategories" component={AllCategoriesScreen} />
       <Stack.Screen name="CompareJobAndProfile" component={CompareJobAndProfile} />

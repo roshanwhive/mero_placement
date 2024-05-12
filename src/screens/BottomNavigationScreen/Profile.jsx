@@ -146,7 +146,7 @@ export default Profile = () => {
                     <Divider />
 
                     <TouchableOpacity
-                      onPress={() => navigation.navigate('PreferenceAdd')}>
+                      onPress={() => navigation.navigate('PreferenceList')}>
                       <View style={styles.detailCard}>
                         <Text style={styles.label}>Preference</Text>
                         <Icon
@@ -159,7 +159,7 @@ export default Profile = () => {
                     <Divider />
 
                     <TouchableOpacity
-                      onPress={() => navigation.navigate('EducationAdd')}>
+                      onPress={() => navigation.navigate('EducationList')}>
                       <View style={styles.detailCard}>
                         <Text style={styles.label}>Education</Text>
                         <Icon
@@ -171,7 +171,7 @@ export default Profile = () => {
                     </TouchableOpacity>
                     <Divider />
 
-                    <TouchableOpacity onPress={() => navigation.navigate('ExperienceAdd')}>
+                    <TouchableOpacity onPress={() => navigation.navigate('ExperienceList')}>
                       <View style={styles.detailCard}>
                         <Text style={styles.label}>Experience</Text>
                         <Icon

@@ -32,17 +32,48 @@ const getSinglePreference = async id => {
     }
 };
 
-// post education
-const addPreference = async registerData => {
+// add pref
+const addPreference = async prefData => {
     try {
         const config = await getConfigWithToken();
         const response = await axios.post(
-            `${base_url}candidate/education-save-or-update`,
+            `${base_url}candidate/preferences`, prefData, config,
 
         );
         return response.data;
     } catch (error) {
-        console.error('Error during register:', error);
+        console.error('Error during addPref:', error);
+        throw error;
+    }
+};
+
+//del single Experience
+const delPreference = async id => {
+    try {
+        const config = await getConfigWithToken();
+        const response = await axios.delete(
+            `${base_url}candidate/preferences/${id}`, config,
+        );
+        if (response) {
+            return response.data;
+        }
+    } catch (error) {
+        console.error('Error during deleting single preference:', error);
+        throw error;
+    }
+};
+
+// add pref
+const updatePreference = async prefData => {
+    try {
+        const config = await getConfigWithToken();
+        const response = await axios.post(
+            `${base_url}candidate/preferences/${id}`, prefData, config,
+
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error during updatePref:', error);
         throw error;
     }
 };
@@ -52,4 +83,6 @@ export const preferenceService = {
     getAllPreference,
     getSinglePreference,
     addPreference,
+    delPreference,
+    updatePreference,
 };

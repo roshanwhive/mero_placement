@@ -25,6 +25,18 @@ const getGender = async () => {
   }
 };
 
+//  Get education form data
+const getEduFormData = async () => {
+  try {
+    const config = await getConfigWithToken();
+    const response = await axios.get(`${base_url}candidate/education-add`, config);
+    return response.data;
+  } catch (error) {
+    console.error('Error during fetching education form data', error);
+    throw error;
+  }
+};
+
 //  Get preference form data
 const getPrefFormData = async () => {
   try {
@@ -52,6 +64,7 @@ const getExpFormData = async () => {
 export const formService = {
   getAllCategories,
   getGender,
+  getEduFormData,
   getPrefFormData,
   getExpFormData,
 };

@@ -33,11 +33,11 @@ const getSingleEducation = async id => {
 };
 
 // post education
-const addEducation = async registerData => {
+const addEducation = async eduData => {
     try {
         const config = await getConfigWithToken();
         const response = await axios.post(
-            `${base_url}candidate/education-save-or-update`,
+            `${base_url}candidate/education-save-or-update`, eduData, config
 
         );
         return response.data;
@@ -47,9 +47,41 @@ const addEducation = async registerData => {
     }
 };
 
+//del single Education
+const delEducation = async id => {
+    try {
+        const config = await getConfigWithToken();
+        const response = await axios.delete(
+            `${base_url}candidate/education/${id}`, config,
+        );
+        if (response) {
+            return response.data;
+        }
+    } catch (error) {
+        console.error('Error during deleting single education:', error);
+        throw error;
+    }
+};
+
+// update Education
+const updateEducation = async eduData => {
+    try {
+        const config = await getConfigWithToken();
+        const response = await axios.post(
+            `${base_url}candidate/education-save-or-update/${id}`, eduData, config,
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error during updateEducation:', error);
+        throw error;
+    }
+};
+
 
 export const educationService = {
     getAllEducation,
     getSingleEducation,
     addEducation,
+    delEducation,
+    updateEducation,
 };

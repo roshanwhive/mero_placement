@@ -21,10 +21,6 @@ const PreferenceList = () => {
         dispatch(getAllPreference());
     }, [dispatch]);
 
-    useEffect(() => {
-        console.log('allPref', typeof allPreference);
-    }, [dispatch]);
-
     const handleBack = () => {
         navigation.goBack();
     };
