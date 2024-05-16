@@ -1,21 +1,51 @@
 import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { customTextColor, customThemeColor } from "../../../../constants/Color"
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { customFontSize, customFonts } from "../../../../constants/theme";
-import { delExperience, getSingleExperience } from "../../../../features/profile/ExperienceSlice";
+import { delExperience, getSingleExperience, resetExperienceState } from "../../../../features/profile/ExperienceSlice";
+import { showMessage } from "react-native-flash-message";
 
 const ExperienceCard = ({ items, navigation }) => {
+    const { messageDel, isSuccess, isLoading, isError, statusCode } = useSelector(
+        state => state.experience,
+    );
     const dispatch = useDispatch();
+    data = {
+        experience_id: items?.experience_id,
+        org_name: items?.org_name,
+        job_category: items?.job_category?.name,
+        position: items?.position,
+        company_type: items?.company_type?.name,
+        job_level: items?.job_level?.name,
+        start_date: items?.start_date,
+        end_date: items?.end_date,
+    }
 
-    // const onPressDelete = id => {
-    //     dispatch(delExperience(id)).then(() => {
-    //         setTimeout(() => {
-    //             dispatch(resetExperienceState());
-    //         }, 1000);
-    //     })
-    // }
+    const handleDelete = () => {
+        dispatch(delExperience(items?.experience_id)).then(() => {
+            if (isError && statusCode !== 200 && statusCode !== 0) {
+                showMessage({
+                    message: JSON.stringify(messageDel),
+                    type: 'danger',
+                    animationDuration: 1000,
+                    animated: true,
+                });
+            } else if (isSuccess && statusCode === 200) {
 
+                showMessage({
+                    message: JSON.stringify(messageDel),
+                    type: 'success',
+                    animationDuration: 1000,
+                    animated: true,
+                });
+            }
+            setTimeout(() => {
+                dispatch(resetExperienceState());
+            }, 1000);
+        })
+        console.log("deleteExp", messageDel)
+    }
     return (
         <View style={{
             backgroundColor: customThemeColor.white,
@@ -70,11 +100,9 @@ const ExperienceCard = ({ items, navigation }) => {
                                     paddingBottom: 4,
                                     paddingTop: 1,
                                 }}>
-                                <TouchableOpacity onPress={() => console.log("expID", items?.experience_id)}>
+                                <TouchableOpacity onPress={() => console.log("expID", data)}>
                                     <Icon name="square-edit-outline" size={20} color={customTextColor.primary} />
                                 </TouchableOpacity>
-
-
                             </View>
                             <View
                                 style={{
@@ -92,7 +120,7 @@ const ExperienceCard = ({ items, navigation }) => {
                                             onPress: () => { console.log("cancel", items?.experience_id) },
                                             style: 'cancel',
                                         },
-                                        { text: 'OK', onPress: () => console.log("delete", items?.experience_id) },
+                                        { text: 'OK', onPress: () => { handleDelete() } },
                                     ]);
                                 }}>
                                     <Icon name="delete" size={20} color={customTextColor.primary} />
@@ -162,9 +190,7 @@ const ExperienceCard = ({ items, navigation }) => {
                                     marginRight: 10,
                                     flex: 1,
 
-                                }}
-                            >
-
+                                }}>
                                 <Text style={styles.subTitle}>Company Type</Text>
                             </View>
                             <View
@@ -174,9 +200,7 @@ const ExperienceCard = ({ items, navigation }) => {
                                     justifyContent: 'flex-end',
                                     paddingLeft: 10,
                                     marginLeft: 10,
-                                }}
-                            >
-
+                                }}>
                                 <Text style={styles.subTitle}>Job Level</Text>
                             </View>
                         </View>
@@ -203,9 +227,7 @@ const ExperienceCard = ({ items, navigation }) => {
                                     marginRight: 10,
                                     flex: 1,
 
-                                }}
-                            >
-
+                                }}>
                                 <Text style={styles.title}>{items ? items.company_type.name : ''}</Text>
                             </View>
                             <View
@@ -216,19 +238,14 @@ const ExperienceCard = ({ items, navigation }) => {
                                     alignItems: 'center',
                                     paddingLeft: 10,
                                     marginLeft: 10,
-                                }}
-                            >
-
+                                }}>
                                 <Text style={styles.title}>{items ? items.job_level.name : ''}</Text>
                             </View>
                         </View>
-
                     </View>
-
                 </View>
             </View>
-
-        </View >
+        </View>
     )
 }
 

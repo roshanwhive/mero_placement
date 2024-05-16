@@ -1,32 +1,32 @@
-import { useNavigation } from "@react-navigation/native"
-import { Pressable, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native"
+import { useNavigation, useRoute } from "@react-navigation/native"
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native"
 import AppBar from "../../../../components/custom_toolbar/AppBar";
 import { customTextColor, customThemeColor } from "../../../../constants/Color";
 import { customFontSize, customFonts } from "../../../../constants/theme";
 import { GlobalStyleSheet } from "../../../../constants/StyleSheet";
 import { TextInput } from "react-native-paper";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from 'yup';
 import { Controller, useForm } from "react-hook-form";
-import { addEducation, resetEducationState } from "../../../../features/profile/EducationSlice";
+import { addEducation, getSingleEducation, resetEducationState, updateEducation } from "../../../../features/profile/EducationSlice";
 import { Dropdown } from "react-native-element-dropdown";
 import { getEduFormData } from "../../../../features/formData/FormSlice";
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { showMessage } from "react-native-flash-message";
 
 
-const EducationAdd = () => {
+const EducationAdd = (id) => {
 
     const navigation = useNavigation();
     const [date, setDate] = useState(new Date())
     const [open, setOpen] = useState(false)
+    const route = useRoute();
+    id = route.params?.id;
     const { degree, eduFormData } = useSelector(state => state.formOptions);
+    const { message, isSuccess, isLoading, isLoadingSingle, isError, statusCode, singleEducation } = useSelector(state => state.education);
     const dispatch = useDispatch();
-
-    const [isEnabled, setIsEnabled] = useState(false);
-    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-    const [show, setShow] = useState(true);
 
     const [selectedtab, setSelectedtab] = useState("passed");
     const [passed, setPassed] = useState("passed");
@@ -36,14 +36,43 @@ const EducationAdd = () => {
     useEffect(() => {
         dispatch(getEduFormData());
     }, [dispatch]);
+    console.log("educationID", id);
 
     useEffect(() => {
-        console.log("test", selectedtab)
+        dispatch(getSingleEducation(id));
+    }, [dispatch]);
+
+    useEffect(() => {
+        console.log("test", typeof singleEducation)
     }, [dispatch]);
 
     const handleDateChange = (event, selectedDate) => {
 
     }
+
+    useEffect(() => {
+        if (isError && statusCode !== 200 && statusCode !== 0) {
+            console.log("useeffectd", message)
+            showMessage({
+                message: JSON.stringify(message),
+                type: 'danger',
+                setLoading: false,
+                animationDuration: 1000,
+                animated: true,
+            });
+        } else if (isSuccess && statusCode === 200) {
+            //navigation.navigate('EducationList');
+            console.log("useeffects", message)
+            showMessage({
+                message: JSON.stringify(message),
+                type: 'success',
+                setLoading: false,
+                animationDuration: 1000,
+                animated: true,
+            });
+        }
+    }, [isError, isSuccess, statusCode, message]);
+
 
 
     const handleBack = () => {
@@ -65,35 +94,74 @@ const EducationAdd = () => {
     const schema = yup.object().shape({
         college: yup.string().required('College name is required'),
         university: yup.string().required('University name is required'),
-        percentage: yup.string().required('Percentage Field is required'),
+        deg_type: yup.string().required('Select Degree Type'),
+        percentage: yup.string().required('Percentage is required'),
+        start_date: yup.string().required('Start Date is required'),
     });
+
+    const defaultValues = useMemo(
+        () => ({
+            college: singleEducation?.institute_name || '',
+            university: singleEducation?.university_board_name || '',
+            status: singleEducation?.passed_status || pursuing,
+            deg_type: singleEducation?.degree_type_name?.deg_type_id || null,
+            percentage: singleEducation?.passed_percentage || '',
+            start_date: singleEducation?.start_date || '',
+            end_date: singleEducation?.end_date || '',
+        }),
+        [singleEducation]
+    )
+
+    //console.log("edudat", defaultValues, id);
+
+    const methods = useForm({
+        resolver: yupResolver(schema),
+        defaultValues,
+    })
 
     const {
         control,
         handleSubmit,
+        resetField,
         formState: { errors },
         setError,
-    } = useForm({
-        resolver: yupResolver(schema),
-        defaultValues: {
-            college: '',
-            university: '',
-            status: '',
-            deg_type: '',
-            percentage: '',
-            start_date: '',
-            end_date: '',
+    } = methods
+
+    const handleClearService = useCallback(
+        (id) => {
+            resetField(id)
+            console.log("reset", id)
         },
+        [resetField]
+    )
+    useEffect(() => {
+        handleClearService();
+    })
+
+    const onPressAdd = handleSubmit(async (eduData) => {
+
+        console.log("eduDataAdd", eduData, id);
+        dispatch(addEducation(eduData))
+            .then(() => {
+                setTimeout(() => {
+                    dispatch(resetEducationState());
+                }, 5000);
+            });
+
     });
 
+    const onPressUpdate = handleSubmit(async (eduData) => {
+        data = { id: id, eduData: eduData };
+        console.log("eduDataupdate", data);
+        dispatch(updateEducation(data))
+            .then(() => {
+                setTimeout(() => {
+                    dispatch(resetEducationState());
+                }, 5000);
+            });
 
-    const onPressAdd = eduData => {
-        dispatch(addEducation(eduData)).then(() => {
-            setTimeout(() => {
-                dispatch(resetEducationState());
-            }, 1000);
-        })
-    };
+
+    });
 
     const commonTextInputProps = {
         style: styles.input,
@@ -101,6 +169,7 @@ const EducationAdd = () => {
         outlineColor: customTextColor.darkGreen,
         activeOutlineColor: customTextColor.darkGreen,
         selectionColor: customTextColor.darkGreen,
+        disabled: isLoading,
     };
 
     return (
@@ -111,6 +180,7 @@ const EducationAdd = () => {
                     <Text style={styles.title}>Education</Text>
                     <Text style={styles.subTitle}>Highlight your educational background including degree, certification to showcase your qualification</Text>
                 </View>
+
 
                 <View style={GlobalStyleSheet.containerForm}>
                     <View style={GlobalStyleSheet.inputWrapper}>
@@ -199,6 +269,7 @@ const EducationAdd = () => {
                                 }
                             }) => (
                                 <Dropdown
+                                    disable={isLoading}
                                     data={degreetype}
                                     placeholder='Select Degree Type'
                                     maxHeight={300}
@@ -227,6 +298,11 @@ const EducationAdd = () => {
                             )}
                             name="deg_type"
                         />
+                        {
+                            errors.deg_type && (
+                                <Text style={styles.errorText}>{errors.deg_type.message}</Text>
+                            )
+                        }
                     </View>
                     <View style={GlobalStyleSheet.inputWrapper1}>
                         {/* <View style={styles.row}>
@@ -262,7 +338,7 @@ const EducationAdd = () => {
                         </View> */}
                         <View style={styles.row}>
 
-                            <Text style={styles.subTitle1}>Currently Studying</Text>
+                            <Text disabled={isLoading} style={styles.subTitle1}>Currently Studying</Text>
 
                             <Controller
                                 control={control}
@@ -300,7 +376,8 @@ const EducationAdd = () => {
                                                 onChange(passed)
                                                 console.log("pressfirst", passed)
                                             }}>
-                                            <Text style={{ color: selectedtab == "passed" ? 'white' : 'black' }}>{passed}</Text>
+                                            <Text disabled={isLoading}
+                                                style={{ color: selectedtab == "passed" ? 'white' : 'black' }}>{passed}</Text>
                                         </TouchableOpacity>
 
                                         <TouchableOpacity style={{
@@ -316,67 +393,33 @@ const EducationAdd = () => {
                                                 onChange(pursuing)
                                                 console.log("presssecond", pursuing)
                                             }}>
-                                            <Text style={{ color: selectedtab == "pursuing" ? 'white' : 'black' }}>{pursuing}</Text>
+                                            <Text disabled={isLoading} style={{ color: selectedtab == "pursuing" ? 'white' : 'black' }}>{pursuing}</Text>
                                         </TouchableOpacity>
                                     </View>
                                 )}
                                 name="status" />
                         </View>
                     </View>
-
-
-
                     <View style={GlobalStyleSheet.inputWrapper}>
-                        {/* <Controller
+                        <Controller
                             control={control}
                             rules={{
-                                required: false,
+                                required: true,
                             }}
                             render={({
-                                field: {
-                                    onChange, value
-                                }
-                            }) => ( */}
-                        <TouchableOpacity onPress={() => setOpen(true)}>
-
-                            <TextInput
-                                {...commonTextInputProps}
-                                label="Start Date"
-                                editable={false}
-
-                            />
-                            {/* <DatePicker
-                                        modal
-                                        open={open}
-                                        date={date}
-                                        onConfirm={(date) => {
-                                            setOpen(false)
-                                            setDate(date)
-                                        }}
-                                        onCancel={() => {
-                                            setOpen(false)
-                                        }}
-                                    />
-                                    <TextInput
-                                        {...commonTextInputProps}
-                                        label="Start Date"
-                                        editable={false}
-                                        value={date}
-                                    /> */}
-
-                        </TouchableOpacity>
-                        {open && (
-                            <DateTimePicker
-                                mode='date'
-                                value={date || new Date()}
-                                onChange={handleDateChange} />
-                        )}
-
-                        {/* )}
+                                field: { onChange, value }
+                            }) => (
+                                <TextInput
+                                    {...commonTextInputProps}
+                                    label="Start Date"
+                                    value={value}
+                                    onChangeText={onChange}
+                                />
+                            )}
                             name="start_date"
-                        /> */}
+                        />
                         {
-                            errors.end_date && (
+                            errors.start_date && (
                                 <Text style={styles.errorText}>{errors.start_date.message}</Text>
                             )
                         }
@@ -386,36 +429,17 @@ const EducationAdd = () => {
                         <Controller
                             control={control}
                             rules={{
-                                required: false,
+                                required: true,
                             }}
                             render={({
-                                field: {
-                                    onChange, value
-                                }
+                                field: { onChange, value }
                             }) => (
-                                <TouchableOpacity onPress={() => setOpen(true)}>
-                                    {/* <DatePicker
-                                        modal
-                                        open={open}
-                                        date={date}
-                                        onConfirm={(date) => {
-                                            setOpen(false)
-                                            setDate(date)
-                                        }}
-                                        onCancel={() => {
-                                            setOpen(false)
-                                        }}
-                                    /> */}
-                                    <TextInput
-                                        {...commonTextInputProps}
-                                        label="End Date"
-                                        editable={false}
-                                        // value={date}
-                                        value={date}
-                                        onChangeText={onChange}
-                                    />
-
-                                </TouchableOpacity>
+                                <TextInput
+                                    {...commonTextInputProps}
+                                    label="End Date"
+                                    value={value}
+                                    onChangeText={onChange}
+                                />
                             )}
                             name="end_date"
                         />
@@ -426,14 +450,36 @@ const EducationAdd = () => {
                         }
                     </View>) : (null)}
 
-
-                    <View style={GlobalStyleSheet.buttonWrapper}>
+                    {!id ? (<View style={GlobalStyleSheet.buttonWrapper}>
                         <TouchableOpacity style={GlobalStyleSheet.button} onPress={handleSubmit(onPressAdd)}>
-
-                            <Text style={GlobalStyleSheet.buttonText}>Save Changes</Text>
+                            {isLoading ? (
+                                <ActivityIndicator
+                                    animating={true}
+                                    style={{ paddingVertical: 14 }}
+                                    color={customTextColor.white}
+                                    size={20}
+                                />
+                            ) : (
+                                <Text style={GlobalStyleSheet.buttonText}>Add Education</Text>
+                            )}
                         </TouchableOpacity>
-                    </View>
+                    </View>) : (<View style={GlobalStyleSheet.buttonWrapper}>
+                        <TouchableOpacity style={GlobalStyleSheet.button} onPress={handleSubmit(onPressUpdate)}>
+                            {isLoading ? (
+                                <ActivityIndicator
+                                    animating={true}
+                                    style={{ paddingVertical: 14 }}
+                                    color={customTextColor.white}
+                                    size={20}
+                                />
+                            ) : (
+                                <Text style={GlobalStyleSheet.buttonText}>Save Changes</Text>
+                            )}
+                        </TouchableOpacity>
+                    </View>)}
+
                 </View>
+
             </ScrollView>
 
         </View>

@@ -11,6 +11,7 @@ const initialState = {
     statusCode: 0,
     message: '',
     messageAdd: '',
+    messageDel: '',
 };
 
 export const getAllExperience = createAsyncThunk(
@@ -142,7 +143,7 @@ export const experienceSlice = createSlice({
                 state.isLoading = false;
                 state.isError = !action.payload.success;
                 state.isSuccess = action.payload.success;
-                state.message = action.payload.message;
+                state.messageDel = action.payload.message;
                 state.statusCode = action.payload.status_code;
             })
             .addCase(delExperience.rejected, (state, action) => {
@@ -174,6 +175,7 @@ export const experienceSlice = createSlice({
             .addCase(resetExperienceState, state => {
                 state.message = '';
                 state.messageAdd = '';
+                state.messageDel = '';
                 state.isSuccess = false;
                 state.statusCode = 0;
                 state.isError = false;

@@ -1,10 +1,10 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from "@react-navigation/native";
 import AppBar from "../../../../components/custom_toolbar/AppBar";
 import { customTextColor, customThemeColor } from "../../../../constants/Color";
 import { customFontSize, customFonts } from "../../../../constants/theme";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CardSkeleton from "../../../../components/skeleton_loader/CardSkeleton";
 import { getAllExperience } from "../../../../features/profile/ExperienceSlice";
@@ -13,6 +13,7 @@ import ExperienceCard from "./ExperienceCard";
 
 const ExperienceList = () => {
     const { allExperience } = useSelector(state => state.experience);
+    const [refreshing, setRefreshing] = useState(false);
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
@@ -22,7 +23,15 @@ const ExperienceList = () => {
         dispatch(getAllExperience());
     }, [dispatch]);
 
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        dispatch(getAllExperience());
+        console.log("first", allExperience)
 
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 2000);
+    }, []);
 
     const handleBack = () => {
         navigation.goBack();
@@ -45,13 +54,16 @@ const ExperienceList = () => {
                     </View>
                 </View>
             </View>
-            <ScrollView contentContainerStyle={{ paddingBottom: 80, paddingTop: 5 }}>
+            <ScrollView contentContainerStyle={{ paddingBottom: 80, paddingTop: 5 }}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh}
+                    />
+                }>
                 <View style={{
                     padding: 10,
                     //maxWidth : 575,
                     marginLeft: 'auto',
                     marginRight: 'auto',
-                    //backgroundColor:'red',
                     width: '100%',
                 }}>
 

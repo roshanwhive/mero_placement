@@ -21,7 +21,7 @@ const getSingleEducation = async id => {
     try {
         const config = await getConfigWithToken();
         const response = await axios.get(
-            `${base_url}candidate/education/${id},config`,
+            `${base_url}candidate/education/${id}`, config
         );
         if (response) {
             return response.data;
@@ -64,11 +64,11 @@ const delEducation = async id => {
 };
 
 // update Education
-const updateEducation = async eduData => {
+const updateEducation = async (eduUpdateData) => {
     try {
         const config = await getConfigWithToken();
         const response = await axios.post(
-            `${base_url}candidate/education-save-or-update/${id}`, eduData, config,
+            `${base_url}candidate/education-save-or-update`, eduUpdateData, config,
         );
         return response.data;
     } catch (error) {

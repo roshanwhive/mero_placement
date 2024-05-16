@@ -1,15 +1,55 @@
 import { Alert, Image, Text, TouchableOpacity, View } from "react-native"
 import { customTextColor, customThemeColor } from "../../../../constants/Color"
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { customFontSize, customFonts } from "../../../../constants/theme";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useEffect, useState } from "react";
+import { delEducation, resetEducationState } from "../../../../features/profile/EducationSlice";
+import { showMessage } from "react-native-flash-message";
 
 
 const EducationCard = ({ items, navigation }) => {
     const dispatch = useDispatch();
-
+    const { message, isSuccess, isLoading, isError, statusCode } = useSelector(state => state.education);
     const [status, setStatus] = useState(items?.passed_status);
+
+    const handleEdit = (id) => {
+        // id = items?.education_id;
+        navigation.navigate('EducationAdd', { id });
+        console.log("button", id);
+    }
+
+    useEffect(() => {
+        if (isError && statusCode !== 200 && statusCode !== 0) {
+            console.log("danger", isError, statusCode);
+            showMessage({
+                message: message,
+                type: 'danger',
+                setLoading: false,
+                animationDuration: 1000,
+                animated: true,
+            });
+        } else if (isSuccess && statusCode === 200) {
+            console.log("success", message);
+            showMessage({
+                message: message,
+                type: 'success',
+                setLoading: false,
+                animationDuration: 1000,
+                animated: true,
+            });
+        }
+    }, [isError, isSuccess, statusCode, message]);
+
+    const handleDelete = () => {
+        console.log("delID", items?.education_id)
+        dispatch(delEducation(items?.education_id)).then(() => {
+            setTimeout(() => {
+                dispatch(resetEducationState());
+            }, 1000);
+        })
+        console.log("deleteEdu", message)
+    }
 
     return (
         <View style={{
@@ -66,7 +106,7 @@ const EducationCard = ({ items, navigation }) => {
                                     paddingBottom: 4,
                                     paddingTop: 1,
                                 }}>
-                                <TouchableOpacity onPress={() => console.log("eduID", items?.education_id)}>
+                                <TouchableOpacity onPress={() => console.log("eduID", handleEdit(items?.education_id))}>
                                     <Icon name="square-edit-outline" size={20} color={customTextColor.primary} />
                                 </TouchableOpacity>
 
@@ -88,7 +128,7 @@ const EducationCard = ({ items, navigation }) => {
                                             onPress: () => { console.log("cancel", items?.education_id) },
                                             style: 'cancel',
                                         },
-                                        { text: 'OK', onPress: () => console.log("delete", items?.education_id) },
+                                        { text: 'OK', onPress: () => { handleDelete() } },
                                     ]);
                                 }}>
                                     <Icon name="delete" size={20} color={customTextColor.primary} />
@@ -138,18 +178,52 @@ const EducationCard = ({ items, navigation }) => {
                         </View>
 
                     </View>
-                    <Text style={{
-                        marginTop: 10,
-                        marginBottom: 3,
-                        color: customTextColor.primary,
-                        fontFamily: customFonts.fontRoboto,
-                        fontSize: customFontSize.font14,
-                    }}>{items ? items.institute_name : ''} </Text>
-                    {/* <Text style={{
-                        marginTop: 10,
-                        marginBottom: 3,
-                        color: 'black'
-                    }}>{items ? items.passed_status : ''} </Text> */}
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            marginTop: 10,
+                            justifyContent: 'space-between',
+                        }}>
+                        <View
+                            style={{
+                                flex: 1,
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                            }}>
+
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    paddingRight: 10,
+                                    marginRight: 10,
+                                }}>
+
+                                <Text style={{
+                                    marginTop: 10,
+                                    marginBottom: 3,
+                                    color: customTextColor.primary,
+                                    fontFamily: customFonts.fontRoboto,
+                                    fontSize: customFontSize.font14,
+                                }}>{items ? items.institute_name : ''} </Text>
+                            </View>
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    marginLeft: 20,
+                                    paddingLeft: 20,
+                                }}>
+                                <Text style={{
+                                    color: status == "passed" ? 'green' : 'red',
+                                    fontFamily: customFonts.fontRobotoBold,
+                                    fontSize: customFontSize.font16,
+                                }}>{items ? items.passed_status : ''}</Text>
+                            </View>
+                        </View>
+
+                    </View>
                 </View>
             </View>
 

@@ -8,6 +8,7 @@ const initialState = {
     isError: false,
     isSuccess: false,
     isLoading: false,
+    isLoadingSingle: false,
     statusCode: 0,
     message: '',
 };
@@ -58,9 +59,9 @@ export const delEducation = createAsyncThunk(
 
 export const updateEducation = createAsyncThunk(
     'profile/update-education',
-    async (eduData, thunkAPI) => {
+    async (eduUpdateData, thunkAPI) => {
         try {
-            return await educationService.updateEducation(eduData);
+            return await educationService.updateEducation(eduUpdateData);
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
         }
@@ -96,10 +97,11 @@ export const educationSlice = createSlice({
 
             // ------------------------------------Get Single Education -------------------------------
             .addCase(getSingleEducation.pending, state => {
-                state.isLoading = true;
+                state.isLoadingSingle = true;
             })
             .addCase(getSingleEducation.fulfilled, (state, action) => {
-                state.isLoading = false;
+                console.log("single", action.payload.data)
+                state.isLoadingSingle = false;
                 state.isError = !action.payload.success;
                 state.isSuccess = action.payload.success;
                 state.message = action.payload.message;
@@ -108,7 +110,7 @@ export const educationSlice = createSlice({
             })
             .addCase(getSingleEducation.rejected, (state, action) => {
                 state.isError = true;
-                state.isLoading = false;
+                state.isLoadingSingle = false;
                 state.isSuccess = false;
             })
 
@@ -132,7 +134,7 @@ export const educationSlice = createSlice({
 
             // ------------------------------------Delete Education -------------------------------
             .addCase(delEducation.pending, state => {
-                state.isLoading = true;
+                state.isLoadingDel = true;
             })
             .addCase(delEducation.fulfilled, (state, action) => {
                 console.log("delete", action.payload.message)
@@ -153,6 +155,7 @@ export const educationSlice = createSlice({
                 state.isLoading = true;
             })
             .addCase(updateEducation.fulfilled, (state, action) => {
+                console.log("update", action.payload.data)
                 state.isLoading = false;
                 state.isError = !action.payload.success;
                 state.isSuccess = action.payload.success;

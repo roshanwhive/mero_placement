@@ -1,9 +1,9 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import AppBar from "../../../../components/custom_toolbar/AppBar";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { getAllPreference } from "../../../../features/profile/PreferenceSlice";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { customTextColor, customThemeColor } from "../../../../constants/Color";
 import { customFontSize, customFonts } from "../../../../constants/theme";
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -13,6 +13,7 @@ import PreferenceCard from "./PreferenceCard";
 
 const PreferenceList = () => {
     const { allPreference } = useSelector(state => state.preference);
+    const [refreshing, setRefreshing] = useState(false);
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
@@ -20,6 +21,14 @@ const PreferenceList = () => {
     useEffect(() => {
         dispatch(getAllPreference());
     }, [dispatch]);
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        dispatch(getAllPreference());
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 2000);
+    }, []);
 
     const handleBack = () => {
         navigation.goBack();
@@ -43,7 +52,10 @@ const PreferenceList = () => {
                 </View>
             </View>
 
-            <ScrollView contentContainerStyle={{ paddingBottom: 80, paddingTop: 10 }}>
+            <ScrollView contentContainerStyle={{ paddingBottom: 80, paddingTop: 10 }}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }>
                 <View style={{
                     padding: 15,
                     //maxWidth : 575,
@@ -53,7 +65,7 @@ const PreferenceList = () => {
                     width: '100%',
                 }}>
 
-                    {!!allPreference ? (
+                    {!!!allPreference ? (
                         allPreference?.map((item, index) => {
                             return (
                                 <View key={index} >

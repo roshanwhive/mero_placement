@@ -51,7 +51,7 @@ const JobDetail = ({ navigation }) => {
   };
 
   const handleApply = (slug) => {
-   slug = singleJob?.slug;
+    slug = singleJob?.slug;
     navigation.navigate('CompareJobAndProfile', { slug });
     console.log("button", slug);
   };

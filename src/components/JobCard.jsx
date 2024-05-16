@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   },
   jobTitle: {
     fontSize: customFontSize.font16,
-    fontFamily: customFonts.fontRoboto,
+    fontFamily: customFonts.fontPoppins,
     marginBottom: 4,
     color: '#000000',
   },

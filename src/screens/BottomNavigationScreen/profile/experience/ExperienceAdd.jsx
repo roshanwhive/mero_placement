@@ -76,27 +76,14 @@ const ExperienceAdd = () => {
         navigation.goBack();
     };
 
-    // useEffect(() => {
-    //     if (isError && statusCode !== 200 && statusCode !== 0) {
-    //         showMessage({
-    //             message: JSON.stringify(message),
-    //             type: 'danger',
-    //             animationDuration: 1000,
-    //             animated: true,
-    //         });
-    //     } else if (isSuccess && statusCode === 200) {
-    //         navigation.navigate('ExperienceList');
-    //         showMessage({
-    //             message: JSON.stringify(message),
-    //             type: 'success',
-    //             animationDuration: 1000,
-    //             animated: true,
-    //         });
-    //     }
-    // }, [isError, isSuccess, statusCode, message]);
-
     const schema = yup.object().shape({
         organization_name: yup.string().required('Organization name is required'),
+        organization_type_id: yup.string().required('Select Organization Type'),
+        job_level_id: yup.string().required('Select Job Level'),
+        job_category_id: yup.string().required('Select Category'),
+        position: yup.string().required('Position is required'),
+        dutis: yup.string().required('Duties is required'),
+        start_date: yup.string().required('Start Date is required'),
     });
 
     const {
@@ -120,7 +107,7 @@ const ExperienceAdd = () => {
         }
     );
 
-    const onPressAdd = experienceData => {
+    const onPressAdd1 = experienceData => {
         dispatch(addExperience(experienceData)).then(() => {
             // //navigation.navigate('ExperienceList');
             // showMessage({
@@ -134,6 +121,30 @@ const ExperienceAdd = () => {
             }, 1000);
         })
     };
+
+    const onPressAdd = handleSubmit(async (experienceData) => {
+        dispatch(addExperience(experienceData)).then(() => {
+            if (isError && statusCode !== 200 && statusCode !== 0) {
+                showMessage({
+                    message: JSON.stringify(messageAdd),
+                    type: 'danger',
+                    animationDuration: 1000,
+                    animated: true,
+                });
+            } else if (isSuccess && statusCode === 200) {
+                navigation.navigate('ExperienceList');
+                showMessage({
+                    message: JSON.stringify(messageAdd),
+                    type: 'success',
+                    animationDuration: 1000,
+                    animated: true,
+                });
+            }
+            setTimeout(() => {
+                dispatch(resetExperienceState());
+            }, 1000);
+        })
+    });
 
     const commonTextInputProps = {
         style: styles.input,
@@ -169,7 +180,7 @@ const ExperienceAdd = () => {
                             name="organization_name"
                         />
                         {errors.organization_name && (
-                            <Text style={styles.errorText}>{errors.org_Name.message}</Text>
+                            <Text style={styles.errorText}>{errors.organization_name.message}</Text>
                         )}
                     </View>
 
@@ -214,6 +225,11 @@ const ExperienceAdd = () => {
                             )}
                             name="organization_type_id"
                         />
+                        {
+                            errors.organization_type_id && (
+                                <Text style={styles.errorText}>{errors.organization_type_id.message}</Text>
+                            )
+                        }
                     </View>
                     <View style={GlobalStyleSheet.inputWrapper}>
                         <Controller
@@ -256,6 +272,9 @@ const ExperienceAdd = () => {
                             )}
                             name="job_level_id"
                         />
+                        {errors.job_level_id && (
+                            <Text style={styles.errorText}>{errors.job_level_id.message}</Text>
+                        )}
                     </View>
 
                     <View style={GlobalStyleSheet.inputWrapper}>
@@ -299,6 +318,9 @@ const ExperienceAdd = () => {
                             )}
                             name="job_category_id"
                         />
+                        {errors.job_category_id && (
+                            <Text style={styles.errorText}>{errors.job_category_id.message}</Text>
+                        )}
                     </View>
 
                     <View style={GlobalStyleSheet.inputWrapper}>
@@ -314,12 +336,12 @@ const ExperienceAdd = () => {
                                     value={value}
                                     onChangeText={onChange}
                                 />
-                                // {errors.name && (
-                                //     <Text style={styles.errorText}>{errors.name.message}</Text>
-                                //   )}
                             )}
                             name="position"
                         />
+                        {errors.position && (
+                            <Text style={styles.errorText}>{errors.position.message}</Text>
+                        )}
                     </View>
 
 
@@ -336,12 +358,12 @@ const ExperienceAdd = () => {
                                     value={value}
                                     onChangeText={onChange}
                                 />
-                                // {errors.name && (
-                                //     <Text style={styles.errorText}>{errors.name.message}</Text>
-                                //   )}
                             )}
                             name="dutis"
                         />
+                        {errors.dutis && (
+                            <Text style={styles.errorText}>{errors.dutis.message}</Text>
+                        )}
                     </View>
 
                     <View style={GlobalStyleSheet.inputWrapper}>
@@ -371,14 +393,9 @@ const ExperienceAdd = () => {
                                         value={value}
                                         onChangeText={onChange}
                                     />
-                                    // {errors.name && (
-                                    //     <Text style={styles.errorText}>{errors.name.message}</Text>
-                                    //   )}
                                 )}
                                 name="start_date"
                             />
-
-
                         </TouchableOpacity>
                     </View>
                     <View style={GlobalStyleSheet.inputWrapper}>
@@ -408,9 +425,6 @@ const ExperienceAdd = () => {
                                         value={value}
                                         onChangeText={onChange}
                                     />
-                                    // {errors.name && (
-                                    //     <Text style={styles.errorText}>{errors.name.message}</Text>
-                                    //   )}
                                 )}
                                 name="end_date"
                             />

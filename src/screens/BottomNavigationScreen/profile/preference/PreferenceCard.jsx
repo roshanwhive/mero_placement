@@ -1,9 +1,11 @@
 import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { customTextColor, customThemeColor } from "../../../../constants/Color"
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { customFontSize, customFonts } from "../../../../constants/theme";
+import { delPreference, resetPreferenceState } from "../../../../features/profile/PreferenceSlice";
+import { showMessage } from "react-native-flash-message";
 
 const Row = ({ label, value }) => {
     return (
@@ -19,6 +21,32 @@ const Row = ({ label, value }) => {
 };
 
 const PreferenceCard = ({ items, navigation }) => {
+    const { messageDel, isSuccess, isLoading, isError, statusCode } = useSelector(state => state.preference);
+    const dispatch = useDispatch();
+   
+    const handleDelete = () => {
+        dispatch(delPreference(items?.id)).then(() => {
+            if (isError && statusCode !== 200 && statusCode !== 0) {
+                showMessage({
+                    message: "messageDel",
+                    type: 'danger',
+                    animationDuration: 1000,
+                    animated: true,
+                });
+            } else if (isSuccess && statusCode === 200) {
+                showMessage({
+                    message: messageDel,
+                    type: 'success',
+                    animationDuration: 1000,
+                    animated: true,
+                });
+            }
+            setTimeout(() => {
+                dispatch(resetPreferenceState());
+            }, 1000);
+        })
+
+    }
 
     return (
         <View style={{
@@ -44,7 +72,7 @@ const PreferenceCard = ({ items, navigation }) => {
 
                     <Text style={{
                         marginBottom: 3,
-                        color: customTextColor.primary,
+                        color: customTextColor.darkGreen,
                         fontSize: customFontSize.font18,
                         fontFamily: customFonts.fontRobotoBold,
                     }}> {items?.job_category?.name}</Text>
@@ -81,7 +109,7 @@ const PreferenceCard = ({ items, navigation }) => {
                                         onPress: () => { console.log("cancel", items?.id) },
                                         style: 'cancel',
                                     },
-                                    { text: 'OK', onPress: () => console.log("delete", items?.id) },
+                                    { text: 'OK', onPress: () => { handleDelete() } },
                                 ]);
                             }}>
                                 <Icon name="delete" size={20} color={customTextColor.primary} />

@@ -21,7 +21,9 @@ const PreferenceAdd = () => {
     const [date, setDate] = useState(new Date())
     const [open, setOpen] = useState(false)
     const { prefFormData, category, available_type, level, locaton, skill } = useSelector(state => state.formOptions);
-
+    const { messageAdd, isSuccess, isLoading, isError, statusCode } = useSelector(
+        state => state.preference,
+    );
 
     const dispatch = useDispatch();
 
@@ -98,6 +100,13 @@ const PreferenceAdd = () => {
     }, [skill]);
 
     const schema = yup.object().shape({
+        preferred_job: yup.string().required('Preferred Job is required'),
+        expected_salary: yup.string().required('Expected Salary is required'),
+        job_categories: yup.string().required('Select Job Category'),
+        availible_type: yup.string().required('Select Available Type'),
+        level: yup.string().required('Select Level'),
+        location: yup.string().required('Select Duties'),
+        skill: yup.string().required('Select Skill'),
 
     });
 
@@ -119,7 +128,7 @@ const PreferenceAdd = () => {
         },
     });
 
-    const onPressAdd = prefData => {
+    const onPressAdd1 = prefData => {
         dispatch(addPreference(prefData)).then(() => {
             console.log("first", prefData)
             setTimeout(() => {
@@ -127,6 +136,30 @@ const PreferenceAdd = () => {
             }, 1000);
         })
     };
+
+    const onPressAdd = handleSubmit(async (prefData) => {
+        dispatch(addPreference(prefData)).then(() => {
+            if (isError && statusCode !== 200 && statusCode !== 0) {
+                showMessage({
+                    message: JSON.stringify(messageAdd),
+                    type: 'danger',
+                    animationDuration: 1000,
+                    animated: true,
+                });
+            } else if (isSuccess && statusCode === 200) {
+                navigation.navigate('EducationList');
+                showMessage({
+                    message: JSON.stringify(messageAdd),
+                    type: 'success',
+                    animationDuration: 1000,
+                    animated: true,
+                });
+            }
+            setTimeout(() => {
+                dispatch(resetEducationState());
+            }, 1000);
+        })
+    });
 
     const commonTextInputProps = {
         style: styles.input,
@@ -232,6 +265,11 @@ const PreferenceAdd = () => {
                             )}
                             name="job_categories"
                         />
+                        {
+                            errors.job_categories && (
+                                <Text style={styles.errorText}>{errors.job_categories.message}</Text>
+                            )
+                        }
                     </View>
                     <View style={GlobalStyleSheet.inputWrapper}>
                         <Controller
@@ -274,6 +312,11 @@ const PreferenceAdd = () => {
                             )}
                             name="availible_type"
                         />
+                        {
+                            errors.availible_type && (
+                                <Text style={styles.errorText}>{errors.availible_type.message}</Text>
+                            )
+                        }
                     </View>
                     <View style={GlobalStyleSheet.inputWrapper}>
                         <Controller
@@ -316,6 +359,11 @@ const PreferenceAdd = () => {
                             )}
                             name="level"
                         />
+                        {
+                            errors.level && (
+                                <Text style={styles.errorText}>{errors.level.message}</Text>
+                            )
+                        }
                     </View>
                     <View style={GlobalStyleSheet.inputWrapper}>
                         <Controller
@@ -358,6 +406,11 @@ const PreferenceAdd = () => {
                             )}
                             name="location"
                         />
+                        {
+                            errors.location && (
+                                <Text style={styles.errorText}>{errors.location.message}</Text>
+                            )
+                        }
                     </View>
                     <View style={GlobalStyleSheet.inputWrapper}>
                         <Controller
@@ -400,6 +453,11 @@ const PreferenceAdd = () => {
                             )}
                             name="skill"
                         />
+                        {
+                            errors.skill && (
+                                <Text style={styles.errorText}>{errors.skill.message}</Text>
+                            )
+                        }
                     </View>
 
 

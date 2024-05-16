@@ -10,6 +10,8 @@ const initialState = {
     isLoading: false,
     statusCode: 0,
     message: '',
+    messageAdd: '',
+    messageDel: '',
 };
 
 export const getAllPreference = createAsyncThunk(
@@ -122,7 +124,7 @@ export const preferenceSlice = createSlice({
                 state.isLoading = false;
                 state.isError = !action.payload.success;
                 state.isSuccess = action.payload.success;
-                state.message = action.payload.message;
+                state.messageAdd = action.payload.message;
                 state.statusCode = action.payload.status_code;
             })
             .addCase(addPreference.rejected, (state, action) => {
@@ -140,7 +142,7 @@ export const preferenceSlice = createSlice({
                 state.isLoading = false;
                 state.isError = !action.payload.success;
                 state.isSuccess = action.payload.success;
-                state.message = action.payload.message;
+                state.messageDel = action?.payload?.message;
                 state.statusCode = action.payload.status_code;
             })
             .addCase(delPreference.rejected, (state, action) => {
@@ -170,6 +172,8 @@ export const preferenceSlice = createSlice({
             //Reset State
             .addCase(resetPreferenceState, state => {
                 state.message = '';
+                state.messageAdd = '';
+                state.messageDel = '';
                 state.isSuccess = false;
                 state.statusCode = 0;
                 state.isError = false;

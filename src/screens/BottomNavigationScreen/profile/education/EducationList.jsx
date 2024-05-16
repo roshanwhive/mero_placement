@@ -1,26 +1,35 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { ActivityIndicator, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from "@react-navigation/native";
 import EducationCard from "./EducationCard";
 import AppBar from "../../../../components/custom_toolbar/AppBar";
 import { customTextColor, customThemeColor } from "../../../../constants/Color";
 import { customFontSize, customFonts } from "../../../../constants/theme";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllEducation } from "../../../../features/profile/EducationSlice";
 import CardSkeleton from "../../../../components/skeleton_loader/CardSkeleton";
 
 
 const EducationList = () => {
-    const { allEducation } = useSelector(state => state.education);
+    const { allEducation, isLoading } = useSelector(state => state.education);
+    const [refreshing, setRefreshing] = useState(false);
     const navigation = useNavigation();
     const dispatch = useDispatch();
-
 
 
     useEffect(() => {
         dispatch(getAllEducation());
     }, [dispatch]);
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        console.log("first", refreshing)
+        dispatch(getAllEducation());
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 2000);
+    }, []);
 
     useEffect(() => {
         console.log('allEducation', typeof allEducation);
@@ -49,7 +58,10 @@ const EducationList = () => {
 
                 <Text style={styles.subTitle}>Highlight your educational background including degree, certification to showcase your qualification</Text>
             </View>
-            <ScrollView contentContainerStyle={{ paddingBottom: 80, paddingTop: 10 }}>
+            <ScrollView contentContainerStyle={{ paddingBottom: 80, paddingTop: 10 }}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }>
                 <View style={{
                     padding: 15,
                     //maxWidth : 575,
@@ -68,11 +80,12 @@ const EducationList = () => {
                             );
                         })
                     ) : (
-                        <View>
-                            <CardSkeleton />
-                            <CardSkeleton />
-                            <CardSkeleton />
-                        </View>
+                        <ActivityIndicator
+                            animating={true}
+                            style={{ paddingVertical: 14 }}
+                            color={customTextColor.darkGreen}
+                            size={20}
+                        />
                     )}
 
                 </View>
