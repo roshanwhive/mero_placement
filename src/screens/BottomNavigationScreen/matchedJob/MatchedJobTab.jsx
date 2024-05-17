@@ -52,8 +52,8 @@ const MatchedJobTab = ({ navigation }) => {
   const [animate, setAnimate] = useState(true);
 
   useEffect(() => {
-    console.log("isloading", isLoading);
-  }, [isLoading]);
+    console.log("matchedJobTab", userProfile.preference);
+  }, [userProfile]);
 
   useEffect(() => {
     CloseActivityIndicator();
@@ -83,7 +83,7 @@ const MatchedJobTab = ({ navigation }) => {
   const renderTabBar = props => {
     return (
       <>
-        <View style={{ flex: 1, height: '100%' }}>
+        <View >
           {isLoading ? (
 
             <ActivityIndicator
@@ -98,21 +98,21 @@ const MatchedJobTab = ({ navigation }) => {
               {!!!userProfile?.preference ? (
                 <AddProp />
               ) : (
-              <TabBar
-                {...props}
-                renderLabel={({ focused, route }) => {
-                  return (
-                    <Text
-                      style={{
-                        color: focused ? 'white' : 'gray',
-                        fontFamily: customFonts.fontPoppins,
-                      }}>
-                      {route.title}
-                    </Text>
-                  );
-                }}
-                indicatorStyle={styles.indicatorStyle}
-                style={styles.tabBar} />
+                <TabBar
+                  {...props}
+                  renderLabel={({ focused, route }) => {
+                    return (
+                      <Text
+                        style={{
+                          color: focused ? 'white' : 'gray',
+                          fontFamily: customFonts.fontPoppins,
+                        }}>
+                        {route.title}
+                      </Text>
+                    );
+                  }}
+                  indicatorStyle={styles.indicatorStyle}
+                  style={styles.tabBar} />
               )}
             </View>
           )}
