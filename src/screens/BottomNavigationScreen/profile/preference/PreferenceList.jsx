@@ -6,19 +6,19 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import AppBar from '../../../../components/custom_toolbar/AppBar';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
-import {getAllPreference} from '../../../../features/profile/PreferenceSlice';
 import React, {useEffect, useState} from 'react';
 import {customTextColor, customThemeColor} from '../../../../constants/Color';
 import {customFontSize, customFonts} from '../../../../constants/theme';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import CardSkeleton from '../../../../components/skeleton_loader/CardSkeleton';
 import PreferenceCard from './PreferenceCard';
+import {getAllPreference} from '../../../../features/profile/preferenceSlice/getAllPreferenceSlice';
+import ProfileAppBar from '../../../../components/custom_toolbar/ProfileAppBar';
 
 const PreferenceList = () => {
-  const {allPreference} = useSelector(state => state.preference);
+  const {allPreference} = useSelector(state => state.getAllPreference);
   const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -26,8 +26,6 @@ const PreferenceList = () => {
   useEffect(() => {
     dispatch(getAllPreference());
   }, [dispatch]);
-
-  console.log('pref', allPreference);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -40,35 +38,19 @@ const PreferenceList = () => {
   const handleBack = () => {
     navigation.goBack();
   };
+  const handleAdd = () => {
+    navigation.navigate('PreferenceAdd');
+  };
   return (
     <View style={styles.container}>
-      <AppBar handleBack={handleBack} title="Update Preference" />
-
-      <View>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginTop: 5,
-            justifyContent: 'space-between',
-          }}>
-          <Text style={styles.title}>Preference</Text>
-          <View
-            style={{
-              marginVertical: 10,
-              marginRight: 10,
-              paddingRight: 10,
-              marginTop: 10,
-            }}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('PreferenceAdd')}>
-              <Icon name="plus" size={20} color={customTextColor.primary} />
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
+      <ProfileAppBar
+        handleBack={handleBack}
+        title={'Preference'}
+        handleAddBtn={handleAdd}
+      />
 
       <ScrollView
-        contentContainerStyle={{paddingBottom: 80, paddingTop: 10}}
+        contentContainerStyle={{paddingBottom: 80, paddingTop: 5}}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>

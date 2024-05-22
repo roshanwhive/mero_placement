@@ -1,16 +1,20 @@
-import { View, Text, StyleSheet, useWindowDimensions, ActivityIndicator } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  useWindowDimensions,
+  ActivityIndicator,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import SavedJob from '../matchedJob/SavedJob';
 import AppBar from '../../../components/custom_toolbar/AppBar';
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import MatchedJob from './MatchedJob';
-import { customFonts } from '../../../constants/theme';
+import {customFonts} from '../../../constants/theme';
 import AddPref from './AddPref';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import CardSkeleton from '../../../components/skeleton_loader/CardSkeleton';
-import { customTextColor } from '../../../constants/Color';
-
-
+import {customTextColor} from '../../../constants/Color';
 
 const FirstRoute = () => (
   //<View style={{ flex: 1, backgroundColor: '#ff4081' }} />
@@ -27,10 +31,10 @@ const renderScene = SceneMap({
   second: SecondRoute,
 });
 
-const MatchedJobTab = ({ navigation }) => {
-
+const MatchedJobTab = ({navigation}) => {
   const dispatch = useDispatch();
-  const { isAuthenticated, token, userProfile, isLoading } = useSelector(state => state.auth);
+  const {isAuthenticated, token, isLoading} = useSelector(state => state.login);
+  const {userProfile} = useSelector(state => state.userProfile);
 
   const layout = useWindowDimensions();
   const handleBackClick = () => {
@@ -38,12 +42,12 @@ const MatchedJobTab = ({ navigation }) => {
   };
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    { key: 'first', title: 'Matched Job' },
-    { key: 'second', title: 'Saved Job' },
+    {key: 'first', title: 'Matched Job'},
+    {key: 'second', title: 'Saved Job'},
   ]);
 
   const handleLogin = () => {
-    navigation.navigate('Login')
+    navigation.navigate('Login');
   };
 
   const handleProfile = () => {
@@ -52,12 +56,12 @@ const MatchedJobTab = ({ navigation }) => {
   const [animate, setAnimate] = useState(true);
 
   useEffect(() => {
-    console.log("matchedJobTab", userProfile.preference);
+    console.log('matchedJobTab', userProfile.preference);
   }, [userProfile]);
 
   useEffect(() => {
     CloseActivityIndicator();
-  }, [])
+  }, []);
 
   const CloseActivityIndicator = () => {
     setTimeout(() => {
@@ -65,42 +69,46 @@ const MatchedJobTab = ({ navigation }) => {
     }, 3000);
   };
 
-
   const AddProp = () => {
     return (
       <View>
-        {
-          isAuthenticated && token !== null ? (
-            <AddPref title={"No Matched job Found"} subtitle={"Add your preference to view Matched Job"} btnText={"Add preference"} handleBtn={handleProfile} />
-          ) : (
-            <AddPref title={"Discover your dream jobs"} subtitle={"Login to view Matched Job"} btnText={"Login"} handleBtn={handleLogin} />
-          )
-        }
+        {isAuthenticated && token !== null ? (
+          <AddPref
+            title={'No Matched job Found'}
+            subtitle={'Add your preference to view Matched Job'}
+            btnText={'Add preference'}
+            handleBtn={handleProfile}
+          />
+        ) : (
+          <AddPref
+            title={'Discover your dream jobs'}
+            subtitle={'Login to view Matched Job'}
+            btnText={'Login'}
+            handleBtn={handleLogin}
+          />
+        )}
       </View>
-    )
-  }
+    );
+  };
 
   const renderTabBar = props => {
     return (
       <>
-        <View >
+        <View>
           {isLoading ? (
-
             <ActivityIndicator
               animating={true}
-              style={{ flex: 1, height: '100%' }}
+              style={{flex: 1, height: '100%'}}
               color={customTextColor.lightGreen}
             />
-
           ) : (
-
             <View>
               {!!!userProfile?.preference ? (
                 <AddProp />
               ) : (
                 <TabBar
                   {...props}
-                  renderLabel={({ focused, route }) => {
+                  renderLabel={({focused, route}) => {
                     return (
                       <Text
                         style={{
@@ -112,7 +120,8 @@ const MatchedJobTab = ({ navigation }) => {
                     );
                   }}
                   indicatorStyle={styles.indicatorStyle}
-                  style={styles.tabBar} />
+                  style={styles.tabBar}
+                />
               )}
             </View>
           )}
@@ -126,8 +135,8 @@ const MatchedJobTab = ({ navigation }) => {
       <AppBar handleBack={handleBackClick} />
       <TabView
         renderTabBar={renderTabBar}
-        navigationState={{ index, routes }}
-        renderScene={({ route }) => {
+        navigationState={{index, routes}}
+        renderScene={({route}) => {
           switch (route.key) {
             case 'first':
               return <MatchedJob />;
@@ -138,15 +147,13 @@ const MatchedJobTab = ({ navigation }) => {
           }
         }}
         onIndexChange={setIndex}
-        initialLayout={{ width: layout.width }}
-
+        initialLayout={{width: layout.width}}
       />
     </>
   );
 };
 
 const styles = StyleSheet.create({
-
   tabBar: {
     backgroundColor: '#9D050A',
     borderBottomWidth: 1,

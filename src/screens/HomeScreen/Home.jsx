@@ -1,22 +1,20 @@
-import { StatusBar, ScrollView, StyleSheet, View, Text } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {StatusBar, ScrollView, StyleSheet, View, Text} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import Categories from '../../components/Categories';
 import Featured from '../../containers/Featured';
 import TotalJobs from '../../containers/TotalJobs';
 import Training from '../../containers/Training';
 import ActivelySeekingForJobCard from '../../containers/ActivelySeekingForJobCard';
 import AppBar from '../../components/custom_toolbar/AppBar';
-import { customThemeColor } from '../../constants/Color';
-import { useSelector } from 'react-redux';
+import {customThemeColor} from '../../constants/Color';
+import {useSelector} from 'react-redux';
 import CompleteProfile from '../../containers/modal/CompleteProfile';
-import { getUserProfile } from '../../features/auth/AuthSlice';
-import { customFontSize, customFonts } from '../../constants/theme';
-import { useEffect } from 'react';
+import {getUserProfile} from '../../features/auth/AuthSlice';
+import {customFontSize, customFonts} from '../../constants/theme';
+import {useEffect} from 'react';
 import Carousel from '../../components/Carousel';
 
-const Home = ({ navigation }) => {
-  const { userProfile, isLoading } = useSelector(state => state.auth);
-
+const Home = ({navigation}) => {
   return (
     <>
       <CompleteProfile />
@@ -25,7 +23,6 @@ const Home = ({ navigation }) => {
         <StatusBar barStyle="dark-content" />
 
         <AppBar isHome={true} />
-
 
         {/* Main */}
         <ScrollView

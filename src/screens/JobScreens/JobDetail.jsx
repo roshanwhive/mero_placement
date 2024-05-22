@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
@@ -7,16 +7,16 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { customTextColor, customThemeColor } from '../../constants/Color';
-import { ActivityIndicator, Divider } from 'react-native-paper';
+import {customTextColor, customThemeColor} from '../../constants/Color';
+import {ActivityIndicator, Divider} from 'react-native-paper';
 import RenderHtml from 'react-native-render-html';
 import AppBar from '../../components/custom_toolbar/AppBar';
-import { customFontSize, customFonts } from '../../constants/theme';
+import {customFontSize, customFonts} from '../../constants/theme';
 import AvatarByName from '../../components/AvatarbyName';
 
-const Row = ({ label, value }) => {
+const Row = ({label, value}) => {
   return (
     <View style={styles.divider}>
       <View style={[styles.leftGrid]}>
@@ -43,17 +43,17 @@ const tagsStyles = {
   },
 };
 
-const JobDetail = ({ navigation }) => {
-  const { singleJob, isLoading } = useSelector(state => state.job);
+const JobDetail = ({navigation}) => {
+  const {singleJob, isLoading} = useSelector(state => state.job);
 
   const handleBack = () => {
     navigation.goBack();
   };
 
-  const handleApply = (slug) => {
+  const handleApply = slug => {
     slug = singleJob?.slug;
-    navigation.navigate('CompareJobAndProfile', { slug });
-    console.log("button", slug);
+    navigation.navigate('CompareJobAndProfile', {slug});
+    console.log('button', slug);
   };
 
   const handleShare = () => {
@@ -61,7 +61,7 @@ const JobDetail = ({ navigation }) => {
   };
 
   useEffect(() => {
-    console.log("image", singleJob?.slug);
+    console.log('image', singleJob?.slug);
   }, []);
 
   return (
@@ -72,47 +72,50 @@ const JobDetail = ({ navigation }) => {
       {Object.keys(singleJob).length === 0 || isLoading === true ? (
         <ActivityIndicator
           animating={true}
-          style={{ flex: 1 }}
+          style={{flex: 1}}
           color={customTextColor.lightGreen}
         />
-
       ) : (
-        <><ScrollView
-          style={styles.jobDetails}
-          horizontal={false}
-          indicatorStyle="white"
-          showsVerticalScrollIndicator={false}>
-          <View style={styles.cardHeader}>
-            <View style={styles.companyInfo}>
-              <View>
-                <Text style={styles.companyName}>
-                  {singleJob.get_company.employer_name}
-                </Text>
-                <Text style={styles.jobTitle}>{singleJob.position_name}</Text>
-                <View style={styles.flexCard}>
-                  <Text style={[styles.label, styles.link]}>
-                    {singleJob.employment_type.employment_type}
+        <>
+          <ScrollView
+            style={styles.jobDetails}
+            horizontal={false}
+            indicatorStyle="white"
+            showsVerticalScrollIndicator={false}>
+            <View style={styles.cardHeader}>
+              <View style={styles.companyInfo}>
+                <View>
+                  <Text style={styles.companyName}>
+                    {singleJob.get_company.employer_name}
                   </Text>
-                  <Text style={[styles.label1]}>
-                    {singleJob.vacancy_level.name}
-                  </Text>
-                  <Text style={[styles.label1]}>
-                    {singleJob.salary_type.salary_type}
-                  </Text>
+                  <Text style={styles.jobTitle}>{singleJob.position_name}</Text>
+                  <View style={styles.flexCard}>
+                    <Text style={[styles.label, styles.link]}>
+                      {singleJob.employment_type.employment_type}
+                    </Text>
+                    <Text style={[styles.label1]}>
+                      {singleJob.vacancy_level.name}
+                    </Text>
+                    <Text style={[styles.label1]}>
+                      {singleJob.salary_type.salary_type}
+                    </Text>
+                  </View>
+                </View>
+                <View style={styles.companyLogoContainer}>
+                  {singleJob?.get_company?.logo !== null ? (
+                    <Image
+                      source={{uri: singleJob?.get_company?.logo}}
+                      style={styles.companyLogo}
+                    />
+                  ) : (
+                    <AvatarByName
+                      name={singleJob?.get_company?.employer_name}
+                    />
+                  )}
                 </View>
               </View>
-              <View style={styles.companyLogoContainer}>
-                {singleJob?.get_company?.logo !== null ? (
-                  <Image
-                    source={{ uri: singleJob?.get_company?.logo }}
-                    style={styles.companyLogo} />
-                ) : (
-                  <AvatarByName name={singleJob?.get_company?.employer_name} />
-                )}
-              </View>
-            </View>
-            <Divider />
-            {/* <View style={styles.container1}>
+              <Divider />
+              {/* <View style={styles.container1}>
               <View style={styles.cardSmall}>
                 <Icon
                   name="eye-slash"
@@ -138,55 +141,58 @@ const JobDetail = ({ navigation }) => {
                 <Text style={styles.subtitle}>{singleJob.total_likes}</Text>
               </View>
             </View> */}
-            <Text style={styles.basicjob}>Basic Job Information</Text>
-            <View>
-              <Row label="No. of Vacancy" value={singleJob?.no_of_position} />
-              <Row label="Category" value={singleJob?.category?.name} />
-              {/* <Row label="Location" value={singleJob?.address?.address} /> */}
-              <Row label="Working hour" value={singleJob?.work_hour} />
-              {/* <Row label="Position" value={singleJob?.vacancy_level?.name} /> */}
-              <Row label="Salary" value={singleJob?.salary} />
-              <Row label="Gender" value={singleJob?.gender?.name} />
-              <Row label="Expiry Date" value={singleJob?.deadline} />
+              <Text style={styles.basicjob}>Basic Job Information</Text>
+              <View>
+                <Row label="No. of Vacancy" value={singleJob?.no_of_position} />
+                <Row label="Category" value={singleJob?.category?.name} />
+                {/* <Row label="Location" value={singleJob?.address?.address} /> */}
+                <Row label="Working hour" value={singleJob?.work_hour} />
+                {/* <Row label="Position" value={singleJob?.vacancy_level?.name} /> */}
+                <Row label="Salary" value={singleJob?.salary} />
+                <Row label="Gender" value={singleJob?.gender?.name} />
+                <Row label="Expiry Date" value={singleJob?.deadline} />
+              </View>
             </View>
-          </View>
 
-          <View style={styles.additionalSections}>
-            <View style={styles.cardHeader}>
-              <Text style={styles.sectionTitle}>About the company:</Text>
-              <RenderHtml
-                contentWidth={100}
-                ignoredDomTags={['quillbot-extension-portal']}
-                tagsStyles={tagsStyles}
-                source={{
-                  html: singleJob.get_company?.description,
-                }} />
-
-              <Text style={styles.sectionTitle}>Responsibilities:</Text>
-              <View style={{ marginBottom: 4, paddingLeft: 5 }}>
+            <View style={styles.additionalSections}>
+              <View style={styles.cardHeader}>
+                <Text style={styles.sectionTitle}>About the company:</Text>
                 <RenderHtml
                   contentWidth={100}
                   ignoredDomTags={['quillbot-extension-portal']}
                   tagsStyles={tagsStyles}
                   source={{
-                    html: singleJob?.job_description,
-                  }} />
-              </View>
+                    html: singleJob.get_company?.description,
+                  }}
+                />
 
-              <Text style={styles.sectionTitle}>Skills:</Text>
-              <View style={{ marginBottom: 4, paddingLeft: 5 }}>
-                <RenderHtml
-                  contentWidth={100}
-                  ignoredDomTags={['quillbot-extension-portal']}
-                  tagsStyles={tagsStyles}
-                  source={{
-                    html: singleJob?.job_specification,
-                  }} />
-                {/* </Text> */}
+                <Text style={styles.sectionTitle}>Responsibilities:</Text>
+                <View style={{marginBottom: 4, paddingLeft: 5}}>
+                  <RenderHtml
+                    contentWidth={100}
+                    ignoredDomTags={['quillbot-extension-portal']}
+                    tagsStyles={tagsStyles}
+                    source={{
+                      html: singleJob?.job_description,
+                    }}
+                  />
+                </View>
+
+                <Text style={styles.sectionTitle}>Skills:</Text>
+                <View style={{marginBottom: 4, paddingLeft: 5}}>
+                  <RenderHtml
+                    contentWidth={100}
+                    ignoredDomTags={['quillbot-extension-portal']}
+                    tagsStyles={tagsStyles}
+                    source={{
+                      html: singleJob?.job_specification,
+                    }}
+                  />
+                  {/* </Text> */}
+                </View>
               </View>
             </View>
-          </View>
-        </ScrollView>
+          </ScrollView>
           <View style={styles.jobActions}>
             <TouchableOpacity onPress={handleApply} style={styles.actionButton}>
               <Text style={styles.actionButtonText}>Apply Job</Text>
@@ -194,7 +200,8 @@ const JobDetail = ({ navigation }) => {
             <View style={styles.iconContainer}>
               <Icon name="share" size={25} color={customTextColor.primary} />
             </View>
-          </View></>
+          </View>
+        </>
       )}
     </View>
   );

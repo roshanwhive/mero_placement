@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,46 +7,47 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import { customTextColor, customThemeColor } from '../../constants/Color';
+import {customTextColor, customThemeColor} from '../../constants/Color';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import companyLogo from '../../assets/companyLogo.png';
-import { TabView, TabBar } from 'react-native-tab-view';
+import {TabView, TabBar} from 'react-native-tab-view';
 import CompanyBackground from '../../containers/profile/CompanyBackground';
 import CompanyPostedJob from '../../containers/profile/CompanyPostedJob';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import RenderHtml from 'react-native-render-html';
-import { ActivityIndicator } from 'react-native-paper';
+import {ActivityIndicator} from 'react-native-paper';
 import AppBar from '../../components/custom_toolbar/AppBar';
-import { customFontSize, customFonts } from '../../constants/theme';
+import {customFontSize, customFonts} from '../../constants/theme';
 
 const renderTabBar = props => (
   <TabBar
     {...props}
     // inactiveColor={customTextColor.primary}
     // activeColor={customTextColor.darkRed}
-    indicatorStyle={{ backgroundColor: customTextColor.darkRed }}
-    style={{ backgroundColor: customTextColor.white, }}
-    renderLabel={({ focused, route }) => {
+    indicatorStyle={{backgroundColor: customTextColor.darkRed}}
+    style={{backgroundColor: customTextColor.white}}
+    renderLabel={({focused, route}) => {
       return (
-        <Text style={{
-          color: focused ? 'black' : 'gray',
-          fontFamily: customFonts.fontPoppins
-        }}>
+        <Text
+          style={{
+            color: focused ? 'black' : 'gray',
+            fontFamily: customFonts.fontPoppins,
+          }}>
           {route.title}
         </Text>
-      )
+      );
     }}
   />
 );
 
-const CompanyProfile = ({ navigation }) => {
+const CompanyProfile = ({navigation}) => {
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    { key: 'first', title: 'Background' },
-    { key: 'second', title: 'Posted Job' },
+    {key: 'first', title: 'Background'},
+    {key: 'second', title: 'Posted Job'},
   ]);
 
-  const { companyProfile, isLoading } = useSelector(state => state.company);
+  const {companyProfile, isLoading} = useSelector(state => state.company);
 
   const [showFullDescription, setShowFullDescription] = useState(false);
   const description = companyProfile ? companyProfile.description : '';
@@ -75,18 +76,17 @@ const CompanyProfile = ({ navigation }) => {
       contentContainerStyle={styles.container}>
       <AppBar handleBack={handleBack} title="Company Profile" />
 
-
       {Object.keys(companyProfile).length === 0 || isLoading === true ? (
         <ActivityIndicator
           animating={true}
-          style={[styles.body, { flex: 1 }]}
+          style={[styles.body, {flex: 1}]}
           color={customTextColor.lightGreen}
         />
       ) : (
         <>
           <View style={styles.header}></View>
           <View style={styles.body}>
-            <Image style={styles.avatar} source={{ uri: companyProfile?.logo }} />
+            <Image style={styles.avatar} source={{uri: companyProfile?.logo}} />
             <View style={styles.bodyContent}>
               <View style={styles.card}>
                 <Text style={styles.title}>
@@ -150,8 +150,8 @@ const CompanyProfile = ({ navigation }) => {
           </View>
           <TabView
             renderTabBar={renderTabBar}
-            navigationState={{ index, routes }}
-            renderScene={({ route }) => {
+            navigationState={{index, routes}}
+            renderScene={({route}) => {
               switch (route.key) {
                 case 'first':
                   return <CompanyBackground backgroundInfo={companyProfile} />;
@@ -208,12 +208,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: customFontSize.font20,
     color: customTextColor.primary,
-    fontFamily: customFonts.fontPoppins
+    fontFamily: customFonts.fontPoppins,
   },
   subtitle: {
     fontSize: 16,
     color: customTextColor.secondary,
-    fontFamily: customFonts.fontPrompt
+    fontFamily: customFonts.fontPrompt,
   },
   //   -----------------------------Follow section-----------------------
   containerFollow: {
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     fontSize: customFontSize.font14,
-    fontFamily: customFonts.fontPrompt
+    fontFamily: customFonts.fontPrompt,
   },
 
   //   -----------------------------------Status Section---------------------------------------
@@ -279,7 +279,6 @@ const styles = StyleSheet.create({
     fontSize: customFontSize.font12,
     color: customTextColor.primary,
   },
-  containerTab: {
-  },
+  containerTab: {},
 });
 export default CompanyProfile;

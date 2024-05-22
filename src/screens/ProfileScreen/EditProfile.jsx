@@ -32,7 +32,7 @@ const AccountEdit = () => {
   );
 
   const [genders, setGenders] = useState([]);
-  const {userProfile} = useSelector(state => state.auth);
+  const {userProfile} = useSelector(state => state.userProfile);
   const {allGenderData} = useSelector(state => state.formOptions);
   const {control, handleSubmit} = useForm();
   const dispatch = useDispatch();

@@ -1,29 +1,28 @@
-import { View, Text, SafeAreaView, ScrollView, StyleSheet } from 'react-native'
-import React, { useEffect } from 'react'
-import { color } from 'react-native-reanimated'
+import {View, Text, SafeAreaView, ScrollView, StyleSheet} from 'react-native';
+import React, {useEffect} from 'react';
+import {color} from 'react-native-reanimated';
 import Featured from '../../../containers/Featured';
 import TotalJobs from '../../../containers/TotalJobs';
 import JobAppliedList from '../../../containers/JobAppliedList';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import JobCard from '../../../components/JobCard';
 import CardSkeleton from '../../../components/skeleton_loader/CardSkeleton';
-import { getAppliedJob } from '../../../features/status/StatusSlice';
-import { useNavigation } from '@react-navigation/native';
-import { GlobalStyleSheet } from '../../../constants/StyleSheet';
-import { customThemeColor } from '../../../constants/Color';
+import {getAppliedJob} from '../../../features/status/StatusSlice';
+import {useNavigation} from '@react-navigation/native';
+import {GlobalStyleSheet} from '../../../constants/StyleSheet';
+import {customThemeColor} from '../../../constants/Color';
 
 const JobApplied = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const { appliedJobs } = useSelector(state => state.status);
+  const {appliedJobs} = useSelector(state => state.status);
 
   useEffect(() => {
     dispatch(getAppliedJob());
   }, [dispatch]);
 
   return (
-
     <ScrollView
       showsVerticalScrollIndicator={false}
       contentContainerStyle={GlobalStyleSheet.scrollViewContentStatus}
@@ -42,8 +41,7 @@ const JobApplied = () => {
           <CardSkeleton />
           <CardSkeleton />
         </View>
-      )
-      }
+      )}
     </ScrollView>
   );
 };

@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk, createAction } from '@reduxjs/toolkit';
-import { authService } from './AuthService';
+import {createSlice, createAsyncThunk, createAction} from '@reduxjs/toolkit';
+import {authService} from './AuthService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const initialState = {

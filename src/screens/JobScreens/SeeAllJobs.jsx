@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -8,17 +8,17 @@ import {
 } from 'react-native';
 import JobCard from '../../components/JobCard';
 import Icon from 'react-native-vector-icons/Feather';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllJobs } from '../../features/job/JobSlice';
-import { ActivityIndicator } from 'react-native-paper';
-import { customTextColor, customThemeColor } from '../../constants/Color';
-import { Dropdown } from 'react-native-element-dropdown';
-import { getAllCategories } from '../../features/formData/FormSlice';
-import { customFontSize } from '../../constants/theme';
+import {useDispatch, useSelector} from 'react-redux';
+import {getAllJobs} from '../../features/job/JobSlice';
+import {ActivityIndicator} from 'react-native-paper';
+import {customTextColor, customThemeColor} from '../../constants/Color';
+import {Dropdown} from 'react-native-element-dropdown';
+import {getAllCategories} from '../../features/formData/FormSlice';
+import {customFontSize} from '../../constants/theme';
 
-const SeeAllJobs = ({ navigation }) => {
+const SeeAllJobs = ({navigation}) => {
   const dispatch = useDispatch();
-  const { allJobs, jobCategories, isLoading } = useSelector(state => state.job);
+  const {allJobs, jobCategories, isLoading} = useSelector(state => state.job);
 
   const [category, setCategory] = useState(null);
   const [isFocusCategory, setIsFocusCategory] = useState(false);
@@ -53,12 +53,12 @@ const SeeAllJobs = ({ navigation }) => {
               <Dropdown
                 style={[
                   styles.dropdown,
-                  isFocusCategory && { borderColor: 'blue' },
+                  isFocusCategory && {borderColor: 'blue'},
                 ]}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
                 inputSearchStyle={styles.inputSearchStyle}
-                itemTextStyle={{ color: customTextColor.secondary }}
+                itemTextStyle={{color: customTextColor.secondary}}
                 iconStyle={styles.iconStyle}
                 data={jobCategories}
                 search
@@ -105,10 +105,10 @@ const SeeAllJobs = ({ navigation }) => {
             );
           })
         ) : (
-          <View style={{ marginTop: 100 }}>
+          <View style={{marginTop: 100}}>
             <ActivityIndicator
               animating={true}
-              style={{ marginTop: 40 }}
+              style={{marginTop: 40}}
               color={customTextColor.lightGreen}
             />
           </View>
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: customFontSize.font16,
-    color: customTextColor.secondary
+    color: customTextColor.secondary,
   },
 });
 

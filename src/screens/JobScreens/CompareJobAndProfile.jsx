@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -11,18 +11,18 @@ import {
   Alert,
   Button,
 } from 'react-native';
-import { customTextColor, customThemeColor } from '../../constants/Color';
+import {customTextColor, customThemeColor} from '../../constants/Color';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import RoundButtonComp from '../../components/RoundBtn';
-import { Divider } from 'react-native-paper';
+import {Divider} from 'react-native-paper';
 import AppBar from '../../components/custom_toolbar/AppBar';
-import { useDispatch, useSelector } from 'react-redux';
-import { getapplyJobData } from '../../features/applyJob/applyJobSlice';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { customFontSize, customFonts } from '../../constants/theme';
+import {useDispatch, useSelector} from 'react-redux';
+import {getapplyJobData} from '../../features/applyJob/applyJobSlice';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {customFontSize, customFonts} from '../../constants/theme';
 import ResumeModal from '../HomeScreen/ResumeModal';
 
-const TableHeader = ({ navigation }) => {
+const TableHeader = ({navigation}) => {
   return (
     <>
       <View style={cardStyle.card}>
@@ -39,22 +39,24 @@ const TableHeader = ({ navigation }) => {
     </>
   );
 };
-const ProfileDetail = ({ icon, value }) => {
+const ProfileDetail = ({icon, value}) => {
   return (
     <View
-      style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' }}>
+      style={{flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap'}}>
       <Icon name={icon} size={13} color={customTextColor.primary} />
-      <Text style={[styles.text, { marginLeft: 8 }]}>{value}</Text>
+      <Text style={[styles.text, {marginLeft: 8}]}>{value}</Text>
     </View>
   );
 };
-const CompareJobAndProfile = (slug) => {
+const CompareJobAndProfile = slug => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const route = useRoute();
   const companyLogo = require('../../assets/companyLogo.png');
   slug = route.params?.slug;
-  const { jobApplyData, isLoading, lead, vacancy, message } = useSelector(state => state.jobApply);
+  const {jobApplyData, isLoading, lead, vacancy, message} = useSelector(
+    state => state.jobApply,
+  );
   const [visible, setVisible] = useState(false);
 
   const showModal = () => setVisible(true);
@@ -66,166 +68,235 @@ const CompareJobAndProfile = (slug) => {
 
   const handleCancel = () => {
     navigation.navigate('HomeScreen');
-  }
+  };
 
   useEffect(() => {
     dispatch(getapplyJobData(slug));
-  }, [dispatch])
+  }, [dispatch]);
 
   useEffect(() => {
-    console.log('applydata', typeof jobApplyData)
-  }, [dispatch])
+    console.log('applydata', typeof jobApplyData);
+  }, [dispatch]);
 
   return (
     <>
       <AppBar handleBack={handleBack} title={'Profile Review'} />
       <View style={styles.container}>
-
         {/* employee review */}
         {Object.keys(jobApplyData).length === 0 || isLoading === true ? (
           <ActivityIndicator
             animating={true}
-            style={{ flex: 1 }}
+            style={{flex: 1}}
             color={customTextColor.lightGreen}
           />
-
         ) : (
-
-          <><TableHeader navigation={navigation} />
+          <>
+            <TableHeader navigation={navigation} />
             <SafeAreaView style={styles.card}>
-
               <ScrollView>
                 <View>
                   <View style={styles.row}>
-                    <View style={{ width: '50%' }}>
+                    <View style={{width: '50%'}}>
                       <Image source={companyLogo} style={styles.logo}></Image>
-                      <Text style={{ color: 'black', fontFamily: customFonts.fontRobotoBold, marginTop: 8 }}>{lead.lead_name}</Text>
-                      <Text style={{ color: 'black', fontFamily: customFonts.fontRobotoBold }}>{lead.primary_contact}</Text>
-                      <Text style={{ color: 'black', fontFamily: customFonts.fontRoboto }}>{lead.email}</Text>
+                      <Text
+                        style={{
+                          color: 'black',
+                          fontFamily: customFonts.fontRobotoBold,
+                          marginTop: 8,
+                        }}>
+                        {lead.lead_name}
+                      </Text>
+                      <Text
+                        style={{
+                          color: 'black',
+                          fontFamily: customFonts.fontRobotoBold,
+                        }}>
+                        {lead.primary_contact}
+                      </Text>
+                      <Text
+                        style={{
+                          color: 'black',
+                          fontFamily: customFonts.fontRoboto,
+                        }}>
+                        {lead.email}
+                      </Text>
                     </View>
-                    <View style={{ width: '50%' }}>
+                    <View style={{width: '50%'}}>
                       <Image source={companyLogo} style={styles.logo}></Image>
-                      <Text style={{ color: 'black', fontFamily: customFonts.fontRobotoBold, marginTop: 8 }}>{vacancy.position_name}</Text>
-                      <Text style={{ color: 'black', fontFamily: customFonts.fontRobotoBold }}>{vacancy?.get_company?.employer_name}</Text>
-                      <Text style={{ color: 'black', marginBottom: 8, fontFamily: 'Roboto-Italic' }}>Apply before: {vacancy?.deadline}</Text>
+                      <Text
+                        style={{
+                          color: 'black',
+                          fontFamily: customFonts.fontRobotoBold,
+                          marginTop: 8,
+                        }}>
+                        {vacancy.position_name}
+                      </Text>
+                      <Text
+                        style={{
+                          color: 'black',
+                          fontFamily: customFonts.fontRobotoBold,
+                        }}>
+                        {vacancy?.get_company?.employer_name}
+                      </Text>
+                      <Text
+                        style={{
+                          color: 'black',
+                          marginBottom: 8,
+                          fontFamily: 'Roboto-Italic',
+                        }}>
+                        Apply before: {vacancy?.deadline}
+                      </Text>
                     </View>
                   </View>
 
                   <Divider />
 
                   <View style={styles.row}>
-                    <View style={{ width: '50%' }}>
+                    <View style={{width: '50%'}}>
                       <Text style={styles.headingProfile}>Your Category</Text>
                       <View style={styles.flexCard}>
-                        <Text style={[styles.label, styles.link]}>{lead?.preference?.job_category?.name}</Text>
-
+                        <Text style={[styles.label, styles.link]}>
+                          {lead?.preference?.job_category?.name}
+                        </Text>
                       </View>
                     </View>
-                    <View style={{ width: '50%' }}>
-                      <Text style={styles.headingProfile}>Required Category</Text>
+                    <View style={{width: '50%'}}>
+                      <Text style={styles.headingProfile}>
+                        Required Category
+                      </Text>
                       <View style={styles.flexCard}>
-                        <Text style={[styles.label, styles.link]}>{vacancy?.category?.name}</Text>
-
+                        <Text style={[styles.label, styles.link]}>
+                          {vacancy?.category?.name}
+                        </Text>
                       </View>
                     </View>
                   </View>
                   <Divider />
                   <View style={styles.row}>
-                    <View style={{ width: '50%' }}>
+                    <View style={{width: '50%'}}>
                       <Text style={styles.headingProfile}>Your Skills</Text>
                       <View style={styles.flexCard}>
-                        <Text style={[styles.label, styles.link]}>{lead?.preference?.get_skill?.skill}</Text>
+                        <Text style={[styles.label, styles.link]}>
+                          {lead?.preference?.get_skill?.skill}
+                        </Text>
                       </View>
                     </View>
-                    <View style={{ width: '50%' }}>
+                    <View style={{width: '50%'}}>
                       <Text style={styles.headingProfile}>Required Skills</Text>
                       <View style={styles.flexCard}>
-                        <Text style={[styles.label, styles.link]}>{vacancy?.skills}</Text>
+                        <Text style={[styles.label, styles.link]}>
+                          {vacancy?.skills}
+                        </Text>
                       </View>
                     </View>
                   </View>
                   <Divider />
 
                   <View style={styles.row}>
-                    <View style={{ width: '50%' }}>
-                      <Text style={styles.headingProfile}>Your Education level</Text>
+                    <View style={{width: '50%'}}>
+                      <Text style={styles.headingProfile}>
+                        Your Education level
+                      </Text>
                       <View style={styles.flexCard}>
                         <Text style={[styles.label, styles.link]}>Redux</Text>
                       </View>
                     </View>
-                    <View style={{ width: '50%' }}>
-                      <Text style={styles.headingProfile}>Required Education level</Text>
+                    <View style={{width: '50%'}}>
+                      <Text style={styles.headingProfile}>
+                        Required Education level
+                      </Text>
                       <View style={styles.flexCard}>
-                        <Text style={[styles.label, styles.link]}>{vacancy?.education?.deg_type_name}</Text>
+                        <Text style={[styles.label, styles.link]}>
+                          {vacancy?.education?.deg_type_name}
+                        </Text>
                       </View>
                     </View>
                   </View>
                   <Divider />
 
                   <View style={styles.row}>
-                    <View style={{ width: '50%' }}>
+                    <View style={{width: '50%'}}>
                       <Text style={styles.headingProfile}>Your Experience</Text>
                       <View style={styles.flexCard}>
-                        <Text style={[styles.label, styles.link]}>{lead?.level?.name}</Text>
+                        <Text style={[styles.label, styles.link]}>
+                          {lead?.level?.name}
+                        </Text>
                       </View>
                     </View>
-                    <View style={{ width: '50%' }}>
-                      <Text style={styles.headingProfile}>Required Experience</Text>
+                    <View style={{width: '50%'}}>
+                      <Text style={styles.headingProfile}>
+                        Required Experience
+                      </Text>
                       <View style={styles.flexCard}>
-                        <Text style={[styles.label, styles.link]}>{vacancy?.vacancy_level?.name}</Text>
-                        <Text style={[styles.label, styles.link]}>Not required</Text>
+                        <Text style={[styles.label, styles.link]}>
+                          {vacancy?.vacancy_level?.name}
+                        </Text>
+                        <Text style={[styles.label, styles.link]}>
+                          Not required
+                        </Text>
                       </View>
                     </View>
                   </View>
                   <Divider />
 
                   <View style={styles.row}>
-                    <View style={{ width: '50%' }}>
-                      <Text style={styles.headingProfile}>Your Expected Salary</Text>
+                    <View style={{width: '50%'}}>
+                      <Text style={styles.headingProfile}>
+                        Your Expected Salary
+                      </Text>
                       <View style={styles.flexCard}>
-                        <Text style={[styles.label, styles.link]}>{lead?.preference?.expected_salary}</Text>
+                        <Text style={[styles.label, styles.link]}>
+                          {lead?.preference?.expected_salary}
+                        </Text>
                       </View>
                     </View>
-                    <View style={{ width: '50%' }}>
-                      <Text style={styles.headingProfile}>Required Expected Salary</Text>
+                    <View style={{width: '50%'}}>
+                      <Text style={styles.headingProfile}>
+                        Required Expected Salary
+                      </Text>
                       <View style={styles.flexCard}>
-                        <Text style={[styles.label, styles.link]}>NRs. {vacancy?.salary}</Text>
+                        <Text style={[styles.label, styles.link]}>
+                          NRs. {vacancy?.salary}
+                        </Text>
                       </View>
                     </View>
                   </View>
                 </View>
               </ScrollView>
             </SafeAreaView>
-            <View style={{
-              paddingHorizontal: 10,
-              paddingVertical: 15,
-              flexDirection: 'row',
-              marginBottom: 10,
-              marginLeft: 5,
-              marginRight: 5,
-              justifyContent: 'space-between',
-            }}>
-              <RoundButtonComp label={"Cancel"}
+            <View
+              style={{
+                paddingHorizontal: 10,
+                paddingVertical: 15,
+                flexDirection: 'row',
+                marginBottom: 10,
+                marginLeft: 5,
+                marginRight: 5,
+                justifyContent: 'space-between',
+              }}>
+              <RoundButtonComp
+                label={'Cancel'}
                 border={true}
                 widthBtn={170}
                 // onPressBtn={() => setVisible(false)} />
-                onPressBtn={handleBack} />
+                onPressBtn={handleBack}
+              />
 
-              <RoundButtonComp label="Apply Now"
+              <RoundButtonComp
+                label="Apply Now"
                 widthBtn={170}
-                onPressBtn={showModal} />
-            </View></>
+                onPressBtn={showModal}
+              />
+            </View>
+          </>
         )}
       </View>
-      {visible &&
-        <ResumeModal hideModal={hideModal} slug />
-      }
+      {visible && <ResumeModal hideModal={hideModal} slug />}
     </>
   );
 };
 
 const styles = StyleSheet.create({
-
   modalContent: {
     flex: 1,
     justifyContent: 'center',
@@ -264,7 +335,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: customThemeColor.white,
     shadowColor: 'rgba(150,170,180,0.5)',
-    shadowOffset: { width: 0, height: 7 },
+    shadowOffset: {width: 0, height: 7},
     shadowOpacity: 1,
     shadowRadius: 30,
     elevation: 10,
@@ -354,7 +425,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    flex: 1
+    flex: 1,
   },
   headingProfile: {
     color: 'black',
@@ -372,7 +443,7 @@ const cardStyle = StyleSheet.create({
     padding: 20,
     marginVertical: 15,
     shadowColor: 'rgba(150,170,180,0.5)',
-    shadowOffset: { width: 0, height: 7 },
+    shadowOffset: {width: 0, height: 7},
     shadowOpacity: 1,
     shadowRadius: 30,
     elevation: 10,

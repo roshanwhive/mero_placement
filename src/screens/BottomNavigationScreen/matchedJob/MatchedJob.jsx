@@ -1,19 +1,24 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { GlobalStyleSheet } from '../../../constants/StyleSheet'
-import JobCard from '../../../components/JobCard'
-import CardSkeleton from '../../../components/skeleton_loader/CardSkeleton'
-import { customThemeColor } from '../../../constants/Color'
-import { getMatchedJob } from '../../../features/status/StatusSlice'
-import { useNavigation } from '@react-navigation/native'
-
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  ActivityIndicator,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {GlobalStyleSheet} from '../../../constants/StyleSheet';
+import JobCard from '../../../components/JobCard';
+import CardSkeleton from '../../../components/skeleton_loader/CardSkeleton';
+import {customThemeColor} from '../../../constants/Color';
+import {getMatchedJob} from '../../../features/status/StatusSlice';
+import {useNavigation} from '@react-navigation/native';
 
 const MatchedJob = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const { userProfile } = useSelector(state => state.auth);
-  const { matchedJobs } = useSelector(state => state.status);
+  const {userProfile} = useSelector(state => state.userProfile);
+  const {matchedJobs} = useSelector(state => state.status);
   const [animate, setAnimate] = useState(true);
 
   useEffect(() => {
@@ -33,9 +38,6 @@ const MatchedJob = () => {
   //     setAnimate(false);
   //   }, 2000);
   // };
-
-
-
 
   return (
     <ScrollView

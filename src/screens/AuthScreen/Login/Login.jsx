@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   StatusBar,
@@ -8,27 +8,25 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import { ActivityIndicator, TextInput } from 'react-native-paper';
+import {ActivityIndicator, TextInput} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  getUserProfile,
-  loginUser,
-  resetState,
-} from '../../../features/auth/AuthSlice';
+import {useDispatch, useSelector} from 'react-redux';
+
 import AuthHeader from '../../../components/AuthHeader';
 import AuthLogo from '../../../components/AuthLogo';
 import AuthTitle from '../../../components/AuthTitle';
-import { customTextColor, customThemeColor } from '../../../constants/Color';
+import {customTextColor, customThemeColor} from '../../../constants/Color';
 import * as yup from 'yup';
-import { Controller, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { showMessage } from 'react-native-flash-message';
+import {Controller, useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
+import {showMessage} from 'react-native-flash-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { GlobalStyleSheet } from '../../../constants/StyleSheet';
-import { customFontSize, customFonts } from '../../../constants/theme';
+import {GlobalStyleSheet} from '../../../constants/StyleSheet';
+import {customFontSize, customFonts} from '../../../constants/theme';
+import {loginUser} from '../../../features/auth/authSlice/loginSlice';
+import {getUserProfile} from '../../../features/auth/authSlice/userProfileSlice';
 
-const Login = ({ navigation }) => {
+const Login = ({navigation}) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const loginLogo = require('../../../assets/loginLogo.png');
 
@@ -44,9 +42,8 @@ const Login = ({ navigation }) => {
     isSuccess,
     isError,
     isLoading,
-    userProfile,
     statusCode,
-  } = useSelector(state => state.auth);
+  } = useSelector(state => state.login);
 
   useEffect(() => {
     if (
@@ -82,7 +79,7 @@ const Login = ({ navigation }) => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: {errors},
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -92,13 +89,7 @@ const Login = ({ navigation }) => {
   });
 
   const onPressSend = formData => {
-    dispatch(loginUser(formData))
-      .then(() => dispatch(getUserProfile()))
-      .then(() => {
-        setTimeout(() => {
-          dispatch(resetState());
-        }, 5000);
-      });
+    dispatch(loginUser(formData)).then(() => dispatch(getUserProfile()));
   };
 
   const commonTextInputProps = {
@@ -120,9 +111,9 @@ const Login = ({ navigation }) => {
 
       <View style={GlobalStyleSheet.formContainer}>
         <AuthHeader />
-        <View style={{ flex: 1 }}>
+        <View style={{flex: 1}}>
           <ScrollView
-            style={{ flex: 1 }}
+            style={{flex: 1}}
             contentContainerStyle={styles.scrollViewContent}>
             <AuthLogo imgSrc={loginLogo} />
 
@@ -134,7 +125,7 @@ const Login = ({ navigation }) => {
                   rules={{
                     required: true,
                   }}
-                  render={({ field: { onChange, value } }) => (
+                  render={({field: {onChange, value}}) => (
                     <TextInput
                       {...commonTextInputProps}
                       label="Email"
@@ -162,7 +153,7 @@ const Login = ({ navigation }) => {
                   rules={{
                     required: true,
                   }}
-                  render={({ field: { onChange, value } }) => (
+                  render={({field: {onChange, value}}) => (
                     <TextInput
                       {...commonTextInputProps}
                       label="Password"
@@ -207,7 +198,7 @@ const Login = ({ navigation }) => {
                   {isLoading ? (
                     <ActivityIndicator
                       animating={true}
-                      style={{ paddingVertical: 14 }}
+                      style={{paddingVertical: 14}}
                       color={customTextColor.white}
                       size={20}
                     />

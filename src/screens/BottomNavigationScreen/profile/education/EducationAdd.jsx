@@ -1,7 +1,6 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {
   ActivityIndicator,
-  Pressable,
   ScrollView,
   StyleSheet,
   Switch,
@@ -19,16 +18,14 @@ import {useDispatch, useSelector} from 'react-redux';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import {Controller, useForm} from 'react-hook-form';
-import {
-  addEducation,
-  getSingleEducation,
-  resetEducationState,
-  updateEducation,
-} from '../../../../features/profile/EducationSlice';
+
 import {Dropdown} from 'react-native-element-dropdown';
 import {getEduFormData} from '../../../../features/formData/FormSlice';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import {showMessage} from 'react-native-flash-message';
+import {getSingleEducation} from '../../../../features/profile/educationSlice/getSingleEducationSlice';
+import {addEducation} from '../../../../features/profile/educationSlice/addEducationSlice';
+import {updateEducation} from '../../../../features/profile/educationSlice/updateEducationSlice';
+import ProfileAppBar from '../../../../components/custom_toolbar/ProfileAppBar';
 
 const EducationAdd = id => {
   const navigation = useNavigation();
@@ -37,15 +34,14 @@ const EducationAdd = id => {
   const route = useRoute();
   id = route.params?.id;
   const {degree, eduFormData} = useSelector(state => state.formOptions);
-  const {
-    message,
-    isSuccess,
-    isLoading,
-    isLoadingSingle,
-    isError,
-    statusCode,
-    singleEducation,
-  } = useSelector(state => state.education);
+  const {message, isSuccess, isLoading, isError, statusCode} = useSelector(
+    state => state.addEducation,
+  );
+  // const {message, isSuccess, isLoading, isError, statusCode} = useSelector(
+  //   state => state.updateEducation,
+  // );
+  const {singleEducation} = useSelector(state => state.getSingleEducation);
+
   const dispatch = useDispatch();
 
   const [selectedtab, setSelectedtab] = useState('passed');
@@ -78,7 +74,7 @@ const EducationAdd = id => {
         animated: true,
       });
     } else if (isSuccess && statusCode === 200) {
-      //navigation.navigate('EducationList');
+      navigation.navigate('EducationList');
       console.log('useeffects', message);
       showMessage({
         message: JSON.stringify(message),
@@ -95,7 +91,6 @@ const EducationAdd = id => {
   };
 
   const [degreetype, setDegreetype] = useState([]);
-  const [degreetypeId, setDegreetypeId] = useState('');
   useEffect(() => {
     if (degree && Array.isArray(degree)) {
       const mappedDegTypeList = degree.map(item => ({
@@ -128,7 +123,7 @@ const EducationAdd = id => {
     [singleEducation],
   );
 
-  //console.log("edudat", defaultValues, id);
+  console.log('edudat', defaultValues, id);
 
   const methods = useForm({
     resolver: yupResolver(schema),
@@ -156,21 +151,11 @@ const EducationAdd = id => {
 
   const onPressAdd = handleSubmit(async eduData => {
     console.log('eduDataAdd', eduData, id);
-    dispatch(addEducation(eduData)).then(() => {
-      setTimeout(() => {
-        dispatch(resetEducationState());
-      }, 5000);
-    });
+    dispatch(addEducation(eduData));
   });
 
   const onPressUpdate = handleSubmit(async eduData => {
-    // data = {id: id, eduData: eduData};
-    //console.log('eduDataupdate', data);
-    dispatch(updateEducation(eduData)).then(() => {
-      setTimeout(() => {
-        dispatch(resetEducationState());
-      }, 5000);
-    });
+    dispatch(updateEducation(eduData));
   });
 
   const commonTextInputProps = {
@@ -184,16 +169,12 @@ const EducationAdd = id => {
 
   return (
     <View style={styles.container}>
-      <AppBar handleBack={handleBack} title={'Update Profile'} />
+      <ProfileAppBar
+        handleBack={handleBack}
+        title={'Education'}
+        showIcon={false}
+      />
       <ScrollView>
-        <View>
-          <Text style={styles.title}>Education</Text>
-          <Text style={styles.subTitle}>
-            Highlight your educational background including degree,
-            certification to showcase your qualification
-          </Text>
-        </View>
-
         <View style={GlobalStyleSheet.containerForm}>
           <View style={GlobalStyleSheet.inputWrapper}>
             <Controller
@@ -271,7 +252,7 @@ const EducationAdd = id => {
                   maxHeight={300}
                   labelField="label"
                   valueField="value"
-                  value={degreetypeId}
+                  value={value}
                   placeholderStyle={{color: customTextColor.secondary}}
                   selectedTextStyle={{color: customTextColor.primary}}
                   itemTextStyle={{color: customTextColor.secondary}}
@@ -287,7 +268,7 @@ const EducationAdd = id => {
                   ]}
                   onChange={item => {
                     onChange(item.value);
-                    console.log('click' + item.value);
+                    console.log('click' + value);
                   }}
                   // onChange={(item) => handleSubmit(item.value)}
                 />
@@ -358,15 +339,16 @@ const EducationAdd = id => {
                         width: '50%',
                         height: 30,
                         backgroundColor:
-                          selectedtab == 'passed' ? 'blue' : 'white',
+                          selectedtab == 'passed' ? '#11401E' : 'white',
                         borderRadius: 15,
                         justifyContent: 'center',
                         alignItems: 'center',
                       }}
                       onPress={() => {
                         setSelectedtab('passed');
-                        onChange(passed);
-                        console.log('pressfirst', passed);
+                        onChange(value);
+
+                        console.log('pressfirst', value);
                       }}>
                       <Text
                         disabled={isLoading}
@@ -382,15 +364,15 @@ const EducationAdd = id => {
                         width: '50%',
                         height: 30,
                         backgroundColor:
-                          selectedtab == 'pursuing' ? 'blue' : 'white',
+                          selectedtab == 'pursuing' ? '#11401E' : 'white',
                         borderRadius: 15,
                         justifyContent: 'center',
                         alignItems: 'center',
                       }}
                       onPress={() => {
                         setSelectedtab('pursuing');
-                        onChange(pursuing);
-                        console.log('presssecond', pursuing);
+                        onChange(value);
+                        console.log('presssecond', value);
                       }}>
                       <Text
                         disabled={isLoading}

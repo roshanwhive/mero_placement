@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,22 +9,20 @@ import {
 } from 'react-native';
 import Account from '../../containers/profile/Account';
 
-import { customTextColor, customThemeColor } from '../../constants/Color';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  getUserProfile,
-  logout,
-  resetState,
-} from '../../features/auth/AuthSlice';
+import {customTextColor, customThemeColor} from '../../constants/Color';
+import {useDispatch, useSelector} from 'react-redux';
+
 import AppBar from '../../components/custom_toolbar/AppBar';
 import UserProfileCard from '../../components/skeleton_loader/UserProfileCard';
 import logoImage from '../../assets/search1.jpg';
-import { showMessage } from 'react-native-flash-message';
+import {showMessage} from 'react-native-flash-message';
 import AvatarSkeleton from '../../components/skeleton_loader/AvatarSkeleton';
-import { customFontSize, customFonts } from '../../constants/theme';
+import {customFontSize, customFonts} from '../../constants/theme';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { Divider } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
+import {Divider} from 'react-native-paper';
+import {useNavigation} from '@react-navigation/native';
+import {getUserProfile} from '../../features/auth/authSlice/userProfileSlice';
+import {logoutUser} from '../../features/auth/authSlice/logoutSlice';
 
 export default Profile = () => {
   const dispatch = useDispatch();
@@ -33,13 +31,14 @@ export default Profile = () => {
   const {
     message,
     isAuthenticated,
-    userProfile,
+
     token,
     isSuccess,
     isError,
     isLoading,
     statusCode,
-  } = useSelector(state => state.auth);
+  } = useSelector(state => state.login);
+  const {userProfile} = useSelector(state => state.userProfile);
 
   const handleBack = () => {
     navigation.goBack();
@@ -52,7 +51,7 @@ export default Profile = () => {
   }, [dispatch]);
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logoutUser());
     navigation.navigate('Login');
     showMessage({
       message: 'Logout Successfully',
@@ -80,7 +79,7 @@ export default Profile = () => {
                 {!!userProfile?.profile?.featured_image ? (
                   <Image
                     style={styles.avatar}
-                    source={{ uri: userProfile?.profile?.featured_image }}
+                    source={{uri: userProfile?.profile?.featured_image}}
                   />
                 ) : (
                   <AvatarSkeleton />
@@ -171,7 +170,8 @@ export default Profile = () => {
                     </TouchableOpacity>
                     <Divider />
 
-                    <TouchableOpacity onPress={() => navigation.navigate('ExperienceList')}>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('ExperienceList')}>
                       <View style={styles.detailCard}>
                         <Text style={styles.label}>Experience</Text>
                         <Icon
