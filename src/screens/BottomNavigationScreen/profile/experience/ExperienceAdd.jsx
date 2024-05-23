@@ -3,6 +3,8 @@ import {
   ActivityIndicator,
   Button,
   Modal,
+  Platform,
+  Pressable,
   ScrollView,
   StyleSheet,
   Switch,
@@ -30,8 +32,7 @@ import {getSingleExperience} from '../../../../features/profile/experienceSlice/
 import ProfileAppBar from '../../../../components/custom_toolbar/ProfileAppBar';
 import {format} from 'date-fns';
 import DatePicker from 'react-native-date-picker';
-import {color} from 'react-native-reanimated';
-
+import DateTimePicker from '@react-native-community/datetimepicker';
 const ExperienceAdd = id => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -40,7 +41,7 @@ const ExperienceAdd = id => {
 
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date());
-  const [text, setText] = useState('');
+  const [startDate, setStartDate] = useState('');
 
   console.log(show);
   const [formattedDate, setFormattedDate] = useState(
@@ -64,7 +65,21 @@ const ExperienceAdd = id => {
 
   const showDatepicker = () => {
     console.log('Select Date ======================>', show);
-    setShow(true);
+    // setShow(true);
+    setShow(!show);
+  };
+
+  const onChangeDate = ({type}, selected) => {
+    if (type == 'set') {
+      const current = selected;
+      setDate(current);
+      if (Platform.OS === 'android') {
+        showDatepicker();
+        setStartDate(current.toDateString());
+      }
+    } else {
+      showDatepicker;
+    }
   };
 
   const [organizationType, setOrganizationType] = useState([]);
@@ -192,7 +207,7 @@ const ExperienceAdd = id => {
       '/' +
       tempDate.getFullYear();
     //setDate(fDate);
-    setText(fDate);
+    //setText(fDate);
   };
 
   const handleCancel = () => {
@@ -428,8 +443,8 @@ const ExperienceAdd = id => {
                   //onChangeText={onChange}
                   ref={startDate}
                 /> */}
-                <Text> Start Date : {text}</Text>
-                <Modal visible={show} onRequestClose={() => setShow(false)}>
+                {/* <Text> Start Date : {text}</Text> */}
+                {/* <Modal visible={show} onRequestClose={() => setShow(false)}>
                   <View style={styles.modalContainer}>
                     <View style={styles.datePickerContainer}>
                       <DatePicker
@@ -446,7 +461,7 @@ const ExperienceAdd = id => {
                       />
                     </View>
                   </View>
-                </Modal>
+                </Modal> */}
               </>
               {/* )}
                 name="start_date"
@@ -462,6 +477,28 @@ const ExperienceAdd = id => {
               // />
              
             )} */}
+          </View>
+          <View style={GlobalStyleSheet.inputWrapper}>
+            <Text>End Date:</Text>
+            {show && (
+              <DateTimePicker
+                mode="date"
+                value={date}
+                onChange={onChangeDate}
+              />
+            )}
+
+            {/* {!showDatepicker && ( */}
+            <TouchableOpacity onPress={showDatepicker}>
+              <TextInput
+                {...commonTextInputProps}
+                label="End Date"
+                placeholder="kjssdfhkjsdhf"
+                editable={false}
+                value={startDate}
+                onChangeText={setStartDate}
+              />
+            </TouchableOpacity>
           </View>
           {/* <View style={GlobalStyleSheet.inputWrapper}>
             <Controller
