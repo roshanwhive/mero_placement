@@ -15,7 +15,6 @@ import EditProfile from '../screens/ProfileScreen/EditProfile';
 import EmailVerification from '../screens/AuthScreen/Signup/EmailVerification';
 import JobDetail from '../screens/JobScreens/JobDetail';
 import CompanyProfile from '../screens/ProfileScreen/CompanyProfile';
-import Training from '../screens/Training/Training';
 import CompareJobAndProfile from '../screens/JobScreens/CompareJobAndProfile';
 import EmailVerified from '../screens/AuthScreen/Signup/EmailVerified';
 import AllCategoriesScreen from '../screens/categories/AllCategoriesScreen';
@@ -29,6 +28,9 @@ import ExperienceAdd from '../screens/BottomNavigationScreen/profile/experience/
 import ExperienceList from '../screens/BottomNavigationScreen/profile/experience/ExperienceList';
 import EducationList from '../screens/BottomNavigationScreen/profile/education/EducationList';
 import Datepicker from '../screens/BottomNavigationScreen/profile/experience/Datepicker';
+import TrainingList from '../containers/TrainingList';
+import Training from '../screens/Training/Training';
+import EducationUpdate from '../screens/BottomNavigationScreen/profile/education/EducationUpdate';
 
 const Stack = createNativeStackNavigator();
 
@@ -74,14 +76,17 @@ const Router = () => {
       <Stack.Screen name="ProfilePreview" component={ProfilePreview} />
       <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
       <Stack.Screen name="EducationAdd" component={EducationAdd} />
+      <Stack.Screen name="EducationUpdate" component={EducationUpdate} />
       <Stack.Screen name="EducationList" component={EducationList} />
       <Stack.Screen name="PreferenceList" component={PreferenceList} />
       <Stack.Screen name="PreferenceAdd" component={PreferenceAdd} />
       <Stack.Screen name="ExperienceAdd" component={ExperienceAdd} />
       <Stack.Screen name="ExperienceList" component={ExperienceList} />
       <Stack.Screen name="Datepicker" component={Datepicker} />
-      <Stack.Screen name="Training" component={Training} />
+      <Stack.Screen name="TrainingList" component={TrainingList} />
       <Stack.Screen name="AllCategories" component={AllCategoriesScreen} />
+      <Stack.Screen name="Training" component={Training} />
+
       <Stack.Screen
         name="CompareJobAndProfile"
         component={CompareJobAndProfile}

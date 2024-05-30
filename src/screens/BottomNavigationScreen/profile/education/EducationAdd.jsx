@@ -1,6 +1,7 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {
   ActivityIndicator,
+  Button,
   ScrollView,
   StyleSheet,
   Switch,
@@ -21,26 +22,16 @@ import {Controller, useForm} from 'react-hook-form';
 
 import {Dropdown} from 'react-native-element-dropdown';
 import {getEduFormData} from '../../../../features/formData/FormSlice';
-import {showMessage} from 'react-native-flash-message';
-import {getSingleEducation} from '../../../../features/profile/educationSlice/getSingleEducationSlice';
-import {addEducation} from '../../../../features/profile/educationSlice/addEducationSlice';
-import {updateEducation} from '../../../../features/profile/educationSlice/updateEducationSlice';
 import ProfileAppBar from '../../../../components/custom_toolbar/ProfileAppBar';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import {addEducation} from '../../../../features/profile/testSlice/EducationSlice';
 
-const EducationAdd = id => {
+const EducationAdd = () => {
   const navigation = useNavigation();
-  const [date, setDate] = useState(new Date());
-  const [open, setOpen] = useState(false);
-  const route = useRoute();
-  id = route.params?.id;
+
   const {degree, eduFormData} = useSelector(state => state.formOptions);
-  const {message, isSuccess, isLoading, isError, statusCode} = useSelector(
-    state => state.addEducation,
-  );
-  // const {message, isSuccess, isLoading, isError, statusCode} = useSelector(
-  //   state => state.updateEducation,
-  // );
-  const {singleEducation} = useSelector(state => state.getSingleEducation);
+  const {message, isSuccess, isLoading, isError, statusCode, allEducation} =
+    useSelector(state => state.educationTest);
 
   const dispatch = useDispatch();
 
@@ -48,43 +39,43 @@ const EducationAdd = id => {
   const [passed, setPassed] = useState('passed');
   const [pursuing, setPursuing] = useState('pursuing');
 
+  const [showStart, setShowStart] = useState(false);
+  const [showEnd, setShowEnd] = useState(false);
+
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
+  const formatDate = date => {
+    if (!date) return ''; // Handle case when date is null or undefined
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const showDatepicker = () => {
+    setShowStart(!showStart);
+  };
+  const showDatepickerEnd = () => {
+    setShowEnd(!showEnd);
+  };
+
+  const handleStartDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate || startDate;
+    setShowStart(Platform.OS === 'ios');
+    setStartDate(currentDate);
+  };
+
+  const handleEndDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate || endDate;
+    setShowEnd(Platform.OS === 'ios');
+    setEndDate(currentDate);
+  };
+
   useEffect(() => {
     dispatch(getEduFormData());
   }, [dispatch]);
-  console.log('educationID', id);
-
-  useEffect(() => {
-    dispatch(getSingleEducation(id));
-  }, [dispatch]);
-
-  useEffect(() => {
-    console.log('test', typeof singleEducation);
-  }, [dispatch]);
-
-  const handleDateChange = (event, selectedDate) => {};
-
-  useEffect(() => {
-    if (isError && statusCode !== 200 && statusCode !== 0) {
-      console.log('useeffectd', message);
-      showMessage({
-        message: JSON.stringify(message),
-        type: 'danger',
-        setLoading: false,
-        animationDuration: 1000,
-        animated: true,
-      });
-    } else if (isSuccess && statusCode === 200) {
-      navigation.navigate('EducationList');
-      console.log('useeffects', message);
-      showMessage({
-        message: JSON.stringify(message),
-        type: 'success',
-        setLoading: false,
-        animationDuration: 1000,
-        animated: true,
-      });
-    }
-  }, [isError, isSuccess, statusCode, message]);
 
   const handleBack = () => {
     navigation.goBack();
@@ -102,60 +93,41 @@ const EducationAdd = id => {
   }, [degree]);
 
   const schema = yup.object().shape({
-    college: yup.string().required('College name is required'),
-    university: yup.string().required('University name is required'),
-    deg_type: yup.string().required('Select Degree Type'),
-    percentage: yup.string().required('Percentage is required'),
-    start_date: yup.string().required('Start Date is required'),
-  });
-
-  const defaultValues = useMemo(
-    () => ({
-      college: singleEducation?.institute_name || '',
-      university: singleEducation?.university_board_name || '',
-      status: singleEducation?.passed_status || pursuing,
-      deg_type: singleEducation?.degree_type_name?.deg_type_id || null,
-      percentage: singleEducation?.passed_percentage || '',
-      start_date: singleEducation?.start_date || '',
-      end_date: singleEducation?.end_date || '',
-      education_id: singleEducation?.education_id || '',
-    }),
-    [singleEducation],
-  );
-
-  console.log('edudat', defaultValues, id);
-
-  const methods = useForm({
-    resolver: yupResolver(schema),
-    defaultValues,
+    college: yup.string().required('College field is required'),
+    university: yup.string().required('University field is required'),
+    deg_type: yup.string().required('Degree field is required'),
+    percentage: yup.string(),
+    start_date: yup.string().required('Start date field is required'),
+    status: yup.string(),
+    end_date: yup.string(),
+    education_id: yup.string(),
   });
 
   const {
     control,
     handleSubmit,
-    resetField,
-    formState: {errors},
+    formState: {errors, isSubmitting},
     setError,
-  } = methods;
-
-  const handleClearService = useCallback(
-    id => {
-      resetField(id);
-      console.log('reset', id);
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      college: '',
+      university: '',
+      status: 'passed',
+      deg_type: '',
+      percentage: '',
+      start_date: '',
+      end_date: '',
+      education_id: '',
     },
-    [resetField],
-  );
-  useEffect(() => {
-    handleClearService();
   });
 
   const onPressAdd = handleSubmit(async eduData => {
-    console.log('eduDataAdd', eduData, id);
-    dispatch(addEducation(eduData));
-  });
+    console.log('eduDataAdd', allEducation);
 
-  const onPressUpdate = handleSubmit(async eduData => {
-    dispatch(updateEducation(eduData));
+    dispatch(addEducation(eduData)).then(() => {
+      navigation.navigate('EducationList');
+    });
   });
 
   const commonTextInputProps = {
@@ -216,27 +188,30 @@ const EducationAdd = id => {
               <Text style={styles.errorText}>{errors.university.message}</Text>
             )}
           </View>
-
-          <View style={GlobalStyleSheet.inputWrapper}>
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({field: {onChange, value}}) => (
-                <TextInput
-                  {...commonTextInputProps}
-                  label="Percentage"
-                  value={value}
-                  onChangeText={onChange}
-                />
+          {selectedtab == 'passed' ? (
+            <View style={GlobalStyleSheet.inputWrapper}>
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({field: {onChange, value}}) => (
+                  <TextInput
+                    {...commonTextInputProps}
+                    label="Percentage"
+                    value={value}
+                    onChangeText={onChange}
+                  />
+                )}
+                name="percentage"
+              />
+              {errors.percentage && (
+                <Text style={styles.errorText}>
+                  {errors.percentage.message}
+                </Text>
               )}
-              name="percentage"
-            />
-            {errors.percentage && (
-              <Text style={styles.errorText}>{errors.percentage.message}</Text>
-            )}
-          </View>
+            </View>
+          ) : null}
 
           <View style={GlobalStyleSheet.inputWrapper}>
             <Controller
@@ -280,37 +255,6 @@ const EducationAdd = id => {
             )}
           </View>
           <View style={GlobalStyleSheet.inputWrapper1}>
-            {/* <View style={styles.row}>
-
-                            <Text style={styles.title1}>Status</Text>
-                            <View>
-                                {
-                                    isEnabled ? <Text style={{
-                                        position: 'absolute',
-                                        color: 'black',
-                                        top: 3,
-                                        left: 2,
-                                        zIndex: 5,
-                                        fontSize: 14
-                                    }} >Yes</Text> :
-                                        <Text style={{
-                                            position: 'absolute',
-                                            color: 'white',
-                                            top: 3,
-                                            left: 20,
-                                            zIndex: 5,
-                                            fontSize: 14
-                                        }}>No</Text>
-                                }
-                                <Switch
-                                    trackColor={{ false: "red", true: "gray" }}
-                                    onValueChange={toggleSwitch}
-                                    value={isEnabled}
-                                    style={{ transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }] }}
-
-                                />
-                            </View>
-                        </View> */}
             <View style={styles.row}>
               <Text disabled={isLoading} style={styles.subTitle1}>
                 Currently Studying
@@ -346,7 +290,7 @@ const EducationAdd = id => {
                       }}
                       onPress={() => {
                         setSelectedtab('passed');
-                        onChange(value);
+                        onChange('passed');
 
                         console.log('pressfirst', value);
                       }}>
@@ -369,9 +313,9 @@ const EducationAdd = id => {
                         justifyContent: 'center',
                         alignItems: 'center',
                       }}
-                      onPress={() => {
+                      onPressIn={() => {
                         setSelectedtab('pursuing');
-                        onChange(value);
+                        onChange('pursuing');
                         console.log('presssecond', value);
                       }}>
                       <Text
@@ -391,82 +335,99 @@ const EducationAdd = id => {
           <View style={GlobalStyleSheet.inputWrapper}>
             <Controller
               control={control}
-              rules={{
-                required: true,
-              }}
-              render={({field: {onChange, value}}) => (
-                <TextInput
-                  {...commonTextInputProps}
-                  label="Start Date"
-                  value={value}
-                  onChangeText={onChange}
-                />
-              )}
               name="start_date"
+              // defaultValue={startDate}
+              rules={{required: true}}
+              render={({field: {onChange, value}}) => (
+                <View>
+                  <TouchableOpacity onPress={() => setShowStart(true)}>
+                    {showStart && (
+                      <DateTimePicker
+                        testID="startDatePicker"
+                        value={value}
+                        mode="date"
+                        // display="default"
+                        onChange={(event, date) => {
+                          console.log('field', date);
+                          onChange(date);
+                          handleStartDateChange(event, date);
+                        }}
+                      />
+                    )}
+                    <TextInput
+                      {...commonTextInputProps}
+                      label="Start Date"
+                      placeholder=""
+                      value={formatDate(value || startDate)}
+                      editable={false}
+                    />
+                    {errors.start_date && (
+                      <Text style={styles.errorText}>
+                        {errors.start_date.message}
+                      </Text>
+                    )}
+                  </TouchableOpacity>
+                </View>
+              )}
             />
-            {errors.start_date && (
-              <Text style={styles.errorText}>{errors.start_date.message}</Text>
-            )}
           </View>
-
           {selectedtab == 'passed' ? (
             <View style={GlobalStyleSheet.inputWrapper}>
               <Controller
                 control={control}
-                rules={{
-                  required: true,
-                }}
-                render={({field: {onChange, value}}) => (
-                  <TextInput
-                    {...commonTextInputProps}
-                    label="End Date"
-                    value={value}
-                    onChangeText={onChange}
-                  />
-                )}
                 name="end_date"
+                defaultValue={endDate}
+                rules={{required: true}}
+                render={({field: {onChange, value}}) => (
+                  <View>
+                    <TouchableOpacity onPress={() => setShowEnd(true)}>
+                      {showEnd && (
+                        <DateTimePicker
+                          testID="endDatePicker"
+                          value={value || endDate}
+                          mode="date"
+                          display="default"
+                          onChange={(event, date) => {
+                            onChange(date);
+                            handleEndDateChange(event, date);
+                          }}
+                        />
+                      )}
+                      <TextInput
+                        {...commonTextInputProps}
+                        label="End Date"
+                        placeholder="YYYY-MM-DD"
+                        value={formatDate(value || endDate)}
+                        editable={false}
+                      />
+                      {errors.end_date && (
+                        <Text style={styles.errorText}>
+                          {errors.end_date.message}
+                        </Text>
+                      )}
+                    </TouchableOpacity>
+                  </View>
+                )}
               />
-              {errors.end_date && (
-                <Text style={styles.errorText}>{errors.end_date.message}</Text>
-              )}
             </View>
           ) : null}
 
-          {!id ? (
-            <View style={GlobalStyleSheet.buttonWrapper}>
-              <TouchableOpacity
-                style={GlobalStyleSheet.button}
-                onPress={handleSubmit(onPressAdd)}>
-                {isLoading ? (
-                  <ActivityIndicator
-                    animating={true}
-                    style={{paddingVertical: 14}}
-                    color={customTextColor.white}
-                    size={20}
-                  />
-                ) : (
-                  <Text style={GlobalStyleSheet.buttonText}>Add Education</Text>
-                )}
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <View style={GlobalStyleSheet.buttonWrapper}>
-              <TouchableOpacity
-                style={GlobalStyleSheet.button}
-                onPress={handleSubmit(onPressUpdate)}>
-                {isLoading ? (
-                  <ActivityIndicator
-                    animating={true}
-                    style={{paddingVertical: 14}}
-                    color={customTextColor.white}
-                    size={20}
-                  />
-                ) : (
-                  <Text style={GlobalStyleSheet.buttonText}>Save Changes</Text>
-                )}
-              </TouchableOpacity>
-            </View>
-          )}
+          <View style={GlobalStyleSheet.buttonWrapper}>
+            <TouchableOpacity
+              style={GlobalStyleSheet.button}
+              onPress={handleSubmit(onPressAdd)}>
+              {isLoading ? (
+                <ActivityIndicator
+                  animating={true}
+                  style={{paddingVertical: 14}}
+                  color={customTextColor.white}
+                  size={20}
+                />
+              ) : (
+                <Text style={GlobalStyleSheet.buttonText}>Add Education</Text>
+              )}
+            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
     </View>

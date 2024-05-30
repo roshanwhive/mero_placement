@@ -39,7 +39,6 @@ export const getAllEducationSlice = createSlice({
         state.message = action.payload.message;
         state.statusCode = action.payload.status_code;
         state.allEducation = action.payload.data;
-        console.log('Eduaction Redicer', action?.payload?.data);
       })
       .addCase(getAllEducation.rejected, (state, action) => {
         state.isError = true;

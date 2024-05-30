@@ -61,7 +61,7 @@ const Signup = ({navigation}) => {
         animated: true,
       });
     } else if (isSuccess && statusCode === 200) {
-      //navigation.navigate('EmailVerification');
+      navigation.navigate('EmailVerification');
       showMessage({
         message: JSON.stringify(message),
         type: 'success',

@@ -17,6 +17,8 @@ import CardSkeleton from '../../../../components/skeleton_loader/CardSkeleton';
 import ExperienceCard from './ExperienceCard';
 import {getAllExperience} from '../../../../features/profile/experienceSlice/getAllExperienceSlice';
 import ProfileAppBar from '../../../../components/custom_toolbar/ProfileAppBar';
+import ProfileSkeleton from '../../../../components/skeleton_loader/profileSkeleton';
+import NoData from '../NoData';
 
 const ExperienceList = () => {
   const {allExperience, isLoading} = useSelector(
@@ -60,7 +62,7 @@ const ExperienceList = () => {
         }>
         {isLoading ? (
           Array.from({length: 5}).map((_, index) => (
-            <CardSkeleton key={index} />
+            <ProfileSkeleton key={index} />
           ))
         ) : (
           <View
@@ -71,7 +73,7 @@ const ExperienceList = () => {
               marginRight: 'auto',
               width: '100%',
             }}>
-            {allExperience.length > 0 ? (
+            {allExperience && allExperience.length > 0 ? (
               allExperience?.map((item, index) => {
                 return (
                   <View key={index}>
@@ -81,7 +83,12 @@ const ExperienceList = () => {
               })
             ) : (
               <View>
-                <Text>No Experience Data</Text>
+                <NoData
+                  title={'No Experience Data'}
+                  subtitle={'Add your Experience '}
+                  btnText={'Add Experience'}
+                  handleBtn={handleAdd}
+                />
               </View>
             )}
           </View>

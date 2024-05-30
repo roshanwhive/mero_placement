@@ -2,12 +2,12 @@ import {createSlice, createAsyncThunk, createAction} from '@reduxjs/toolkit';
 import {preferenceService} from '../PreferenceService';
 
 const initialState = {
-  isError: false,
-  isSuccess: false,
-  isLoading: false,
-  isLoadingSingle: false,
-  statusCode: 0,
-  message: '',
+  isErrorUpdate: false,
+  isSuccessUpdate: false,
+  isLoadingUpdate: false,
+
+  statusCodeUpdate: 0,
+  messageUpdate: '',
 };
 export const updatePreference = createAsyncThunk(
   'profile/update-preference',
@@ -28,20 +28,20 @@ export const updatePreferenceSlice = createSlice({
     builder
       // ------------------------------------Update preference -------------------------------
       .addCase(updatePreference.pending, state => {
-        state.isLoading = true;
+        state.isLoadingUpdate = true;
       })
       .addCase(updatePreference.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isError = !action.payload.success;
-        state.isSuccess = action.payload.success;
-        state.message = action.payload.message;
-        state.statusCode = action.payload.status_code;
-        state.singlePreference = action.payload.data;
+        state.isLoadingUpdate = false;
+        state.isErrorUpdate = !action.payload.success;
+        state.isSuccessUpdate = action.payload.success;
+        state.messageUpdate = action.payload.message;
+        state.statusCodeUpdate = action.payload.status_code;
+        state.singlePreferenceUpdate = action.payload.data;
       })
       .addCase(updatePreference.rejected, (state, action) => {
-        state.isError = true;
-        state.isLoading = false;
-        state.isSuccess = false;
+        state.isErrorUpdate = true;
+        state.isLoadingUpdate = false;
+        state.isSuccessUpdate = false;
       });
   },
 });

@@ -2,11 +2,10 @@ import {createSlice, createAsyncThunk, createAction} from '@reduxjs/toolkit';
 import {educationService} from '../EducationService';
 
 const initialState = {
-  addEducation: {},
+  addEducationArray: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
-  isLoadingSingle: false,
   statusCode: 0,
   message: '',
 };
@@ -34,11 +33,15 @@ export const addEducationSlice = createSlice({
       })
       .addCase(addEducation.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.isError = !action.payload.success;
-        state.isSuccess = action.payload.success;
-        state.message = action.payload.message;
-        state.statusCode = action.payload.status_code;
-        state.addEducation = action.payload.data;
+        state.isError = !action.payload?.success;
+        state.isSuccess = action.payload?.success;
+        state.message = action.payload?.message;
+        state.statusCode = action.payload?.status_code;
+        // state.addEducation = action.payload?.data;
+        state.addEducationArray = [
+          action.payload[0],
+          ...state.addEducationArray,
+        ];
       })
       .addCase(addEducation.rejected, (state, action) => {
         state.isError = true;

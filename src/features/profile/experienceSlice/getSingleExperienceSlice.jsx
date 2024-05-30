@@ -34,11 +34,11 @@ export const getSingleExperienceSlice = createSlice({
       })
       .addCase(getSingleExperience.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.isError = !action.payload.success;
-        state.isSuccess = action.payload.success;
-        state.message = action.payload.message;
-        state.statusCode = action.payload.status_code;
-        state.singleExperience = action.payload.data;
+        state.isError = !action.payload?.success;
+        state.isSuccess = action.payload?.success;
+        state.message = action.payload?.message;
+        state.statusCode = action.payload?.status_code;
+        state.singleExperience = action.payload?.data;
       })
       .addCase(getSingleExperience.rejected, (state, action) => {
         state.isError = true;

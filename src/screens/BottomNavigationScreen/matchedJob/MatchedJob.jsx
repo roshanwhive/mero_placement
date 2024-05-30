@@ -13,39 +13,31 @@ import CardSkeleton from '../../../components/skeleton_loader/CardSkeleton';
 import {customThemeColor} from '../../../constants/Color';
 import {getMatchedJob} from '../../../features/status/StatusSlice';
 import {useNavigation} from '@react-navigation/native';
+import AddPref from './AddPref';
 
 const MatchedJob = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+
   const {userProfile} = useSelector(state => state.userProfile);
+
   const {matchedJobs} = useSelector(state => state.status);
+
   const [animate, setAnimate] = useState(true);
 
   useEffect(() => {
     dispatch(getMatchedJob());
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log('userProfile', typeof userProfile);
-  }, [dispatch]);
-
-  // useEffect(() => {
-  //   CloseActivityIndicator();
-  // }, [])
-
-  // const CloseActivityIndicator = () => {
-  //   setTimeout(() => {
-  //     setAnimate(false);
-  //   }, 2000);
-  // };
+  const handleProfile = () => {
+    navigation.navigate('PreferenceAdd');
+  };
 
   return (
     <ScrollView
       contentContainerStyle={GlobalStyleSheet.scrollViewContentStatus}
       style={GlobalStyleSheet.scrollViewContent}>
-      {/* <ActivityIndicator animating={animate} size="large" color="#ffffff" /> */}
-      {/* {!!userProfile?.preference ? <MatchedJobView /> : <AddProp />} */}
-      {!!matchedJobs ? (
+      {matchedJobs ? (
         matchedJobs?.data?.map((item, index) => {
           return (
             <View key={index} style={GlobalStyleSheet.cardContainer}>
@@ -54,12 +46,15 @@ const MatchedJob = () => {
           );
         })
       ) : (
-        <View>
-          <CardSkeleton />
-          <CardSkeleton />
-          <CardSkeleton />
-        </View>
+        <AddPref
+          title={'No Matched job Found'}
+          subtitle={'Add your preference to view Matched Job'}
+          btnText={'Add preference'}
+          handleBtn={handleProfile}
+        />
       )}
+
+      {/* <Text>Matched Job</Text> */}
     </ScrollView>
   );
 };

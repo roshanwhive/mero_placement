@@ -1,7 +1,14 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { StyleSheet, ScrollView, View, Dimensions, Text, Image } from 'react-native';
-import { ActivityIndicator } from 'react-native';
-import { customThemeColor } from '../constants/Color';
+import React, {useEffect, useState, useRef, useCallback} from 'react';
+import {
+  StyleSheet,
+  ScrollView,
+  View,
+  Dimensions,
+  Text,
+  Image,
+} from 'react-native';
+import {ActivityIndicator} from 'react-native';
+import {customThemeColor} from '../constants/Color';
 
 const Carousel = () => {
   const [dimension, setDimension] = useState(Dimensions.get('window'));
@@ -59,11 +66,11 @@ const Carousel = () => {
   };
 
   const carouselImages = [
-    { url: 'https://i.ibb.co/FDwNR9d/img1.jpg' },
-    { url: 'https://i.ibb.co/7G5qqGY/1.jpg' },
-    { url: 'https://i.ibb.co/Jx7xqf4/pexels-august-de-richelieu-4427816.jpg' },
-    { url: 'https://i.ibb.co/GV08J9f/pexels-pixabay-267202.jpg' },
-    { url: 'https://i.ibb.co/sK92ZhC/pexels-karolina-grabowska-4210860.jpg' },
+    {url: 'https://i.ibb.co/FDwNR9d/img1.jpg'},
+    {url: 'https://i.ibb.co/7G5qqGY/1.jpg'},
+    {url: 'https://i.ibb.co/Jx7xqf4/pexels-august-de-richelieu-4427816.jpg'},
+    {url: 'https://i.ibb.co/GV08J9f/pexels-pixabay-267202.jpg'},
+    {url: 'https://i.ibb.co/sK92ZhC/pexels-karolina-grabowska-4210860.jpg'},
   ];
 
   const setIndex = event => {
@@ -74,11 +81,12 @@ const Carousel = () => {
   };
 
   return (
-    <View style={{ 
-      width: 360,
-      borderRadius: 10,
-      overflow: "hidden",
-      marginLeft:20,
+    <View
+      style={{
+        width: 360,
+        borderRadius: 10,
+        overflow: 'hidden',
+        marginLeft: 20,
       }}>
       <ScrollView
         horizontal
@@ -91,8 +99,8 @@ const Carousel = () => {
         {carouselImages.map((value, index) => (
           <Image
             key={index}
-            source={{ uri: `${value.url}` }}
-            style={{ width: dimension?.width, height: 200 }}
+            source={{uri: `${value.url}`}}
+            style={{width: dimension?.width, height: 200}}
             PlaceholderContent={<ActivityIndicator />}
           />
         ))}
@@ -107,7 +115,11 @@ const Carousel = () => {
         {carouselImages.map((val, index) => (
           <Text
             key={index}
-            style={index === selectedIndex ? { color: customThemeColor.darkRed } : { color: '#888' }}>
+            style={
+              index === selectedIndex
+                ? {color: customThemeColor.darkRed}
+                : {color: '#888'}
+            }>
             ⬤
           </Text>
         ))}

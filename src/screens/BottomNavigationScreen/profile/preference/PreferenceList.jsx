@@ -16,9 +16,13 @@ import CardSkeleton from '../../../../components/skeleton_loader/CardSkeleton';
 import PreferenceCard from './PreferenceCard';
 import {getAllPreference} from '../../../../features/profile/preferenceSlice/getAllPreferenceSlice';
 import ProfileAppBar from '../../../../components/custom_toolbar/ProfileAppBar';
+import ProfileSkeleton from '../../../../components/skeleton_loader/profileSkeleton';
+import NoData from '../NoData';
 
 const PreferenceList = () => {
-  const {allPreference} = useSelector(state => state.getAllPreference);
+  const {allPreference, isLoading} = useSelector(
+    state => state.getAllPreference,
+  );
   const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -54,31 +58,38 @@ const PreferenceList = () => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
-        <View
-          style={{
-            padding: 15,
-            //maxWidth : 575,
-            marginLeft: 'auto',
-            marginRight: 'auto',
-            //backgroundColor:'red',
-            width: '100%',
-          }}>
-          {!!allPreference ? (
-            allPreference?.map((item, index) => {
-              return (
-                <View key={index}>
-                  <PreferenceCard navigation={navigation} items={item} />
-                </View>
-              );
-            })
-          ) : (
-            <View>
-              <CardSkeleton />
-              <CardSkeleton />
-              <CardSkeleton />
-            </View>
-          )}
-        </View>
+        {isLoading ? (
+          Array.from({length: 5}).map((_, index) => (
+            <ProfileSkeleton key={index} />
+          ))
+        ) : (
+          <View
+            style={{
+              padding: 15,
+              //maxWidth : 575,
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              //backgroundColor:'red',
+              width: '100%',
+            }}>
+            {allPreference && allPreference.length > 0 ? (
+              allPreference?.map((item, index) => {
+                return (
+                  <View key={index}>
+                    <PreferenceCard navigation={navigation} items={item} />
+                  </View>
+                );
+              })
+            ) : (
+              <NoData
+                title={'No Preference Data'}
+                subtitle={'Add your Preference '}
+                btnText={'Add Preference'}
+                handleBtn={handleAdd}
+              />
+            )}
+          </View>
+        )}
       </ScrollView>
     </View>
   );

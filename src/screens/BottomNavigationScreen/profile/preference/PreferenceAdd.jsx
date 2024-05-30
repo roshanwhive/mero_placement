@@ -25,6 +25,7 @@ import {showMessage} from 'react-native-flash-message';
 import {getSinglePreference} from '../../../../features/profile/preferenceSlice/getSinglePreferenceSlice';
 import {updatePreference} from '../../../../features/profile/preferenceSlice/updatePreferenceSlice';
 import ProfileAppBar from '../../../../components/custom_toolbar/ProfileAppBar';
+import {getAllPreference} from '../../../../features/profile/preferenceSlice/getAllPreferenceSlice';
 
 const PreferenceAdd = pref_id => {
   const navigation = useNavigation();
@@ -35,7 +36,16 @@ const PreferenceAdd = pref_id => {
   const {message, isSuccess, isLoading, isError, statusCode} = useSelector(
     state => state.addPreference,
   );
-  const {singlePreference} = useSelector(state => state.getSinglePreference);
+  const {
+    messageUpdate,
+    isSuccessUpdate,
+    isLoadingUpdate,
+    isErrorUpdate,
+    statusCodeUpdate,
+  } = useSelector(state => state.updatePreference);
+  const {singlePreference, isLoadingSingle} = useSelector(
+    state => state.getSinglePreference,
+  );
 
   const dispatch = useDispatch();
   const route = useRoute();
@@ -127,34 +137,46 @@ const PreferenceAdd = pref_id => {
     level: yup.string().required('Select Level'),
     location: yup.string().required('Select Duties'),
     skill: yup.string().required('Select Skill'),
+    id: yup.string(),
   });
-
-  const defaultValues = useMemo(
-    () => ({
-      preferred_job: singlePreference?.title_name || '',
-      expected_salary: singlePreference?.expected_salary || '',
-      job_categories: singlePreference?.job_category?.job_category_id || '',
-      availible_type:
-        singlePreference?.availible_type?.employment_type_id || '',
-      level: singlePreference?.level?.level_id || '',
-      location: singlePreference?.location?.district_id || '',
-      skill: singlePreference?.get_skill?.skill_id || '',
-      id: singlePreference?.id || '',
-    }),
-    [singlePreference],
-  );
 
   const methods = useForm({
     resolver: yupResolver(schema),
-    defaultValues,
+    defaultValues: {
+      preferred_job: '',
+      expected_salary: '',
+      job_categories: '',
+      availible_type: '',
+      level: '',
+      location: '',
+      skill: '',
+      id: '',
+    },
   });
 
   const {
     control,
     handleSubmit,
+    reset,
     formState: {errors},
     setError,
   } = methods;
+
+  useEffect(() => {
+    if (singlePreference) {
+      reset({
+        preferred_job: singlePreference?.title_name || '',
+        expected_salary: singlePreference?.expected_salary || '',
+        job_categories: singlePreference?.job_category?.job_category_id || '',
+        availible_type:
+          singlePreference?.availible_type?.employment_type_id || '',
+        level: singlePreference?.level?.level_id || '',
+        location: singlePreference?.location?.district_id || '',
+        skill: singlePreference?.get_skill?.skill_id || '',
+        id: singlePreference?.id || '',
+      });
+    }
+  }, [singlePreference, reset]);
 
   const onPressAdd = handleSubmit(async prefData => {
     dispatch(addPreference(prefData)).then(() => {
@@ -167,6 +189,7 @@ const PreferenceAdd = pref_id => {
         });
       } else if (isSuccess && statusCode === 200) {
         navigation.navigate('PreferenceList');
+        dispatch(getAllPreference());
         showMessage({
           message: JSON.stringify(message),
           type: 'success',
@@ -179,7 +202,23 @@ const PreferenceAdd = pref_id => {
 
   const onPressUpdate = handleSubmit(async prefData => {
     dispatch(updatePreference(prefData));
-    console.log('update successfully', prefData);
+    if (isErrorUpdate && statusCodeUpdate !== 200 && statusCodeUpdate !== 0) {
+      showMessage({
+        message: JSON.stringify(messageUpdate),
+        type: 'danger',
+        animationDuration: 1000,
+        animated: true,
+      });
+    } else if (isSuccessUpdate && statusCodeUpdate === 200) {
+      navigation.navigate('PreferenceList');
+      dispatch(getAllPreference());
+      showMessage({
+        message: JSON.stringify(messageUpdate),
+        type: 'success',
+        animationDuration: 1000,
+        animated: true,
+      });
+    }
   });
 
   const commonTextInputProps = {
@@ -199,292 +238,301 @@ const PreferenceAdd = pref_id => {
         showIcon={false}
       />
       <ScrollView>
-        <View style={GlobalStyleSheet.containerForm}>
-          <View style={GlobalStyleSheet.inputWrapper}>
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({field: {onChange, value}}) => (
-                <TextInput
-                  {...commonTextInputProps}
-                  label="Preferred Job"
-                  value={value}
-                  onChangeText={onChange}
-                />
-              )}
-              name="preferred_job"
-            />
-            {errors.preferred_job && (
-              <Text style={styles.errorText}>
-                {errors.preferred_job.message}
-              </Text>
-            )}
-          </View>
-          <View style={GlobalStyleSheet.inputWrapper}>
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({field: {onChange, value}}) => (
-                <TextInput
-                  {...commonTextInputProps}
-                  label="Expected Salary"
-                  value={value}
-                  onChangeText={onChange}
-                />
-              )}
-              name="expected_salary"
-            />
-            {errors.expected_salary && (
-              <Text style={styles.errorText}>
-                {errors.expected_salary.message}
-              </Text>
-            )}
-          </View>
-
-          <View style={GlobalStyleSheet.inputWrapper}>
-            <Controller
-              control={control}
-              rules={{
-                required: false,
-              }}
-              render={({field: {onChange, value}}) => (
-                <Dropdown
-                  data={categoryname}
-                  disable={isLoading}
-                  placeholder="Select Category"
-                  maxHeight={300}
-                  labelField="label"
-                  valueField="value"
-                  value={value}
-                  placeholderStyle={{color: customTextColor.secondary}}
-                  selectedTextStyle={{color: customTextColor.primary}}
-                  itemTextStyle={{color: customTextColor.secondary}}
-                  style={[
-                    {
-                      borderWidth: 1,
-                      borderColor: customTextColor.darkGreen,
-                      borderRadius: 5,
-                      paddingHorizontal: 16,
-                      paddingVertical: 5,
-                    },
-                    styles.input,
-                  ]}
-                  onChange={item => {
-                    onChange(item.value);
-                  }}
-                  // onChange={(item) => handleSubmit(item.value)}
-                />
-              )}
-              name="job_categories"
-            />
-            {errors.job_categories && (
-              <Text style={styles.errorText}>
-                {errors.job_categories.message}
-              </Text>
-            )}
-          </View>
-          <View style={GlobalStyleSheet.inputWrapper}>
-            <Controller
-              control={control}
-              rules={{
-                required: false,
-              }}
-              render={({field: {onChange, value}}) => (
-                <Dropdown
-                  data={availableType}
-                  disable={isLoading}
-                  placeholder="Select Available Type"
-                  maxHeight={300}
-                  labelField="label"
-                  valueField="value"
-                  value={value}
-                  placeholderStyle={{color: customTextColor.secondary}}
-                  selectedTextStyle={{color: customTextColor.primary}}
-                  itemTextStyle={{color: customTextColor.secondary}}
-                  style={[
-                    {
-                      borderWidth: 1,
-                      borderColor: customTextColor.darkGreen,
-                      borderRadius: 5,
-                      paddingHorizontal: 16,
-                      paddingVertical: 5,
-                    },
-                    styles.input,
-                  ]}
-                  onChange={item => {
-                    onChange(item.value);
-                    //handleSubmit(item.value)
-                    console.log('click' + item.value);
-                  }}
-                  // onChange={(item) => handleSubmit(item.value)}
-                />
-              )}
-              name="availible_type"
-            />
-            {errors.availible_type && (
-              <Text style={styles.errorText}>
-                {errors.availible_type.message}
-              </Text>
-            )}
-          </View>
-          <View style={GlobalStyleSheet.inputWrapper}>
-            <Controller
-              control={control}
-              rules={{
-                required: false,
-              }}
-              render={({field: {onChange, value}}) => (
-                <Dropdown
-                  data={levelJob}
-                  disable={isLoading}
-                  placeholder="Select Level"
-                  maxHeight={300}
-                  labelField="label"
-                  valueField="value"
-                  value={value}
-                  placeholderStyle={{color: customTextColor.secondary}}
-                  selectedTextStyle={{color: customTextColor.primary}}
-                  itemTextStyle={{color: customTextColor.secondary}}
-                  style={[
-                    {
-                      borderWidth: 1,
-                      borderColor: customTextColor.darkGreen,
-                      borderRadius: 5,
-                      paddingHorizontal: 16,
-                      paddingVertical: 5,
-                    },
-                    styles.input,
-                  ]}
-                  onChange={item => {
-                    onChange(item.value);
-                    //handleSubmit(item.value)
-                    console.log('click' + item.value);
-                  }}
-                  // onChange={(item) => handleSubmit(item.value)}
-                />
-              )}
-              name="level"
-            />
-            {errors.level && (
-              <Text style={styles.errorText}>{errors.level.message}</Text>
-            )}
-          </View>
-          <View style={GlobalStyleSheet.inputWrapper}>
-            <Controller
-              control={control}
-              rules={{
-                required: false,
-              }}
-              render={({field: {onChange, value}}) => (
-                <Dropdown
-                  data={district}
-                  disable={isLoading}
-                  placeholder="Select Location"
-                  maxHeight={300}
-                  labelField="label"
-                  valueField="value"
-                  value={value}
-                  placeholderStyle={{color: customTextColor.secondary}}
-                  selectedTextStyle={{color: customTextColor.primary}}
-                  itemTextStyle={{color: customTextColor.secondary}}
-                  style={[
-                    {
-                      borderWidth: 1,
-                      borderColor: customTextColor.darkGreen,
-                      borderRadius: 5,
-                      paddingHorizontal: 16,
-                      paddingVertical: 5,
-                    },
-                    styles.input,
-                  ]}
-                  onChange={item => {
-                    onChange(item.value);
-                    //handleSubmit(item.value)
-                    console.log('click' + item.value);
-                  }}
-                  // onChange={(item) => handleSubmit(item.value)}
-                />
-              )}
-              name="location"
-            />
-            {errors.location && (
-              <Text style={styles.errorText}>{errors.location.message}</Text>
-            )}
-          </View>
-          <View style={GlobalStyleSheet.inputWrapper}>
-            <Controller
-              control={control}
-              rules={{
-                required: false,
-              }}
-              render={({field: {onChange, value}}) => (
-                <Dropdown
-                  data={skillJob}
-                  disable={isLoading}
-                  placeholder="Select Skill"
-                  maxHeight={300}
-                  labelField="label"
-                  valueField="value"
-                  value={value}
-                  placeholderStyle={{color: customTextColor.secondary}}
-                  selectedTextStyle={{color: customTextColor.primary}}
-                  itemTextStyle={{color: customTextColor.secondary}}
-                  style={[
-                    {
-                      borderWidth: 1,
-                      borderColor: customTextColor.darkGreen,
-                      borderRadius: 5,
-                      paddingHorizontal: 16,
-                      paddingVertical: 5,
-                    },
-                    styles.input,
-                  ]}
-                  onChange={item => {
-                    onChange(item.value);
-                    //handleSubmit(item.value)
-                    console.log('click' + item.value);
-                  }}
-                  // onChange={(item) => handleSubmit(item.value)}
-                />
-              )}
-              name="skill"
-            />
-            {errors.skill && (
-              <Text style={styles.errorText}>{errors.skill.message}</Text>
-            )}
-          </View>
-
-          <View style={GlobalStyleSheet.buttonWrapper}>
-            {!pref_id ? (
-              <TouchableOpacity
-                style={GlobalStyleSheet.button}
-                onPress={handleSubmit(onPressAdd)}>
-                {isLoading ? (
-                  <ActivityIndicator
-                    animating={true}
-                    style={{paddingVertical: 14}}
-                    color={customTextColor.white}
-                    size={20}
+        {isLoadingSingle ? (
+          <ActivityIndicator
+            animating={true}
+            style={{flex: 1, marginTop: 50}}
+            color={customTextColor.darkGreen}
+            size={20}
+          />
+        ) : (
+          <View style={GlobalStyleSheet.containerForm}>
+            <View style={GlobalStyleSheet.inputWrapper}>
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({field: {onChange, value}}) => (
+                  <TextInput
+                    {...commonTextInputProps}
+                    label="Preferred Job"
+                    value={value}
+                    onChangeText={onChange}
                   />
-                ) : (
-                  <Text style={GlobalStyleSheet.buttonText}>
-                    Add Preferences
-                  </Text>
                 )}
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                style={GlobalStyleSheet.button}
-                onPress={handleSubmit(onPressUpdate)}>
-                <Text style={GlobalStyleSheet.buttonText}>Save Changes</Text>
-              </TouchableOpacity>
-            )}
+                name="preferred_job"
+              />
+              {errors.preferred_job && (
+                <Text style={styles.errorText}>
+                  {errors.preferred_job.message}
+                </Text>
+              )}
+            </View>
+            <View style={GlobalStyleSheet.inputWrapper}>
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({field: {onChange, value}}) => (
+                  <TextInput
+                    {...commonTextInputProps}
+                    label="Expected Salary"
+                    value={value}
+                    onChangeText={onChange}
+                  />
+                )}
+                name="expected_salary"
+              />
+              {errors.expected_salary && (
+                <Text style={styles.errorText}>
+                  {errors.expected_salary.message}
+                </Text>
+              )}
+            </View>
+
+            <View style={GlobalStyleSheet.inputWrapper}>
+              <Controller
+                control={control}
+                rules={{
+                  required: false,
+                }}
+                render={({field: {onChange, value}}) => (
+                  <Dropdown
+                    data={categoryname}
+                    disable={isLoading}
+                    placeholder="Select Category"
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    value={value}
+                    placeholderStyle={{color: customTextColor.secondary}}
+                    selectedTextStyle={{color: customTextColor.primary}}
+                    itemTextStyle={{color: customTextColor.secondary}}
+                    style={[
+                      {
+                        borderWidth: 1,
+                        borderColor: customTextColor.darkGreen,
+                        borderRadius: 5,
+                        paddingHorizontal: 16,
+                        paddingVertical: 5,
+                      },
+                      styles.input,
+                    ]}
+                    onChange={item => {
+                      onChange(item.value);
+                    }}
+                    // onChange={(item) => handleSubmit(item.value)}
+                  />
+                )}
+                name="job_categories"
+              />
+              {errors.job_categories && (
+                <Text style={styles.errorText}>
+                  {errors.job_categories.message}
+                </Text>
+              )}
+            </View>
+            <View style={GlobalStyleSheet.inputWrapper}>
+              <Controller
+                control={control}
+                rules={{
+                  required: false,
+                }}
+                render={({field: {onChange, value}}) => (
+                  <Dropdown
+                    data={availableType}
+                    disable={isLoading}
+                    placeholder="Select Available Type"
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    value={value}
+                    placeholderStyle={{color: customTextColor.secondary}}
+                    selectedTextStyle={{color: customTextColor.primary}}
+                    itemTextStyle={{color: customTextColor.secondary}}
+                    style={[
+                      {
+                        borderWidth: 1,
+                        borderColor: customTextColor.darkGreen,
+                        borderRadius: 5,
+                        paddingHorizontal: 16,
+                        paddingVertical: 5,
+                      },
+                      styles.input,
+                    ]}
+                    onChange={item => {
+                      onChange(item.value);
+                      //handleSubmit(item.value)
+                      console.log('click' + item.value);
+                    }}
+                    // onChange={(item) => handleSubmit(item.value)}
+                  />
+                )}
+                name="availible_type"
+              />
+              {errors.availible_type && (
+                <Text style={styles.errorText}>
+                  {errors.availible_type.message}
+                </Text>
+              )}
+            </View>
+            <View style={GlobalStyleSheet.inputWrapper}>
+              <Controller
+                control={control}
+                rules={{
+                  required: false,
+                }}
+                render={({field: {onChange, value}}) => (
+                  <Dropdown
+                    data={levelJob}
+                    disable={isLoading}
+                    placeholder="Select Level"
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    value={value}
+                    placeholderStyle={{color: customTextColor.secondary}}
+                    selectedTextStyle={{color: customTextColor.primary}}
+                    itemTextStyle={{color: customTextColor.secondary}}
+                    style={[
+                      {
+                        borderWidth: 1,
+                        borderColor: customTextColor.darkGreen,
+                        borderRadius: 5,
+                        paddingHorizontal: 16,
+                        paddingVertical: 5,
+                      },
+                      styles.input,
+                    ]}
+                    onChange={item => {
+                      onChange(item.value);
+                      //handleSubmit(item.value)
+                      console.log('click' + item.value);
+                    }}
+                    // onChange={(item) => handleSubmit(item.value)}
+                  />
+                )}
+                name="level"
+              />
+              {errors.level && (
+                <Text style={styles.errorText}>{errors.level.message}</Text>
+              )}
+            </View>
+            <View style={GlobalStyleSheet.inputWrapper}>
+              <Controller
+                control={control}
+                rules={{
+                  required: false,
+                }}
+                render={({field: {onChange, value}}) => (
+                  <Dropdown
+                    data={district}
+                    disable={isLoading}
+                    placeholder="Select Location"
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    value={value}
+                    placeholderStyle={{color: customTextColor.secondary}}
+                    selectedTextStyle={{color: customTextColor.primary}}
+                    itemTextStyle={{color: customTextColor.secondary}}
+                    style={[
+                      {
+                        borderWidth: 1,
+                        borderColor: customTextColor.darkGreen,
+                        borderRadius: 5,
+                        paddingHorizontal: 16,
+                        paddingVertical: 5,
+                      },
+                      styles.input,
+                    ]}
+                    onChange={item => {
+                      onChange(item.value);
+                      //handleSubmit(item.value)
+                      console.log('click' + item.value);
+                    }}
+                    // onChange={(item) => handleSubmit(item.value)}
+                  />
+                )}
+                name="location"
+              />
+              {errors.location && (
+                <Text style={styles.errorText}>{errors.location.message}</Text>
+              )}
+            </View>
+            <View style={GlobalStyleSheet.inputWrapper}>
+              <Controller
+                control={control}
+                rules={{
+                  required: false,
+                }}
+                render={({field: {onChange, value}}) => (
+                  <Dropdown
+                    data={skillJob}
+                    disable={isLoading}
+                    placeholder="Select Skill"
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    value={value}
+                    placeholderStyle={{color: customTextColor.secondary}}
+                    selectedTextStyle={{color: customTextColor.primary}}
+                    itemTextStyle={{color: customTextColor.secondary}}
+                    style={[
+                      {
+                        borderWidth: 1,
+                        borderColor: customTextColor.darkGreen,
+                        borderRadius: 5,
+                        paddingHorizontal: 16,
+                        paddingVertical: 5,
+                      },
+                      styles.input,
+                    ]}
+                    onChange={item => {
+                      onChange(item.value);
+                      //handleSubmit(item.value)
+                      console.log('click' + item.value);
+                    }}
+                    // onChange={(item) => handleSubmit(item.value)}
+                  />
+                )}
+                name="skill"
+              />
+              {errors.skill && (
+                <Text style={styles.errorText}>{errors.skill.message}</Text>
+              )}
+            </View>
+
+            <View style={GlobalStyleSheet.buttonWrapper}>
+              {!pref_id ? (
+                <TouchableOpacity
+                  style={GlobalStyleSheet.button}
+                  onPress={handleSubmit(onPressAdd)}>
+                  {isLoading ? (
+                    <ActivityIndicator
+                      animating={true}
+                      style={{paddingVertical: 14}}
+                      color={customTextColor.white}
+                      size={20}
+                    />
+                  ) : (
+                    <Text style={GlobalStyleSheet.buttonText}>
+                      Add Preferences
+                    </Text>
+                  )}
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={GlobalStyleSheet.button}
+                  onPress={handleSubmit(onPressUpdate)}>
+                  <Text style={GlobalStyleSheet.buttonText}>Save Changes</Text>
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
-        </View>
+        )}
       </ScrollView>
     </View>
   );
@@ -516,6 +564,11 @@ const styles = StyleSheet.create({
     color: 'red',
     margin: 0,
     padding: 0,
+  },
+  body: {
+    backgroundColor: customThemeColor.white,
+    borderTopLeftRadius: 20,
+    borderTopEndRadius: 20,
   },
 });
 

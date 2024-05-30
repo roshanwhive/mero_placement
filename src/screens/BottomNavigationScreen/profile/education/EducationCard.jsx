@@ -1,28 +1,52 @@
-import {Alert, Image, Text, TouchableOpacity, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {customTextColor, customThemeColor} from '../../../../constants/Color';
 import {useDispatch, useSelector} from 'react-redux';
 import {customFontSize, customFonts} from '../../../../constants/theme';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useEffect, useState} from 'react';
-import {showMessage} from 'react-native-flash-message';
-import {delEducation} from '../../../../features/profile/educationSlice/deleteEducationSlice';
+import {
+  delEducation,
+  getAllEducation,
+} from '../../../../features/profile/testSlice/EducationSlice';
 
 const EducationCard = ({items, navigation}) => {
   const dispatch = useDispatch();
 
   const [status, setStatus] = useState(items?.passed_status);
+  const {isLoading} = useSelector(state => state.educationTest);
 
   const handleEdit = id => {
     // id = items?.education_id;
-    navigation.navigate('EducationAdd', {id});
+    navigation.navigate('EducationUpdate', {id});
     console.log('button', id);
   };
+
+  useEffect(() => {
+    dispatch(getAllEducation);
+  }, [dispatch]);
 
   const handleDelete = () => {
     console.log('delID', items?.education_id);
     dispatch(delEducation(items?.education_id));
   };
 
+  if (isLoading) {
+    return (
+      <ActivityIndicator
+        animating={true}
+        style={{paddingVertical: 14}}
+        color={customTextColor.darkGreen}
+        size={20}
+      />
+    );
+  }
   return (
     <View
       style={{
@@ -30,7 +54,7 @@ const EducationCard = ({items, navigation}) => {
         borderRadius: 10,
         marginBottom: 18,
         borderLeftWidth: 4,
-        borderColor: status == 'passed' ? 'green' : 'red',
+        borderColor: status == 'passed' ? '#11401E' : '#9D050A',
       }}>
       <View
         style={{
@@ -212,7 +236,7 @@ const EducationCard = ({items, navigation}) => {
                 }}>
                 <Text
                   style={{
-                    color: status == 'passed' ? 'green' : 'red',
+                    color: status == 'passed' ? '#11401E' : '#9D050A',
                     fontFamily: customFonts.fontRobotoBold,
                     fontSize: customFontSize.font16,
                   }}>

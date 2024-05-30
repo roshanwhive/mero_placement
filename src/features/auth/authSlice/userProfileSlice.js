@@ -43,7 +43,6 @@ const initialState = {
         state.isLoading = false;
         state.isSuccess = false;
       })
-
     },
   });
   export default userProfileSlice.reducer;

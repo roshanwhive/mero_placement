@@ -34,10 +34,10 @@ export const updateEducationSlice = createSlice({
       .addCase(updateEducation.fulfilled, (state, action) => {
         console.log('update', action.payload.data);
         state.isLoading = false;
-        state.isError = !action.payload.success;
-        state.isSuccess = action.payload.success;
-        state.message = action.payload.message;
-        state.statusCode = action.payload.status_code;
+        state.isError = !action.payload?.success;
+        state.isSuccess = action.payload?.success;
+        state.message = action.payload?.message;
+        state.statusCode = action.payload?.status_code;
       })
       .addCase(updateEducation.rejected, (state, action) => {
         state.isError = true;

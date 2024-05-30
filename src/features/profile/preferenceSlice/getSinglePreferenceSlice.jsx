@@ -5,7 +5,6 @@ const initialState = {
   singlePreference: {},
   isError: false,
   isSuccess: false,
-  isLoading: false,
   isLoadingSingle: false,
   statusCode: 0,
   message: '',
@@ -29,11 +28,10 @@ export const getSinglePreferenceSlice = createSlice({
     builder
       // ------------------------------------Get Single Preference -------------------------------
       .addCase(getSinglePreference.pending, state => {
-        state.isLoading = true;
+        state.isLoadingSingle = true;
       })
       .addCase(getSinglePreference.fulfilled, (state, action) => {
-        console.log('tghud', state.singlePreference);
-        state.isLoading = false;
+        state.isLoadingSingle = false;
         state.isError = !action.payload.success;
         state.isSuccess = action.payload.success;
         state.message = action.payload.message;
@@ -42,7 +40,7 @@ export const getSinglePreferenceSlice = createSlice({
       })
       .addCase(getSinglePreference.rejected, (state, action) => {
         state.isError = true;
-        state.isLoading = false;
+        state.isLoadingSingle = false;
         state.isSuccess = false;
       });
   },

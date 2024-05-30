@@ -4,7 +4,7 @@ import {base_url} from '../../utils/base_url';
 //get all Trainig
 const getAllTraining = async () => {
   try {
-    const response = await axios.get(`${base_url}home/view-all-trainings`);
+    const response = await axios.get(`${base_url}home/trainings`);
     if (response) {
       return response.data;
     }
@@ -18,7 +18,7 @@ const getAllTraining = async () => {
 const getSingleTraining = async slug => {
   try {
     const response = await axios.get(
-      `${base_url}profile/training-profile/${slug}`,
+      `${base_url}home/training-details/${slug}`,
     );
     if (response) {
       return response.data;

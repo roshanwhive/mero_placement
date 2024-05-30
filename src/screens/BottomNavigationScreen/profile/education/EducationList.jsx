@@ -15,33 +15,31 @@ import {customTextColor, customThemeColor} from '../../../../constants/Color';
 import {customFontSize, customFonts} from '../../../../constants/theme';
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {getAllEducation} from '../../../../features/profile/educationSlice/getAllEducationSlice';
 import ProfileAppBar from '../../../../components/custom_toolbar/ProfileAppBar';
+import ProfileSkeleton from '../../../../components/skeleton_loader/profileSkeleton';
+import NoData from '../NoData';
+import {getAllEducation} from '../../../../features/profile/testSlice/EducationSlice';
 
 const EducationList = () => {
-  const {allEducation} = useSelector(state => state.getAllEducation);
+  // const {allEducation, isLoading} = useSelector(state => state.getAllEducation);
+  const {allEducation, isLoading} = useSelector(state => state.educationTest);
+
   const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getAllEducation());
+    // console.log('alleducation', allEducation);
   }, [dispatch]);
-
-  console.log('eduList', allEducation);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    console.log('first', refreshing);
     dispatch(getAllEducation());
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);
   }, []);
-
-  useEffect(() => {
-    console.log('allEducation', typeof allEducation);
-  }, [dispatch]);
 
   const handleBack = () => {
     navigation.goBack();
@@ -50,6 +48,11 @@ const EducationList = () => {
   const handleAdd = () => {
     navigation.navigate('EducationAdd');
   };
+
+  // if (!allEducation) {
+  //   return <Text>this is null</Text>; // Or render a loading indicator or placeholder
+  // }
+
   return (
     <View style={styles.container}>
       <ProfileAppBar
@@ -63,32 +66,38 @@ const EducationList = () => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
-        <View
-          style={{
-            padding: 15,
-            //maxWidth : 575,
-            marginLeft: 'auto',
-            marginRight: 'auto',
-            //backgroundColor:'red',
-            width: '100%',
-          }}>
-          {!!allEducation ? (
-            allEducation?.map((item, index) => {
-              return (
-                <View key={index}>
-                  <EducationCard navigation={navigation} items={item} />
-                </View>
-              );
-            })
-          ) : (
-            <ActivityIndicator
-              animating={true}
-              style={{paddingVertical: 14}}
-              color={customTextColor.darkGreen}
-              size={20}
-            />
-          )}
-        </View>
+        {isLoading ? (
+          Array.from({length: 5}).map((_, index) => (
+            <ProfileSkeleton key={index} />
+          ))
+        ) : (
+          <View
+            style={{
+              padding: 15,
+              //maxWidth : 575,
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              //backgroundColor:'red',
+              width: '100%',
+            }}>
+            {allEducation && allEducation.length > 0 ? (
+              allEducation?.map((item, index) => {
+                return (
+                  <View key={index}>
+                    <EducationCard navigation={navigation} items={item} />
+                  </View>
+                );
+              })
+            ) : (
+              <NoData
+                title={'No Education Data'}
+                subtitle={'Add your Education details'}
+                btnText={'Add Education'}
+                handleBtn={handleAdd}
+              />
+            )}
+          </View>
+        )}
       </ScrollView>
     </View>
   );

@@ -33,17 +33,19 @@ import ProfileAppBar from '../../../../components/custom_toolbar/ProfileAppBar';
 import {format} from 'date-fns';
 import DatePicker from 'react-native-date-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import {getAllExperience} from '../../../../features/profile/experienceSlice/getAllExperienceSlice';
 const ExperienceAdd = id => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const route = useRoute();
   id = route.params?.id;
 
-  const [show, setShow] = useState(false);
-  const [date, setDate] = useState(new Date());
-  const [startDate, setStartDate] = useState('');
+  const [showStart, setShowStart] = useState(false);
+  const [showEnd, setShowEnd] = useState(false);
 
-  console.log(show);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
   const [formattedDate, setFormattedDate] = useState(
     format(new Date(), 'yyyy/MM/dd'),
   );
@@ -55,6 +57,14 @@ const ExperienceAdd = id => {
   );
   const {singleExperience} = useSelector(state => state.getSingleExperience);
 
+  const formatDate = date => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
   useEffect(() => {
     dispatch(getExpFormData());
   }, [dispatch]);
@@ -64,15 +74,28 @@ const ExperienceAdd = id => {
   }, [dispatch]);
 
   const showDatepicker = () => {
-    console.log('Select Date ======================>', show);
-    // setShow(true);
-    setShow(!show);
+    setShowStart(!showStart);
+  };
+  const showDatepickerEnd = () => {
+    setShowEnd(!showEnd);
+  };
+
+  const handleStartDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate || startDate;
+    setShowStart(Platform.OS === 'ios');
+    setStartDate(formatDate(currentDate));
+  };
+
+  const handleEndDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate || endDate;
+    setShowEnd(Platform.OS === 'ios');
+    setEndDate(formatDate(currentDate));
   };
 
   const onChangeDate = ({type}, selected) => {
     if (type == 'set') {
       const current = selected;
-      setDate(current);
+      setStartDate(current);
       if (Platform.OS === 'android') {
         showDatepicker();
         setStartDate(current.toDateString());
@@ -81,6 +104,21 @@ const ExperienceAdd = id => {
       showDatepicker;
     }
   };
+
+  const onChangeEndDate = ({type}, selected) => {
+    if (type == 'set') {
+      const current = selected;
+      setEndDate(current);
+      if (Platform.OS === 'android') {
+        showDatepickerEnd();
+        setEndDate(current.toDateString());
+      }
+    } else {
+      showDatepickerEnd;
+    }
+  };
+
+  const [organizationName, setOrganizationName] = useState('');
 
   const [organizationType, setOrganizationType] = useState([]);
   useEffect(() => {
@@ -127,35 +165,23 @@ const ExperienceAdd = id => {
     position: yup.string().required('Position is required'),
     dutis: yup.string().required('Duties is required'),
     start_date: yup.string().required('Start Date is required'),
+    end_date: yup.string(),
+    experience_id: yup.string(),
   });
-
-  const defaultValues = useMemo(
-    () => ({
-      organization_name: singleExperience?.experience?.org_name,
-      organization_type_id:
-        singleExperience?.experience?.company_type?.company_type_id || '',
-      job_level_id: singleExperience?.experience?.job_level?.level_id || '',
-      job_category_id:
-        singleExperience?.experience?.job_category?.job_category_id || '',
-      position: singleExperience?.experience?.position || '',
-      dutis: singleExperience?.experience?.duties_responsibilities || '',
-      start_date: singleExperience?.experience?.start_date || '',
-      end_date: singleExperience?.experience?.end_date || '',
-      experience_id: singleExperience?.experience?.experience_id || '',
-    }),
-    [singleExperience],
-  );
-  // console.log('single', defaultValues);
-
-  useEffect(() => {
-    reset({
-      start_date: date || '',
-    });
-  }, [date]);
 
   const methods = useForm({
     resolver: yupResolver(schema),
-    defaultValues,
+    defaultValues: {
+      organization_name: '',
+      organization_type_id: '',
+      job_level_id: '',
+      job_category_id: '',
+      position: '',
+      dutis: '',
+      start_date: '',
+      end_date: '',
+      experience_id: '',
+    },
   });
 
   const {
@@ -166,8 +192,33 @@ const ExperienceAdd = id => {
     setError,
   } = methods;
 
+  useEffect(() => {
+    if (singleExperience === null) {
+      reset({
+        organization_name: singleExperience?.experience?.org_name,
+        organization_type_id:
+          singleExperience?.experience?.company_type?.company_type_id || '',
+        job_level_id: singleExperience?.experience?.job_level?.level_id || '',
+        job_category_id:
+          singleExperience?.experience?.job_category?.job_category_id || '',
+        position: singleExperience?.experience?.position || '',
+        dutis: singleExperience?.experience?.duties_responsibilities || '',
+        start_date: singleExperience?.experience?.start_date || '',
+        end_date: singleExperience?.experience?.end_date || '',
+        experience_id: singleExperience?.experience?.experience_id || '',
+      });
+    }
+  }, [singleExperience, reset]);
+
   const onPressAdd = handleSubmit(async experienceData => {
-    console.log(experienceData);
+    reset({
+      start_date: formatDate(experienceData.start_date),
+      end_date: formatDate(experienceData.end_date),
+    });
+    setTimeout(() => {
+      console.log('this is data', experienceData);
+    }, 2000);
+
     // dispatch(addExperience(experienceData)).then(() => {
     //   if (isError && statusCode !== 200 && statusCode !== 0) {
     //     showMessage({
@@ -178,6 +229,7 @@ const ExperienceAdd = id => {
     //     });
     //   } else if (isSuccess && statusCode === 200) {
     //     navigation.navigate('ExperienceList');
+    //     dispatch(getAllExperience);
     //     showMessage({
     //       message: JSON.stringify(message),
     //       type: 'success',
@@ -187,32 +239,30 @@ const ExperienceAdd = id => {
     //   }
     // });
   });
+  // console.log('name', organizationName);
 
   const onPressUpdate = handleSubmit(async experienceData => {
     dispatch(updateExperience(experienceData));
     // console.log('update successfully exp', experienceData);
   });
 
-  const handleConfirm = selectedDate => {
-    //setShow(false);
-    setDate(selectedDate);
-    console.log('date', selectedDate, show);
+  // const handleConfirm = selectedDate => {
+  //   //setShow(false);
+  //   setDate(selectedDate);
+  //   console.log('date', selectedDate, show);
 
-    // Format the date as needed
-    let tempDate = new Date(selectedDate);
-    let fDate =
-      tempDate.getDate() +
-      '/' +
-      (tempDate.getMonth() + 1) +
-      '/' +
-      tempDate.getFullYear();
-    //setDate(fDate);
-    //setText(fDate);
-  };
+  //   // Format the date as needed
+  //   let tempDate = new Date(selectedDate);
+  //   let fDate =
+  //     tempDate.getDate() +
+  //     '/' +
+  //     (tempDate.getMonth() + 1) +
+  //     '/' +
+  //     tempDate.getFullYear();
+  //   //setDate(fDate);
+  //   //setText(fDate);
+  // };
 
-  const handleCancel = () => {
-    setShow(false);
-  };
   const commonTextInputProps = {
     style: styles.input,
     mode: 'outlined',
@@ -247,10 +297,8 @@ const ExperienceAdd = id => {
               )}
               name="organization_name"
             />
-            {errors.organization_name && (
-              <Text style={styles.errorText}>
-                {errors.organization_name.message}
-              </Text>
+            {errors.position && (
+              <Text style={styles.errorText}>{errors.position.message}</Text>
             )}
           </View>
           <View style={GlobalStyleSheet.inputWrapper}>
@@ -426,97 +474,90 @@ const ExperienceAdd = id => {
             )}
           </View>
           <View style={GlobalStyleSheet.inputWrapper}>
-            <TouchableOpacity onPress={showDatepicker}>
-              {/* <Controller
-                control={control}
-                rules={{
-                  required: true,
-                }}
-                render={({field: {onChange, value}}) => ( */}
-              <>
-                {/* <TextInput
-                  {...commonTextInputProps}
-                  label="Start Date"
-                  // value={date}
-                  textContentType="date"
-                  editable={false}
-                  //onChangeText={onChange}
-                  ref={startDate}
-                /> */}
-                {/* <Text> Start Date : {text}</Text> */}
-                {/* <Modal visible={show} onRequestClose={() => setShow(false)}>
-                  <View style={styles.modalContainer}>
-                    <View style={styles.datePickerContainer}>
-                      <DatePicker
-                        date={date}
-                        mode="date"
-                        onDateChange={handleConfirm}
-                      />
-                      <Button
-                        style={{
-                          backgroundColor: customThemeColor.darkGreen,
-                        }}
-                        title="Confirm"
-                        onPress={() => setShow(false)}
-                      />
-                    </View>
-                  </View>
-                </Modal> */}
-              </>
-              {/* )}
-                name="start_date"
-              /> */}
-            </TouchableOpacity>
-            {/* {show && (
-              // <DateTimePicker
-              //   mode="date"
-              //   value={date}
-              //   display="default"
-              //   onChange={onChange}
-              //   onTouchCancel={handleCancel}
-              // />
-             
-            )} */}
-          </View>
-          <View style={GlobalStyleSheet.inputWrapper}>
-            <Text>End Date:</Text>
-            {show && (
-              <DateTimePicker
-                mode="date"
-                value={date}
-                onChange={onChangeDate}
-              />
-            )}
-
-            {/* {!showDatepicker && ( */}
-            <TouchableOpacity onPress={showDatepicker}>
-              <TextInput
-                {...commonTextInputProps}
-                label="End Date"
-                placeholder="kjssdfhkjsdhf"
-                editable={false}
-                value={startDate}
-                onChangeText={setStartDate}
-              />
-            </TouchableOpacity>
-          </View>
-          {/* <View style={GlobalStyleSheet.inputWrapper}>
             <Controller
               control={control}
-              rules={{
-                required: true,
-              }}
+              name="start_date"
+              //defaultValue={date}
+              rules={{required: true}}
               render={({field: {onChange, value}}) => (
-                <TextInput
-                  {...commonTextInputProps}
-                  label="End Date"
-                  value={value}
-                  onChangeText={onChange}
-                />
+                <View>
+                  {/* <Button
+                    title="Select Start Date"
+                    onPress={() => setShowStart(true)}
+                  /> */}
+                  <TouchableOpacity onPress={() => setShowStart(true)}>
+                    {showStart && (
+                      <DateTimePicker
+                        testID="startDatePicker"
+                        value={value || startDate}
+                        mode="date"
+                        display="default"
+                        onChange={(event, date) => {
+                          console.log('field', date);
+                          onChange(date);
+                          handleStartDateChange(event, date);
+                        }}
+                      />
+                    )}
+                    <TextInput
+                      label="Start Date"
+                      placeholder="YYYY-MM-DD"
+                      value={formatDate(value || startDate)}
+                      {...commonTextInputProps}
+                      editable={false}
+                    />
+                    {errors.start_date && (
+                      <Text style={styles.errorText}>
+                        {errors.start_date.message}
+                      </Text>
+                    )}
+                  </TouchableOpacity>
+                </View>
               )}
-              name="end_date"
             />
-          </View> */}
+          </View>
+          <View style={GlobalStyleSheet.inputWrapper}>
+            <Controller
+              control={control}
+              name="end_date"
+              defaultValue={endDate}
+              rules={{required: true}}
+              render={({field: {onChange, value}}) => (
+                <View>
+                  {/* <Button
+                    title="Select End Date"
+                    onPress={() => setShowEnd(true)}
+                  /> */}
+                  <TouchableOpacity onPress={() => setShowEnd(true)}>
+                    {showEnd && (
+                      <DateTimePicker
+                        testID="endDatePicker"
+                        value={value || endDate}
+                        mode="date"
+                        display="default"
+                        onChange={(event, date) => {
+                          onChange(date);
+                          handleEndDateChange(event, date);
+                        }}
+                      />
+                    )}
+                    <TextInput
+                      label="End Date"
+                      placeholder="YYYY-MM-DD"
+                      value={formatDate(value || endDate)}
+                      {...commonTextInputProps}
+                      editable={false}
+                    />
+                    {errors.end_date && (
+                      <Text style={styles.errorText}>
+                        {errors.end_date.message}
+                      </Text>
+                    )}
+                  </TouchableOpacity>
+                </View>
+              )}
+            />
+          </View>
         </View>
         <View style={GlobalStyleSheet.buttonWrapper}>
           {!id ? (

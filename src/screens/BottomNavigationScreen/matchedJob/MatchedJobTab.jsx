@@ -16,15 +16,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import CardSkeleton from '../../../components/skeleton_loader/CardSkeleton';
 import {customTextColor} from '../../../constants/Color';
 
-const FirstRoute = () => (
-  //<View style={{ flex: 1, backgroundColor: '#ff4081' }} />
-  <MatchedJob></MatchedJob>
-);
+const FirstRoute = () => <MatchedJob></MatchedJob>;
 
-const SecondRoute = () => (
-  // <View style={{ flex: 1, backgroundColor: '#673ab7' }} />
-  <SavedJob></SavedJob>
-);
+const SecondRoute = () => <SavedJob></SavedJob>;
 
 const renderScene = SceneMap({
   first: FirstRoute,
@@ -33,7 +27,9 @@ const renderScene = SceneMap({
 
 const MatchedJobTab = ({navigation}) => {
   const dispatch = useDispatch();
+
   const {isAuthenticated, token, isLoading} = useSelector(state => state.login);
+  console.log('Is authenticated', isAuthenticated);
   const {userProfile} = useSelector(state => state.userProfile);
 
   const layout = useWindowDimensions();
@@ -55,9 +51,9 @@ const MatchedJobTab = ({navigation}) => {
   };
   const [animate, setAnimate] = useState(true);
 
-  useEffect(() => {
-    console.log('matchedJobTab', userProfile.preference);
-  }, [userProfile]);
+  // useEffect(() => {
+  //   console.log('matchedJobTab', userProfile.preference);
+  // }, [userProfile]);
 
   useEffect(() => {
     CloseActivityIndicator();
@@ -72,21 +68,12 @@ const MatchedJobTab = ({navigation}) => {
   const AddProp = () => {
     return (
       <View>
-        {isAuthenticated && token !== null ? (
-          <AddPref
-            title={'No Matched job Found'}
-            subtitle={'Add your preference to view Matched Job'}
-            btnText={'Add preference'}
-            handleBtn={handleProfile}
-          />
-        ) : (
-          <AddPref
-            title={'Discover your dream jobs'}
-            subtitle={'Login to view Matched Job'}
-            btnText={'Login'}
-            handleBtn={handleLogin}
-          />
-        )}
+        <AddPref
+          title={'No Matched job Found'}
+          subtitle={'Add your preference to view Matched Job'}
+          btnText={'Add preference'}
+          handleBtn={handleProfile}
+        />
       </View>
     );
   };
@@ -103,7 +90,7 @@ const MatchedJobTab = ({navigation}) => {
             />
           ) : (
             <View>
-              {!!!userProfile?.preference ? (
+              {userProfile?.preference ? (
                 <AddProp />
               ) : (
                 <TabBar
@@ -139,7 +126,16 @@ const MatchedJobTab = ({navigation}) => {
         renderScene={({route}) => {
           switch (route.key) {
             case 'first':
-              return <MatchedJob />;
+              return isAuthenticated ? (
+                <MatchedJob />
+              ) : (
+                <AddPref
+                  title={'Discover your dream jobs'}
+                  subtitle={'Login to view Matched Job'}
+                  btnText={'Login'}
+                  handleBtn={handleLogin}
+                />
+              );
             case 'second':
               return <SavedJob />;
             default:

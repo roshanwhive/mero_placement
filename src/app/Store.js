@@ -18,7 +18,7 @@ import jobApplyReducer from '../features/applyJob/applyJobSlice';
 import addEducationReducer from '../features/profile/educationSlice/addEducationSlice';
 import getAllEducationReducer from '../features/profile/educationSlice/getAllEducationSlice'
 import getSingleEducationReducer from '../features/profile/educationSlice/getSingleEducationSlice';
-import deleteEducationReducer from '../features/profile/educationSlice/deleteEducationSlice';
+//import deleteEducationReducer from '../features/profile/educationSlice/deleteEducationSlice';
 import updateEducationReducer from '../features/profile/educationSlice/updateEducationSlice';
 import addExperienceReducer from '../features/profile/experienceSlice/addExperienceSlice';
 import getAllExperienceReducer from '../features/profile/experienceSlice/getAllExperienceSlice';
@@ -30,6 +30,11 @@ import getAllPreferenceReducer from '../features/profile/preferenceSlice/getAllP
 import getSinglePreferenceReducer from '../features/profile/preferenceSlice/getSinglePreferenceSlice';
 import deletePreferenceReducer from '../features/profile/preferenceSlice/deletePreferenceSlice';
 import updatePreferenceReducer from '../features/profile/preferenceSlice/updatePreferenceSlice';
+import getAllTrainingReducer from '../features/training/getAllTrainingSlice';
+import getSingleTrainingReducer from '../features/training/getSingleTrainingSlice';
+
+import educationSliceReducer from '../features/profile/testSlice/EducationSlice';
+
 import {
   persistStore,
   persistReducer,
@@ -63,7 +68,7 @@ const rootReducer = combineReducers({
   status: statusReducer,
   jobApply: jobApplyReducer,
   addEducation: addEducationReducer,
-  deleteEducation: deleteEducationReducer,
+  //deleteEducation: deleteEducationReducer,
   getAllEducation: getAllEducationReducer,
   getSingleEducation: getSingleEducationReducer,
   updateEducation: updateEducationReducer,
@@ -77,6 +82,12 @@ const rootReducer = combineReducers({
   getAllPreference:getAllPreferenceReducer,
   getSinglePreference:getSinglePreferenceReducer,
   updatePreference:updatePreferenceReducer,
+  singleTraining: getSingleTrainingReducer,
+  getAllTraining: getAllTrainingReducer,
+
+
+
+  educationTest:educationSliceReducer,
 });
 
 export const store = configureStore({

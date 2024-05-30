@@ -5,7 +5,6 @@ const initialState = {
   singleEducation: {},
   isError: false,
   isSuccess: false,
-  isLoading: false,
   isLoadingSingle: false,
   statusCode: 0,
   message: '',
@@ -13,9 +12,9 @@ const initialState = {
 
 export const getSingleEducation = createAsyncThunk(
   'profile/get-single-educations',
-  async thunkAPI => {
+  async (id, thunkAPI) => {
     try {
-      return await educationService.getSingleEducation();
+      return await educationService.getSingleEducation(id);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -30,19 +29,20 @@ export const getSingleEducationSlice = createSlice({
     builder
       // ------------------------------------Get Single Education -------------------------------
       .addCase(getSingleEducation.pending, state => {
-        state.isLoading = true;
+        state.isLoadingSingle = true;
       })
       .addCase(getSingleEducation.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isError = !action.payload.success;
-        state.isSuccess = action.payload.success;
-        state.message = action.payload.message;
-        state.statusCode = action.payload.status_code;
-        state.singleEducation = action.payload.data;
+        console.log('singleEdu', state.singleEducation);
+        state.isLoadingSingle = false;
+        state.isError = !action.payload?.success;
+        state.isSuccess = action.payload?.success;
+        state.message = action.payload?.message;
+        state.statusCode = action.payload?.status_code;
+        state.singleEducation = action.payload?.data;
       })
       .addCase(getSingleEducation.rejected, (state, action) => {
         state.isError = true;
-        state.isLoading = false;
+        state.isLoadingSingle = false;
         state.isSuccess = false;
       });
   },

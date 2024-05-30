@@ -3,7 +3,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import Categories from '../../components/Categories';
 import Featured from '../../containers/Featured';
 import TotalJobs from '../../containers/TotalJobs';
-import Training from '../../containers/Training';
+import Training from '../../containers/TrainingList';
 import ActivelySeekingForJobCard from '../../containers/ActivelySeekingForJobCard';
 import AppBar from '../../components/custom_toolbar/AppBar';
 import {customThemeColor} from '../../constants/Color';
@@ -13,6 +13,7 @@ import {getUserProfile} from '../../features/auth/AuthSlice';
 import {customFontSize, customFonts} from '../../constants/theme';
 import {useEffect} from 'react';
 import Carousel from '../../components/Carousel';
+import TrainingList from '../../containers/TrainingList';
 
 const Home = ({navigation}) => {
   return (
@@ -36,7 +37,7 @@ const Home = ({navigation}) => {
           <View style={styles.featuredContainer}>
             <Featured navigation={navigation} />
           </View>
-          <Training navigation={navigation} />
+          <TrainingList navigation={navigation} />
           <View style={styles.totalJobs}>
             <TotalJobs navigation={navigation} />
           </View>

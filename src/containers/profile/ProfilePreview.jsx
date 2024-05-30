@@ -27,7 +27,24 @@ const EducationRow = ({items}) => {
         {items?.university_board_name} ( {items?.passed_status} )
       </Text>
       <Text style={styles.sectionItemHeading}>{items?.institute_name}</Text>
-      <Text style={styles.sectionItemDesc}>Secondary Level Education</Text>
+      <Text style={styles.sectionItemDesc}>{items?.deg_type_name}</Text>
+    </View>
+  );
+};
+
+const PreferenceRow = ({items}) => {
+  return (
+    <View style={styles.sectionItem}>
+      <Row label="Skills" value={items?.get_skill?.skill} />
+      <Row label="Job Title" value={items?.title_name} />
+      <Row label="Preferred Job Category" value={items?.job_category?.name} />
+      <Row label="Preferred Job Level" value={items?.level?.name} />
+      <Row label="Expected Salary" value={items?.expected_salary} />
+      <Row
+        label="Availability"
+        value={items?.availible_type?.employment_type}
+      />
+      <Divider />
     </View>
   );
 };
@@ -53,12 +70,13 @@ const ExperienceRow = ({items}) => {
 const ProfilePreview = () => {
   const navigation = useNavigation();
   const [defaultPreferences, setDefaultPreference] = useState({});
-  const {userProfile} = useSelector(state => state.auth);
+  const {userProfile} = useSelector(state => state.userProfile);
 
   useEffect(() => {
     setDefaultPreference(
       userProfile?.preference?.filter(
         preference => preference?.is_default === '1',
+        console.log('pref', defaultPreferences),
       ),
     );
   }, [userProfile]);
@@ -100,32 +118,10 @@ const ProfilePreview = () => {
           <Divider />
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Job Preference</Text>
-
             <View style={styles.sectionContent}>
-              <Row
-                label="Skills"
-                value={defaultPreferences[0]?.get_skill?.skill}
-              />
-              <Row
-                label="Job Title"
-                value={defaultPreferences[0]?.title_name}
-              />
-              <Row
-                label="Preferred Job Category"
-                value={defaultPreferences[0]?.job_category?.name}
-              />
-              <Row
-                label="Preferred Job Level"
-                value={defaultPreferences[0]?.level?.name}
-              />
-              <Row
-                label="Expected Salary"
-                value={defaultPreferences[0]?.expected_salary}
-              />
-              <Row
-                label="Availability"
-                value={defaultPreferences[0]?.availible_type?.employment_type}
-              />
+              {userProfile?.preference?.map((item, index) => {
+                return <PreferenceRow key={index} items={item} />;
+              })}
             </View>
           </View>
           <Divider />

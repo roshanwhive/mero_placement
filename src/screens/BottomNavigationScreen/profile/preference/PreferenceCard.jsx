@@ -13,6 +13,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {customFontSize, customFonts} from '../../../../constants/theme';
 import {showMessage} from 'react-native-flash-message';
 import {delPreference} from '../../../../features/profile/preferenceSlice/deletePreferenceSlice';
+import {useState} from 'react';
+import {getAllPreference} from '../../../../features/profile/preferenceSlice/getAllPreferenceSlice';
 
 const Row = ({label, value}) => {
   return (
@@ -31,6 +33,9 @@ const PreferenceCard = ({items, navigation}) => {
   const {message, isSuccess, isLoading, isError, statusCode} = useSelector(
     state => state.deletePreference,
   );
+  const [isDefault, setisDefault] = useState(items?.is_default);
+  console.log('defaultvalue', items?.is_default);
+
   const dispatch = useDispatch();
 
   const handleEdit = pref_id => {
@@ -40,6 +45,7 @@ const PreferenceCard = ({items, navigation}) => {
 
   const handleDelete = () => {
     dispatch(delPreference(items?.id)).then(() => {
+      dispatch(getAllPreference);
       if (isError && statusCode !== 200 && statusCode !== 0) {
         showMessage({
           message: message,
@@ -71,22 +77,24 @@ const PreferenceCard = ({items, navigation}) => {
           paddingHorizontal: 12,
           paddingVertical: 12,
           borderBottomWidth: 1,
-          borderColor: '#E6E6E6',
+          borderLeftWidth: isDefault == '1' ? 4 : 0,
+          borderColor: isDefault == '1' ? '#11401E' : null,
         }}>
         <View
           style={{
+            flex: 1,
             flexDirection: 'row',
             marginTop: 5,
             justifyContent: 'space-between',
           }}>
           <Text
             style={{
+              width: '70%',
               marginBottom: 3,
               color: customTextColor.darkGreen,
               fontSize: customFontSize.font18,
               fontFamily: customFonts.fontRobotoBold,
             }}>
-            {' '}
             {items?.job_category?.name}
           </Text>
           <View
