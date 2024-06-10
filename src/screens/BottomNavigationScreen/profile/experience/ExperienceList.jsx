@@ -13,17 +13,15 @@ import {customTextColor, customThemeColor} from '../../../../constants/Color';
 import {customFontSize, customFonts} from '../../../../constants/theme';
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import CardSkeleton from '../../../../components/skeleton_loader/CardSkeleton';
 import ExperienceCard from './ExperienceCard';
-import {getAllExperience} from '../../../../features/profile/experienceSlice/getAllExperienceSlice';
 import ProfileAppBar from '../../../../components/custom_toolbar/ProfileAppBar';
 import ProfileSkeleton from '../../../../components/skeleton_loader/profileSkeleton';
 import NoData from '../NoData';
+import {getAllExperience} from '../../../../features/profile/testSlice/ExperienceSlice';
 
 const ExperienceList = () => {
-  const {allExperience, isLoading} = useSelector(
-    state => state.getAllExperience,
-  );
+  const {allExperience, isLoading} = useSelector(state => state.experienceTest);
+
   const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation();
   const dispatch = useDispatch();

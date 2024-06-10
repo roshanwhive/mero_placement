@@ -20,9 +20,7 @@ import ProfileSkeleton from '../../../../components/skeleton_loader/profileSkele
 import NoData from '../NoData';
 
 const PreferenceList = () => {
-  const {allPreference, isLoading} = useSelector(
-    state => state.getAllPreference,
-  );
+  const {allPreference, isLoading} = useSelector(state => state.preferenceTest);
   const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation();
   const dispatch = useDispatch();

@@ -6,7 +6,7 @@ import {useNavigation} from '@react-navigation/native';
 import {getAllGender} from '../../features/formData/FormSlice';
 
 const Account = () => {
-  const {userProfile} = useSelector(state => state.auth);
+  const {userProfile} = useSelector(state => state.userProfile);
 
   const navigation = useNavigation();
   const dispatch = useDispatch();

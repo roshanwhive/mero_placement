@@ -62,7 +62,7 @@ const delExperience = async id => {
       console.log('experiencedel'),
     );
     if (response) {
-      return response.data;
+      return id;
     }
   } catch (error) {
     console.error('Error during deleting single experience:', error);

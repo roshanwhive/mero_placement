@@ -13,6 +13,7 @@ import {customThemeColor} from '../constants/Color';
 const Carousel = () => {
   const [dimension, setDimension] = useState(Dimensions.get('window'));
   const [selectedIndex, setSelectedIndex] = useState(0);
+  // const {sliderData} = useSelector(state => state.sliderImage);
 
   const scrollRef = useRef();
   let intervalId = null;
@@ -31,7 +32,7 @@ const Carousel = () => {
   const onSlideChange = useCallback(() => {
     // Calculate newIndex here and use it to update your state and to scroll to the new slide
     const newIndex =
-      selectedIndex === carouselImages.length - 1 ? 0 : selectedIndex + 1;
+      selectedIndex === sliderData.length - 1 ? 0 : selectedIndex + 1;
 
     setSelectedIndex(newIndex);
 
@@ -65,12 +66,27 @@ const Carousel = () => {
     startInterval();
   };
 
-  const carouselImages = [
-    {url: 'https://i.ibb.co/FDwNR9d/img1.jpg'},
-    {url: 'https://i.ibb.co/7G5qqGY/1.jpg'},
-    {url: 'https://i.ibb.co/Jx7xqf4/pexels-august-de-richelieu-4427816.jpg'},
-    {url: 'https://i.ibb.co/GV08J9f/pexels-pixabay-267202.jpg'},
-    {url: 'https://i.ibb.co/sK92ZhC/pexels-karolina-grabowska-4210860.jpg'},
+  const sliderData = [
+    {
+      image:
+        'https://i0.wp.com/webfeb.in/wp-content/uploads/2016/09/job-portal-1.jpg?w=450&ssl=1',
+    },
+    {
+      image:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR54vHDRjZGDu4FS0_taUKitP0BM7E3KZ1wfUjI5z2iShYo7pPe1pMxDFpn7woECCtfPZI&usqp=CAU',
+    },
+    {
+      image:
+        'https://www.shutterstock.com/shutterstock/photos/716290696/display_1500/stock-photo-job-search-online-job-recruitment-concept-716290696.jpg',
+    },
+    {
+      image:
+        'https://www.shutterstock.com/image-vector/vector-business-illustration-small-people-260nw-1022567779.jpg',
+    },
+    {
+      image:
+        'https://mauconline.net/wp-content/uploads/Job-Portal-Website-A-Game-Changer-in-the-HR-Industry.jpg',
+    },
   ];
 
   const setIndex = event => {
@@ -96,10 +112,10 @@ const Carousel = () => {
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
         pagingEnabled>
-        {carouselImages.map((value, index) => (
+        {sliderData.map((value, index) => (
           <Image
             key={index}
-            source={{uri: `${value.url}`}}
+            source={{uri: `${value.image}`}}
             style={{width: dimension?.width, height: 200}}
             PlaceholderContent={<ActivityIndicator />}
           />
@@ -112,7 +128,7 @@ const Carousel = () => {
           bottom: 0,
           alignSelf: 'center',
         }}>
-        {carouselImages.map((val, index) => (
+        {sliderData.map((val, index) => (
           <Text
             key={index}
             style={

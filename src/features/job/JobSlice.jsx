@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk, createAction } from '@reduxjs/toolkit';
-import { jobService } from './JobService';
+import {createSlice, createAsyncThunk, createAction} from '@reduxjs/toolkit';
+import {jobService} from './JobService';
 
 const initialState = {
   allJobs: [],
@@ -138,8 +138,6 @@ export const getJobByJobTypes = createAsyncThunk(
   },
 );
 
-
-
 //Reset State
 export const resetJobCategoryState = createAction('Reset_all_Job_Category');
 
@@ -149,7 +147,7 @@ export const jobCategorySlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder
-      // ------------------------------------Get ALl Jobs -------------------------------
+      // ------------------------------------Get ALL Jobs -------------------------------
       .addCase(getAllJobs.pending, state => {
         state.isLoading = true;
       })
@@ -172,7 +170,6 @@ export const jobCategorySlice = createSlice({
       .addCase(getSingleJob.pending, state => {
         state.isLoading = true;
         state.singleJob = [];
-
       })
       .addCase(getSingleJob.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -328,7 +325,7 @@ export const jobCategorySlice = createSlice({
         state.isError = !action.payload.success;
         state.isSuccess = action.payload.success;
         state.message = action.payload.message;
-        state.jobByTpes = action.payload.data;
+        state.allJobs = action.payload.data;
       })
       .addCase(getJobByJobTypes.rejected, (state, action) => {
         state.isError = true;

@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 15,
     overflow: 'visible',
-    marginBottom: 40,
+    marginBottom: 0,
   },
 });
 

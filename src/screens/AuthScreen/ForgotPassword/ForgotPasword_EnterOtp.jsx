@@ -7,14 +7,40 @@ import {
   View,
   StyleSheet,
 } from 'react-native';
+import * as yup from 'yup';
 import OtpInputs from 'react-native-otp-inputs';
 import AuthHeader from '../../../components/AuthHeader';
 import AuthLogo from '../../../components/AuthLogo';
 import AuthTitle from '../../../components/AuthTitle';
 import {customTextColor, customThemeColor} from '../../../constants/Color';
+import {Controller, useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
 
 const ForgotPasword_EnterOtp = ({navigation}) => {
   const loginLogo = require('../../../assets/password-change.png');
+
+  const schema = yup.object().shape({
+    otp: yup
+      .string()
+      .required('OTP is required')
+      .length(6, 'OTP must be exactly 6 digits'),
+  });
+
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      otp: '',
+    },
+  });
+  const onPressSend = otpData => {
+    console.log('this is otp', otpData);
+    //dispatch(forgotPassword(emailData));
+    //navigation.navigate('ForgotPasword_EnterOtp');
+  };
 
   return (
     <View style={styles.container}>
@@ -32,22 +58,34 @@ const ForgotPasword_EnterOtp = ({navigation}) => {
           <AuthTitle title="Enter OTP" />
 
           <View style={styles.container1}>
-            <OtpInputs
-              numberOfInputs={5}
-              selectTextOnFocus={true}
-              inputStyles={{
-                backgroundColor: '#f2f4f5',
-                borderRadius: 10,
-                width: 50,
-                textAlign: 'center',
+            <Controller
+              control={control}
+              rules={{
+                required: true,
               }}
+              render={({field: {onChange, value}}) => (
+                <OtpInputs
+                  numberOfInputs={5}
+                  selectTextOnFocus={true}
+                  inputStyles={{
+                    backgroundColor: '#f2f4f5',
+                    borderRadius: 10,
+                    width: 50,
+                    textAlign: 'center',
+                  }}
+                />
+              )}
+              name="otp"
             />
           </View>
 
           <View style={styles.buttonWrapper}>
             <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('ForgotPassword_ChoosePassword')
+              onPress={
+                () => {
+                  handleSubmit(onPressSend);
+                }
+                //navigation.navigate('ForgotPassword_ChoosePassword')
               }
               style={styles.button}>
               <Text style={styles.buttonText}>Verify</Text>

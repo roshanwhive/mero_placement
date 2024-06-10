@@ -2,14 +2,13 @@ import {
   View,
   Text,
   StyleSheet,
-  TextInput,
   ScrollView,
   TouchableOpacity,
   Image,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/Feather';
-import {Avatar} from 'react-native-paper';
+import {Avatar, TextInput} from 'react-native-paper';
 import {customTextColor, customThemeColor} from '../../constants/Color';
 import {useNavigation} from '@react-navigation/native';
 import {useRoute} from '@react-navigation/native';
@@ -25,6 +24,11 @@ import {
   showImagePicker,
 } from 'react-native-image-picker';
 import {getAllGender} from '../../features/formData/FormSlice';
+import {customFontSize, customFonts} from '../../constants/theme';
+import {GlobalStyleSheet} from '../../constants/StyleSheet';
+import {getUserProfile} from '../../features/auth/authSlice/userProfileSlice';
+import {updateUserAccountInformation} from '../../features/auth/authSlice/updateAccountSlice';
+import {onChange} from 'react-native-reanimated';
 
 const AccountEdit = () => {
   const [selectedImage, setSelectedImage] = useState(
@@ -32,14 +36,12 @@ const AccountEdit = () => {
   );
 
   const [genders, setGenders] = useState([]);
-  const {userProfile} = useSelector(state => state.userProfile);
-  const {allGenderData} = useSelector(state => state.formOptions);
-  const {control, handleSubmit} = useForm();
-  const dispatch = useDispatch();
 
-  const handleAccountUpdate = formData => {
-    console.log(formData);
-  };
+  const {userProfile} = useSelector(state => state.userProfile);
+
+  const {allGenderData} = useSelector(state => state.formOptions);
+
+  const dispatch = useDispatch();
 
   const handleCameraLaunch = () => {
     const options = {
@@ -68,6 +70,10 @@ const AccountEdit = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    dispatch(getUserProfile());
+  }, [dispatch]);
+
+  useEffect(() => {
     setTimeout(() => {
       if (allGenderData?.genders && Array.isArray(allGenderData?.genders)) {
         const mappedGenderData = allGenderData?.genders.map(item => ({
@@ -83,18 +89,51 @@ const AccountEdit = () => {
     bio: yup.string(),
     name: yup.string().required('Name is Required'),
     email: yup.string().required('Email is required').email('Invalid email'),
-    contactprimary: yup
+    phone: yup
       .string()
       .required('Contact is required')
       .min(10, 'Must be equal to 10')
       .max(10, 'Must be Equal to 10'),
-    contactsecondary: yup
-      .string()
-      .min(10, 'Must be equal to 10')
-      .max(10, 'Must be Equal to 10'),
-    gender_id: yup.string(),
+    gender: yup.string(),
     dob: yup.date().required('Date is required'),
+    address: yup.string(),
+    featured_image: yup.mixed(),
   });
+
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: {errors, isSubmitting},
+    setError,
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      bio: '',
+      name: '',
+      email: '',
+      phone: '',
+      gender: '',
+      dob: '',
+      address: '',
+      featured_image: '',
+    },
+  });
+
+  useEffect(() => {
+    if (userProfile) {
+      reset({
+        bio: userProfile?.profile?.bio || '',
+        name: userProfile?.profile?.lead_name || '',
+        phone: userProfile?.profile?.primary_contact || '',
+        email: userProfile?.profile?.email || '',
+        gender: userProfile?.profile?.gender_id || '',
+        dob: userProfile?.profile?.dob || '',
+        address: userProfile?.profile?.address || '',
+        featured_image: userProfile?.profile?.featured_image || '',
+      });
+    }
+  }, [userProfile, reset]);
 
   const handleResponse = response => {
     if (response.didCancel) {
@@ -107,23 +146,50 @@ const AccountEdit = () => {
     }
   };
 
+  const handleAccountUpdate = formData => {
+    dispatch(updateUserAccountInformation(formData));
+    console.log('successprofile', formData);
+  };
+
+  const commonTextInputProps = {
+    style: styles.input,
+    mode: 'outlined',
+    outlineColor: customTextColor.darkGreen,
+    activeOutlineColor: customTextColor.darkGreen,
+    selectionColor: customTextColor.darkGreen,
+  };
+
   return (
     <>
       <View style={styles.profileImage}>
         <Text style={styles.text}>Profile Image</Text>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          {selectedImage ? (
-            <Image
-              style={styles.avatarImage}
-              source={{uri: selectedImage}}
-              resizeMode="cover"
-            />
-          ) : (
-            <Image
-              style={styles.avatar}
-              source={require('../../assets/default-user.jpg')}
-            />
-          )}
+          <Controller
+            control={control}
+            name="featured_image"
+            render={({field: {onChange, value}}) => (
+              <View>
+                {selectedImage ? (
+                  <Image
+                    style={styles.avatarImage}
+                    source={{uri: selectedImage}}
+                    resizeMode="cover"
+                  />
+                ) : (
+                  <Image
+                    style={styles.avatar}
+                    //source={require('../../assets/default-user.jpg')}
+                    source={
+                      userProfile?.profile?.featured_image
+                        ? {uri: userProfile.profile.featured_image}
+                        : require('../../assets/default-user.jpg')
+                    }
+                  />
+                )}
+              </View>
+            )}
+          />
+
           <View style={styles.selectContainer}>
             <TouchableOpacity
               style={styles.uploadButton}
@@ -156,6 +222,7 @@ const AccountEdit = () => {
           control={control}
           render={({field: {onChange, onBlur, value}}) => (
             <TextInput
+              // {...commonTextInputProps}
               style={styles.textArea}
               multiline={true}
               numberOfLines={3}
@@ -166,48 +233,87 @@ const AccountEdit = () => {
             />
           )}
           name="bio"
-          defaultValue={userProfile?.profile?.bio || ''}
         />
       </View>
-      <View style={styles.cardContainer}>
+      <View style={GlobalStyleSheet.containerForm}>
         <Text style={styles.title}>Account Information</Text>
 
-        <View style={styles.inputWrapper}>
-          <Text style={styles.label}>Name</Text>
+        <View style={GlobalStyleSheet.inputWrapper}>
           <Controller
             control={control}
+            rules={{
+              required: true,
+            }}
             render={({field: {onChange, onBlur, value}}) => (
               <TextInput
-                style={styles.input}
-                onBlur={onBlur}
+                {...commonTextInputProps}
+                label="Name"
+                placeholder="name"
                 onChangeText={onChange}
                 value={value}
-                placeholder="Name"
               />
             )}
             name="name"
-            defaultValue={userProfile?.profile?.lead_name || ''}
           />
         </View>
-        <View style={styles.inputWrapper}>
-          <Text style={styles.label}>Email</Text>
+
+        <View style={GlobalStyleSheet.inputWrapper}>
           <Controller
             control={control}
+            rules={{
+              required: true,
+            }}
             render={({field: {onChange, onBlur, value}}) => (
               <TextInput
-                style={styles.input}
-                onBlur={onBlur}
+                {...commonTextInputProps}
+                label="Contact Number"
+                placeholder="Contact Number"
                 onChangeText={onChange}
                 value={value}
+              />
+            )}
+            name="phone"
+          />
+        </View>
+
+        <View style={GlobalStyleSheet.inputWrapper}>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInput
+                {...commonTextInputProps}
+                label="Address"
+                placeholder="Address"
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+            name="address"
+          />
+        </View>
+
+        <View style={GlobalStyleSheet.inputWrapper}>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInput
+                {...commonTextInputProps}
+                label="Email"
                 placeholder="Email"
+                onChangeText={onChange}
+                value={value}
               />
             )}
             name="email"
-            defaultValue={userProfile?.profile?.email || ''}
           />
         </View>
-        <View style={styles.inputWrapper}>
-          <Text style={styles.label}>Gender</Text>
+        <View style={GlobalStyleSheet.inputWrapper}>
           <Controller
             control={control}
             rules={{
@@ -222,180 +328,54 @@ const AccountEdit = () => {
                 valueField="value"
                 searchPlaceholder="Search..."
                 placeholderStyle={{color: customTextColor.secondary}}
-                selectedTextStyle={{color: customTextColor.secondary}}
+                selectedTextStyle={{color: customTextColor.primary}}
                 itemTextStyle={{color: customTextColor.secondary}}
                 value={value || userProfile?.profile?.gender?.name}
                 style={[
                   {
-                    borderBottomWidth: 1,
-                    borderBottomColor: customTextColor.secondary,
+                    borderWidth: 1,
+                    borderColor: customTextColor.darkGreen,
                     borderRadius: 5,
                     paddingHorizontal: 16,
                     paddingVertical: 5,
-                    color: customTextColor.secondary,
                   },
                   styles.input,
                 ]}
                 onChange={item => {
+                  console.log(item.value);
                   onChange(item.value);
                 }}
               />
             )}
-            name="gender_id"
-          />
-        </View>
-        <View style={styles.inputWrapper}>
-          <Text style={styles.label}>Contact Primary</Text>
-          <Controller
-            control={control}
-            render={({field: {onChange, onBlur, value}}) => (
-              <TextInput
-                style={styles.input}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                placeholder="Contact"
-              />
-            )}
-            name="contact primary"
-            defaultValue={userProfile?.profile?.primary_contact || ''}
-          />
-        </View>
-        <View style={styles.inputWrapper}>
-          <Text style={styles.label}>Contact Secondary</Text>
-          <Controller
-            control={control}
-            render={({field: {onChange, onBlur, value}}) => (
-              <TextInput
-                style={styles.input}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                placeholder="Contact"
-              />
-            )}
-            name="contact secondary"
-            defaultValue={userProfile?.profile?.secondary_contact || ''}
+            name="gender"
           />
         </View>
 
-        <View style={styles.inputWrapper}>
-          <Text style={styles.label}>DOB</Text>
+        <View style={GlobalStyleSheet.inputWrapper}>
           <Controller
             control={control}
+            rules={{
+              required: true,
+            }}
             render={({field: {onChange, onBlur, value}}) => (
               <TextInput
-                style={styles.input}
-                onBlur={onBlur}
+                {...commonTextInputProps}
+                label="Date of birth"
+                placeholder="Dob"
                 onChangeText={onChange}
                 value={value}
-                placeholder="DOB"
               />
             )}
             name="dob"
-            defaultValue={userProfile?.profile?.dob || ''}
           />
         </View>
       </View>
       <View style={styles.jobActions}>
         <TouchableOpacity
-          style={styles.actionButton}
-          onPress={handleAccountUpdate}>
+          onPress={handleSubmit(handleAccountUpdate)}
+          style={[styles.actionButton, styles.buttonLogout]}>
           <Text style={styles.actionButtonText}>Save</Text>
         </TouchableOpacity>
-      </View>
-    </>
-  );
-};
-
-const EducationEdit = () => {
-  return (
-    <>
-      <View style={styles.cardContainer}>
-        <Text style={styles.title}>Education</Text>
-
-        <View style={styles.inputWrapper}>
-          <Text style={styles.label}>Name</Text>
-          <TextInput style={styles.input} />
-        </View>
-        <View style={styles.inputWrapper}>
-          <Text style={styles.label}>Email</Text>
-          <TextInput style={styles.input} />
-        </View>
-        <View style={styles.inputWrapper}>
-          <Text style={styles.label}>Contact</Text>
-          <TextInput style={styles.input} />
-        </View>
-        <View style={styles.inputWrapper}>
-          <Text style={styles.label}>Gender</Text>
-          <TextInput style={styles.input} />
-        </View>
-        <View style={styles.inputWrapper}>
-          <Text style={styles.label}>DOB</Text>
-          <TextInput style={styles.input} />
-        </View>
-      </View>
-    </>
-  );
-};
-
-const PreferenceEdit = () => {
-  return (
-    <>
-      <View style={styles.cardContainer}>
-        <Text style={styles.title}>Preferences</Text>
-
-        <View style={styles.inputWrapper}>
-          <Text style={styles.label}>Job Category</Text>
-          <TextInput style={styles.input} />
-        </View>
-        <View style={styles.inputWrapper}>
-          <Text style={styles.label}>Skills</Text>
-          <TextInput style={styles.input} />
-        </View>
-        <View style={styles.inputWrapper}>
-          <Text style={styles.label}>Job Title</Text>
-          <TextInput style={styles.input} />
-        </View>
-        <View style={styles.inputWrapper}>
-          <Text style={styles.label}>Availablity</Text>
-          <TextInput style={styles.input} />
-        </View>
-        <View style={styles.inputWrapper}>
-          <Text style={styles.label}>Level</Text>
-          <TextInput style={styles.input} />
-        </View>
-      </View>
-    </>
-  );
-};
-
-const ExperienceEdit = () => {
-  return (
-    <>
-      <View style={styles.cardContainer}>
-        <Text style={styles.title}>Experience</Text>
-
-        <View style={styles.inputWrapper}>
-          <Text style={styles.label}>Job Category</Text>
-          <TextInput style={styles.input} />
-        </View>
-        <View style={styles.inputWrapper}>
-          <Text style={styles.label}>Skills</Text>
-          <TextInput style={styles.input} />
-        </View>
-        <View style={styles.inputWrapper}>
-          <Text style={styles.label}>Job Title</Text>
-          <TextInput style={styles.input} />
-        </View>
-        <View style={styles.inputWrapper}>
-          <Text style={styles.label}>Availablity</Text>
-          <TextInput style={styles.input} />
-        </View>
-        <View style={styles.inputWrapper}>
-          <Text style={styles.label}>Level</Text>
-          <TextInput style={styles.input} />
-        </View>
       </View>
     </>
   );
@@ -423,9 +403,6 @@ const EditProfile = () => {
       </View>
       <View style={styles.bodyContent}>
         {title === 'Profile' && <AccountEdit />}
-        {title === 'Preference' && <PreferenceEdit />}
-        {title === 'Education' && <EducationEdit />}
-        {title === 'Experience' && <ExperienceEdit />}
       </View>
     </ScrollView>
   );
@@ -450,10 +427,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   title: {
-    fontSize: 20,
+    fontSize: customFontSize.font20,
     letterSpacing: 1,
-    fontWeight: '500',
+    fontFamily: customFonts.fontPoppins,
     color: 'black',
+    paddingBottom: 10,
   },
   bodyContent: {
     marginVertical: 20,
@@ -510,11 +488,6 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: 'transparent',
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
-    paddingVertical: 0,
-    fontSize: 14,
-    color: customTextColor.secondary,
   },
   textArea: {
     backgroundColor: 'transparent',
@@ -536,17 +509,23 @@ const styles = StyleSheet.create({
   },
 
   actionButton: {
-    backgroundColor: customThemeColor.darkRed,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    marginTop: 10,
+    bottom: '-10%',
+    height: 35,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 5,
     width: 250,
-    borderRadius: 5,
+    borderRadius: 30,
+  },
+  buttonLogout: {
+    backgroundColor: customTextColor.darkRed,
   },
   actionButtonText: {
     color: customTextColor.white,
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontSize: customFontSize.font18,
+    fontFamily: customFonts.fontPoppins,
   },
   selectContainer: {
     display: 'flex',

@@ -51,10 +51,6 @@ const MatchedJobTab = ({navigation}) => {
   };
   const [animate, setAnimate] = useState(true);
 
-  // useEffect(() => {
-  //   console.log('matchedJobTab', userProfile.preference);
-  // }, [userProfile]);
-
   useEffect(() => {
     CloseActivityIndicator();
   }, []);
@@ -82,36 +78,35 @@ const MatchedJobTab = ({navigation}) => {
     return (
       <>
         <View>
-          {isLoading ? (
+          {/* {isLoading ? (
             <ActivityIndicator
               animating={true}
               style={{flex: 1, height: '100%'}}
               color={customTextColor.lightGreen}
             />
-          ) : (
-            <View>
-              {userProfile?.preference ? (
+          ) : ( */}
+          <View>
+            {/* {userProfile?.preference ? (
                 <AddProp />
-              ) : (
-                <TabBar
-                  {...props}
-                  renderLabel={({focused, route}) => {
-                    return (
-                      <Text
-                        style={{
-                          color: focused ? 'white' : 'gray',
-                          fontFamily: customFonts.fontPoppins,
-                        }}>
-                        {route.title}
-                      </Text>
-                    );
-                  }}
-                  indicatorStyle={styles.indicatorStyle}
-                  style={styles.tabBar}
-                />
-              )}
-            </View>
-          )}
+              ) : ( */}
+            <TabBar
+              {...props}
+              renderLabel={({focused, route}) => {
+                return (
+                  <Text
+                    style={{
+                      color: focused ? 'white' : 'gray',
+                      fontFamily: customFonts.fontPoppins,
+                    }}>
+                    {route.title}
+                  </Text>
+                );
+              }}
+              indicatorStyle={styles.indicatorStyle}
+              style={styles.tabBar}
+            />
+          </View>
+          {/* )} */}
         </View>
       </>
     );

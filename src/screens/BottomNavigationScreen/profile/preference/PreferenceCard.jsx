@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Alert,
   Image,
   StyleSheet,
@@ -11,10 +12,11 @@ import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {customFontSize, customFonts} from '../../../../constants/theme';
-import {showMessage} from 'react-native-flash-message';
-import {delPreference} from '../../../../features/profile/preferenceSlice/deletePreferenceSlice';
-import {useState} from 'react';
-import {getAllPreference} from '../../../../features/profile/preferenceSlice/getAllPreferenceSlice';
+import {useEffect, useState} from 'react';
+import {
+  delPreference,
+  getAllPreference,
+} from '../../../../features/profile/testSlice/PreferenceSlice';
 
 const Row = ({label, value}) => {
   return (
@@ -30,9 +32,7 @@ const Row = ({label, value}) => {
 };
 
 const PreferenceCard = ({items, navigation}) => {
-  const {message, isSuccess, isLoading, isError, statusCode} = useSelector(
-    state => state.deletePreference,
-  );
+  const {isLoading} = useSelector(state => state.preferenceTest);
   const [isDefault, setisDefault] = useState(items?.is_default);
   console.log('defaultvalue', items?.is_default);
 
@@ -40,29 +40,27 @@ const PreferenceCard = ({items, navigation}) => {
 
   const handleEdit = pref_id => {
     // id = items?.education_id;
-    navigation.navigate('PreferenceAdd', {pref_id});
+    navigation.navigate('PreferenceUpdate', {pref_id});
   };
 
+  useEffect(() => {
+    dispatch(getAllPreference);
+  }, [dispatch]);
+
   const handleDelete = () => {
-    dispatch(delPreference(items?.id)).then(() => {
-      dispatch(getAllPreference);
-      if (isError && statusCode !== 200 && statusCode !== 0) {
-        showMessage({
-          message: message,
-          type: 'danger',
-          animationDuration: 1000,
-          animated: true,
-        });
-      } else if (isSuccess && statusCode === 200) {
-        showMessage({
-          message: message,
-          type: 'success',
-          animationDuration: 1000,
-          animated: true,
-        });
-      }
-    });
+    dispatch(delPreference(items?.id));
   };
+
+  if (isLoading) {
+    return (
+      <ActivityIndicator
+        animating={true}
+        style={{paddingVertical: 14}}
+        color={customTextColor.darkGreen}
+        size={20}
+      />
+    );
+  }
 
   return (
     <View

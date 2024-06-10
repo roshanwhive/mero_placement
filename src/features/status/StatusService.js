@@ -34,7 +34,7 @@ const getMatchedJob = async () => {
 const getAppliedJob = async () => {
     try {
         const config = await getConfigWithToken();
-        const response = await axios.get(`${base_url}candidate/status/matching-job`, config);
+        const response = await axios.get(`${base_url}candidate/status/applied-job`, config);
         if (response) {
             return response.data;
         }

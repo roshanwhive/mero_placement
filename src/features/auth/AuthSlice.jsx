@@ -3,10 +3,8 @@ import {authService} from './AuthService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const initialState = {
-  user: [],
-  userProfile: {},
   isError: false,
-  isAuthenticated: false,
+  isAuthenticatedlog: false,
   isSuccess: false,
   isLoading: false,
   statusCode: 0,
@@ -126,7 +124,7 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.isAuthenticated = false;
+        state.isAuthenticatedlog = false;
         state.userProfile = [];
       })
       .addCase(logoutUser.rejected, (state, action) => {

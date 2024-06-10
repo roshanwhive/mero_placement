@@ -49,14 +49,13 @@ export const GlobalStyleSheet = {
   },
 
   containerForm: {
-    alignItems: 'center',
     marginHorizontal: 20,
     paddingTop: 16,
     paddingBottom: 16,
   },
   buttonWrapper: {
     width: '100%',
-    marginTop: 20,
+    marginTop: 10,
   },
   buttonText: {
     fontSize: customFontSize.font18,

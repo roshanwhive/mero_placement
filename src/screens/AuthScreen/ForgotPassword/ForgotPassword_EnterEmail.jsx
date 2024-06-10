@@ -13,8 +13,11 @@ import AuthLogo from '../../../components/AuthLogo';
 import AuthTitle from '../../../components/AuthTitle';
 import {customTextColor, customThemeColor} from '../../../constants/Color';
 import {Controller, useForm} from 'react-hook-form';
+import {useDispatch} from 'react-redux';
+import {forgotPassword} from '../../../features/auth/forgotPassword/forgotPasswordSlice';
 
 const Login = ({navigation}) => {
+  const dispatch = useDispatch();
   const forgotPasswordLogo = require('../../../assets/forgotPassword.png');
 
   const schema = yup.object().shape({
@@ -31,8 +34,9 @@ const Login = ({navigation}) => {
       email: '',
     },
   });
-  const onPressSend = formData => {
-    console.log(formData);
+  const onPressSend = emailData => {
+    console.log(emailData);
+    dispatch(forgotPassword(emailData));
     navigation.navigate('ForgotPasword_EnterOtp');
   };
   return (

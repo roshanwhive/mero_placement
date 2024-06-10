@@ -23,21 +23,14 @@ import {Divider} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import {getUserProfile} from '../../features/auth/authSlice/userProfileSlice';
 import {logoutUser} from '../../features/auth/authSlice/logoutSlice';
+//import {logoutUser} from '../../features/auth/AuthSlice';
 
 export default Profile = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const {
-    message,
-    isAuthenticated,
+  const {isAuthenticated, token} = useSelector(state => state.login);
 
-    token,
-    isSuccess,
-    isError,
-    isLoading,
-    statusCode,
-  } = useSelector(state => state.login);
   const {userProfile} = useSelector(state => state.userProfile);
 
   const handleBack = () => {
@@ -47,19 +40,14 @@ export default Profile = () => {
   useEffect(() => {
     if (isAuthenticated === true && token !== '') {
       dispatch(getUserProfile());
+      console.log('logoutuseffect', isAuthenticated);
     }
+    console.log('logoutuseffecthgf', isAuthenticated, token);
   }, [dispatch]);
 
   const handleLogout = () => {
     dispatch(logoutUser());
-    navigation.navigate('Login');
-    showMessage({
-      message: 'Logout Successfully',
-      type: 'success',
-      setLoading: false,
-      animationDuration: 1000,
-      animated: true,
-    });
+    console.log('logout');
   };
 
   return (
@@ -114,7 +102,9 @@ export default Profile = () => {
                 <View style={styles.bottonContainer}>
                   <TouchableOpacity
                     style={styles.editBtn}
-                    onPress={() => navigation.navigate('UpdateProfile')}>
+                    onPress={() =>
+                      navigation.navigate('EditProfile', {title: 'Profile'})
+                    }>
                     <Text style={styles.editBtnText}>Update Profile</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
@@ -134,14 +124,19 @@ export default Profile = () => {
                     </TouchableOpacity> */}
                   </View>
                   <View style={styles.accountDetailContainer}>
-                    <View style={styles.detailCard}>
-                      <Text style={styles.label}>Basic Info</Text>
-                      <Icon
-                        name="chevron-circle-right"
-                        size={17}
-                        color={customTextColor.lightGreen}
-                      />
-                    </View>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('ForgotPasswordEnterEmail')
+                      }>
+                      <View style={styles.detailCard}>
+                        <Text style={styles.label}>Forgot Password</Text>
+                        <Icon
+                          name="chevron-circle-right"
+                          size={17}
+                          color={customTextColor.lightGreen}
+                        />
+                      </View>
+                    </TouchableOpacity>
                     <Divider />
 
                     <TouchableOpacity

@@ -37,7 +37,6 @@ export const addExperienceSlice = createSlice({
         state.isSuccess = action.payload.success;
         state.message = action.payload.message;
         state.statusCode = action.payload.status_code;
-        state.addEducation = action.payload.data;
       })
       .addCase(addExperience.rejected, (state, action) => {
         state.isError = true;

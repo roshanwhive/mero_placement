@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -7,17 +7,17 @@ import {
   Image,
   StyleSheet,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   getJobByCategory,
   getJobCategories,
   getMainCategories,
 } from '../features/job/JobSlice';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import CategoryCardCircle from './skeleton_loader/CategoryCardCircle';
-import { customFontSize, customFonts } from '../constants/theme';
-import { customTextColor, customThemeColor } from '../constants/Color';
-import { GlobalStyleSheet } from '../constants/StyleSheet';
+import {customFonts} from '../constants/theme';
+import {customTextColor, customThemeColor} from '../constants/Color';
+import {GlobalStyleSheet} from '../constants/StyleSheet';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const Categories = () => {
@@ -25,7 +25,7 @@ const Categories = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const { mainCategories } = useSelector(state => state.job);
+  const {mainCategories} = useSelector(state => state.job);
 
   useEffect(() => {
     dispatch(getMainCategories());

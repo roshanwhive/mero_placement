@@ -34,11 +34,9 @@ const EducationUpdate = id => {
   id = route.params?.id;
   const {degree, eduFormData} = useSelector(state => state.formOptions);
 
-  const {isLoadingSingle} = useSelector(state => state.getSingleEducation);
-  const {message, isSuccess, isLoading, isError, statusCode} = useSelector(
-    state => state.updateEducation,
+  const {singleEducation, isLoading} = useSelector(
+    state => state.getSingleEducation,
   );
-  const {singleEducation} = useSelector(state => state.getSingleEducation);
   const {allEducation} = useSelector(state => state.educationTest);
 
   const dispatch = useDispatch();
@@ -102,7 +100,7 @@ const EducationUpdate = id => {
     college: yup.string().required('College field is required'),
     university: yup.string().required('Univversity field is required'),
     deg_type: yup.string().required('Degree field is required'),
-    percentage: yup.string().required('Percentage field is required'),
+    percentage: yup.string(),
     start_date: yup.date().required('Start date field is required'),
     status: yup.string(),
     end_date: yup.date(),
@@ -124,7 +122,7 @@ const EducationUpdate = id => {
       status: 'passed',
       deg_type: '',
       percentage: '',
-      start_date: new Date(),
+      start_date: formatDate(new Date()),
       end_date: new Date(),
       education_id: '',
     },
@@ -139,7 +137,11 @@ const EducationUpdate = id => {
         deg_type: singleEducation?.degree_type_name?.deg_type_id || '',
         percentage: singleEducation?.passed_percentage || '',
         start_date: new Date(singleEducation?.start_date) || new Date(),
-        end_date: new Date(singleEducation?.end_date) || new Date(),
+        //end_date: new Date(singleEducation?.end_date) || new Date(),
+
+        end_date: singleEducation?.end_date
+          ? new Date(singleEducation.end_date)
+          : new Date(),
         education_id: singleEducation?.education_id || '',
       });
     }
@@ -169,7 +171,7 @@ const EducationUpdate = id => {
         showIcon={false}
       />
       <ScrollView>
-        {isLoadingSingle ? (
+        {isLoading ? (
           <ActivityIndicator
             animating={true}
             style={{paddingVertical: 14}}
@@ -217,29 +219,6 @@ const EducationUpdate = id => {
               {errors.university && (
                 <Text style={styles.errorText}>
                   {errors.university.message}
-                </Text>
-              )}
-            </View>
-
-            <View style={GlobalStyleSheet.inputWrapper}>
-              <Controller
-                control={control}
-                rules={{
-                  required: true,
-                }}
-                render={({field: {onChange, value}}) => (
-                  <TextInput
-                    {...commonTextInputProps}
-                    label="Percentage"
-                    value={value}
-                    onChangeText={onChange}
-                  />
-                )}
-                name="percentage"
-              />
-              {errors.percentage && (
-                <Text style={styles.errorText}>
-                  {errors.percentage.message}
                 </Text>
               )}
             </View>
@@ -390,7 +369,8 @@ const EducationUpdate = id => {
                         {...commonTextInputProps}
                         label="Start Date"
                         placeholder="YYYY-MM-DD"
-                        value={formatDate(value || startDate)}
+                        //value={formatDate(value || startDate)}
+                        value={value ? formatDate(value) : ''}
                         editable={false}
                       />
                       {errors.start_date && (
@@ -404,44 +384,69 @@ const EducationUpdate = id => {
               />
             </View>
             {selectedtab == 'passed' ? (
-              <View style={GlobalStyleSheet.inputWrapper}>
-                <Controller
-                  control={control}
-                  name="end_date"
-                  defaultValue={endDate}
-                  rules={{required: true}}
-                  render={({field: {onChange, value}}) => (
-                    <View>
-                      <TouchableOpacity onPress={() => setShowEnd(true)}>
-                        {showEnd && (
-                          <DateTimePicker
-                            testID="endDatePicker"
-                            value={value || endDate}
-                            mode="date"
-                            display="default"
-                            onChange={(event, date) => {
-                              onChange(date);
-                              handleEndDateChange(event, date);
-                            }}
+              <>
+                <View style={GlobalStyleSheet.inputWrapper}>
+                  <Controller
+                    control={control}
+                    name="end_date"
+                    defaultValue={endDate}
+                    rules={{required: true}}
+                    render={({field: {onChange, value}}) => (
+                      <View>
+                        <TouchableOpacity onPress={() => setShowEnd(true)}>
+                          {showEnd && (
+                            <DateTimePicker
+                              testID="endDatePicker"
+                              value={value || endDate}
+                              mode="date"
+                              display="default"
+                              onChange={(event, date) => {
+                                onChange(date);
+                                handleEndDateChange(event, date);
+                              }}
+                            />
+                          )}
+                          <TextInput
+                            {...commonTextInputProps}
+                            label="End Date"
+                            placeholder="YYYY-MM-DD"
+                            value={value ? formatDate(value) : ''}
+                            editable={false}
                           />
-                        )}
-                        <TextInput
-                          {...commonTextInputProps}
-                          label="End Date"
-                          placeholder="YYYY-MM-DD"
-                          value={formatDate(value || endDate)}
-                          editable={false}
-                        />
-                        {errors.end_date && (
-                          <Text style={styles.errorText}>
-                            {errors.end_date.message}
-                          </Text>
-                        )}
-                      </TouchableOpacity>
-                    </View>
+                          {errors.end_date && (
+                            <Text style={styles.errorText}>
+                              {errors.end_date.message}
+                            </Text>
+                          )}
+                        </TouchableOpacity>
+                      </View>
+                    )}
+                  />
+                </View>
+                <View style={GlobalStyleSheet.inputWrapper}>
+                  <Controller
+                    control={control}
+                    rules={{
+                      required: true,
+                    }}
+                    render={({field: {onChange, value}}) => (
+                      <TextInput
+                        {...commonTextInputProps}
+                        label="Percentage"
+                        keyboardType="numeric"
+                        value={value}
+                        onChangeText={onChange}
+                      />
+                    )}
+                    name="percentage"
+                  />
+                  {errors.percentage && (
+                    <Text style={styles.errorText}>
+                      {errors.percentage.message}
+                    </Text>
                   )}
-                />
-              </View>
+                </View>
+              </>
             ) : null}
 
             <View style={GlobalStyleSheet.buttonWrapper}>

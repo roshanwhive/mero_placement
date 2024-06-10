@@ -45,31 +45,15 @@ const Login = ({navigation}) => {
     statusCode,
   } = useSelector(state => state.login);
 
+  console.log('isAuthenticated', isAuthenticated);
   useEffect(() => {
-    if (
-      isError &&
-      statusCode !== 200 &&
-      statusCode !== 0 &&
-      message !== undefined
-    ) {
-      showMessage({
-        message: JSON.stringify(message),
-        type: 'danger',
-        setLoading: false,
-        animationDuration: 1000,
-        animated: true,
-      });
-    } else if (isSuccess && statusCode === 200 && isAuthenticated) {
+    if (isAuthenticated === true) {
       navigation.navigate('Home');
-      showMessage({
-        message: JSON.stringify(message),
-        type: 'success',
-        setLoading: false,
-        animationDuration: 1000,
-        animated: true,
-      });
+      console.log('loginconsoleif', isAuthenticated);
+    } else {
+      console.log('loginconsole', isAuthenticated);
     }
-  }, [isError, isSuccess, statusCode, message]);
+  }, [isAuthenticated]);
 
   const schema = yup.object().shape({
     email: yup.string().required('Email is Required').email('Invalid Email'),
@@ -88,7 +72,7 @@ const Login = ({navigation}) => {
     },
   });
 
-  const onPressSend = formData => {
+  const onPressLogin = formData => {
     dispatch(loginUser(formData)).then(() => dispatch(getUserProfile()));
   };
 
@@ -193,7 +177,7 @@ const Login = ({navigation}) => {
               </TouchableOpacity>
               <View style={styles.buttonWrapper}>
                 <TouchableOpacity
-                  onPress={handleSubmit(onPressSend)}
+                  onPress={handleSubmit(onPressLogin)}
                   style={styles.button}>
                   {isLoading ? (
                     <ActivityIndicator

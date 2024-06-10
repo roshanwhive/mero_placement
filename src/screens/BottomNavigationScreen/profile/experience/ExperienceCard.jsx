@@ -10,40 +10,34 @@ import {customTextColor, customThemeColor} from '../../../../constants/Color';
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {customFontSize, customFonts} from '../../../../constants/theme';
-import {showMessage} from 'react-native-flash-message';
-import {delExperience} from '../../../../features/profile/experienceSlice/deleteExperienceSlice';
+import {delExperience} from '../../../../features/profile/testSlice/ExperienceSlice';
 
 const ExperienceCard = ({items, navigation}) => {
-  const {message, isSuccess, isLoading, isError, statusCode} = useSelector(
-    state => state.deleteExperience,
-  );
+  const {isLoading} = useSelector(state => state.experienceTest);
+
   const dispatch = useDispatch();
 
   const handleEdit = id => {
     // id = items?.education_id;
-    navigation.navigate('ExperienceAdd', {id});
+    navigation.navigate('ExperienceUpdate', {id});
   };
 
   const handleDelete = () => {
-    dispatch(delExperience(items?.experience_id)).then(() => {
-      if (isError && statusCode !== 200 && statusCode !== 0) {
-        showMessage({
-          message: JSON.stringify(message),
-          type: 'danger',
-          animationDuration: 1000,
-          animated: true,
-        });
-      } else if (isSuccess && statusCode === 200) {
-        showMessage({
-          message: JSON.stringify(message),
-          type: 'success',
-          animationDuration: 1000,
-          animated: true,
-        });
-      }
-    });
-    console.log('deleteExp', message);
+    console.log('delID', items?.experience_id);
+    dispatch(delExperience(items?.experience_id));
   };
+
+  if (isLoading) {
+    return (
+      <ActivityIndicator
+        animating={true}
+        style={{paddingVertical: 14}}
+        color={customTextColor.darkGreen}
+        size={20}
+      />
+    );
+  }
+
   return (
     <View
       style={{

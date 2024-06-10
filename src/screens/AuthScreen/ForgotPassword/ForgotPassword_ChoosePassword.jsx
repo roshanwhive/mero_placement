@@ -11,6 +11,9 @@ import AuthHeader from '../../../components/AuthHeader';
 import AuthLogo from '../../../components/AuthLogo';
 import AuthTitle from '../../../components/AuthTitle';
 import {customTextColor, customThemeColor} from '../../../constants/Color';
+import {useDispatch} from 'react-redux';
+import {setNewPassword} from '../../../features/auth/forgotPassword/setnewPasswordSlice';
+import {Controller} from 'react-hook-form';
 
 const Login = ({navigation}) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -19,11 +22,40 @@ const Login = ({navigation}) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const loginLogo = require('../../../assets/password-change.png');
 
+  const dispatch = useDispatch();
+
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
   const toggleConfirmPasswordVisibility = () => {
     setConfirmPasswordVisible(!confirmPasswordVisible);
+  };
+
+  const schema = yup.object().shape({
+    email: yup.string().required('Email is required').email('Invalid email'),
+    password: yup.string().required('Password is required'),
+    confirmPassword: yup
+      .string()
+      .oneOf([yup.ref('password'), null], 'Passwords must match')
+      .required('Confirm Password is required'),
+  });
+
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
+  });
+  const onPressSend = formData => {
+    console.log(formData);
+    dispatch(setNewPassword(formData));
+    //navigation.navigate('ForgotPaasword_AcountRecover')
   };
 
   const commonTextInputProps = {
@@ -33,6 +65,7 @@ const Login = ({navigation}) => {
     activeOutlineColor: customTextColor.darkGreen,
     selectionColor: customTextColor.darkGreen,
   };
+
   return (
     <View style={styles.container}>
       <StatusBar
@@ -48,60 +81,117 @@ const Login = ({navigation}) => {
         <View style={styles.inputContainer}>
           <AuthTitle title="Create new password" />
           <View style={styles.inputWrapper}>
-            <TextInput
-              {...commonTextInputProps}
-              label="Password"
-              secureTextEntry={!passwordVisible}
-              value={password}
-              onChangeText={setPassword}
-              right={
-                <TextInput.Icon
-                  icon={passwordVisible ? 'eye' : 'eye-off'}
-                  onPress={togglePasswordVisibility}
-                  size={20}
-                  color={customTextColor.darkGreen}
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({field: {onChange, value}}) => (
+                <TextInput
+                  style={styles.input}
+                  label="Email"
+                  mode="outlined"
+                  outlineColor={customTextColor.darkGreen}
+                  activeOutlineColor={customTextColor.darkGreen}
+                  selectionColor={customTextColor.darkGreen}
+                  value={value}
+                  onChangeText={onChange}
+                  left={
+                    <TextInput.Icon
+                      icon="email"
+                      size={25}
+                      color={customTextColor.darkGreen}
+                    />
+                  }
                 />
-              }
-              left={
-                <TextInput.Icon
-                  icon="lock"
-                  size={25}
-                  color={customTextColor.darkGreen}
-                />
-              }
+              )}
+              name="email"
             />
+            {errors.email && (
+              <Text style={styles.errorText}>{errors.email.message}</Text>
+            )}
+          </View>
+          <View style={styles.inputWrapper}>
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({field: {onChange, value}}) => (
+                <TextInput
+                  {...commonTextInputProps}
+                  label="Password"
+                  secureTextEntry={!passwordVisible}
+                  value={value}
+                  disabled={isLoading}
+                  onChangeText={onChange}
+                  right={
+                    <TextInput.Icon
+                      icon={passwordVisible ? 'eye' : 'eye-off'}
+                      onPress={togglePasswordVisibility}
+                      size={20}
+                      color={customTextColor.darkGreen}
+                    />
+                  }
+                  left={
+                    <TextInput.Icon
+                      icon="lock"
+                      size={25}
+                      color={customTextColor.darkGreen}
+                    />
+                  }
+                />
+              )}
+              name="password"
+            />
+            {errors.password && (
+              <Text style={styles.errorText}>{errors.password.message}</Text>
+            )}
           </View>
 
           <View style={styles.inputWrapper}>
-            <TextInput
-              {...commonTextInputProps}
-              label="Confirm Password"
-              secureTextEntry={!confirmPasswordVisible}
-              value={confirmPassword}
-              onChangeText={setConfirmPassword}
-              right={
-                <TextInput.Icon
-                  icon={confirmPasswordVisible ? 'eye' : 'eye-off'}
-                  onPress={toggleConfirmPasswordVisibility}
-                  size={20}
-                  color={customTextColor.darkGreen}
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({field: {onChange, value}}) => (
+                <TextInput
+                  {...commonTextInputProps}
+                  label="Confirm Password"
+                  secureTextEntry={!passwordVisible}
+                  value={value}
+                  disabled={isLoading}
+                  onChangeText={onChange}
+                  right={
+                    <TextInput.Icon
+                      icon={passwordVisible ? 'eye' : 'eye-off'}
+                      onPress={togglePasswordVisibility}
+                      size={20}
+                      color={customTextColor.darkGreen}
+                    />
+                  }
+                  left={
+                    <TextInput.Icon
+                      icon="lock"
+                      size={25}
+                      color={customTextColor.darkGreen}
+                    />
+                  }
                 />
-              }
-              left={
-                <TextInput.Icon
-                  icon="lock"
-                  size={25}
-                  color={customTextColor.darkGreen}
-                />
-              }
+              )}
+              name="confirmPassword"
             />
+            {errors.confirmPassword && (
+              <Text style={styles.errorText}>
+                {errors.confirmPassword.message}
+              </Text>
+            )}
           </View>
 
           <View style={styles.buttonWrapper}>
             <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('ForgotPaasword_AcountRecover')
-              }
+              onPress={handleSubmit(onPressSend)}
               style={styles.button}>
               <Text style={styles.buttonText}>Submit</Text>
             </TouchableOpacity>

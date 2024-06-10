@@ -25,20 +25,15 @@ import {getExpFormData} from '../../../../features/formData/FormSlice';
 import {Controller, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import {showMessage} from 'react-native-flash-message';
-import {addExperience} from '../../../../features/profile/experienceSlice/addExperienceSlice';
-import {updateExperience} from '../../../../features/profile/experienceSlice/updateExperienceSlice';
 import {getSingleExperience} from '../../../../features/profile/experienceSlice/getSingleExperienceSlice';
 import ProfileAppBar from '../../../../components/custom_toolbar/ProfileAppBar';
 import {format} from 'date-fns';
-import DatePicker from 'react-native-date-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {getAllExperience} from '../../../../features/profile/experienceSlice/getAllExperienceSlice';
-const ExperienceAdd = id => {
+import {addExperience} from '../../../../features/profile/testSlice/ExperienceSlice';
+
+const ExperienceAdd = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const route = useRoute();
-  id = route.params?.id;
 
   const [showStart, setShowStart] = useState(false);
   const [showEnd, setShowEnd] = useState(false);
@@ -46,15 +41,11 @@ const ExperienceAdd = id => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
-  const [formattedDate, setFormattedDate] = useState(
-    format(new Date(), 'yyyy/MM/dd'),
-  );
   const {organization_type, job_level, job_category} = useSelector(
     state => state.formOptions,
   );
-  const {message, isSuccess, isLoading, isError, statusCode} = useSelector(
-    state => state.addExperience,
-  );
+  const {isLoading, allExperience} = useSelector(state => state.experienceTest);
+
   const {singleExperience} = useSelector(state => state.getSingleExperience);
 
   const formatDate = date => {
@@ -67,10 +58,6 @@ const ExperienceAdd = id => {
 
   useEffect(() => {
     dispatch(getExpFormData());
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(getSingleExperience(id));
   }, [dispatch]);
 
   const showDatepicker = () => {
@@ -91,34 +78,6 @@ const ExperienceAdd = id => {
     setShowEnd(Platform.OS === 'ios');
     setEndDate(formatDate(currentDate));
   };
-
-  const onChangeDate = ({type}, selected) => {
-    if (type == 'set') {
-      const current = selected;
-      setStartDate(current);
-      if (Platform.OS === 'android') {
-        showDatepicker();
-        setStartDate(current.toDateString());
-      }
-    } else {
-      showDatepicker;
-    }
-  };
-
-  const onChangeEndDate = ({type}, selected) => {
-    if (type == 'set') {
-      const current = selected;
-      setEndDate(current);
-      if (Platform.OS === 'android') {
-        showDatepickerEnd();
-        setEndDate(current.toDateString());
-      }
-    } else {
-      showDatepickerEnd;
-    }
-  };
-
-  const [organizationName, setOrganizationName] = useState('');
 
   const [organizationType, setOrganizationType] = useState([]);
   useEffect(() => {
@@ -164,8 +123,8 @@ const ExperienceAdd = id => {
     job_category_id: yup.string().required('Select Category'),
     position: yup.string().required('Position is required'),
     dutis: yup.string().required('Duties is required'),
-    start_date: yup.string().required('Start Date is required'),
-    end_date: yup.string(),
+    start_date: yup.date().required('Start date field is required'),
+    end_date: yup.date(),
     experience_id: yup.string(),
   });
 
@@ -192,76 +151,12 @@ const ExperienceAdd = id => {
     setError,
   } = methods;
 
-  useEffect(() => {
-    if (singleExperience === null) {
-      reset({
-        organization_name: singleExperience?.experience?.org_name,
-        organization_type_id:
-          singleExperience?.experience?.company_type?.company_type_id || '',
-        job_level_id: singleExperience?.experience?.job_level?.level_id || '',
-        job_category_id:
-          singleExperience?.experience?.job_category?.job_category_id || '',
-        position: singleExperience?.experience?.position || '',
-        dutis: singleExperience?.experience?.duties_responsibilities || '',
-        start_date: singleExperience?.experience?.start_date || '',
-        end_date: singleExperience?.experience?.end_date || '',
-        experience_id: singleExperience?.experience?.experience_id || '',
-      });
-    }
-  }, [singleExperience, reset]);
-
   const onPressAdd = handleSubmit(async experienceData => {
-    reset({
-      start_date: formatDate(experienceData.start_date),
-      end_date: formatDate(experienceData.end_date),
+    dispatch(addExperience(experienceData)).then(() => {
+      navigation.navigate('ExperienceList');
     });
-    setTimeout(() => {
-      console.log('this is data', experienceData);
-    }, 2000);
-
-    // dispatch(addExperience(experienceData)).then(() => {
-    //   if (isError && statusCode !== 200 && statusCode !== 0) {
-    //     showMessage({
-    //       message: JSON.stringify(message),
-    //       type: 'danger',
-    //       animationDuration: 1000,
-    //       animated: true,
-    //     });
-    //   } else if (isSuccess && statusCode === 200) {
-    //     navigation.navigate('ExperienceList');
-    //     dispatch(getAllExperience);
-    //     showMessage({
-    //       message: JSON.stringify(message),
-    //       type: 'success',
-    //       animationDuration: 1000,
-    //       animated: true,
-    //     });
-    //   }
-    // });
+    console.log('expData', experienceData);
   });
-  // console.log('name', organizationName);
-
-  const onPressUpdate = handleSubmit(async experienceData => {
-    dispatch(updateExperience(experienceData));
-    // console.log('update successfully exp', experienceData);
-  });
-
-  // const handleConfirm = selectedDate => {
-  //   //setShow(false);
-  //   setDate(selectedDate);
-  //   console.log('date', selectedDate, show);
-
-  //   // Format the date as needed
-  //   let tempDate = new Date(selectedDate);
-  //   let fDate =
-  //     tempDate.getDate() +
-  //     '/' +
-  //     (tempDate.getMonth() + 1) +
-  //     '/' +
-  //     tempDate.getFullYear();
-  //   //setDate(fDate);
-  //   //setText(fDate);
-  // };
 
   const commonTextInputProps = {
     style: styles.input,
@@ -481,10 +376,6 @@ const ExperienceAdd = id => {
               rules={{required: true}}
               render={({field: {onChange, value}}) => (
                 <View>
-                  {/* <Button
-                    title="Select Start Date"
-                    onPress={() => setShowStart(true)}
-                  /> */}
                   <TouchableOpacity onPress={() => setShowStart(true)}>
                     {showStart && (
                       <DateTimePicker
@@ -524,10 +415,6 @@ const ExperienceAdd = id => {
               rules={{required: true}}
               render={({field: {onChange, value}}) => (
                 <View>
-                  {/* <Button
-                    title="Select End Date"
-                    onPress={() => setShowEnd(true)}
-                  /> */}
                   <TouchableOpacity onPress={() => setShowEnd(true)}>
                     {showEnd && (
                       <DateTimePicker
@@ -560,28 +447,20 @@ const ExperienceAdd = id => {
           </View>
         </View>
         <View style={GlobalStyleSheet.buttonWrapper}>
-          {!id ? (
-            <TouchableOpacity
-              style={GlobalStyleSheet.button}
-              onPress={handleSubmit(onPressAdd)}>
-              {isLoading ? (
-                <ActivityIndicator
-                  animating={true}
-                  style={{paddingVertical: 14}}
-                  color={customTextColor.white}
-                  size={20}
-                />
-              ) : (
-                <Text style={GlobalStyleSheet.buttonText}>Add Experience</Text>
-              )}
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              style={GlobalStyleSheet.button}
-              onPress={handleSubmit(onPressUpdate)}>
-              <Text style={GlobalStyleSheet.buttonText}>Save Changes</Text>
-            </TouchableOpacity>
-          )}
+          <TouchableOpacity
+            style={GlobalStyleSheet.button}
+            onPress={handleSubmit(onPressAdd)}>
+            {isLoading ? (
+              <ActivityIndicator
+                animating={true}
+                style={{paddingVertical: 14}}
+                color={customTextColor.white}
+                size={20}
+              />
+            ) : (
+              <Text style={GlobalStyleSheet.buttonText}>Add Experience</Text>
+            )}
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </View>

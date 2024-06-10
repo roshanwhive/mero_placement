@@ -2,18 +2,14 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { authService } from "../AuthService";
 
 const initialState = {
-    userProfile: {},
     isError: false,
-    isAuthenticated: false,
     isSuccess: false,
     isLoading: false,
     statusCode: 0,
     message: '',
-    token: '',
-    data: '',
   };
 
-  export const logoutUser = createAsyncThunk('auth/logout', async thunkAPI => {
+  export const logoutUser = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
     try {
       return await authService.logout();
     } catch (error) {
@@ -31,11 +27,12 @@ const initialState = {
         state.isLoading = true;
       })
       .addCase(logoutUser.fulfilled, (state, action) => {
+         console.log("logout slice",state.isAuthenticated)
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
         state.isAuthenticated = false;
-        state.userProfile = [];
+        state.message = action.payload?.message;
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.isError = true;

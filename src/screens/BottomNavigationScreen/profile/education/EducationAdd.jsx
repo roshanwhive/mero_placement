@@ -9,12 +9,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import AppBar from '../../../../components/custom_toolbar/AppBar';
 import {customTextColor, customThemeColor} from '../../../../constants/Color';
 import {customFontSize, customFonts} from '../../../../constants/theme';
 import {GlobalStyleSheet} from '../../../../constants/StyleSheet';
 import {TextInput} from 'react-native-paper';
-import {useCallback, useEffect, useMemo, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -30,8 +29,7 @@ const EducationAdd = () => {
   const navigation = useNavigation();
 
   const {degree, eduFormData} = useSelector(state => state.formOptions);
-  const {message, isSuccess, isLoading, isError, statusCode, allEducation} =
-    useSelector(state => state.educationTest);
+  const {isLoading, allEducation} = useSelector(state => state.educationTest);
 
   const dispatch = useDispatch();
 
@@ -96,10 +94,35 @@ const EducationAdd = () => {
     college: yup.string().required('College field is required'),
     university: yup.string().required('University field is required'),
     deg_type: yup.string().required('Degree field is required'),
-    percentage: yup.string(),
-    start_date: yup.string().required('Start date field is required'),
+    start_date: yup.date().required('Start date field is required'),
     status: yup.string(),
-    end_date: yup.string(),
+    percentage: yup
+      .string()
+      .test(
+        'conditional-required',
+        'Percentage field is required',
+        function (value) {
+          const status = this.parent.status; // Accessing status from the parent object
+          if (status === 'passed') {
+            return value !== undefined && value !== ''; // Check if the percentage is not undefined or empty
+          }
+          return true; // If status is not 'passed', validation passes regardless of percentage field
+        },
+      ),
+
+    end_date: yup
+      .date()
+      .test(
+        'conditional-required',
+        'End date field is required',
+        function (value) {
+          const status = this.parent.status; // Accessing status from the parent object
+          if (status === 'passed') {
+            return value !== undefined && value !== ''; // Check if the percentage is not undefined or empty
+          }
+          return true; // If status is not 'passed', validation passes regardless of percentage field
+        },
+      ),
     education_id: yup.string(),
   });
 
@@ -123,10 +146,9 @@ const EducationAdd = () => {
   });
 
   const onPressAdd = handleSubmit(async eduData => {
-    console.log('eduDataAdd', allEducation);
-
     dispatch(addEducation(eduData)).then(() => {
       navigation.navigate('EducationList');
+      console.log('eduDataAdd', eduData);
     });
   });
 
@@ -188,30 +210,6 @@ const EducationAdd = () => {
               <Text style={styles.errorText}>{errors.university.message}</Text>
             )}
           </View>
-          {selectedtab == 'passed' ? (
-            <View style={GlobalStyleSheet.inputWrapper}>
-              <Controller
-                control={control}
-                rules={{
-                  required: true,
-                }}
-                render={({field: {onChange, value}}) => (
-                  <TextInput
-                    {...commonTextInputProps}
-                    label="Percentage"
-                    value={value}
-                    onChangeText={onChange}
-                  />
-                )}
-                name="percentage"
-              />
-              {errors.percentage && (
-                <Text style={styles.errorText}>
-                  {errors.percentage.message}
-                </Text>
-              )}
-            </View>
-          ) : null}
 
           <View style={GlobalStyleSheet.inputWrapper}>
             <Controller
@@ -344,7 +342,7 @@ const EducationAdd = () => {
                     {showStart && (
                       <DateTimePicker
                         testID="startDatePicker"
-                        value={value}
+                        value={value || startDate}
                         mode="date"
                         // display="default"
                         onChange={(event, date) => {
@@ -372,44 +370,69 @@ const EducationAdd = () => {
             />
           </View>
           {selectedtab == 'passed' ? (
-            <View style={GlobalStyleSheet.inputWrapper}>
-              <Controller
-                control={control}
-                name="end_date"
-                defaultValue={endDate}
-                rules={{required: true}}
-                render={({field: {onChange, value}}) => (
-                  <View>
-                    <TouchableOpacity onPress={() => setShowEnd(true)}>
-                      {showEnd && (
-                        <DateTimePicker
-                          testID="endDatePicker"
-                          value={value || endDate}
-                          mode="date"
-                          display="default"
-                          onChange={(event, date) => {
-                            onChange(date);
-                            handleEndDateChange(event, date);
-                          }}
+            <>
+              <View style={GlobalStyleSheet.inputWrapper}>
+                <Controller
+                  control={control}
+                  name="end_date"
+                  defaultValue={endDate}
+                  rules={{required: true}}
+                  render={({field: {onChange, value}}) => (
+                    <View>
+                      <TouchableOpacity onPress={() => setShowEnd(true)}>
+                        {showEnd && (
+                          <DateTimePicker
+                            testID="endDatePicker"
+                            value={value || endDate}
+                            mode="date"
+                            display="default"
+                            onChange={(event, date) => {
+                              onChange(date);
+                              handleEndDateChange(event, date);
+                            }}
+                          />
+                        )}
+                        <TextInput
+                          {...commonTextInputProps}
+                          label="End Date"
+                          placeholder="YYYY-MM-DD"
+                          value={formatDate(value || endDate)}
+                          editable={false}
                         />
-                      )}
-                      <TextInput
-                        {...commonTextInputProps}
-                        label="End Date"
-                        placeholder="YYYY-MM-DD"
-                        value={formatDate(value || endDate)}
-                        editable={false}
-                      />
-                      {errors.end_date && (
-                        <Text style={styles.errorText}>
-                          {errors.end_date.message}
-                        </Text>
-                      )}
-                    </TouchableOpacity>
-                  </View>
+                        {errors.end_date && (
+                          <Text style={styles.errorText}>
+                            {errors.end_date.message}
+                          </Text>
+                        )}
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                />
+              </View>
+              <View style={GlobalStyleSheet.inputWrapper}>
+                <Controller
+                  control={control}
+                  rules={{
+                    required: true,
+                  }}
+                  render={({field: {onChange, value}}) => (
+                    <TextInput
+                      {...commonTextInputProps}
+                      label="Percentage"
+                      keyboardType="numeric"
+                      value={value}
+                      onChangeText={onChange}
+                    />
+                  )}
+                  name="percentage"
+                />
+                {errors.percentage && (
+                  <Text style={styles.errorText}>
+                    {errors.percentage.message}
+                  </Text>
                 )}
-              />
-            </View>
+              </View>
+            </>
           ) : null}
 
           <View style={GlobalStyleSheet.buttonWrapper}>

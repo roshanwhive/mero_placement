@@ -24,6 +24,14 @@ export const loginUser = createAsyncThunk(
     },
   );
 
+  export const logoutUser = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
+    try {
+      return await authService.logout();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  });
+
   export const loginSlice = createSlice({
     name: 'loginSlice',
     initialState: initialState,
@@ -52,6 +60,24 @@ export const loginUser = createAsyncThunk(
           state.message = action.payload?.message || 'An error occurred';
           state.statusCode = action.payload?.status_code;
         })
+
+         //Logout User
+     .addCase(logoutUser.pending, state => {
+      state.isLoading = true;
+    })
+    .addCase(logoutUser.fulfilled, (state, action) => {
+       console.log("logout slice",state.isAuthenticated)
+      state.isLoading = false;
+      state.isError = false;
+      state.isSuccess = true;
+      state.isAuthenticated = false;
+      state.message = action.payload?.message;
+    })
+    .addCase(logoutUser.rejected, (state, action) => {
+      state.isError = true;
+      state.isLoading = false;
+      state.isSuccess = false;
+    })
     },
   });
 

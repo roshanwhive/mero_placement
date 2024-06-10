@@ -14,8 +14,12 @@ import {customFontSize, customFonts} from '../../constants/theme';
 import {useEffect} from 'react';
 import Carousel from '../../components/Carousel';
 import TrainingList from '../../containers/TrainingList';
+import HotJobContent from './HotJobContent';
+import TrainingContent from './TrainingContent';
+import TopJobContent from './TopJobContent';
 
 const Home = ({navigation}) => {
+  const {isAuthenticated} = useSelector(state => state.login);
   return (
     <>
       <CompleteProfile />
@@ -33,14 +37,18 @@ const Home = ({navigation}) => {
           {/* Categories */}
           <Categories />
           <ActivelySeekingForJobCard />
-          {/* Featured */}
+          {/* topJob */}
           <View style={styles.featuredContainer}>
             <Featured navigation={navigation} />
           </View>
+          <TopJobContent />
           <TrainingList navigation={navigation} />
+          <TrainingContent />
+          {/* hotjob */}
           <View style={styles.totalJobs}>
             <TotalJobs navigation={navigation} />
           </View>
+          <HotJobContent />
         </ScrollView>
       </SafeAreaView>
     </>

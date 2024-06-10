@@ -30,8 +30,10 @@ const Training = () => {
     navigation.goBack();
   };
 
-  const handleApply = () => {
-    // Handle job application
+  const handleApply = heading_id => {
+    heading_id = singleTraining?.heading_id;
+    navigation.navigate('TrainingInquiry', {heading_id});
+    console.log('button', heading_id);
   };
 
   const handleShare = () => {
@@ -113,9 +115,10 @@ const Training = () => {
                         marginBottom: 5,
                       }}>
                       <Icon
-                        style={{marginRight: 3}}
-                        // color={colors.textLight}
                         name="calendar"
+                        size={10}
+                        color={customTextColor.secondary}
+                        style={styles.icon}
                       />
                       <Text numberOfLines={1} style={styles.jobTitle}>
                         {'  '}
@@ -187,7 +190,7 @@ const Training = () => {
                 bottom: 0,
                 left: 0,
               }}>
-              <RoundButtonComp label="Send Enquiry" />
+              <RoundButtonComp label="Send Enquiry" onPressBtn={handleApply} />
             </View>
           </>
         )}
@@ -382,6 +385,10 @@ const styles = StyleSheet.create({
   },
   rightText: {
     width: '55%',
+  },
+  icon: {
+    marginTop: 3,
+    fontWeight: '300',
   },
 });
 

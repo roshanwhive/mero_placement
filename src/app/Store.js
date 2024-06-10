@@ -6,6 +6,11 @@ import {
 } from '@reduxjs/toolkit';
 import authReducer from '../features/auth/AuthSlice';
 import loginReducer from '../features/auth/authSlice/loginSlice'
+import forgotPasswordReducer from '../features/auth/forgotPassword/forgotPasswordSlice'
+import setNewPasswordReducer from '../features/auth/forgotPassword/setnewPasswordSlice'
+import verifyOTPReducer from '../features/auth/forgotPassword/verifyOtpSlice'
+import resendOTPReducer from '../features/auth/forgotPassword/resendOTpSlice'
+
 import logoutReducer from '../features/auth/authSlice/logoutSlice'
 import registerReducer from '../features/auth/authSlice/registerSlice'
 import userProfileReducer from '../features/auth/authSlice/userProfileSlice'
@@ -15,26 +20,26 @@ import jobCategoryReducer from '../features/job/JobSlice';
 import companyReducer from '../features/company/CompanySlice';
 import statusReducer from '../features/status/StatusSlice';
 import jobApplyReducer from '../features/applyJob/applyJobSlice';
-import addEducationReducer from '../features/profile/educationSlice/addEducationSlice';
-import getAllEducationReducer from '../features/profile/educationSlice/getAllEducationSlice'
+
 import getSingleEducationReducer from '../features/profile/educationSlice/getSingleEducationSlice';
-//import deleteEducationReducer from '../features/profile/educationSlice/deleteEducationSlice';
-import updateEducationReducer from '../features/profile/educationSlice/updateEducationSlice';
-import addExperienceReducer from '../features/profile/experienceSlice/addExperienceSlice';
-import getAllExperienceReducer from '../features/profile/experienceSlice/getAllExperienceSlice';
 import getSingleExperienceReducer from '../features/profile/experienceSlice/getSingleExperienceSlice';
-import deleteExperienceReducer from '../features/profile/experienceSlice/deleteExperienceSlice';
-import updateExperienceReducer from '../features/profile/experienceSlice/updateExperienceSlice';
-import addPreferenceReducer from '../features/profile/preferenceSlice/addPreferenceSlice';
-import getAllPreferenceReducer from '../features/profile/preferenceSlice/getAllPreferenceSlice';
 import getSinglePreferenceReducer from '../features/profile/preferenceSlice/getSinglePreferenceSlice';
-import deletePreferenceReducer from '../features/profile/preferenceSlice/deletePreferenceSlice';
-import updatePreferenceReducer from '../features/profile/preferenceSlice/updatePreferenceSlice';
+
 import getAllTrainingReducer from '../features/training/getAllTrainingSlice';
 import getSingleTrainingReducer from '../features/training/getSingleTrainingSlice';
-
+import trainingInquiryReducer from '../features/training/postTrainingInquirySlice';
 import educationSliceReducer from '../features/profile/testSlice/EducationSlice';
+import preferenceSliceReducer from '../features/profile/testSlice/PreferenceSlice';
+import experienceSliceReducer from '../features/profile/testSlice/ExperienceSlice';
 
+import searchSliceReducer from '../features/search/SearchJobSlice';
+
+import getAllContentReducer from '../features/content/AllContentSlice';
+import getSingleContentReducer from '../features/content/singleContentSlice';
+import getSliderImageReducer from '../features/slider/SliderSlice';
+import getContentHotJobreducer from '../features/content/hotjobSlice';
+import getContentTrainingReducer  from '../features/content/trainingContentSlice'
+import getContentTopJobReducer from '../features/content/topJobSlice'
 import {
   persistStore,
   persistReducer,
@@ -48,7 +53,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const authPersistConfig = {
-  key: 'auth',
+  key: 'login',
   storage: AsyncStorage,
 };
 const formOptionsPersistConfig = {
@@ -61,33 +66,50 @@ const rootReducer = combineReducers({
   login:persistReducer(authPersistConfig, loginReducer),
   updateAccount:updateAccountReducer,
   userProfile:persistReducer(authPersistConfig, userProfileReducer),
-  logout:logoutReducer,
+
+  forgotPassword:forgotPasswordReducer,
+  setNewPassword:setNewPasswordReducer,
+  verifyotp:verifyOTPReducer,
+  resendotp:resendOTPReducer,
+ // logout:logoutReducer,
   formOptions: persistReducer(formOptionsPersistConfig, formReducer),
   job: jobCategoryReducer,
   company: companyReducer,
   status: statusReducer,
   jobApply: jobApplyReducer,
-  addEducation: addEducationReducer,
-  //deleteEducation: deleteEducationReducer,
-  getAllEducation: getAllEducationReducer,
   getSingleEducation: getSingleEducationReducer,
-  updateEducation: updateEducationReducer,
-  addExperience:addExperienceReducer,
-  deleteExperience: deleteExperienceReducer,
-  getAllExperience:getAllExperienceReducer,
   getSingleExperience: getSingleExperienceReducer,
-  updateExperience:updateExperienceReducer,
-  addPreference:addPreferenceReducer,
-  deletePreference:deletePreferenceReducer,
-  getAllPreference:getAllPreferenceReducer,
   getSinglePreference:getSinglePreferenceReducer,
-  updatePreference:updatePreferenceReducer,
+
   singleTraining: getSingleTrainingReducer,
   getAllTraining: getAllTrainingReducer,
-
-
-
+  trainingInquiry:trainingInquiryReducer,
+  //addEducation: addEducationReducer,
+  //deleteEducation: deleteEducationReducer,
+ // getAllEducation: getAllEducationReducer,
+  //updateEducation: updateEducationReducer,
+  ///addExperience:addExperienceReducer,
+  //deleteExperience: deleteExperienceReducer,
+  //getAllExperience:getAllExperienceReducer,
+  //updateExperience:updateExperienceReducer,
+  //addPreference:addPreferenceReducer,
+  //deletePreference:deletePreferenceReducer,
+  //getAllPreference:getAllPreferenceReducer,
+  //updatePreference:updatePreferenceReducer,
+ 
   educationTest:educationSliceReducer,
+  preferenceTest:preferenceSliceReducer,
+  experienceTest:experienceSliceReducer,
+
+  searchJob:searchSliceReducer,
+  sliderImage:getSliderImageReducer,
+
+  getAllContent: getAllContentReducer,
+  getSingleContent:getSingleContentReducer,
+  getContentHotJob: getContentHotJobreducer,
+  getContentTraining:getContentTrainingReducer,
+  getContentTopJob:getContentTopJobReducer,
+
 });
 
 export const store = configureStore({

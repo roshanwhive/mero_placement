@@ -61,7 +61,8 @@ const delPreference = async id => {
       config,
     );
     if (response) {
-      return response.data;
+      console.log('responsepref', id);
+      return id;
     }
   } catch (error) {
     console.error('Error during deleting single preference:', error);

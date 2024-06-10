@@ -84,6 +84,7 @@ export const educationSliceTest = createSlice({
        // ------------------------------------Get All Education -------------------------------
        .addCase(getAllEducation.pending, state => {
         state.isLoading = true;
+        state.allEducation = [];
       })
       .addCase(getAllEducation.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -108,13 +109,6 @@ export const educationSliceTest = createSlice({
         state.isSuccess = action.payload?.success;
         state.message = action.payload?.message;
         state.statusCode = action.payload?.status_code;
-        // if (action.payload.success) {
-        //   const index = state.data.findIndex(item => item.education_id === action.payload.data.education_id);
-        //   if (index !== -1) {
-        //     state.data[index] = action.payload.data;
-        //   }
-        // }
-
         const [updatedItem] = action.payload.data
         const updatedList = current(state).allEducation?.map((item) =>
           item.education_id === updatedItem.education_id ? updatedItem : item
@@ -130,18 +124,18 @@ export const educationSliceTest = createSlice({
 
        // ------------------------------------Delete Education -------------------------------
        .addCase(delEducation.pending, state => {
-        state.isLoading = true;
+        state.isLoading = false;
       })
       .addCase(delEducation.fulfilled, (state, action) => {
        // console.log('delete',  state.allEducation);
        state.isLoading = false
        state.isError = false
-       state.isSuccessuccess = true
+       state.isSuccess = true
        // const updatedList = current(state).addEducationArray?.filter((item)=>item?.education_id!=action.payload.data)
        state.allEducation = state.allEducation.filter(item => item.education_id != action?.payload)
       })
       .addCase(delEducation.rejected, (state, action) => {
-       
+        state.isError = true;
         state.isLoading = false;
         state.isSuccess = false;
       });

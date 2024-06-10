@@ -31,6 +31,10 @@ import Datepicker from '../screens/BottomNavigationScreen/profile/experience/Dat
 import TrainingList from '../containers/TrainingList';
 import Training from '../screens/Training/Training';
 import EducationUpdate from '../screens/BottomNavigationScreen/profile/education/EducationUpdate';
+import PreferenceUpdate from '../screens/BottomNavigationScreen/profile/preference/PreferenceUpdate';
+import ExperienceUpdate from '../screens/BottomNavigationScreen/profile/experience/ExperienceUpdate';
+import Account from '../containers/profile/Account';
+import TrainingInquiry from '../screens/Training/TrainingInquiry';
 
 const Stack = createNativeStackNavigator();
 
@@ -80,12 +84,16 @@ const Router = () => {
       <Stack.Screen name="EducationList" component={EducationList} />
       <Stack.Screen name="PreferenceList" component={PreferenceList} />
       <Stack.Screen name="PreferenceAdd" component={PreferenceAdd} />
+      <Stack.Screen name="PreferenceUpdate" component={PreferenceUpdate} />
       <Stack.Screen name="ExperienceAdd" component={ExperienceAdd} />
       <Stack.Screen name="ExperienceList" component={ExperienceList} />
-      <Stack.Screen name="Datepicker" component={Datepicker} />
+      <Stack.Screen name="ExperienceUpdate" component={ExperienceUpdate} />
       <Stack.Screen name="TrainingList" component={TrainingList} />
       <Stack.Screen name="AllCategories" component={AllCategoriesScreen} />
       <Stack.Screen name="Training" component={Training} />
+      <Stack.Screen name="TrainingInquiry" component={TrainingInquiry} />
+
+      <Stack.Screen name="Account" component={Account} />
 
       <Stack.Screen
         name="CompareJobAndProfile"
