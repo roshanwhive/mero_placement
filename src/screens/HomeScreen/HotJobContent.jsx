@@ -15,7 +15,13 @@ const HotJobContent = () => {
   }, [dispatch]);
 
   return (
-    <View>
+    <View
+      style={{
+        width: 360,
+        borderRadius: 10,
+        overflow: 'hidden',
+        marginLeft: 20,
+      }}>
       {hotJobContent ? (
         <Image
           source={{uri: hotJobContent.featured_image}}

@@ -1,4 +1,3 @@
-// import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import {
   combineReducers,
   configureStore,
@@ -52,27 +51,17 @@ import {
 } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const authPersistConfig = {
-  key: 'login',
-  storage: AsyncStorage,
-};
-const formOptionsPersistConfig = {
-  key: 'formOptions',
-  storage: AsyncStorage,
-};
 const rootReducer = combineReducers({
-  // auth: persistReducer(authPersistConfig, authReducer),
   register:registerReducer,
-  login:persistReducer(authPersistConfig, loginReducer),
+  login:loginReducer,
   updateAccount:updateAccountReducer,
-  userProfile:persistReducer(authPersistConfig, userProfileReducer),
+  userProfile:userProfileReducer,
 
   forgotPassword:forgotPasswordReducer,
   setNewPassword:setNewPasswordReducer,
   verifyotp:verifyOTPReducer,
   resendotp:resendOTPReducer,
- // logout:logoutReducer,
-  formOptions: persistReducer(formOptionsPersistConfig, formReducer),
+  formOptions: formReducer,
   job: jobCategoryReducer,
   company: companyReducer,
   status: statusReducer,
@@ -84,19 +73,7 @@ const rootReducer = combineReducers({
   singleTraining: getSingleTrainingReducer,
   getAllTraining: getAllTrainingReducer,
   trainingInquiry:trainingInquiryReducer,
-  //addEducation: addEducationReducer,
-  //deleteEducation: deleteEducationReducer,
- // getAllEducation: getAllEducationReducer,
-  //updateEducation: updateEducationReducer,
-  ///addExperience:addExperienceReducer,
-  //deleteExperience: deleteExperienceReducer,
-  //getAllExperience:getAllExperienceReducer,
-  //updateExperience:updateExperienceReducer,
-  //addPreference:addPreferenceReducer,
-  //deletePreference:deletePreferenceReducer,
-  //getAllPreference:getAllPreferenceReducer,
-  //updatePreference:updatePreferenceReducer,
- 
+
   educationTest:educationSliceReducer,
   preferenceTest:preferenceSliceReducer,
   experienceTest:experienceSliceReducer,
@@ -112,15 +89,23 @@ const rootReducer = combineReducers({
 
 });
 
+const persistedReducer = persistReducer(
+  {
+    key: 'root',
+    storage: AsyncStorage,
+    whitelist: ['login', 'userProfile', 'formOptions'],
+  },
+  rootReducer
+);
+
 export const store = configureStore({
-  reducer: rootReducer,
+  reducer: persistedReducer,
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
-      // serializableCheck: {
-      //   ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      // },
       immutableCheck: false,
-      serializableCheck: false,
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
     }),
 });
 

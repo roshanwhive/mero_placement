@@ -35,7 +35,6 @@ const Login = ({navigation}) => {
     },
   });
   const onPressSend = emailData => {
-    console.log(emailData);
     dispatch(forgotPassword(emailData));
     navigation.navigate('ForgotPasword_EnterOtp');
   };

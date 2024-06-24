@@ -37,7 +37,6 @@ const ForgotPasword_EnterOtp = ({navigation}) => {
     },
   });
   const onPressSend = otpData => {
-    console.log('this is otp', otpData);
     //dispatch(forgotPassword(emailData));
     //navigation.navigate('ForgotPasword_EnterOtp');
   };

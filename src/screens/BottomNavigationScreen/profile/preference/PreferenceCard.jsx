@@ -34,12 +34,10 @@ const Row = ({label, value}) => {
 const PreferenceCard = ({items, navigation}) => {
   const {isLoading} = useSelector(state => state.preferenceTest);
   const [isDefault, setisDefault] = useState(items?.is_default);
-  console.log('defaultvalue', items?.is_default);
 
   const dispatch = useDispatch();
 
   const handleEdit = pref_id => {
-    // id = items?.education_id;
     navigation.navigate('PreferenceUpdate', {pref_id});
   };
 

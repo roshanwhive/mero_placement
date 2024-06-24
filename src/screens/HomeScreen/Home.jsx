@@ -20,9 +20,17 @@ import TopJobContent from './TopJobContent';
 
 const Home = ({navigation}) => {
   const {isAuthenticated} = useSelector(state => state.login);
+
+  const {userProfile} = useSelector(state => state.userProfile);
+
+  const {education, experience, preference, profile} = userProfile;
+
   return (
     <>
-      <CompleteProfile />
+      {/* {isAuthenticated &&
+        (education?.length == 0 ||
+          experience?.length == 0 ||
+          preference.length == 0) && <CompleteProfile />} */}
 
       <SafeAreaView style={styles.safeArea}>
         <StatusBar barStyle="dark-content" />

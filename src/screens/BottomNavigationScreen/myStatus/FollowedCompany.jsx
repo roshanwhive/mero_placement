@@ -16,10 +16,6 @@ const FollowedCompany = () => {
     dispatch(getFollowedCompany());
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log('followedcompany', typeof followedCompany);
-  }, [followedCompany]);
-
   return (
     <ScrollView
       contentContainerStyle={GlobalStyleSheet.scrollViewContentStatus}

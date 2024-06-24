@@ -148,7 +148,6 @@ const EducationAdd = () => {
   const onPressAdd = handleSubmit(async eduData => {
     dispatch(addEducation(eduData)).then(() => {
       navigation.navigate('EducationList');
-      console.log('eduDataAdd', eduData);
     });
   });
 
@@ -241,7 +240,6 @@ const EducationAdd = () => {
                   ]}
                   onChange={item => {
                     onChange(item.value);
-                    console.log('click' + value);
                   }}
                   // onChange={(item) => handleSubmit(item.value)}
                 />
@@ -289,8 +287,6 @@ const EducationAdd = () => {
                       onPress={() => {
                         setSelectedtab('passed');
                         onChange('passed');
-
-                        console.log('pressfirst', value);
                       }}>
                       <Text
                         disabled={isLoading}
@@ -314,7 +310,6 @@ const EducationAdd = () => {
                       onPressIn={() => {
                         setSelectedtab('pursuing');
                         onChange('pursuing');
-                        console.log('presssecond', value);
                       }}>
                       <Text
                         disabled={isLoading}
@@ -346,7 +341,6 @@ const EducationAdd = () => {
                         mode="date"
                         // display="default"
                         onChange={(event, date) => {
-                          console.log('field', date);
                           onChange(date);
                           handleStartDateChange(event, date);
                         }}
@@ -492,7 +486,7 @@ const styles = StyleSheet.create({
     fontSize: customFontSize.font14,
     paddingHorizontal: 5,
     paddingVertical: 5,
-    marginLeft: -45,
+    marginLeft: -15,
     width: '45%',
   },
   input: {

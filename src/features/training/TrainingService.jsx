@@ -34,13 +34,11 @@ const getSingleTraining = async slug => {
 // post training inquiry
 const postTrainingInquiry = async trainingData => {
   try {
-    const config = await getConfigWithToken();
+    //const config = await getConfigWithToken();
     const response = await axios.post(
       `${base_url}home/training-enquiry`,
       trainingData,
-      config,
     );
-    //console.log(response?.data);
     if (response?.data?.status_code === 422) {
       Object.values(response?.data?.message.error).forEach(messages => {
         messages.forEach(message => {

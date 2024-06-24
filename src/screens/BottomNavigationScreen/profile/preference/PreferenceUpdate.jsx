@@ -265,7 +265,6 @@ const PreferenceUpdate = pref_id => {
                     onChange={item => {
                       onChange(item.value);
                     }}
-                    // onChange={(item) => handleSubmit(item.value)}
                   />
                 )}
                 name="job_categories"
@@ -306,10 +305,7 @@ const PreferenceUpdate = pref_id => {
                     ]}
                     onChange={item => {
                       onChange(item.value);
-                      //handleSubmit(item.value)
-                      console.log('click' + item.value);
                     }}
-                    // onChange={(item) => handleSubmit(item.value)}
                   />
                 )}
                 name="availible_type"
@@ -350,10 +346,7 @@ const PreferenceUpdate = pref_id => {
                     ]}
                     onChange={item => {
                       onChange(item.value);
-                      //handleSubmit(item.value)
-                      console.log('click' + item.value);
                     }}
-                    // onChange={(item) => handleSubmit(item.value)}
                   />
                 )}
                 name="level"
@@ -392,10 +385,7 @@ const PreferenceUpdate = pref_id => {
                     ]}
                     onChange={item => {
                       onChange(item.value);
-                      //handleSubmit(item.value)
-                      console.log('click' + item.value);
                     }}
-                    // onChange={(item) => handleSubmit(item.value)}
                   />
                 )}
                 name="location"
@@ -434,10 +424,7 @@ const PreferenceUpdate = pref_id => {
                     ]}
                     onChange={item => {
                       onChange(item.value);
-                      //handleSubmit(item.value)
-                      console.log('click' + item.value);
                     }}
-                    // onChange={(item) => handleSubmit(item.value)}
                   />
                 )}
                 name="skill"

@@ -26,7 +26,6 @@ export const getapplyJobData = createAsyncThunk(
 export const getapplyJobConfirm = createAsyncThunk(
   'apply_job/get-applyjob-confirm',
   async (data, thunkAPI) => {
-    //console.log("I am slice", data)
     try {
       return await applyJobService.getapplyJobConfirm(data);
     } catch (error) {

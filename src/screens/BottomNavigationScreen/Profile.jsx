@@ -22,7 +22,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Divider} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import {getUserProfile} from '../../features/auth/authSlice/userProfileSlice';
-import {logoutUser} from '../../features/auth/authSlice/logoutSlice';
+import {logoutUser} from '../../features/auth/authSlice/loginSlice';
 //import {logoutUser} from '../../features/auth/AuthSlice';
 
 export default Profile = () => {
@@ -40,14 +40,12 @@ export default Profile = () => {
   useEffect(() => {
     if (isAuthenticated === true && token !== '') {
       dispatch(getUserProfile());
-      console.log('logoutuseffect', isAuthenticated);
     }
-    console.log('logoutuseffecthgf', isAuthenticated, token);
   }, [dispatch]);
 
   const handleLogout = () => {
     dispatch(logoutUser());
-    console.log('logout');
+    navigation.navigate('Login');
   };
 
   return (

@@ -5,8 +5,9 @@ import { getConfigWithToken } from "../../utils/config";
 //get saved job
 const getSearchJob = async searchData => {
     try {
+        console.log(searchData)
         const config = await getConfigWithToken();
-        const response = await axios.post(`${base_url}home/search-job`, searchData,config);
+        const response = await axios.post(`${base_url}home/search-job`, {job:searchData},config);
         if (response) {
             return response.data;
         }

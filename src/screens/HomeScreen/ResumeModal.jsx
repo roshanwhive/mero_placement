@@ -45,7 +45,6 @@ const ResumeModal = ({hideModal, slug}) => {
         value: item.resume_id,
       }));
       setResumeData(mappedResumeList);
-      console.log('this is value', mappedResumeList);
     }
   }, [resume]);
 
@@ -53,10 +52,6 @@ const ResumeModal = ({hideModal, slug}) => {
     data = {slug: slug, resume: resumeID};
     dispatch(getapplyJobConfirm(data));
   };
-
-  useEffect(() => {
-    console.log('SubmitJob', isSuccessConfirm, statusCodeConfirm);
-  }, [isSuccessConfirm, statusCodeConfirm]);
 
   useEffect(() => {
     if (
@@ -139,7 +134,6 @@ const ResumeModal = ({hideModal, slug}) => {
                   onChange={item => {
                     setResumeID(item.value);
                     //handleSubmit(item.value)
-                    console.log('click' + item.value);
                   }}
                   // onChange={(item) => handleSubmit(item.value)}
                 />

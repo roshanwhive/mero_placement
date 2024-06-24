@@ -23,7 +23,7 @@ import {ActivityIndicator} from 'react-native-paper';
 import {customTextColor, customThemeColor} from '../../constants/Color';
 import {Dropdown} from 'react-native-element-dropdown';
 import {getAllCategories} from '../../features/formData/FormSlice';
-import {customFontSize} from '../../constants/theme';
+import {customFontSize, customFonts} from '../../constants/theme';
 
 const SeeAllJobs = ({navigation}) => {
   const dispatch = useDispatch();
@@ -97,15 +97,12 @@ const SeeAllJobs = ({navigation}) => {
   }, [jobTypes]);
 
   const handleCategoryClick = categoryId => {
-    //console.log('category', categoryId);
     dispatch(getJobByCategory(categoryId));
   };
   const handleEmploymentClick = employmentId => {
-    //console.log('category', categoryId);
     dispatch(getJobByEmploymentTypes(employmentId));
   };
   const handleCompanyClick = companyId => {
-    //console.log('category', categoryId);
     dispatch(getJobByCompanyTypes(companyId));
   };
   const handleJobClick = slug => {
@@ -304,13 +301,24 @@ const SeeAllJobs = ({navigation}) => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollViewContent}>
         {allJobs?.data && isLoading !== true ? (
-          allJobs?.data?.map((item, index) => {
-            return (
-              <View key={index}>
-                <JobCard navigation={navigation} items={item} />
-              </View>
-            );
-          })
+          allJobs.data.length > 0 ? (
+            allJobs.data.map((item, index) => {
+              return (
+                <View key={index}>
+                  <JobCard navigation={navigation} items={item} />
+                </View>
+              );
+            })
+          ) : (
+            <View
+              style={{
+                marginTop: 100,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text style={styles.title}>No jobs available</Text>
+            </View>
+          )
         ) : (
           <View style={{marginTop: 100}}>
             <ActivityIndicator
@@ -343,9 +351,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   title: {
-    fontWeight: 'bold',
+    fontFamily: customFonts.fontPoppins,
     color: '#11401E',
-    fontSize: 20,
+    fontSize: customFontSize.font20,
     paddingLeft: 10,
   },
   scrollViewContentFilter: {

@@ -43,7 +43,6 @@ const addEducation = async eduData => {
       eduData,
       config,
     );
-    //console.log(response?.data);
     if (response?.data?.status_code === 422) {
       Object.values(response?.data?.message.error).forEach(messages => {
         messages.forEach(message => {

@@ -71,7 +71,6 @@ const TrainingInquiry = heading_id => {
   const onPressInquiry = handleSubmit(async trainingData => {
     dispatch(postTrainingInquiry(trainingData)).then(() => {
       navigation.navigate('HomeScreen');
-      console.log('TrainingDataAdd', trainingData);
     });
   });
 

@@ -20,10 +20,15 @@ import {getAllGender} from '../../../features/formData/FormSlice';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import {customTextColor, customThemeColor} from '../../../constants/Color';
 import {customFontSize, customFonts} from '../../../constants/theme';
-import {registerUser} from '../../../features/auth/authSlice/registerSlice';
+import {
+  registerUser,
+  resetRegisterState,
+} from '../../../features/auth/authSlice/registerSlice';
+import {useNavigation} from '@react-navigation/native';
 
-const Signup = ({navigation}) => {
-  const [genders, setGenders] = useState([]);
+const Signup = () => {
+  const navigation = useNavigation();
+  const [genders, setGenders] = useState(null);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
@@ -34,33 +39,38 @@ const Signup = ({navigation}) => {
     setConfirmPasswordVisible(!confirmPasswordVisible);
   };
   const dispatch = useDispatch();
-  const {allGenderData} = useSelector(state => state.formOptions);
-  const {message, isSuccess, isLoading, isError, statusCode} = useSelector(
+  const {isLoading, isSignupSuccess, message, statusCode} = useSelector(
     state => state.register,
   );
 
-  useEffect(() => {
-    dispatch(getAllGender());
-    setTimeout(() => {
-      if (allGenderData.genders && Array.isArray(allGenderData?.genders)) {
-        const mappedGenderData = allGenderData.genders.map(item => ({
-          label: item.name,
-          value: item.gender_id,
-        }));
-        setGenders(mappedGenderData);
-      }
-    }, 100);
-  }, [dispatch]);
+  const gendersData = [
+    {
+      gender_id: 1,
+      name: 'Male',
+    },
+    {
+      gender_id: 2,
+      name: 'Female',
+    },
+    {
+      gender_id: 3,
+      name: 'Other',
+    },
+  ];
 
   useEffect(() => {
-    if (isError && statusCode !== 200 && statusCode !== 0) {
-      showMessage({
-        message: JSON.stringify(message),
-        type: 'danger',
-        animationDuration: 1000,
-        animated: true,
-      });
-    } else if (isSuccess && statusCode === 200) {
+    if (gendersData && Array.isArray(gendersData)) {
+      const mappedGenderData = gendersData.map(item => ({
+        label: item.name,
+        value: item.gender_id,
+      }));
+      setGenders(mappedGenderData);
+      console.log('............', mappedGenderData);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isSignupSuccess && statusCode === 200) {
       navigation.navigate('EmailVerification');
       showMessage({
         message: JSON.stringify(message),
@@ -68,8 +78,15 @@ const Signup = ({navigation}) => {
         animationDuration: 1000,
         animated: true,
       });
+      reset();
     }
-  }, [isError, isSuccess, statusCode, message]);
+
+    const resetTimeout = setTimeout(() => {
+      dispatch(resetRegisterState());
+    }, 2000);
+
+    return () => clearTimeout(resetTimeout);
+  }, [isSignupSuccess, statusCode, message]);
 
   const schema = yup.object().shape({
     name: yup.string().required('Name is Required'),
@@ -79,7 +96,7 @@ const Signup = ({navigation}) => {
       .required('Contact is required')
       .min(10, 'Must be equal to 10')
       .max(10, 'Must be Equal to 10'),
-    gender_id: yup.string(),
+    gender_id: yup.string().required('Gender is required'),
     password: yup
       .string()
       .required('Password is required')
@@ -93,6 +110,7 @@ const Signup = ({navigation}) => {
     control,
     handleSubmit,
     formState: {errors},
+    reset,
     setError,
   } = useForm({
     resolver: yupResolver(schema),
@@ -177,7 +195,7 @@ const Signup = ({navigation}) => {
                   render={({field: {onChange, value}}) => (
                     <TextInput
                       {...commonTextInputProps}
-                      label="Emaill"
+                      label="Email"
                       value={value}
                       onChangeText={onChange}
                       left={
@@ -206,6 +224,7 @@ const Signup = ({navigation}) => {
                       {...commonTextInputProps}
                       label="Contact"
                       keyboardType="numeric"
+                      maxLength={10}
                       value={value}
                       onChangeText={onChange}
                       left={
@@ -226,6 +245,7 @@ const Signup = ({navigation}) => {
               <View style={styles.inputWrapper}>
                 <Controller
                   control={control}
+                  name="gender_id"
                   rules={{
                     required: false,
                   }}
@@ -254,6 +274,7 @@ const Signup = ({navigation}) => {
                         styles.input,
                       ]}
                       onChange={item => {
+                        console.log(item.value);
                         onChange(item.value);
                       }}
                       renderLeftIcon={() => (
@@ -266,7 +287,6 @@ const Signup = ({navigation}) => {
                       )}
                     />
                   )}
-                  name="gender_id"
                 />
                 {errors.gender_id && (
                   <Text style={styles.errorText}>

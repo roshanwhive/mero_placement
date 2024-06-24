@@ -33,7 +33,6 @@ const Training = () => {
   const handleApply = heading_id => {
     heading_id = singleTraining?.heading_id;
     navigation.navigate('TrainingInquiry', {heading_id});
-    console.log('button', heading_id);
   };
 
   const handleShare = () => {

@@ -17,10 +17,6 @@ const MatchedJobView = () => {
     dispatch(getMatchedJob());
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log('matchedjob', typeof matchedJobs);
-  }, [matchedJobs]);
-
   return (
     <>
       {isLoading ? (

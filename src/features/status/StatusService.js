@@ -11,7 +11,6 @@ const getSavedJob = async () => {
             return response.data;
         }
     } catch (error) {
-        console.log('Error during fetching saved jobs:', error);
         throw error;
     }
 };
@@ -25,7 +24,6 @@ const getMatchedJob = async () => {
             return response.data;
         }
     } catch (error) {
-        console.log('Error during fetching matched jobs:', error);
         throw error;
     }
 };
@@ -39,7 +37,6 @@ const getAppliedJob = async () => {
             return response.data;
         }
     } catch (error) {
-        console.log('Error during fetching matched jobs:', error);
         throw error;
     }
 };
@@ -53,7 +50,6 @@ const getFollowedJob = async () => {
             return response.data;
         }
     } catch (error) {
-        console.log('Error during fetching matched jobs:', error);
         throw error;
     }
 };
@@ -67,7 +63,6 @@ const getFollowedCompany = async () => {
             return response.data;
         }
     } catch (error) {
-        console.log('Error during fetching matched jobs:', error);
         throw error;
     }
 };

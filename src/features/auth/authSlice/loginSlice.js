@@ -66,8 +66,8 @@ export const loginUser = createAsyncThunk(
       state.isLoading = true;
     })
     .addCase(logoutUser.fulfilled, (state, action) => {
-       console.log("logout slice",state.isAuthenticated)
       state.isLoading = false;
+      
       state.isError = false;
       state.isSuccess = true;
       state.isAuthenticated = false;

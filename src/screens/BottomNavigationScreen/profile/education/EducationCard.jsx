@@ -25,7 +25,6 @@ const EducationCard = ({items, navigation}) => {
   const handleEdit = id => {
     // id = items?.education_id;
     navigation.navigate('EducationUpdate', {id});
-    console.log('button', id);
   };
 
   useEffect(() => {
@@ -33,7 +32,6 @@ const EducationCard = ({items, navigation}) => {
   }, [dispatch]);
 
   const handleDelete = () => {
-    console.log('delID', items?.education_id);
     dispatch(delEducation(items?.education_id));
   };
 
@@ -131,9 +129,7 @@ const EducationCard = ({items, navigation}) => {
                       [
                         {
                           text: 'Cancel',
-                          onPress: () => {
-                            console.log('cancel', items?.education_id);
-                          },
+
                           style: 'cancel',
                         },
                         {

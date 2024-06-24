@@ -53,7 +53,6 @@ const Login = ({navigation}) => {
     },
   });
   const onPressSend = formData => {
-    console.log(formData);
     dispatch(setNewPassword(formData));
     //navigation.navigate('ForgotPaasword_AcountRecover')
   };

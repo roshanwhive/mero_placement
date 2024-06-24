@@ -17,10 +17,6 @@ const FollowedJob = () => {
     dispatch(getFollowedJob());
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log('followed', typeof followedJob);
-  }, [followedJob]);
-
   return (
     <ScrollView
       contentContainerStyle={GlobalStyleSheet.scrollViewContentStatus}

@@ -30,7 +30,6 @@ const EducationList = () => {
 
   useEffect(() => {
     dispatch(getAllEducation());
-    // console.log('alleducation', allEducation);
   }, [dispatch]);
 
   const onRefresh = React.useCallback(() => {

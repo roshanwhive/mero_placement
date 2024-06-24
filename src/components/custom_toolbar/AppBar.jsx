@@ -2,20 +2,16 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useCallback, useRef} from 'react';
 import MenuIcon from '../custom_toolbar/MenuIcon';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { customThemeColor } from '../../constants/Color';
-import { customFontSize, customFonts } from '../../constants/theme';
-
+import {customThemeColor} from '../../constants/Color';
+import {customFontSize, customFonts} from '../../constants/theme';
 
 //const Drawer = createDrawerNavigator();
 
-const AppBar = ({ title, handleBack, isHome }) => {
-
+const AppBar = ({title, handleBack, isHome}) => {
   // const bottomSheetRef = useRef < BottomSheet > (null);
 
   // const handleSheetChanges = useCallback((index) => {
-  //   console.log('handleSheetChanges', index);
   // }, [])
-
 
   return (
     <View style={styles.navBar}>
@@ -36,26 +32,10 @@ const AppBar = ({ title, handleBack, isHome }) => {
       <Text style={styles.middleContainer}>{title}</Text>
 
       <View style={styles.rightContainer}>
-        <MenuIcon onPressBtn={bottom} />
+        {/* <MenuIcon onPressBtn={bottom} /> */}
       </View>
     </View>
   );
-};
-
-const bottom = () => {
-  <View style={styles.container}>
-    {/* <BottomSheet
-      ref={bottomSheetRef}
-      onChange={handleSheetChanges}>
-
-      <BottomSheetView style={styles.contentContainer}>
-
-        <Text>This is bottom Sheet</Text>
-
-      </BottomSheetView>
-
-    </BottomSheet> */}
-  </View>
 };
 
 const styles = StyleSheet.create({
@@ -81,7 +61,7 @@ const styles = StyleSheet.create({
     flex: 2,
     fontSize: customFontSize.font18,
     marginLeft: 20,
-    fontFamily:customFonts.fontPoppins,
+    fontFamily: customFonts.fontPoppins,
     color: 'black',
   },
   rightContainer: {

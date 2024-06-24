@@ -6,15 +6,16 @@ import logoImage from '../../assets/complete-profile.png';
 import {useNavigation} from '@react-navigation/native';
 import {customThemeColor} from '../../constants/Color';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { customFontSize, customFonts } from '../../constants/theme';
+import {customFontSize, customFonts} from '../../constants/theme';
 
 const CompleteProfile = () => {
   const [visible, setVisible] = useState(false);
   const navigation = useNavigation();
+
   useEffect(() => {
     setTimeout(() => {
       setVisible(true);
-    }, 6000);
+    }, 4000);
   }, [0]);
 
   const hideModal = () => setVisible(false);

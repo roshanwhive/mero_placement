@@ -32,7 +32,6 @@ export const getSingleEducationSlice = createSlice({
         state.isLoadingSingle = true;
       })
       .addCase(getSingleEducation.fulfilled, (state, action) => {
-        console.log('singleEdu', state.singleEducation);
         state.isLoadingSingle = false;
         state.isError = !action.payload?.success;
         state.isSuccess = action.payload?.success;

@@ -11,7 +11,31 @@ const register = async registerData => {
       `${base_url}candidate/signup?`,
       registerData,
     );
-    await AsyncStorage.setItem('USER', JSON.stringify(response));
+    if (response?.data?.status_code === 422) {
+      Object.values(response?.data?.message).forEach(messages => {
+        messages.forEach(message => {
+          showMessage({
+            message: JSON.stringify(message),
+            type: 'danger',
+            setLoading: false,
+            animationDuration: 1000,
+            animated: true,
+          });
+        });
+      });
+    } else if (response.data.status_code === 200) {
+      //  await AsyncStorage.setItem('KeepLoggedIn', JSON.stringify(true));
+      await AsyncStorage.setItem('USER', JSON.stringify(response));
+      showMessage({
+        message: response.data.message,
+        type: 'success',
+      });
+    } else {
+      showMessage({
+        message: response.data.message,
+        type: 'success',
+      });
+    }
     return response.data;
   } catch (error) {
     console.error('Error during register:', error);
@@ -42,12 +66,14 @@ const login = async loginData => {
     return response.data;
   } catch (error) {
     console.error('Error during login:', error);
-    if (axios.isAxiosError(error))
+    if (axios.isAxiosError(error)) {
       showMessage({
         message: 'Error during login:',
         error,
         type: 'danger',
       });
+    }
+
     throw error;
   }
 };
@@ -57,7 +83,6 @@ const logout = async () => {
   try {
     const config = await getConfigWithToken();
     const response = await axios.get(`${base_url}logout`, config);
-    console.log(response.data.status_code);
     if (response && response.data.status_code === 200) {
       await AsyncStorage.setItem('USER_TOKEN', '');
       //await AsyncStorage.setItem('KeepLoggedIn', '');
@@ -75,11 +100,13 @@ const logout = async () => {
     }
   } catch (error) {
     console.error('Error during logout:', error);
-    if (axios.isAxiosError(error))
+    if (axios.isAxiosError(error)) {
       showMessage({
         message: 'Error during logout. Please try again.',
         type: 'danger',
       });
+    }
+
     throw error;
   }
 };
@@ -95,6 +122,12 @@ const getUserProfile = async () => {
     }
   } catch (error) {
     console.error('Error during fetching user profile:', error);
+    if (axios.isAxiosError(error)) {
+      showMessage({
+        message: 'Error during fetching user profile',
+        type: 'danger',
+      });
+    }
     throw error;
   }
 };
@@ -120,7 +153,13 @@ const updateUserAccount = async formData => {
     }
     return response.data;
   } catch (error) {
-    console.error('Error during updating user Account Inforamtion:', error);
+    console.error('Error during updating user Account Information:', error);
+    if (axios.isAxiosError(error)) {
+      showMessage({
+        message: 'Error during updating user Account Information:',
+        type: 'danger',
+      });
+    }
     throw error;
   }
 };
@@ -184,6 +223,62 @@ const postResendOtp = async otpData => {
   }
 };
 
+//   Email Verification Service
+const emailVerification = async emailData => {
+  try {
+    const response = await axios.post(
+      `${base_url}email_verification`,
+      emailData,
+    );
+    if (response.data.status_code === 200) {
+      //  await AsyncStorage.setItem('KeepLoggedIn', JSON.stringify(true));
+
+      showMessage({
+        message: response.data.message,
+        type: 'success',
+      });
+    } else {
+      showMessage({
+        message: response.data.message,
+        type: 'success',
+      });
+    }
+    return response.data;
+  } catch (error) {
+    console.error('Error during login:', error);
+    if (axios.isAxiosError(error)) {
+      showMessage({
+        message: 'Error during Verification:',
+        error,
+        type: 'danger',
+      });
+    }
+
+    throw error;
+  }
+};
+
+//   FCM Token  Service
+const fcmLogin = async loginData => {
+  try {
+    const response = await axios.post(`${base_url}fcm-token-save`, tokenData);
+    if (response) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Error during login:', error);
+    if (axios.isAxiosError(error)) {
+      showMessage({
+        message: 'Error during login:',
+        error,
+        type: 'danger',
+      });
+    }
+
+    throw error;
+  }
+};
+
 export const authService = {
   register,
   login,
@@ -194,4 +289,5 @@ export const authService = {
   setNewPassword,
   postVerifyOtp,
   postResendOtp,
+  emailVerification,
 };

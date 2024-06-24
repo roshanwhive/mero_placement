@@ -20,7 +20,6 @@ const Featured = ({navigation}) => {
 
   useEffect(() => {
     dispatch(getJobByJobTypes('top_job'));
-    console.log('first', allJobs);
   }, [dispatch]);
 
   return (

@@ -16,10 +16,6 @@ const SavedJob = () => {
     dispatch(getSavedJob());
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log('saved', typeof savedJobs);
-  }, [savedJobs]);
-
   return (
     <View
       contentContainerStyle={GlobalStyleSheet.scrollViewContentStatus}

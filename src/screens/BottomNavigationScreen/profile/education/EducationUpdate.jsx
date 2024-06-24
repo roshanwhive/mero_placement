@@ -83,8 +83,6 @@ const EducationUpdate = id => {
     navigation.goBack();
   };
 
-  // console.log('this is update', allEducation);
-
   const [degreetype, setDegreetype] = useState([]);
   useEffect(() => {
     if (degree && Array.isArray(degree)) {
@@ -253,7 +251,6 @@ const EducationUpdate = id => {
                     ]}
                     onChange={item => {
                       onChange(item.value);
-                      console.log('click' + value);
                     }}
                     // onChange={(item) => handleSubmit(item.value)}
                   />
@@ -301,8 +298,6 @@ const EducationUpdate = id => {
                         onPress={() => {
                           setSelectedtab('passed');
                           onChange('passed');
-
-                          console.log('pressfirst', value);
                         }}>
                         <Text
                           disabled={isLoading}
@@ -326,7 +321,6 @@ const EducationUpdate = id => {
                         onPressIn={() => {
                           setSelectedtab('pursuing');
                           onChange('pursuing');
-                          console.log('presssecond', value);
                         }}>
                         <Text
                           disabled={isLoading}
@@ -359,7 +353,6 @@ const EducationUpdate = id => {
                           mode="date"
                           display="default"
                           onChange={(event, date) => {
-                            console.log('field', date);
                             onChange(date);
                             handleStartDateChange(event, date);
                           }}
@@ -507,7 +500,7 @@ const styles = StyleSheet.create({
     fontSize: customFontSize.font14,
     paddingHorizontal: 5,
     paddingVertical: 5,
-    marginLeft: -45,
+    marginLeft: -15,
     width: '45%',
   },
   input: {

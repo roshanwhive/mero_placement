@@ -28,12 +28,12 @@ import {customFontSize, customFonts} from '../../constants/theme';
 import {GlobalStyleSheet} from '../../constants/StyleSheet';
 import {getUserProfile} from '../../features/auth/authSlice/userProfileSlice';
 import {updateUserAccountInformation} from '../../features/auth/authSlice/updateAccountSlice';
-import {onChange} from 'react-native-reanimated';
 
 const AccountEdit = () => {
   const [selectedImage, setSelectedImage] = useState(
     userProfile?.profile?.featured_image || null,
   );
+  const [imageFile, setImageFile] = useState(null);
 
   const [genders, setGenders] = useState([]);
 
@@ -46,7 +46,7 @@ const AccountEdit = () => {
   const handleCameraLaunch = () => {
     const options = {
       mediaType: 'photo',
-      includeBase64: false,
+      includeBase64: true,
       maxHeight: 2000,
       maxWidth: 2000,
     };
@@ -57,7 +57,7 @@ const AccountEdit = () => {
   const openImagePicker = () => {
     const options = {
       mediaType: 'photo',
-      includeBase64: false,
+      includeBase64: true,
       maxHeight: 2000,
       maxWidth: 2000,
     };
@@ -67,9 +67,6 @@ const AccountEdit = () => {
 
   useEffect(() => {
     dispatch(getAllGender());
-  }, [dispatch]);
-
-  useEffect(() => {
     dispatch(getUserProfile());
   }, [dispatch]);
 
@@ -106,6 +103,7 @@ const AccountEdit = () => {
     reset,
     formState: {errors, isSubmitting},
     setError,
+    setValue,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -133,22 +131,48 @@ const AccountEdit = () => {
         featured_image: userProfile?.profile?.featured_image || '',
       });
     }
-  }, [userProfile, reset]);
-
+  }, [userProfile]);
   const handleResponse = response => {
     if (response.didCancel) {
       console.log('User cancelled image picker');
     } else if (response.error) {
       console.log('Image picker error: ', response.error);
     } else {
-      let imageUri = response.uri || response.assets?.[0]?.uri;
-      setSelectedImage(imageUri);
+      // const asset = response?.assets?.[0];
+      // let imageUri = response?.uri || response?.assets?.[0]?.uri;
+      // setSelectedImage(imageUri);
+      // setImageFile({
+      //   uri: asset?.uri,
+      //   name: asset?.fileName || 'photo.jpg',
+      //   type: asset.type || 'image/jpeg',
+      // });
+      const source = {
+        uri: response.assets[0].uri,
+        name: response.assets[0].fileName,
+        type: response.assets[0].type,
+      };
+      setSelectedImage(source);
+      setValue('featured_image', source);
+      console.log('Selected Image URI:', source);
     }
   };
 
+  // useEffect(() => {
+  //   setValue('featured_image', imageFile);
+  //   // setValue('featured_image',imageFile)
+  // }, [imageFile]);
+
   const handleAccountUpdate = formData => {
+    // const updatedFormData = new FormData();
+    // updatedFormData.append('featured_image', selectedImage);
+    // for (const key in formData) {
+    //   if (key !== 'featured_image') {
+    //     updatedFormData.append(key, formData[key]);
+    //   }
+    // }
+    // console.log('FormData before sending:', updatedFormData);
     dispatch(updateUserAccountInformation(formData));
-    console.log('successprofile', formData);
+    console.log('Submitted:', formData);
   };
 
   const commonTextInputProps = {
@@ -172,8 +196,10 @@ const AccountEdit = () => {
                 {selectedImage ? (
                   <Image
                     style={styles.avatarImage}
-                    source={{uri: selectedImage}}
+                    source={{uri: selectedImage.uri}}
+                    value={value}
                     resizeMode="cover"
+                    onChange={e => onChange(e.target.selectedImage.uri)}
                   />
                 ) : (
                   <Image
@@ -342,7 +368,6 @@ const AccountEdit = () => {
                   styles.input,
                 ]}
                 onChange={item => {
-                  console.log(item.value);
                   onChange(item.value);
                 }}
               />

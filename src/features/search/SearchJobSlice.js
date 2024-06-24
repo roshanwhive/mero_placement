@@ -32,6 +32,8 @@ export const searchJobSlice = createSlice({
             // ------------------------------------Get Search Jobs -------------------------------
             .addCase(getSearchJob.pending, state => {
                 state.isLoading = true;
+                state.searchJob = [];
+
             })
             .addCase(getSearchJob.fulfilled, (state, action) => {
                 state.isLoading = false;
@@ -45,6 +47,7 @@ export const searchJobSlice = createSlice({
                 state.isError = true;
                 state.isLoading = false;
                 state.isSuccess = false;
+                state.searchJob = [];
             });
     },
 });

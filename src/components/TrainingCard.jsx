@@ -7,6 +7,7 @@ import {getSingleTraining} from '../features/training/getSingleTrainingSlice';
 
 const TrainingCard = ({items, navigation}) => {
   const dispatch = useDispatch();
+
   return (
     <View style={styles.card}>
       <Image source={{uri: items.image}} style={styles.image} />

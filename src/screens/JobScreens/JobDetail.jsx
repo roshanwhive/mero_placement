@@ -15,6 +15,7 @@ import RenderHtml from 'react-native-render-html';
 import AppBar from '../../components/custom_toolbar/AppBar';
 import {customFontSize, customFonts} from '../../constants/theme';
 import AvatarByName from '../../components/AvatarbyName';
+import AddPref from '../BottomNavigationScreen/matchedJob/AddPref';
 
 const Row = ({label, value}) => {
   return (
@@ -50,19 +51,22 @@ const JobDetail = ({navigation}) => {
     navigation.goBack();
   };
 
+  // useEffect(()=>{
+  //   if
+  // })
+
+  const handleLogin = () => {
+    navigation.navigate('Login');
+  };
+
   const handleApply = slug => {
     slug = singleJob?.slug;
     navigation.navigate('CompareJobAndProfile', {slug});
-    console.log('button', slug);
   };
 
   const handleShare = () => {
     // Handle job sharing
   };
-
-  useEffect(() => {
-    console.log('image', singleJob?.slug);
-  }, []);
 
   return (
     <View style={styles.container}>

@@ -32,10 +32,12 @@ export const deleteEducationSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(delEducation.fulfilled, (state, action) => {
-        //console.log('delete', action.payload.message);
         state.isLoading = false;
+
         state.isError = !action.payload.success;
+
         state.isSuccess = action.payload.success;
+
         state.message = action.payload.message;
         state.statusCode = action.payload.status_code;
       })

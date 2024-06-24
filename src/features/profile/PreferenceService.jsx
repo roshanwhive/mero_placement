@@ -61,7 +61,6 @@ const delPreference = async id => {
       config,
     );
     if (response) {
-      console.log('responsepref', id);
       return id;
     }
   } catch (error) {

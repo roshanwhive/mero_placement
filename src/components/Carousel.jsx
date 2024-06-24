@@ -9,11 +9,12 @@ import {
 } from 'react-native';
 import {ActivityIndicator} from 'react-native';
 import {customThemeColor} from '../constants/Color';
+import {useSelector} from 'react-redux';
 
 const Carousel = () => {
   const [dimension, setDimension] = useState(Dimensions.get('window'));
   const [selectedIndex, setSelectedIndex] = useState(0);
-  // const {sliderData} = useSelector(state => state.sliderImage);
+  //const {sliderData} = useSelector(state => state.sliderImage);
 
   const scrollRef = useRef();
   let intervalId = null;

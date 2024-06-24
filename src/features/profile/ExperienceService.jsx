@@ -59,8 +59,8 @@ const delExperience = async id => {
     const response = await axios.delete(
       `${base_url}candidate/experience/${id}`,
       config,
-      console.log('experiencedel'),
     );
+
     if (response) {
       return id;
     }

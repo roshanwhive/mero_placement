@@ -10,12 +10,17 @@ const TrainingContent = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    //console.log('training', trainingContent.start_date);
     dispatch(getSingleContent('First-Page-Under-Training-94416'));
   }, [dispatch]);
 
   return (
-    <View>
+    <View
+      style={{
+        width: 360,
+        borderRadius: 10,
+        overflow: 'hidden',
+        marginLeft: 20,
+      }}>
       {trainingContent ? (
         <Image
           source={{uri: trainingContent.featured_image}}

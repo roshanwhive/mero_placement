@@ -29,7 +29,6 @@ const MatchedJobTab = ({navigation}) => {
   const dispatch = useDispatch();
 
   const {isAuthenticated, token, isLoading} = useSelector(state => state.login);
-  console.log('Is authenticated', isAuthenticated);
   const {userProfile} = useSelector(state => state.userProfile);
 
   const layout = useWindowDimensions();
@@ -132,7 +131,16 @@ const MatchedJobTab = ({navigation}) => {
                 />
               );
             case 'second':
-              return <SavedJob />;
+              return isAuthenticated ? (
+                <SavedJob />
+              ) : (
+                <AddPref
+                  title={'Discover your dream jobs'}
+                  subtitle={'Login to view Matched Job'}
+                  btnText={'Login'}
+                  handleBtn={handleLogin}
+                />
+              );
             default:
               return null;
           }

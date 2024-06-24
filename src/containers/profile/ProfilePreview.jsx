@@ -76,7 +76,6 @@ const ProfilePreview = () => {
     setDefaultPreference(
       userProfile?.preference?.filter(
         preference => preference?.is_default === '1',
-        console.log('pref', defaultPreferences),
       ),
     );
   }, [userProfile]);

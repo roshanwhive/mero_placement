@@ -1,5 +1,13 @@
 import * as React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {
+  Dimensions,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Profile from '../screens/BottomNavigationScreen/Profile';
 import MatchedJob from '../screens/BottomNavigationScreen/matchedJob/MatchedJobTab';
@@ -7,11 +15,36 @@ import MyStatus from '../screens/BottomNavigationScreen/myStatus/MyStatus';
 import Search from '../screens/BottomNavigationScreen/Search';
 import Home from '../screens/HomeScreen/Home';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { customFontSize, customFonts } from '../constants/theme';
+import {customFontSize, customFonts} from '../constants/theme';
 
 const Tab = createBottomTabNavigator();
 
+const {width, height} = Dimensions.get('window');
+const isLargeScreen = width > 768;
+
 function MyTabs({navigation}) {
+  const [isKeyboardVisible, setKeyboardVisible] = React.useState(false);
+
+  React.useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true);
+      },
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false);
+      },
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -33,7 +66,7 @@ function MyTabs({navigation}) {
           return (
             <Ionicons
               name={iconName}
-              size={size}
+              size={isLargeScreen ? size * 1.5 : size}
               color={color}
               style={{marginBottom: 0, paddingBottom: 0, marginTop: 15}}
             />
@@ -44,11 +77,16 @@ function MyTabs({navigation}) {
         headerShown: false,
         tabBarStyle: {
           display: 'flex',
-          height: 80,
+          height: isKeyboardVisible ? 0 : isLargeScreen ? 100 : 80,
+          paddingBottom: isKeyboardVisible
+            ? 0
+            : Platform.OS === 'android'
+            ? 10
+            : 20,
         },
         tabBarLabelStyle: {
-          marginBottom: 10,
-          fontSize: customFontSize.font13,
+          marginBottom: isKeyboardVisible ? 0 : isLargeScreen ? 15 : 10,
+          fontSize: isLargeScreen ? 16 : customFontSize.font13,
           fontFamily: customFonts.fontPoppins,
         },
       })}>
@@ -66,12 +104,21 @@ function MyTabs({navigation}) {
 }
 
 export default function BottomTab({navigation}) {
-  return <MyTabs navigation={navigation} />;
+  return (
+    <KeyboardAvoidingView
+      style={{flex: 1}}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}>
+      <MyTabs navigation={navigation} />
+    </KeyboardAvoidingView>
+  );
 }
 
 const styles = StyleSheet.create({
   tabIcons: {
     color: '#2b8256',
-    marginLeft: 5,
+    marginBottom: 0,
+    paddingBottom: 0,
+    marginTop: 15,
   },
 });

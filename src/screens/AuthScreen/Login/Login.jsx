@@ -45,13 +45,9 @@ const Login = ({navigation}) => {
     statusCode,
   } = useSelector(state => state.login);
 
-  console.log('isAuthenticated', isAuthenticated);
   useEffect(() => {
     if (isAuthenticated === true) {
       navigation.navigate('Home');
-      console.log('loginconsoleif', isAuthenticated);
-    } else {
-      console.log('loginconsole', isAuthenticated);
     }
   }, [isAuthenticated]);
 
