@@ -9,29 +9,105 @@ import {
 import JobCard from '../../components/JobCard';
 import Icon from 'react-native-vector-icons/Feather';
 import {useDispatch, useSelector} from 'react-redux';
-import {getAllJobs} from '../../features/job/JobSlice';
+import {
+  getAllJobs,
+  getCompanyTypes,
+  getEmploymentTypes,
+  getJobByCategory,
+  getJobByCompanyTypes,
+  getJobByEmploymentTypes,
+  getJobByJobTypes,
+  getJobTypes,
+} from '../../features/job/JobSlice';
 import {ActivityIndicator} from 'react-native-paper';
 import {customTextColor, customThemeColor} from '../../constants/Color';
 import {Dropdown} from 'react-native-element-dropdown';
 import {getAllCategories} from '../../features/formData/FormSlice';
+import {customFontSize, customFonts} from '../../constants/theme';
 
 const SeeAllJobs = ({navigation}) => {
   const dispatch = useDispatch();
-  const {allJobs, jobCategories} = useSelector(state => state.job);
+  const {
+    allJobs,
+    jobCategories,
+    isLoading,
+    companyTypes,
+    employmentTypes,
+    jobTypes,
+  } = useSelector(state => state.job);
 
-  const [category, setCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCompany, setSelectedCompany] = useState(null);
+  const [selectedEmployment, setSelectedEmployment] = useState(null);
+  const [selectedJob, setselectedJob] = useState(null);
+
   const [isFocusCategory, setIsFocusCategory] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
-      // dispatch(getAllJobs());
       dispatch(getAllCategories());
+      dispatch(getCompanyTypes());
+      dispatch(getEmploymentTypes());
+      dispatch(getJobTypes());
     }, 200);
   }, [dispatch]);
 
+  const [categoryTypeList, setCategoryTypeList] = useState([]);
   useEffect(() => {
-    console.log(allJobs);
-  }, [allJobs]);
+    if (jobCategories && Array.isArray(jobCategories)) {
+      const mappedCatTypeList = jobCategories.map(item => ({
+        label: item.name,
+        value: item.job_category_id,
+      }));
+      setCategoryTypeList(mappedCatTypeList);
+    }
+  }, [jobCategories]);
+
+  const [companyTypeList, setCompanyTypeList] = useState([]);
+  useEffect(() => {
+    if (companyTypes && Array.isArray(companyTypes)) {
+      const mappedCompanyTypeList = companyTypes.map(item => ({
+        label: item.name,
+        value: item.company_type_id,
+      }));
+      setCompanyTypeList(mappedCompanyTypeList);
+    }
+  }, [companyTypes]);
+
+  const [employmentTypeList, setEmploymentTypeList] = useState([]);
+  useEffect(() => {
+    if (employmentTypes && Array.isArray(employmentTypes)) {
+      const mappedEmploymentTypeList = employmentTypes.map(item => ({
+        label: item.employment_type,
+        value: item.employment_type_id,
+      }));
+      setEmploymentTypeList(mappedEmploymentTypeList);
+    }
+  }, [employmentTypes]);
+
+  const [jobTypesList, setJobTypesList] = useState([]);
+  useEffect(() => {
+    if (jobTypes && Array.isArray(jobTypes)) {
+      const mappedJobTypeList = jobTypes.map(item => ({
+        label: item.name,
+        value: item.slug,
+      }));
+      setJobTypesList(mappedJobTypeList);
+    }
+  }, [jobTypes]);
+
+  const handleCategoryClick = categoryId => {
+    dispatch(getJobByCategory(categoryId));
+  };
+  const handleEmploymentClick = employmentId => {
+    dispatch(getJobByEmploymentTypes(employmentId));
+  };
+  const handleCompanyClick = companyId => {
+    dispatch(getJobByCompanyTypes(companyId));
+  };
+  const handleJobClick = slug => {
+    dispatch(getJobByJobTypes(slug));
+  };
 
   return (
     <View style={styles.container}>
@@ -58,20 +134,23 @@ const SeeAllJobs = ({navigation}) => {
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
                 inputSearchStyle={styles.inputSearchStyle}
+                itemTextStyle={{color: customTextColor.secondary}}
                 iconStyle={styles.iconStyle}
-                data={jobCategories}
+                data={categoryTypeList}
                 search
                 maxHeight={300}
-                labelField="name"
-                valueField="name"
-                placeholder={!isFocusCategory ? 'Select Category' : '...'}
+                labelField="label"
+                valueField="value"
+                placeholder="Select Category"
                 searchPlaceholder="Search..."
-                value={category}
+                value={selectedCategory}
                 onFocus={() => setIsFocusCategory(true)}
                 onBlur={() => setIsFocusCategory(false)}
                 onChange={item => {
-                  setCategory(item?.name);
-                  setIsFocusCategory(false);
+                  // setCategoryTypeList(item?.value);
+                  // setIsFocusCategory(false);
+                  setSelectedCategory(item?.value);
+                  handleCategoryClick(item?.value);
                 }}
                 renderLeftIcon={() => (
                   <Icon
@@ -82,7 +161,133 @@ const SeeAllJobs = ({navigation}) => {
                         : customTextColor.primary
                     }
                     name="check-circle"
-                    size={20}
+                    size={15}
+                  />
+                )}
+              />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.filterButton}>
+            <View style={styles.containerDropdown}>
+              <Dropdown
+                style={[
+                  styles.dropdown,
+                  isFocusCategory && {borderColor: 'blue'},
+                ]}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                inputSearchStyle={styles.inputSearchStyle}
+                itemTextStyle={{color: customTextColor.secondary}}
+                iconStyle={styles.iconStyle}
+                data={employmentTypeList}
+                search
+                maxHeight={300}
+                labelField="label"
+                valueField="value"
+                placeholder="Select employment type"
+                searchPlaceholder="Search..."
+                value={selectedEmployment}
+                onFocus={() => setIsFocusCategory(true)}
+                onBlur={() => setIsFocusCategory(false)}
+                onChange={item => {
+                  setSelectedEmployment(item?.value);
+                  setIsFocusCategory(false);
+                  handleEmploymentClick(item?.value);
+                }}
+                renderLeftIcon={() => (
+                  <Icon
+                    style={styles.icon}
+                    color={
+                      isFocusCategory
+                        ? customTextColor.darkRed
+                        : customTextColor.primary
+                    }
+                    name="check-circle"
+                    size={15}
+                  />
+                )}
+              />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.filterButton}>
+            <View style={styles.containerDropdown}>
+              <Dropdown
+                style={[
+                  styles.dropdown,
+                  isFocusCategory && {borderColor: 'blue'},
+                ]}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                inputSearchStyle={styles.inputSearchStyle}
+                itemTextStyle={{color: customTextColor.secondary}}
+                iconStyle={styles.iconStyle}
+                data={companyTypeList}
+                search
+                maxHeight={300}
+                labelField="label"
+                valueField="value"
+                placeholder="Select company type"
+                searchPlaceholder="Search..."
+                value={selectedCompany}
+                onFocus={() => setIsFocusCategory(true)}
+                onBlur={() => setIsFocusCategory(false)}
+                onChange={item => {
+                  setSelectedCompany(item?.value);
+                  setIsFocusCategory(false);
+                  handleCompanyClick(item?.value);
+                }}
+                renderLeftIcon={() => (
+                  <Icon
+                    style={styles.icon}
+                    color={
+                      isFocusCategory
+                        ? customTextColor.darkRed
+                        : customTextColor.primary
+                    }
+                    name="check-circle"
+                    size={15}
+                  />
+                )}
+              />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.filterButton}>
+            <View style={styles.containerDropdown}>
+              <Dropdown
+                style={[
+                  styles.dropdown,
+                  isFocusCategory && {borderColor: 'blue'},
+                ]}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                inputSearchStyle={styles.inputSearchStyle}
+                itemTextStyle={{color: customTextColor.secondary}}
+                iconStyle={styles.iconStyle}
+                data={jobTypesList}
+                search
+                maxHeight={300}
+                labelField="label"
+                valueField="value"
+                placeholder="Select jobs type"
+                searchPlaceholder="Search..."
+                value={selectedJob}
+                onFocus={() => setIsFocusCategory(true)}
+                onBlur={() => setIsFocusCategory(false)}
+                onChange={item => {
+                  setselectedJob(item?.value);
+                  setIsFocusCategory(false);
+                  handleJobClick(item?.value);
+                }}
+                renderLeftIcon={() => (
+                  <Icon
+                    style={styles.icon}
+                    color={
+                      isFocusCategory
+                        ? customTextColor.darkRed
+                        : customTextColor.primary
+                    }
+                    name="check-circle"
+                    size={15}
                   />
                 )}
               />
@@ -95,14 +300,25 @@ const SeeAllJobs = ({navigation}) => {
         horizontal={false}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollViewContent}>
-        {allJobs?.data ? (
-          allJobs?.data?.map((item, index) => {
-            return (
-              <View key={index}>
-                <JobCard navigation={navigation} items={item} />
-              </View>
-            );
-          })
+        {allJobs?.data && isLoading !== true ? (
+          allJobs.data.length > 0 ? (
+            allJobs.data.map((item, index) => {
+              return (
+                <View key={index}>
+                  <JobCard navigation={navigation} items={item} />
+                </View>
+              );
+            })
+          ) : (
+            <View
+              style={{
+                marginTop: 100,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text style={styles.title}>No jobs available</Text>
+            </View>
+          )
         ) : (
           <View style={{marginTop: 100}}>
             <ActivityIndicator
@@ -135,9 +351,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   title: {
-    fontWeight: 'bold',
+    fontFamily: customFonts.fontPoppins,
     color: '#11401E',
-    fontSize: 20,
+    fontSize: customFontSize.font20,
     paddingLeft: 10,
   },
   scrollViewContentFilter: {
@@ -186,10 +402,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   placeholderStyle: {
-    fontSize: 16,
+    fontSize: customFontSize.font16,
+    color: customTextColor.secondary,
   },
   selectedTextStyle: {
-    fontSize: 16,
+    fontSize: customFontSize.font16,
+    color: customTextColor.secondary,
   },
   iconStyle: {
     width: 20,
@@ -197,7 +415,8 @@ const styles = StyleSheet.create({
   },
   inputSearchStyle: {
     height: 40,
-    fontSize: 16,
+    fontSize: customFontSize.font16,
+    color: customTextColor.secondary,
   },
 });
 

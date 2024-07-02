@@ -1,8 +1,6 @@
 import { createSlice, createAsyncThunk, createAction } from '@reduxjs/toolkit';
 import { StatusService } from './StatusService';
 
-
-
 const initialState = {
     savedJobs: [],
     matchedJobs: [],
@@ -77,11 +75,11 @@ export const statusSlice = createSlice({
             })
             .addCase(getSavedJob.fulfilled, (state, action) => {
                 state.isLoading = false;
-                state.isError = !action.payload.success;
-                state.isSuccess = action.payload.success;
-                state.message = action.payload.message;
-                state.statusCode = action.payload.status_code;
-                state.savedJobs = action.payload.data;
+                state.isError = !action.payload?.success;
+                state.isSuccess = action.payload?.success;
+                state.message = action.payload?.message;
+                state.statusCode = action.payload?.status_code;
+                state.savedJobs = action.payload?.data;
             })
             .addCase(getSavedJob.rejected, (state, action) => {
                 state.isError = true;
@@ -94,13 +92,14 @@ export const statusSlice = createSlice({
                 state.isLoading = true;
             })
             .addCase(getMatchedJob.fulfilled, (state, action) => {
-                console.log("matchedresponse", action.payload.data);
+  console.log("this is matched job",state.matchedJobs);
+
                 state.isLoading = false;
-                state.isError = !action.payload.success;
-                state.isSuccess = action.payload.success;
-                state.message = action.payload.message;
-                state.statusCode = action.payload.status_code;
-                state.matchedJobs = action.payload.data;
+                state.isError = !action.payload?.success;
+                state.isSuccess = action.payload?.success;
+                state.message = action.payload?.message;
+                state.statusCode = action.payload?.status_code;
+                state.matchedJobs = action.payload?.data;
             })
             .addCase(getMatchedJob.rejected, (state, action) => {
                 state.isError = true;
@@ -114,11 +113,12 @@ export const statusSlice = createSlice({
             })
             .addCase(getAppliedJob.fulfilled, (state, action) => {
                 state.isLoading = false;
-                state.isError = !action.payload.success;
-                state.isSuccess = action.payload.success;
-                state.message = action.payload.message;
-                state.statusCode = action.payload.status_code;
-                state.appliedJobs = action.payload.data;
+                
+                state.isError = !action.payload?.success;
+                state.isSuccess = action.payload?.success;
+                state.message = action.payload?.message;
+                state.statusCode = action.payload?.status_code;
+                state.appliedJobs = action.payload?.data;
             })
             .addCase(getAppliedJob.rejected, (state, action) => {
                 state.isError = true;

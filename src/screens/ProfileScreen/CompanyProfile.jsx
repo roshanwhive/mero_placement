@@ -17,14 +17,26 @@ import {useSelector} from 'react-redux';
 import RenderHtml from 'react-native-render-html';
 import {ActivityIndicator} from 'react-native-paper';
 import AppBar from '../../components/custom_toolbar/AppBar';
+import {customFontSize, customFonts} from '../../constants/theme';
 
 const renderTabBar = props => (
   <TabBar
     {...props}
-    inactiveColor={customTextColor.primary}
-    activeColor={customTextColor.darkRed}
+    // inactiveColor={customTextColor.primary}
+    // activeColor={customTextColor.darkRed}
     indicatorStyle={{backgroundColor: customTextColor.darkRed}}
     style={{backgroundColor: customTextColor.white}}
+    renderLabel={({focused, route}) => {
+      return (
+        <Text
+          style={{
+            color: focused ? 'black' : 'gray',
+            fontFamily: customFonts.fontPoppins,
+          }}>
+          {route.title}
+        </Text>
+      );
+    }}
   />
 );
 
@@ -63,7 +75,6 @@ const CompanyProfile = ({navigation}) => {
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.container}>
       <AppBar handleBack={handleBack} title="Company Profile" />
-      <View style={styles.header}></View>
 
       {Object.keys(companyProfile).length === 0 || isLoading === true ? (
         <ActivityIndicator
@@ -73,6 +84,7 @@ const CompanyProfile = ({navigation}) => {
         />
       ) : (
         <>
+          <View style={styles.header}></View>
           <View style={styles.body}>
             <Image style={styles.avatar} source={{uri: companyProfile?.logo}} />
             <View style={styles.bodyContent}>
@@ -129,7 +141,7 @@ const CompanyProfile = ({navigation}) => {
                 <TouchableOpacity style={styles.shareButton}>
                   <Icon
                     name="share-square"
-                    size={20}
+                    size={18}
                     color={customTextColor.darkGreen}
                   />
                 </TouchableOpacity>
@@ -161,7 +173,7 @@ const CompanyProfile = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: customThemeColor.darkRed,
+    backgroundColor: customThemeColor.lightBG,
     minHeight: 1000,
   },
   header: {
@@ -194,14 +206,14 @@ const styles = StyleSheet.create({
     gap: -10,
   },
   title: {
-    fontSize: 25,
-    fontWeight: '600',
+    fontSize: customFontSize.font20,
     color: customTextColor.primary,
+    fontFamily: customFonts.fontPoppins,
   },
   subtitle: {
     fontSize: 16,
-    fontWeight: '400',
     color: customTextColor.secondary,
+    fontFamily: customFonts.fontPrompt,
   },
   //   -----------------------------Follow section-----------------------
   containerFollow: {
@@ -218,22 +230,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 8,
     borderRadius: 15,
-    width: '80%',
+    width: '85%',
   },
   shareButton: {
     backgroundColor: customThemeColor.lightBG,
     alignItems: 'center',
     justifyContent: 'center',
     width: '15%',
-    paddingVertical: 13,
-
+    paddingVertical: 8,
     borderRadius: 10,
   },
   followText: {
     color: 'white',
     textAlign: 'center',
-    fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: customFontSize.font14,
+    fontFamily: customFonts.fontPrompt,
   },
 
   //   -----------------------------------Status Section---------------------------------------
@@ -242,13 +253,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     marginHorizontal: 20,
-    paddingVertical: 20,
+    paddingVertical: 10,
     marginBottom: 10,
     backgroundColor: customThemeColor.lightBG,
     borderRadius: 20,
   },
   cardStatus: {
-    width: '33%',
+    width: '23%',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -259,13 +270,13 @@ const styles = StyleSheet.create({
     borderRightWidth: 2,
   },
   headingStatus: {
-    fontSize: 18,
-    fontWeight: '500',
+    fontSize: customFontSize.font14,
+    fontFamily: customFonts.fontPrompt,
     marginBottom: 5,
     color: customTextColor.primary,
   },
   subheadingStatus: {
-    fontSize: 15,
+    fontSize: customFontSize.font12,
     color: customTextColor.primary,
   },
   containerTab: {},

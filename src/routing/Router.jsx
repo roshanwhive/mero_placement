@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React, {useEffect, useState} from 'react';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from '../screens/HomeScreen/Home';
 import Login from '../screens/AuthScreen/Login/Login';
 import Signup from '../screens/AuthScreen/Signup/Signup';
@@ -15,11 +15,26 @@ import EditProfile from '../screens/ProfileScreen/EditProfile';
 import EmailVerification from '../screens/AuthScreen/Signup/EmailVerification';
 import JobDetail from '../screens/JobScreens/JobDetail';
 import CompanyProfile from '../screens/ProfileScreen/CompanyProfile';
-import Training from '../screens/Training/Training';
 import CompareJobAndProfile from '../screens/JobScreens/CompareJobAndProfile';
 import EmailVerified from '../screens/AuthScreen/Signup/EmailVerified';
 import AllCategoriesScreen from '../screens/categories/AllCategoriesScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ProfilePreview from '../containers/profile/ProfilePreview';
+import UpdateProfile from '../containers/profile/UpdateProfile';
+import EducationAdd from '../screens/BottomNavigationScreen/profile/education/EducationAdd';
+import PreferenceList from '../screens/BottomNavigationScreen/profile/preference/PreferenceList';
+import PreferenceAdd from '../screens/BottomNavigationScreen/profile/preference/PreferenceAdd';
+import ExperienceAdd from '../screens/BottomNavigationScreen/profile/experience/ExperienceAdd';
+import ExperienceList from '../screens/BottomNavigationScreen/profile/experience/ExperienceList';
+import EducationList from '../screens/BottomNavigationScreen/profile/education/EducationList';
+import Datepicker from '../screens/BottomNavigationScreen/profile/experience/Datepicker';
+import TrainingList from '../containers/TrainingList';
+import Training from '../screens/Training/Training';
+import EducationUpdate from '../screens/BottomNavigationScreen/profile/education/EducationUpdate';
+import PreferenceUpdate from '../screens/BottomNavigationScreen/profile/preference/PreferenceUpdate';
+import ExperienceUpdate from '../screens/BottomNavigationScreen/profile/experience/ExperienceUpdate';
+import Account from '../containers/profile/Account';
+import TrainingInquiry from '../screens/Training/TrainingInquiry';
 
 const Stack = createNativeStackNavigator();
 
@@ -62,8 +77,24 @@ const Router = () => {
       <Stack.Screen name="CompanyProfile" component={CompanyProfile} />
       <Stack.Screen name="SeeAllJobs" component={SeeAllJobs} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
-      <Stack.Screen name="Training" component={Training} />
+      <Stack.Screen name="ProfilePreview" component={ProfilePreview} />
+      <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
+      <Stack.Screen name="EducationAdd" component={EducationAdd} />
+      <Stack.Screen name="EducationUpdate" component={EducationUpdate} />
+      <Stack.Screen name="EducationList" component={EducationList} />
+      <Stack.Screen name="PreferenceList" component={PreferenceList} />
+      <Stack.Screen name="PreferenceAdd" component={PreferenceAdd} />
+      <Stack.Screen name="PreferenceUpdate" component={PreferenceUpdate} />
+      <Stack.Screen name="ExperienceAdd" component={ExperienceAdd} />
+      <Stack.Screen name="ExperienceList" component={ExperienceList} />
+      <Stack.Screen name="ExperienceUpdate" component={ExperienceUpdate} />
+      <Stack.Screen name="TrainingList" component={TrainingList} />
       <Stack.Screen name="AllCategories" component={AllCategoriesScreen} />
+      <Stack.Screen name="Training" component={Training} />
+      <Stack.Screen name="TrainingInquiry" component={TrainingInquiry} />
+
+      <Stack.Screen name="Account" component={Account} />
+
       <Stack.Screen
         name="CompareJobAndProfile"
         component={CompareJobAndProfile}

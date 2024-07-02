@@ -9,6 +9,7 @@ export const customFontSize = {
     font30: 30,
     font24: 24,
     font20: 20,
+    font22: 22,
     font18: 18,
     font16: 16,
 };
@@ -16,7 +17,7 @@ export const customFontSize = {
 export const customFonts = {
     fontPoppins: 'Poppins-Medium',
     fontRoboto: 'Roboto-Regular',
-    fontRobotoBold:'Roboto-Bold',
+    fontRobotoBold: 'Roboto-Bold',
     font: 'Poppins-Regular',
     fontBold: 'Poppins-Bold',
     fontItallics: 'Roboto-Italic',

@@ -8,60 +8,44 @@ import {
   ScrollView,
 } from 'react-native';
 import Account from '../../containers/profile/Account';
-import Preferences from '../../containers/profile/Preferences';
-import Education from '../../containers/profile/Education';
-import Experience from '../../containers/profile/Experience';
+
 import {customTextColor, customThemeColor} from '../../constants/Color';
 import {useDispatch, useSelector} from 'react-redux';
-import {getUserProfile, logout} from '../../features/auth/AuthSlice';
-import {ActivityIndicator} from 'react-native-paper';
+
 import AppBar from '../../components/custom_toolbar/AppBar';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import AvatarByName from '../../components/AvatarbyName';
 import UserProfileCard from '../../components/skeleton_loader/UserProfileCard';
 import logoImage from '../../assets/search1.jpg';
-import RenderHtml from 'react-native-render-html';
 import {showMessage} from 'react-native-flash-message';
 import AvatarSkeleton from '../../components/skeleton_loader/AvatarSkeleton';
-import {GlobalStyleSheet} from '../../constants/StyleSheet';
 import {customFontSize, customFonts} from '../../constants/theme';
-import {WebView} from 'react-native-webview';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import {Divider} from 'react-native-paper';
+import {useNavigation} from '@react-navigation/native';
+import {getUserProfile} from '../../features/auth/authSlice/userProfileSlice';
+import {logoutUser} from '../../features/auth/authSlice/loginSlice';
+//import {logoutUser} from '../../features/auth/AuthSlice';
 
-const MYPROFILE =
-  'https://demo.meroplacement.com/candidate/dashboard/your-profile';
-
-export default Profile = ({navigation}) => {
+export default Profile = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
-  const {
-    message,
-    isAuthenticated,
-    userProfile,
-    token,
-    isSuccess,
-    isError,
-    isLoading,
-    statusCode,
-  } = useSelector(state => state.auth);
+  const {isAuthenticated, token} = useSelector(state => state.login);
+
+  const {userProfile} = useSelector(state => state.userProfile);
 
   const handleBack = () => {
     navigation.goBack();
   };
 
   useEffect(() => {
-    getUserProfile();
+    if (isAuthenticated === true && token !== '') {
+      dispatch(getUserProfile());
+    }
   }, [dispatch]);
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logoutUser());
     navigation.navigate('Login');
-    showMessage({
-      message: 'Logout Successfully',
-      type: 'success',
-      setLoading: false,
-      animationDuration: 1000,
-      animated: true,
-    });
   };
 
   return (
@@ -72,7 +56,7 @@ export default Profile = ({navigation}) => {
         contentContainerStyle={styles.container}>
         <AppBar handleBack={handleBack} />
 
-        {isAuthenticated && <View style={styles.header}></View>}
+        {/* {isAuthenticated && <View style={styles.header}></View>} */}
 
         <View style={styles.body}>
           {isAuthenticated ? (
@@ -86,31 +70,122 @@ export default Profile = ({navigation}) => {
                 ) : (
                   <AvatarSkeleton />
                 )}
-                {/* <View style={styles.avatar}>
-                    <AvatarByName name={userProfile?.profile?.lead_name} />
-                  </View> */}
+
                 {!!userProfile?.profile && (
                   <View style={styles.nameContainer}>
                     <Text style={styles.name}>
                       {userProfile?.profile?.lead_name}
                     </Text>
 
-                    <Text style={styles.bio}>{userProfile?.profile.bio}</Text>
+                    <Text style={styles.bio}>
+                      {userProfile?.profile?.email}
+                    </Text>
                   </View>
                 )}
+                <View style={styles.smallCard}>
+                  <View style={styles.card}>
+                    <Text style={styles.number}>11</Text>
+                    <Text style={styles.name1}>Jobs Aplied</Text>
+                  </View>
+                  <View style={styles.card}>
+                    <Text style={styles.number}>11</Text>
+                    <Text style={styles.name1}>Saved Jobs</Text>
+                  </View>
+                  <View style={styles.card}>
+                    <Text style={styles.number}>11</Text>
+                    <Text style={styles.name1}>Followed Company</Text>
+                  </View>
+                </View>
 
-                {!!userProfile?.profile ? <Account /> : <UserProfileCard />}
-                {!!userProfile?.preference ? (
-                  <Preferences />
-                ) : (
-                  <UserProfileCard />
-                )}
-                {!!userProfile?.education ? <Education /> : <UserProfileCard />}
-                {!!userProfile?.experience ? (
-                  <Experience />
-                ) : (
-                  <UserProfileCard />
-                )}
+                <View style={styles.bottonContainer}>
+                  <TouchableOpacity
+                    style={styles.editBtn}
+                    onPress={() =>
+                      navigation.navigate('EditProfile', {title: 'Profile'})
+                    }>
+                    <Text style={styles.editBtnText}>Update Profile</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.profileViewBtn}
+                    onPress={() => navigation.navigate('ProfilePreview')}>
+                    <Text style={styles.previewBtnText}>Preview Profile</Text>
+                  </TouchableOpacity>
+                </View>
+
+                {/* {!!userProfile?.profile ? <Account /> : <UserProfileCard />} */}
+
+                <View style={styles.profileCard}>
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Profile Information</Text>
+                    {/* <TouchableOpacity>
+                      <Text style={styles.edit}>Edit</Text>
+                    </TouchableOpacity> */}
+                  </View>
+                  <View style={styles.accountDetailContainer}>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('ForgotPasswordEnterEmail')
+                      }>
+                      <View style={styles.detailCard}>
+                        <Text style={styles.label}>Forgot Password</Text>
+                        <Icon
+                          name="chevron-circle-right"
+                          size={17}
+                          color={customTextColor.lightGreen}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                    <Divider />
+
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('PreferenceList')}>
+                      <View style={styles.detailCard}>
+                        <Text style={styles.label}>Preference</Text>
+                        <Icon
+                          name="chevron-circle-right"
+                          size={17}
+                          color={customTextColor.lightGreen}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                    <Divider />
+
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('EducationList')}>
+                      <View style={styles.detailCard}>
+                        <Text style={styles.label}>Education</Text>
+                        <Icon
+                          name="chevron-circle-right"
+                          size={17}
+                          color={customTextColor.lightGreen}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                    <Divider />
+
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('ExperienceList')}>
+                      <View style={styles.detailCard}>
+                        <Text style={styles.label}>Experience</Text>
+                        <Icon
+                          name="chevron-circle-right"
+                          size={17}
+                          color={customTextColor.lightGreen}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                    <Divider />
+
+                    <View style={styles.detailCard}>
+                      <Text style={styles.label}>Other Information</Text>
+                      <Icon
+                        name="chevron-circle-right"
+                        size={17}
+                        color={customTextColor.lightGreen}
+                      />
+                    </View>
+                  </View>
+                </View>
 
                 <TouchableOpacity
                   onPress={handleLogout}
@@ -157,11 +232,6 @@ const styles = StyleSheet.create({
     backgroundColor: customThemeColor.white,
     flexGrow: 1,
   },
-  header: {
-    backgroundColor: customThemeColor.darkRed,
-    height: 150,
-    position: 'relative',
-  },
   avatar: {
     width: 130,
     height: 130,
@@ -170,17 +240,15 @@ const styles = StyleSheet.create({
     borderColor: customThemeColor.lighterBg,
     alignSelf: 'center',
   },
-  body: {
-    top: '-4%',
-  },
   bodyContent: {
     alignItems: 'center',
-    padding: 40,
+    paddingHorizontal: 40,
+    marginTop: 20,
+    marginBottom: 50,
   },
   bodyContent1: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 40,
     height: '100%',
   },
   image: {
@@ -189,8 +257,31 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginBottom: 20,
   },
+  smallCard: {
+    height: 'auto',
+    marginVertical: 20,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+  card: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 120,
+    height: 'auto',
+  },
+  number: {
+    fontSize: customFontSize.font18,
+    color: customTextColor.primary,
+    fontFamily: customFonts.fontRobotoBold,
+  },
+  name1: {
+    marginTop: 8,
+    fontSize: customFontSize.font14,
+    color: customTextColor.secondary,
+    fontFamily: customFonts.fontRoboto,
+  },
   title: {
-    fontSize: 25,
+    fontSize: customFontSize.font18,
     marginBottom: 10,
     textAlign: 'center',
     color: '#11401E',
@@ -215,20 +306,20 @@ const styles = StyleSheet.create({
   },
   nameContainer: {
     marginTop: 20,
-    marginBottom: 30,
+    marginBottom: 10,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
   },
   name: {
-    fontSize: 22,
-    fontWeight: '600',
+    fontSize: customFontSize.font20,
+    fontFamily: customFonts.fontPoppins,
     color: customTextColor.primary,
   },
   buttonContainer: {
     marginTop: 10,
     bottom: '-10%',
-    height: 45,
+    height: 35,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -246,7 +337,86 @@ const styles = StyleSheet.create({
   },
   logoutText: {
     color: customTextColor.white,
-    fontSize: 20,
+    fontSize: customFontSize.font18,
+    fontFamily: customFonts.fontPoppins,
+  },
+
+  // --------------Bottom Container--------------
+  bottonContainer: {
+    marginTop: 10,
+    flexDirection: 'row',
+    marginBottom: 25,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 20,
+  },
+  editBtn: {
+    borderWidth: 1,
+    borderColor: customTextColor.darkRed,
+    paddingHorizontal: 25,
+    borderRadius: 15,
+    paddingVertical: 7,
+  },
+  editBtnText: {
+    color: customTextColor.darkRed,
+    fontSize: customFontSize.font16,
+    fontFamily: customFonts.fontPoppins,
+  },
+  profileViewBtn: {
+    borderWidth: 1,
+    borderColor: customTextColor.darkRed,
+    backgroundColor: customThemeColor.darkRed,
+    paddingHorizontal: 25,
+    borderRadius: 15,
+    paddingVertical: 7,
+  },
+  previewBtnText: {
+    color: customTextColor.white,
+    fontSize: customFontSize.font16,
+    fontFamily: customFonts.fontPoppins,
+  },
+
+  // ----------Profile card------------------
+  profileCard: {
+    width: '110%',
+    borderRadius: 20,
+    backgroundColor: customThemeColor.lightBG,
+    position: 'relative',
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+  },
+  titleContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 5,
+  },
+  title: {
+    fontSize: customFontSize.font20,
+    fontFamily: customFonts.fontPoppins,
+    color: customTextColor.primary,
+  },
+  edit: {
+    color: '#2b8256',
+    fontWeight: '500',
+    fontSize: 16,
+    textDecorationLine: 'underline',
+  },
+  detailCard: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 20,
+    flexWrap: 'wrap',
+  },
+  borderBottomGray: {
+    borderBottomColor: customThemeColor.lighterBg,
+    borderBottomWidth: 0.5,
+  },
+  label: {
+    fontSize: customFontSize.font14,
+    color: customTextColor.primary,
     fontFamily: customFonts.fontPoppins,
   },
 });

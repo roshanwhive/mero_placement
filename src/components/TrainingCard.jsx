@@ -1,18 +1,27 @@
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {customTextColor, customThemeColor} from '../constants/Color';
-import reactTraining from '../assets/training/react-training.png';
-import { customFontSize, customFonts } from '../constants/theme';
+import {customFontSize, customFonts} from '../constants/theme';
+import {useDispatch} from 'react-redux';
+import {getSingleTraining} from '../features/training/getSingleTrainingSlice';
 
-const TrainingCard = ({navigation}) => {
+const TrainingCard = ({items, navigation}) => {
+  const dispatch = useDispatch();
+
   return (
     <View style={styles.card}>
-      <Image source={reactTraining} style={styles.image} />
+      <Image source={{uri: items.image}} style={styles.image} />
       <View style={styles.content}>
-        <Text style={styles.title}>React For Beginner</Text>
+        <Text style={styles.title}> {items ? items.heading_name : ''}</Text>
         <View style={styles.flexCard}>
-          <Text style={styles.price}>NPR. 12000</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Training')}>
+          <Text style={styles.price}>{items ? items.price : ''}</Text>
+          <TouchableOpacity
+            onPress={() => {
+              dispatch(getSingleTraining(items?.slug));
+              navigation.navigate('Training', {
+                slug: items ? items.slug : '',
+              });
+            }}>
             <Text style={styles.button}>Enroll</Text>
           </TouchableOpacity>
         </View>

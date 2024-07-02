@@ -15,7 +15,7 @@ import {
 } from '../features/job/JobSlice';
 import {useNavigation} from '@react-navigation/native';
 import CategoryCardCircle from './skeleton_loader/CategoryCardCircle';
-import {customFontSize, customFonts} from '../constants/theme';
+import {customFonts} from '../constants/theme';
 import {customTextColor, customThemeColor} from '../constants/Color';
 import {GlobalStyleSheet} from '../constants/StyleSheet';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -33,9 +33,8 @@ const Categories = () => {
   }, [dispatch]);
 
   const handleCategoryClick = categoryId => {
-    dispatch(getJobByCategory(categoryId)).then(() =>
-      navigation.navigate('SeeAllJobs'),
-    );
+    navigation.navigate('SeeAllJobs');
+    dispatch(getJobByCategory(categoryId));
   };
 
   return (
@@ -62,7 +61,7 @@ const Categories = () => {
                   style={styles.imageContainer}>
                   <Icon
                     name={category?.icons}
-                    size={40}
+                    size={20}
                     color={customTextColor.darkRed}
                   />
                 </TouchableOpacity>
@@ -110,8 +109,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 50,
-    width: 50,
+    height: 40,
+    width: 40,
     padding: 5,
     borderRadius: 100,
     shadowColor: '#000',

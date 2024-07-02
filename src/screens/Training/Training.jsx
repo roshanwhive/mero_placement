@@ -1,148 +1,200 @@
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
 import React from 'react';
 import AppBar from '../../components/custom_toolbar/AppBar';
-import { customTextColor, customThemeColor } from '../../constants/Color';
+import {customTextColor, customThemeColor} from '../../constants/Color';
 import RoundButtonComp from '../../components/RoundBtn';
-import { Divider } from 'react-native-paper';
-import { customFonts } from '../../constants/theme';
-
+import {Divider} from 'react-native-paper';
+import {customFontSize, customFonts} from '../../constants/theme';
+import {useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
+import RenderHTML from 'react-native-render-html';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Training = () => {
+  const navigation = useNavigation();
+  const {singleTraining, isLoading} = useSelector(
+    state => state.singleTraining,
+  );
+
+  //  console.log('single', singleTraining);
 
   const handleBack = () => {
     navigation.goBack();
   };
 
-  const handleApply = () => {
-    // Handle job application
+  const handleApply = heading_id => {
+    heading_id = singleTraining?.heading_id;
+    navigation.navigate('TrainingInquiry', {heading_id});
   };
 
   const handleShare = () => {
     // Handle job sharing
   };
 
+  const tagsStyles = {
+    p: {
+      color: customTextColor.secondary,
+      textAlign: 'justify',
+      fontSize: customFontSize.font12,
+      fontFamily: customFonts.fontPoppins,
+    },
+    li: {
+      color: customTextColor.secondary,
+      fontSize: customFontSize.font12,
+      textAlign: 'justify',
+      marginHorizontal: 5,
+      fontFamily: customFonts.fontPoppins,
+    },
+  };
+
   return (
     <>
-      <AppBar title={"Training"} />
+      <AppBar title={'Training'} handleBack={handleBack} />
       <View style={styles.container}>
-        {/* Header */}
-        {/* <View style={styles.header}>
-          <TouchableOpacity onPress={handleBack}>
-            <Icon name="arrow-left" size={20} color="black" />
-          </TouchableOpacity>
-        </View> */}
+        {/* Training Details */}
+        {Object.keys(singleTraining).length === 0 || isLoading === true ? (
+          <ActivityIndicator
+            animating={true}
+            style={[styles.body, {flex: 1}]}
+            color={customTextColor.lightGreen}
+          />
+        ) : (
+          <>
+            <ScrollView
+              style={styles.jobDetails}
+              horizontal={false}
+              indicatorStyle="white"
+              showsVerticalScrollIndicator={false}>
+              <View style={styles.cardHeader}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    paddingHorizontal: 8,
+                    paddingVertical: 8,
+                    borderRadius: 10,
+                  }}>
+                  <View style={{marginRight: 15}}>
+                    <Image
+                      source={{uri: singleTraining.image}}
+                      style={{
+                        height: 150,
+                        width: 100,
+                        borderRadius: 8,
+                        resizeMode: 'cover',
+                      }}
+                    />
+                    {/* <Image
+                      source={require('../../assets/training/react-training.png')}
+                      style={{
+                        height: 100,
+                        width: 100,
+                        borderRadius: 8,
+                      }}
+                    /> */}
+                  </View>
 
-        {/* Job Details */}
-        <ScrollView
-          style={styles.jobDetails}
-          horizontal={false}
-          indicatorStyle="white"
-          showsVerticalScrollIndicator={false}>
-          <View style={styles.cardHeader}>
-            <View style={styles.companyInfo}>
-              <View>
-                <Text style={styles.companyName}>Course</Text>
-                <Divider />
-
-                <Text style={styles.jobTitle}>React Native</Text>
-                <Text style={styles.jobTitle}>Redux Training</Text>
-                <View style={styles.flexCard}>
-                  <Text style={[styles.label, styles.link]}>React native</Text>
-                  <Text style={[styles.label, styles.link]}>Redux</Text>
+                  <View style={{flex: 1}}>
+                    <Text numberOfLines={2} style={styles.companyName}>
+                      {singleTraining.heading_name}
+                    </Text>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        marginTop: 5,
+                        marginBottom: 5,
+                      }}>
+                      <Icon
+                        name="calendar"
+                        size={10}
+                        color={customTextColor.secondary}
+                        style={styles.icon}
+                      />
+                      <Text numberOfLines={1} style={styles.jobTitle}>
+                        {'  '}
+                        {singleTraining.created_date}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        marginTop: 5,
+                        marginBottom: 5,
+                      }}>
+                      <Text style={styles.title}>Price: </Text>
+                      <Text numberOfLines={1} style={styles.jobTitle}>
+                        {singleTraining.price}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        marginTop: 5,
+                        marginBottom: 5,
+                      }}>
+                      <Text style={styles.title}>Credit hours: </Text>
+                      <Text numberOfLines={1} style={styles.jobTitle}>
+                        {singleTraining.credit_hours}
+                      </Text>
+                    </View>
+                  </View>
                 </View>
               </View>
-              <View style={styles.companyLogoContainer}>
-                <Image
-                  source={require('../../assets/training/react-training.png')}
-                  style={styles.companyLogo} />
+
+              <View style={styles.additionalSections}>
+                <View style={styles.card}>
+                  <Text style={styles.sectionTitle}>Description</Text>
+                  <RenderHTML
+                    contentWidth={100}
+                    ignoredDomTags={['quillbot-extension-portal']}
+                    tagsStyles={tagsStyles}
+                    source={{
+                      html: singleTraining.description,
+                    }}
+                  />
+                </View>
               </View>
-            </View>
-          </View>
-
-          {/* Additional Sections */}
-          <View style={styles.additionalSections}>
-            <View style={styles.card}>
-              <Text style={styles.sectionTitle}>Course Overview</Text>
-              <Text style={styles.sectionText}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                euismod mattis velit, ac fringilla nunc tincidunt in. Mauris in
-                augue vel sapien hendrerit tincidunt.
-              </Text>
-            </View>
-
-            <View style={styles.card2}>
-              <Text style={styles.sectionTitle}>Course Syllabus</Text>
-              <View style={{ marginBottom: 4, paddingLeft: 5 }}>
-                <Text style={styles.listText}>
-                  {`\u25CF`} Introduction{' '}
-                </Text>
-                <Text style={styles.listText}>
-                  {`\u25CF`} Environment Setup{' '}
-                </Text>
-                <Text style={styles.listText}>
-                  {`\u25CF`} Overview of react native{' '}
-                </Text>
-                <Text style={styles.listText}>
-                  {`\u25CF`} React components{' '}
-                </Text>
-                <Text style={styles.listText}>
-                  {`\u25CF`} State Management{' '}
-                </Text>
-                <Text style={styles.listText}>
-                  {`\u25CF`} Async Programming{' '}
-                </Text>
-                <Text style={styles.listText}>
-                  {`\u25CF`} Networking{' '}
-                </Text>
+              <View style={styles.additionalSections}>
+                <View style={styles.card}>
+                  <Text style={styles.sectionTitle}>Features</Text>
+                  <RenderHTML
+                    contentWidth={100}
+                    ignoredDomTags={['quillbot-extension-portal']}
+                    tagsStyles={tagsStyles}
+                    source={{
+                      html: singleTraining.features,
+                    }}
+                  />
+                </View>
               </View>
+            </ScrollView>
+            <Divider />
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                marginTop: 5,
+                paddingBottom: 10,
+                bottom: 0,
+                left: 0,
+              }}>
+              <RoundButtonComp label="Send Enquiry" onPressBtn={handleApply} />
             </View>
-            <View style={styles.card}>
-              <Text style={styles.sectionTitle}>Course Benifit</Text>
-              <Text style={styles.sectionText}>This course offers a multitude of benefits to anyone aspiring to excel in apps development career. </Text>
-              <View style={{ paddingLeft: 5 }}>
-                <Text style={styles.listText}>
-                  {`\u25CF`} Introduction{' '}
-                </Text>
-                <Text style={styles.listText}>
-                  {`\u25CF`} Environment Setup{' '}
-                </Text>
-                <Text style={styles.listText}>
-                  {`\u25CF`} Overview of react native{' '}
-                </Text>
-                <Text style={styles.listText}>
-                  {`\u25CF`} React components{' '}
-                </Text>
-                <Text style={styles.listText}>
-                  {`\u25CF`} State Management{' '}
-                </Text>
-                <Text style={styles.listText}>
-                  {`\u25CF`} Async Programming{' '}
-                </Text>
-                <Text style={styles.listText}>
-                  {`\u25CF`} Networking{' '}
-                </Text>
-              </View>
-            </View>
-          </View>
-        </ScrollView>
-
-        <Divider />
-
-        {/* Job Actions */}
-        <View style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          marginTop: 5,
-          bottom: 0,
-          left: 0
-        }}>
-          <RoundButtonComp label="Send Enquiry" widthBtn={150} />
-          <RoundButtonComp label={"Get Admission"}
-            border={true}
-            widthBtn={150}
-          />
-        </View>
-      </View></>
+          </>
+        )}
+      </View>
+    </>
   );
 };
 
@@ -159,22 +211,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   cardHeader: {
-    shadowColor: '#00000021',
-    shadowOffset: {
-      width: 0,
-      height: 6,
-    },
-    shadowOpacity: 0.37,
-    shadowRadius: 7.49,
-    marginVertical: 10,
+    marginVertical: 5,
     backgroundColor: 'white',
     flexBasis: '46%',
     padding: 10,
-    flexDirection: 'row',
     flexWrap: 'wrap',
-    borderLeftWidth: 6,
-    borderColor: '#4B0082',
-    borderRadius: 15
+    borderRadius: 15,
   },
   companyInfo: {
     flexDirection: 'row',
@@ -183,14 +225,14 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   companyName: {
-    color: customTextColor.secondary,
-    fontSize: 50,
-    fontFamily: customFonts.fontPoppins
+    color: customTextColor.primary,
+    fontSize: customFontSize.font18,
+    fontFamily: customFonts.fontBold,
   },
   jobTitle: {
-    fontSize: 18,
+    fontSize: customFontSize.font14,
     color: customTextColor.primary,
-    fontFamily: 'Roboto-Italic',
+    fontFamily: customFonts.fontPoppins,
   },
   flexCard: {
     display: 'flex',
@@ -216,7 +258,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 400 / 2,
     resizeMode: 'contain',
-    padding: 5
+    padding: 5,
   },
   basicInfo: {
     marginTop: 20,
@@ -225,9 +267,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   title: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: customTextColor.primary,
+    fontSize: customFontSize.font14,
+    fontFamily: customFonts.fontPoppins,
+    color: customTextColor.secondary,
   },
   value: {
     color: customTextColor.primary,
@@ -246,9 +288,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 20,
     marginBottom: 10,
-    borderLeftWidth: 6,
-    borderColor: '#FF4500',
-    borderRadius: 15
+
+    borderRadius: 15,
   },
   card2: {
     backgroundColor: customThemeColor.white,
@@ -256,9 +297,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 20,
     marginBottom: 10,
-    borderLeftWidth: 6,
-    borderColor: '#4B0082',
-    borderRadius: 15
+
+    borderRadius: 15,
   },
   additionalSections: {},
   sectionTitle: {
@@ -344,6 +384,10 @@ const styles = StyleSheet.create({
   },
   rightText: {
     width: '55%',
+  },
+  icon: {
+    marginTop: 3,
+    fontWeight: '300',
   },
 });
 

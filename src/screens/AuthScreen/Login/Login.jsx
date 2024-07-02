@@ -11,11 +11,7 @@ import {
 import {ActivityIndicator, TextInput} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  getUserProfile,
-  loginUser,
-  resetState,
-} from '../../../features/auth/AuthSlice';
+
 import AuthHeader from '../../../components/AuthHeader';
 import AuthLogo from '../../../components/AuthLogo';
 import AuthTitle from '../../../components/AuthTitle';
@@ -27,6 +23,8 @@ import {showMessage} from 'react-native-flash-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {GlobalStyleSheet} from '../../../constants/StyleSheet';
 import {customFontSize, customFonts} from '../../../constants/theme';
+import {loginUser} from '../../../features/auth/authSlice/loginSlice';
+import {getUserProfile} from '../../../features/auth/authSlice/userProfileSlice';
 
 const Login = ({navigation}) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -44,35 +42,14 @@ const Login = ({navigation}) => {
     isSuccess,
     isError,
     isLoading,
-    userProfile,
     statusCode,
-  } = useSelector(state => state.auth);
+  } = useSelector(state => state.login);
 
   useEffect(() => {
-    if (
-      isError &&
-      statusCode !== 200 &&
-      statusCode !== 0 &&
-      message !== undefined
-    ) {
-      showMessage({
-        message: JSON.stringify(message),
-        type: 'danger',
-        setLoading: false,
-        animationDuration: 1000,
-        animated: true,
-      });
-    } else if (isSuccess && statusCode === 200 && isAuthenticated) {
+    if (isAuthenticated === true) {
       navigation.navigate('Home');
-      showMessage({
-        message: JSON.stringify(message),
-        type: 'success',
-        setLoading: false,
-        animationDuration: 1000,
-        animated: true,
-      });
     }
-  }, [isError, isSuccess, statusCode, message]);
+  }, [isAuthenticated]);
 
   const schema = yup.object().shape({
     email: yup.string().required('Email is Required').email('Invalid Email'),
@@ -91,14 +68,8 @@ const Login = ({navigation}) => {
     },
   });
 
-  const onPressSend = formData => {
-    dispatch(loginUser(formData))
-      .then(() => dispatch(getUserProfile()))
-      .then(() => {
-        setTimeout(() => {
-          dispatch(resetState());
-        }, 5000);
-      });
+  const onPressLogin = formData => {
+    dispatch(loginUser(formData)).then(() => dispatch(getUserProfile()));
   };
 
   const commonTextInputProps = {
@@ -137,7 +108,7 @@ const Login = ({navigation}) => {
                   render={({field: {onChange, value}}) => (
                     <TextInput
                       {...commonTextInputProps}
-                      label="Emaill"
+                      label="Email"
                       value={value}
                       onChangeText={onChange}
                       disabled={isLoading}
@@ -202,7 +173,7 @@ const Login = ({navigation}) => {
               </TouchableOpacity>
               <View style={styles.buttonWrapper}>
                 <TouchableOpacity
-                  onPress={handleSubmit(onPressSend)}
+                  onPress={handleSubmit(onPressLogin)}
                   style={styles.button}>
                   {isLoading ? (
                     <ActivityIndicator
@@ -255,7 +226,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     paddingTop: 16,
     paddingBottom: 16,
-    //bottom: '-8%',
   },
   inputWrapper: {
     padding: 4,

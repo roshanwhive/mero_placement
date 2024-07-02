@@ -3,6 +3,7 @@ import React, {useEffect} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {customTextColor, customThemeColor} from '../../constants/Color';
 import {ActivityIndicator} from 'react-native-paper';
+import { customFontSize, customFonts } from '../../constants/theme';
 
 const Row = ({icon, title, value}) => {
   return (
@@ -10,7 +11,7 @@ const Row = ({icon, title, value}) => {
       <View style={styles.row}>
         <View style={styles.rowLeft}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Icon name={icon} size={18} style={styles.rowLeftIcons} />
+            <Icon name={icon} size={15} style={styles.rowLeftIcons} />
             <Text style={styles.rowLeftText}>{title} </Text>
           </View>
           <Text style={styles.rowLeftText}>: </Text>
@@ -82,10 +83,10 @@ const styles = StyleSheet.create({
   },
   container: {
     marginHorizontal: 15,
-    marginVertical: 25,
+    marginVertical: 15,
   },
   row: {
-    padding: 15,
+    padding: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderBottomWidth: 1,
@@ -102,19 +103,18 @@ const styles = StyleSheet.create({
   },
   rowLeftText: {
     marginLeft: 10,
-    fontSize: 18,
-    fontWeight: '400',
+    fontSize: customFontSize.font16,
+    fontFamily: customFonts.fontRoboto,
     color: customTextColor.primary,
   },
   rowRightText: {
     color: customTextColor.secondary,
-    fontSize: 16,
-    fontWeight: '400',
+    fontSize: customFontSize.font14,
+    
   },
   rowRightTextWebsite: {
     color: customTextColor.darkGreen,
-    fontSize: 16,
-    fontWeight: '500',
+    fontSize: customFontSize.font14,
     textDecorationLine: 'underline',
   },
 });

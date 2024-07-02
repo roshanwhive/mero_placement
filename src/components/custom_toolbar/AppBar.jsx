@@ -1,13 +1,18 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import React, {useCallback, useRef} from 'react';
 import MenuIcon from '../custom_toolbar/MenuIcon';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {customThemeColor} from '../../constants/Color';
-import {createDrawerNavigator} from '@react-navigation/drawer';
+import {customFontSize, customFonts} from '../../constants/theme';
 
 //const Drawer = createDrawerNavigator();
 
-export default function AppBar({title, handleBack, isHome}) {
+const AppBar = ({title, handleBack, isHome}) => {
+  // const bottomSheetRef = useRef < BottomSheet > (null);
+
+  // const handleSheetChanges = useCallback((index) => {
+  // }, [])
+
   return (
     <View style={styles.navBar}>
       <View style={styles.leftContainer}>
@@ -27,13 +32,11 @@ export default function AppBar({title, handleBack, isHome}) {
       <Text style={styles.middleContainer}>{title}</Text>
 
       <View style={styles.rightContainer}>
-        <MenuIcon onPressBtn={bottom} />
+        {/* <MenuIcon onPressBtn={bottom} /> */}
       </View>
     </View>
   );
-}
-
-const bottom = () => {};
+};
 
 const styles = StyleSheet.create({
   navBar: {
@@ -56,9 +59,9 @@ const styles = StyleSheet.create({
   },
   middleContainer: {
     flex: 2,
-    fontSize: 18,
+    fontSize: customFontSize.font18,
     marginLeft: 20,
-    fontWeight: '500',
+    fontFamily: customFonts.fontPoppins,
     color: 'black',
   },
   rightContainer: {
@@ -84,4 +87,15 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  container: {
+    flex: 1,
+    padding: 24,
+    backgroundColor: 'grey',
+  },
+  contentContainer: {
+    flex: 1,
+    alignItems: 'center',
+  },
 });
+
+export default AppBar;

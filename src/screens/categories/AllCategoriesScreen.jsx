@@ -44,6 +44,10 @@ const AllCategoriesScreen = () => {
 
   const renderItem = ({item}) => (
     <TouchableOpacity style={styles.card}>
+      {/* <Image
+        style={styles.image1}
+        source={require('../../assets/categories/finance.png')}
+      /> */}
       <Text style={styles.title}>{item?.name}</Text>
     </TouchableOpacity>
   );
@@ -95,6 +99,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: customThemeColor.lightBG,
   },
+  image1: {
+    height: 50,
+    width: 50,
+  },
   searchContainer: {
     flexDirection: 'row',
     marginHorizontal: 16,
@@ -137,7 +145,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 15,
     textAlign: 'center',
-    color: customTextColor.darkRed,
+    color: customTextColor.primary,
   },
 });
 

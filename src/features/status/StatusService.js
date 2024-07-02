@@ -11,7 +11,6 @@ const getSavedJob = async () => {
             return response.data;
         }
     } catch (error) {
-        console.log('Error during fetching saved jobs:', error);
         throw error;
     }
 };
@@ -25,7 +24,6 @@ const getMatchedJob = async () => {
             return response.data;
         }
     } catch (error) {
-        console.log('Error during fetching matched jobs:', error);
         throw error;
     }
 };
@@ -34,12 +32,11 @@ const getMatchedJob = async () => {
 const getAppliedJob = async () => {
     try {
         const config = await getConfigWithToken();
-        const response = await axios.get(`${base_url}candidate/status/matching-job`, config);
+        const response = await axios.get(`${base_url}candidate/status/applied-job`, config);
         if (response) {
             return response.data;
         }
     } catch (error) {
-        console.log('Error during fetching matched jobs:', error);
         throw error;
     }
 };
@@ -53,7 +50,6 @@ const getFollowedJob = async () => {
             return response.data;
         }
     } catch (error) {
-        console.log('Error during fetching matched jobs:', error);
         throw error;
     }
 };
@@ -67,7 +63,6 @@ const getFollowedCompany = async () => {
             return response.data;
         }
     } catch (error) {
-        console.log('Error during fetching matched jobs:', error);
         throw error;
     }
 };

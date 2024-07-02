@@ -16,7 +16,7 @@ import {GlobalStyleSheet} from '../constants/StyleSheet';
 
 const Featured = ({navigation}) => {
   const dispatch = useDispatch();
-  const {jobByTpes} = useSelector(state => state.job);
+  const {jobByTpes, allJobs} = useSelector(state => state.job);
 
   useEffect(() => {
     dispatch(getJobByJobTypes('top_job'));
@@ -34,8 +34,8 @@ const Featured = ({navigation}) => {
       </View>
 
       <View style={styles.scrollViewContent}>
-        {!!jobByTpes?.data ? (
-          jobByTpes?.data?.slice(0, 5).map((item, index) => {
+        {!!allJobs?.data ? (
+          allJobs?.data?.slice(0, 5).map((item, index) => {
             return <JobCard key={index} items={item} navigation={navigation} />;
           })
         ) : (

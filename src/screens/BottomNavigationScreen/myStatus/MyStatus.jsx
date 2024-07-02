@@ -6,20 +6,14 @@ import JobApplied from './JobApplied';
 import FollowedJob from './FollowedJob';
 import {customFonts} from '../../../constants/theme';
 import FollowedCompany from './FollowedCompany';
+import AddPref from '../matchedJob/AddPref';
+import {useDispatch, useSelector} from 'react-redux';
+import {View} from 'react-native-animatable';
 
-const FirstRoute = () => (
-  // <View style={{ flex: 1, backgroundColor: '#ff4081' }} />
-  <JobApplied></JobApplied>
-);
+const FirstRoute = () => <JobApplied></JobApplied>;
 
-const SecondRoute = () => (
-  // <View style={{ flex: 1, backgroundColor: '#673ab7' }} />
-  <FollowedJob></FollowedJob>
-);
-const ThirdRoute = () => (
-  // <View style={{ flex: 1, backgroundColor: '#673ab7' }} />
-  <FollowedCompany></FollowedCompany>
-);
+const SecondRoute = () => <FollowedJob></FollowedJob>;
+const ThirdRoute = () => <FollowedCompany></FollowedCompany>;
 
 const renderScene = SceneMap({
   first: FirstRoute,
@@ -27,7 +21,10 @@ const renderScene = SceneMap({
   third: ThirdRoute,
 });
 
-const MyStatus = () => {
+const MyStatus = ({navigation}) => {
+  const dispatch = useDispatch();
+  const {isAuthenticated, token} = useSelector(state => state.login);
+  const {userProfile} = useSelector(state => state.userProfile);
   const layout = useWindowDimensions();
 
   const [index, setIndex] = React.useState(0);
@@ -37,24 +34,41 @@ const MyStatus = () => {
     {key: 'third', title: 'Followed Company'},
   ]);
 
+  const handleLogin = () => {
+    navigation.navigate('Login');
+  };
+
   const renderTabBar = props => {
     return (
-      <TabBar
-        {...props}
-        renderLabel={({focused, route}) => {
-          return (
-            <Text
-              style={{
-                color: focused ? 'white' : 'gray',
-                fontFamily: customFonts.fontPoppins,
-              }}>
-              {route.title}
-            </Text>
-          );
-        }}
-        indicatorStyle={styles.indicatorStyle}
-        style={styles.tabBar}
-      />
+      <>
+        <View>
+          {isAuthenticated && token !== null ? (
+            <TabBar
+              {...props}
+              renderLabel={({focused, route}) => {
+                return (
+                  <Text
+                    style={{
+                      color: focused ? 'white' : 'gray',
+                      fontFamily: customFonts.fontPoppins,
+                    }}>
+                    {route.title}
+                  </Text>
+                );
+              }}
+              indicatorStyle={styles.indicatorStyle}
+              style={styles.tabBar}
+            />
+          ) : (
+            <AddPref
+              title={'Discover your dream jobs'}
+              subtitle={'Login to Browse Job'}
+              btnText={'Login'}
+              handleBtn={handleLogin}
+            />
+          )}
+        </View>
+      </>
     );
   };
 

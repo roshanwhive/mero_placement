@@ -138,39 +138,6 @@ export const getJobByJobTypes = createAsyncThunk(
   },
 );
 
-//--------------------------------------Saved Job---------------------------------
-export const getSavedJob = createAsyncThunk('job/saved-job', async thunkAPI => {
-  try {
-    return await jobService.getSavedJob();
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error);
-  }
-});
-
-//--------------------------------------Matched Job---------------------------------
-export const getMatchedJob = createAsyncThunk(
-  'job/matched-job',
-  async thunkAPI => {
-    try {
-      return await jobService.getMatchedJob();
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  },
-);
-
-//--------------------------------------Applied Job---------------------------------
-export const getAppliedJob = createAsyncThunk(
-  'job/applied-job',
-  async thunkAPI => {
-    try {
-      return await jobService.getAppliedJob();
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  },
-);
-
 //Reset State
 export const resetJobCategoryState = createAction('Reset_all_Job_Category');
 
@@ -180,7 +147,7 @@ export const jobCategorySlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder
-      // ------------------------------------Get ALl Jobs -------------------------------
+      // ------------------------------------Get ALL Jobs -------------------------------
       .addCase(getAllJobs.pending, state => {
         state.isLoading = true;
       })
@@ -202,6 +169,7 @@ export const jobCategorySlice = createSlice({
       // ------------------------------------Get single Jobs -------------------------------
       .addCase(getSingleJob.pending, state => {
         state.isLoading = true;
+        state.singleJob = [];
       })
       .addCase(getSingleJob.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -357,7 +325,7 @@ export const jobCategorySlice = createSlice({
         state.isError = !action.payload.success;
         state.isSuccess = action.payload.success;
         state.message = action.payload.message;
-        state.jobByTpes = action.payload.data;
+        state.allJobs = action.payload.data;
       })
       .addCase(getJobByJobTypes.rejected, (state, action) => {
         state.isError = true;

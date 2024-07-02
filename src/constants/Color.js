@@ -19,5 +19,3 @@ export const customThemeColor = {
   lighterBg: '#e0e0e0',
   lightestGreen: '#edfff7',
 };
-
-

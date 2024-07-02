@@ -13,10 +13,10 @@ import FlashMessage from 'react-native-flash-message';
 import { PersistGate } from 'redux-persist/integration/react';
 import messaging from '@react-native-firebase/messaging';
 
-// Register background handler
-messaging().setBackgroundMessageHandler(async remoteMessage => {
-  console.log('Message handled in the background!', remoteMessage);
-});
+// // Register background handler
+// messaging().setBackgroundMessageHandler(async remoteMessage => {
+// });
+
 
 
 const theme = {
@@ -25,6 +25,7 @@ const theme = {
     ...DefaultTheme.colors,
     primary: '#00b0f0',
     secondary: '#00b0f0',
+    
   },
 };
 
